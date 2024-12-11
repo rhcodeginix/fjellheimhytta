@@ -8,7 +8,6 @@ import Tilbud from "./Tilbud";
 import Okonomi from "./Okonomi";
 import Finansiering from "./Finansiering";
 import Oppsummering from "./Oppsummering";
-import ApiUtils from "@/api";
 
 const Regulations = () => {
   const [currIndex, setCurrIndex] = useState(0);
