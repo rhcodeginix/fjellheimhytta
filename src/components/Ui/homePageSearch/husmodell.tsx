@@ -149,7 +149,7 @@ const HusmodellTab = () => {
                       Kommune:
                     </span>{" "}
                     <span className="text-black font-medium text-lg">
-                      {`${address.kommunenavn} Kommune ${address.kommunenummer}` ||
+                      {`${address.kommunenavn} Kommune (${address.kommunenummer})` ||
                         "N/A"}
                     </span>
                   </div>

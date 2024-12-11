@@ -348,7 +348,7 @@ const Tilvalg: React.FC<any> = ({ handleNext, handlePrevious }) => {
               }}
             />
             <Button
-              text="Se tilbud"
+              text="Se tomter"
               className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 handleNext();

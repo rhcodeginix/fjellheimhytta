@@ -357,6 +357,10 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                 handlePrevious();
               }}
             />
+            <Button
+              text="Send inn"
+              className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+            />
           </div>
         </SideSpaceContainer>
       </div>

@@ -77,21 +77,6 @@ const ApiUtils = {
       "base64"
     );
 
-    // fetch(url, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "text/xml",
-    //     Authorization: `Basic ${base64encodedData}`,
-    //   },
-    //   body: body,
-    // })
-    //   .then((response) => response.text())
-    //   .then((data) => {
-    //     console.log("API Response:", data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error calling API:", error);
-    //   });
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -103,8 +88,7 @@ const ApiUtils = {
       });
 
       if (response.ok) {
-        const data = await response.text();
-        console.log("API Response:", data);
+        await response.text();
       } else {
         console.error(`HTTP error! Status: ${response.status}`);
         const errorText = await response.text();
@@ -112,6 +96,29 @@ const ApiUtils = {
       }
     } catch (error) {
       console.error("Error calling API:", error);
+    }
+  },
+
+  askApi: async function (data: any) {
+    try {
+      const response = await fetch(`https://iplotnor-iplot.hf.space/api/ask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const jsonData = await response.json();
+
+      return jsonData;
+    } catch (error: any) {
+      console.error("Error in askApi:", error.message);
+      throw error;
     }
   },
 };

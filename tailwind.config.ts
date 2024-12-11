@@ -29,6 +29,7 @@ const config: Config = {
       purple: "#53389E",
       lightPurple: "#F9F5FF",
       primary: "#7F56D9",
+      red: "red",
       gray: "#EAECF0",
       darkGray: "#B9C0D4",
       gray2: "#D0D5DD",

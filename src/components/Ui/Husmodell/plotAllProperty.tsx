@@ -226,9 +226,9 @@ const PlotAllProperty: React.FC<any> = ({ handleNext }) => {
             </div>
             <div className="flex justify-center mt-[60px] mb-[36px]">
               <Button
-                text="See More"
+                text="Se flere modeller"
                 className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[54px] relative desktop:py-[16px]"
-                path="/"
+                // path="/"
               />
             </div>
           </SideSpaceContainer>

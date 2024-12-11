@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Ic_generelt from "@/public/images/Ic_generelt.svg";
 import Ic_tak from "@/public/images/Ic_tak.svg";
@@ -45,6 +45,26 @@ const PlotDetail: React.FC<any> = ({ handleNext }) => {
 
   const { getAddress } = useAddress();
   const router = useRouter();
+
+  const [askData, setAskData] = useState<any | null>(null);
+  const { additionalData, loadingAdditionalData } = useAddress();
+
+  useEffect(() => {
+    if (additionalData?.answer) {
+      try {
+        const cleanAnswer = additionalData.answer
+          .replace(/```json|```/g, "")
+          .trim();
+
+        const data = JSON.parse(cleanAnswer);
+
+        setAskData(data);
+      } catch (error) {
+        console.error("Error parsing additionalData.answer:", error);
+        setAskData(null);
+      }
+    }
+  }, [additionalData]);
   return (
     <div className="relative">
       <SideSpaceContainer className="relative">
@@ -209,54 +229,22 @@ const PlotDetail: React.FC<any> = ({ handleNext }) => {
                 <Image src={Ic_generelt} alt="image" />
               </div>
               <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>Innenfor 1/3 av fasadens lengde per takflate</span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>
-                    {" "}
-                    Gesimshøyde for ark/kobbhus tilates inntil{" "}
-                    <span className="text-black font-semibold">
-                      8,0 meter,
-                    </span>{" "}
-                    og skal underordnes byggets mønehøyde.
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>
-                    Takterrasser tillates med inntil 6,5 meters høyde på
-                    overkant gulv, og tillates ikke plassert nærmere nabogrense
-                    enn 4,0 meter. For takterasser høyere enn 4,5 meter på
-                    overkant gulv, gjelder følgende bestemmelser:
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>Innenfor 1/3 av fasadens lengde per takflate </span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>
-                    {" "}
-                    Gesimshøyde for ark/kobbhus tilates inntil{" "}
-                    <span className="text-black font-semibold">
-                      8,0 meter,
-                    </span>{" "}
-                    og skal underordnes byggets mønehøyde.
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>
-                    Takterrasser tillates med inntil 6,5 meters høyde på
-                    overkant gulv, og tillates ikke plassert nærmere nabogrense
-                    enn 4,0 meter. For takterasser høyere enn 4,5 meter på
-                    overkant gulv, gjelder følgende bestemmelser:
-                  </span>
-                </div>
+                {loadingAdditionalData ? (
+                  "Loading....."
+                ) : (
+                  <>
+                    {askData &&
+                      askData?.conclusion?.map((a: any) => (
+                        <div
+                          className="flex items-center gap-3 text-secondary text-base"
+                          key={a}
+                        >
+                          <Image src={Ic_check_true} alt="image" />
+                          <span>{a}</span>
+                        </div>
+                      ))}
+                  </>
+                )}
               </div>
             </div>
             <div>
@@ -267,60 +255,28 @@ const PlotDetail: React.FC<any> = ({ handleNext }) => {
                 <Image src={Ic_tak} alt="image" />
               </div>
               <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>Innenfor 1/3 av fasadens lengde per takflate</span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>
-                    {" "}
-                    Gesimshøyde for ark/kobbhus tilates inntil{" "}
-                    <span className="text-black font-semibold">
-                      8,0 meter,
-                    </span>{" "}
-                    og skal underordnes byggets mønehøyde.
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>
-                    Takterrasser tillates med inntil 6,5 meters høyde på
-                    overkant gulv, og tillates ikke plassert nærmere nabogrense
-                    enn 4,0 meter. For takterasser høyere enn 4,5 meter på
-                    overkant gulv, gjelder følgende bestemmelser:
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>Innenfor 1/3 av fasadens lengde per takflate </span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>
-                    {" "}
-                    Gesimshøyde for ark/kobbhus tilates inntil{" "}
-                    <span className="text-black font-semibold">
-                      8,0 meter,
-                    </span>{" "}
-                    og skal underordnes byggets mønehøyde.
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-secondary text-base">
-                  <Image src={Ic_check_true} alt="image" />
-                  <span>
-                    Takterrasser tillates med inntil 6,5 meters høyde på
-                    overkant gulv, og tillates ikke plassert nærmere nabogrense
-                    enn 4,0 meter. For takterasser høyere enn 4,5 meter på
-                    overkant gulv, gjelder følgende bestemmelser:
-                  </span>
-                </div>
+                {loadingAdditionalData ? (
+                  "Loading....."
+                ) : (
+                  <>
+                    {askData &&
+                      askData?.conclusion?.map((a: any) => (
+                        <div
+                          className="flex items-center gap-3 text-secondary text-base"
+                          key={a}
+                        >
+                          <Image src={Ic_check_true} alt="image" />
+                          <span>{a}</span>
+                        </div>
+                      ))}
+                  </>
+                )}
               </div>
             </div>
           </div>
           <div className="w-[34%]">
             <h2 className="text-black text-2xl font-semibold mb-6">
-              Eiendomsinformajon
+              Kartutsnitt
             </h2>
             <Image
               src={Img_product_detail_map}

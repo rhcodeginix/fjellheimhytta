@@ -7,6 +7,8 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
   const [getAddress, setGetAddress] = useState<any | null>(null);
   const [storedAddress, setStoreAddress] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [additionalData, setAdditionalData] = useState<any | undefined>(null);
+  const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
 
   useEffect(() => {
     const addressFromStorage = localStorage.getItem("IPlot_Address");
@@ -35,11 +37,29 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
 
       if (matches) {
         setGetAddress(matches);
+        await fetchAdditionalData(matches.kommunenavn);
       }
     } catch (error) {
       console.error("Error fetching address data:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAdditionalData = async (kommunenavn: string) => {
+    const data = {
+      question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB?`,
+    };
+
+    setLoadingAdditionalData(true);
+
+    try {
+      const response = await ApiUtils.askApi(data);
+      setAdditionalData(response);
+    } catch (error: any) {
+      console.error("Error fetching additional data:", error.message);
+    } finally {
+      setLoadingAdditionalData(false);
     }
   };
 
@@ -60,6 +80,8 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
         getAddress,
         loading,
         searchAddress,
+        additionalData,
+        loadingAdditionalData,
         setStoreAddress,
         updateAddress,
       }}
@@ -70,11 +92,13 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
 };
 
 const useAddress = () => {
-  const context = React.useContext(AddressContext);
-  if (!context) {
-    throw new Error("useAddress must be used within an AddressProvider");
+  if (AddressContext) {
+    const context = React.useContext(AddressContext);
+    if (!context) {
+      throw new Error("useAddress must be used within an AddressProvider");
+    }
+    return context;
   }
-  return context;
 };
 
 export { AddressProvider, useAddress };
