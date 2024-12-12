@@ -120,9 +120,9 @@ const ApiUtils = {
       throw error;
     }
   },
-  getData: async function (data: any) {
+  LamdaApi: async function (data: any) {
     const url =
-      "https://gmauy7v2ta3hywyn2c5aeilvd40lnkyo.lambda-url.eu-north-1.on.aws";
+      "https://8nw82oaaej.execute-api.eu-north-1.amazonaws.com/dev/property";
 
     try {
       const res = await fetch(url, {

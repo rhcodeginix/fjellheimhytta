@@ -8,23 +8,18 @@ import Advantages from "./homepage/advantages";
 import Analysis from "./homepage/analysis";
 import LatestFromMedia from "./homepage/latestFromMedia";
 import Chatbot from "@/components/Ui/chatbot";
-import ApiUtils from "@/api";
+// import ApiUtils from "@/api";
 
 const index = () => {
-  const requestData = {
-    kommunenummer: "3203",
-    gardsnummer: "243",
-    bruksnummer: "594",
-  };
   return (
     <div className="relative">
-      <button
+      {/* <button
         onClick={() => {
-          ApiUtils.getData(requestData);
+          ApiUtils.LamdaApi(requestData);
         }}
       >
         call api
-      </button>
+      </button> */}
       <Chatbot />
 
       <MainSection />
