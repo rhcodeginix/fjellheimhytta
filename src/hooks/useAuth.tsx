@@ -1,20 +1,37 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
+  const checkAuth = () => {
     const email = localStorage.getItem("Iplot_email");
 
     if (email) {
       setIsAuthenticated(true);
-      router.push("/");
+      if (router.pathname === "/login") {
+        router.push("/");
+      }
     } else {
       setIsAuthenticated(false);
+      if (router.pathname !== "/login") {
+        router.push("/login");
+      }
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    checkAuth();
+
+    const interval = setInterval(() => {
+      checkAuth();
+    }, 500);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [router]);
 
   return isAuthenticated;
 };

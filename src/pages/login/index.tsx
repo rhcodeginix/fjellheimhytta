@@ -17,7 +17,7 @@ const Login = () => {
       .required("Email is required")
       .test(
         "email-match",
-        "Email must be " + requiredEmail,
+        "Email not match!",
         (value) => value === requiredEmail
       ),
     password: Yup.string()
@@ -25,7 +25,7 @@ const Login = () => {
       .required("Password is required")
       .test(
         "password-match",
-        "Password must be " + requiredPassword,
+        "Password Not Match",
         (value) => value === requiredPassword
       ),
   });

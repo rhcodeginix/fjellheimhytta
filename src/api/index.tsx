@@ -98,7 +98,6 @@ const ApiUtils = {
       console.error("Error calling API:", error);
     }
   },
-
   askApi: async function (data: any) {
     try {
       const response = await fetch(`https://iplotnor-iplot.hf.space/api/ask`, {
@@ -119,6 +118,28 @@ const ApiUtils = {
     } catch (error: any) {
       console.error("Error in askApi:", error.message);
       throw error;
+    }
+  },
+  getData: async function (data: any) {
+    const url =
+      "https://gmauy7v2ta3hywyn2c5aeilvd40lnkyo.lambda-url.eu-north-1.on.aws";
+
+    try {
+      const res = await fetch(url, {
+        method: "POST", // Change to POST
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data), // Send data as JSON body
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      return await res.json();
+    } catch (err: any) {
+      console.error("Error in getData:", err);
     }
   },
 };
