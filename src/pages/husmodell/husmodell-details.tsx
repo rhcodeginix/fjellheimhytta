@@ -9,10 +9,29 @@ import Tilbud from "./Tilbud";
 import Okonomi from "./Okonomi";
 import Finansiering from "./Finansiering";
 import Oppsummering from "./Oppsummering";
+import { useAddress } from "@/context/addressContext";
 
 const HusmodellDetail = () => {
   const [currIndex, setCurrIndex] = useState(0);
   const router = useRouter();
+
+  const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
+  const { LamdaData } = useAddress();
+
+  useEffect(() => {
+    if (LamdaData?.body) {
+      try {
+        const cleanAnswer = LamdaData.body.replace(/```json|```/g, "").trim();
+
+        const data = JSON.parse(cleanAnswer);
+
+        setLamdaDataFromApi(data);
+      } catch (error) {
+        console.error("Error parsing additionalData.answer:", error);
+        setLamdaDataFromApi(null);
+      }
+    }
+  }, [LamdaData]);
 
   const handleNext = () => {
     if (currIndex < steps.length - 1) {
@@ -45,7 +64,9 @@ const HusmodellDetail = () => {
     },
     {
       name: "Tomt",
-      component: <Tomt handleNext={handleNext} />,
+      component: (
+        <Tomt handleNext={handleNext} lamdaDataFromApi={lamdaDataFromApi} />
+      ),
     },
     {
       name: "Tilbud",

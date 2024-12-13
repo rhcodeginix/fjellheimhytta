@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 import PlotDetail from "@/pages/husmodell/plotDetail";
 import SideSpaceContainer from "@/components/common/sideSpace";
 
-const PlotAllProperty: React.FC<any> = ({ handleNext }) => {
+const PlotAllProperty: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   const propertyList = [
     {
       id: 1,
@@ -141,7 +141,10 @@ const PlotAllProperty: React.FC<any> = ({ handleNext }) => {
     <>
       {plot ? (
         <>
-          <PlotDetail handleNext={handleNext} />
+          <PlotDetail
+            handleNext={handleNext}
+            lamdaDataFromApi={lamdaDataFromApi}
+          />
         </>
       ) : (
         <>

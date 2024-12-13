@@ -9,6 +9,8 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [additionalData, setAdditionalData] = useState<any | undefined>(null);
   const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
+  const [LamdaData, setLamdaData] = useState<any | undefined>(null);
+  const [loadingLamdaData, setLoadingLamdaData] = useState(false);
 
   useEffect(() => {
     const addressFromStorage = localStorage.getItem("IPlot_Address");
@@ -34,9 +36,15 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
         (address: any) =>
           JSON.stringify(address) === JSON.stringify(queryParams)
       );
+      const lamdaApiData: any = {
+        kommunenummer: matches.kommunenummer,
+        gardsnummer: matches.gardsnummer,
+        bruksnummer: matches.bruksnummer,
+      };
 
       if (matches) {
         setGetAddress(matches);
+        await fetchLamdaData(lamdaApiData);
         await fetchAdditionalData(matches.kommunenavn);
       }
     } catch (error) {
@@ -46,23 +54,46 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const fetchAdditionalData = async (kommunenavn: string) => {
-    const data = {
-      question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB?`,
-    };
-
-    setLoadingAdditionalData(true);
+  const fetchLamdaData = async (data: any) => {
+    setLoadingLamdaData(true);
 
     try {
-      const response = await ApiUtils.askApi(data);
-      setAdditionalData(response);
+      const response = await ApiUtils.LamdaApi(data);
+      setLamdaData(response);
     } catch (error: any) {
       console.error("Error fetching additional data:", error.message);
     } finally {
-      setLoadingAdditionalData(false);
+      setLoadingLamdaData(false);
     }
   };
 
+  const fetchAdditionalData = async (kommunenavn: string) => {
+    const a = LamdaData?.body?.replace(/```json|```/g, "").trim();
+
+    let areaDetails = "";
+
+    try {
+      const parsedData = JSON.parse(a);
+      areaDetails = parsedData?.areaDetails || "";
+
+      const data = {
+        question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+      };
+
+      setLoadingAdditionalData(true);
+
+      try {
+        const response = await ApiUtils.askApi(data);
+        setAdditionalData(response);
+      } catch (error: any) {
+        console.error("Error fetching additional data:", error.message);
+      } finally {
+        setLoadingAdditionalData(false);
+      }
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+    }
+  };
   useEffect(() => {
     if (storedAddress) {
       searchAddress();
@@ -82,6 +113,8 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
         searchAddress,
         additionalData,
         loadingAdditionalData,
+        LamdaData,
+        loadingLamdaData,
         setStoreAddress,
         updateAddress,
       }}

@@ -26,7 +26,6 @@ const Stepper: React.FC<StepperProps> = ({
     if (currIndex > index && (index === 0 || index === 1 || index === 2)) {
       const { plot, ...restQuery } = router.query as any;
       const updatedQuery = new URLSearchParams(restQuery).toString();
-      console.log(updatedQuery);
 
       router.push(
         `${router.pathname}${updatedQuery ? `?${updatedQuery}` : ""}`

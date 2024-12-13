@@ -15,7 +15,7 @@ import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import { useAddress } from "@/context/addressContext";
 import { useRouter } from "next/router";
 
-const PlotDetail: React.FC<any> = ({ handleNext }) => {
+const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   const items = [
     {
       id: 1,
@@ -90,7 +90,7 @@ const PlotDetail: React.FC<any> = ({ handleNext }) => {
                         Areal beregnet
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                        869,7
+                        {lamdaDataFromApi?.areaDetails}
                       </td>
                     </tr>
                     <tr>
@@ -214,7 +214,7 @@ const PlotDetail: React.FC<any> = ({ handleNext }) => {
                         Bruksnavn
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                        -
+                        {lamdaDataFromApi?.propertyDetails?.bruksnavn}
                       </td>
                     </tr>
                   </tbody>
@@ -342,7 +342,6 @@ const PlotDetail: React.FC<any> = ({ handleNext }) => {
               onClick={() => {
                 const { plot, ...restQuery } = router.query as any;
                 const updatedQuery = new URLSearchParams(restQuery).toString();
-                console.log(updatedQuery);
 
                 router.push(
                   `${router.pathname}${updatedQuery ? `?${updatedQuery}` : ""}`

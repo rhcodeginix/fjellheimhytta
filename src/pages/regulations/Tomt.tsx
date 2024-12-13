@@ -19,7 +19,7 @@ import { useUserLayoutContext } from "@/context/userLayoutContext";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import { useAddress } from "@/context/addressContext";
 
-const Tomt: React.FC<any> = ({ handleNext }) => {
+const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   const items = [
     {
       id: 1,
@@ -142,7 +142,7 @@ const Tomt: React.FC<any> = ({ handleNext }) => {
                         Areal beregnet
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                        869,7
+                        {lamdaDataFromApi?.areaDetails}
                       </td>
                     </tr>
                     <tr>
@@ -266,7 +266,7 @@ const Tomt: React.FC<any> = ({ handleNext }) => {
                         Bruksnavn
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                        -
+                        {lamdaDataFromApi?.propertyDetails?.bruksnavn}
                       </td>
                     </tr>
                   </tbody>
@@ -286,10 +286,10 @@ const Tomt: React.FC<any> = ({ handleNext }) => {
                 ) : (
                   <>
                     {askData &&
-                      askData?.conclusion?.map((a: any) => (
+                      askData?.conclusion?.map((a: any, index: number) => (
                         <div
                           className="flex items-center gap-3 text-secondary text-base"
-                          key={a}
+                          key={index}
                         >
                           <Image src={Ic_check_true} alt="image" />
                           <span>{a}</span>
@@ -312,10 +312,10 @@ const Tomt: React.FC<any> = ({ handleNext }) => {
                 ) : (
                   <>
                     {askData &&
-                      askData?.conclusion?.map((a: any) => (
+                      askData?.conclusion?.map((a: any, index: number) => (
                         <div
                           className="flex items-center gap-3 text-secondary text-base"
-                          key={a}
+                          key={index}
                         >
                           <Image src={Ic_check_true} alt="image" />
                           <span>{a}</span>
@@ -350,8 +350,8 @@ const Tomt: React.FC<any> = ({ handleNext }) => {
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-6 mb-6">
-                {items.map((item) => (
-                  <div key={item.id}>
+                {items.map((item, index) => (
+                  <div key={index}>
                     <Image
                       src={item.imageSrc}
                       alt={item.title}
