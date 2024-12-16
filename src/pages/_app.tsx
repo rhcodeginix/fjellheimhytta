@@ -5,6 +5,7 @@ import { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import useAuth from "@/hooks/useAuth";
+import Loader from "@/components/Loader";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -21,7 +22,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
   return (
     <main>

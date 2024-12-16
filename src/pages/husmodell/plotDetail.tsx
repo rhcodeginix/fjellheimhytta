@@ -14,6 +14,7 @@ import Button from "@/components/common/button";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import { useAddress } from "@/context/addressContext";
 import { useRouter } from "next/router";
+import Loader from "@/components/Loader";
 
 const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   const items = [
@@ -238,7 +239,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
               </div>
               <div className="flex flex-col gap-3">
                 {loadingAdditionalData ? (
-                  "Loading....."
+                  <Loader />
                 ) : (
                   <>
                     {askData &&
@@ -255,32 +256,6 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                 )}
               </div>
             </div>
-            {/* <div>
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-black text-2xl font-semibold">
-                  Reguleringsbestemmelser
-                </h2>
-                <Image src={Ic_tak} alt="image" />
-              </div>
-              <div className="flex flex-col gap-3">
-                {loadingAdditionalData ? (
-                  "Loading....."
-                ) : (
-                  <>
-                    {askData &&
-                      askData?.conclusion?.map((a: any) => (
-                        <div
-                          className="flex items-center gap-3 text-secondary text-base"
-                          key={a}
-                        >
-                          <Image src={Ic_check_true} alt="image" />
-                          <span>{a}</span>
-                        </div>
-                      ))}
-                  </>
-                )}
-              </div>
-            </div> */}
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-black text-2xl font-semibold">
@@ -290,7 +265,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
               </div>
               <div className="flex flex-col gap-3">
                 {loadingAdditionalData ? (
-                  "Loading....."
+                  <Loader />
                 ) : (
                   <>
                     {askData &&

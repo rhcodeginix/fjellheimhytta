@@ -18,6 +18,7 @@ import { Formik, Form, Field } from "formik";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import { useAddress } from "@/context/addressContext";
+import Loader from "@/components/Loader";
 
 const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   const items = [
@@ -115,8 +116,6 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
       }
     }
   }, [additionalData]);
-
-  console.log(askData);
 
   return (
     <div className="relative">
@@ -290,7 +289,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
               </div>
               <div className="flex flex-col gap-3">
                 {loadingAdditionalData ? (
-                  "Loading....."
+                  <Loader />
                 ) : (
                   <>
                     {askData &&
@@ -316,7 +315,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
               </div>
               <div className="flex flex-col gap-3">
                 {loadingAdditionalData ? (
-                  "Loading....."
+                  <Loader />
                 ) : (
                   <>
                     {askData &&
