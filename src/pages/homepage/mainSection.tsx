@@ -12,8 +12,8 @@ const MainSection = () => {
       <div className="pt-[80px] pb-[120px] overflow-hidden">
         <SideSpaceContainer className="relative">
           <div className="flex justify-between items-end relative">
-            <h1 className="text-black text-[60px] font-semibold leading-tight w-[50%] xBig:w-[45%] relative">
-              Bygg ditt drømmehus trygt og enkelt
+            <h1 className="text-black text-[60px] font-semibold leading-tight w-[75%] xBig:w-[53%] relative">
+              Realiser dine byggeprosjekter trygt og enkelt
               <Image
                 src={Img_header_underline}
                 alt="image"
@@ -23,9 +23,8 @@ const MainSection = () => {
                 }}
               />
             </h1>
-            <p className="text-xl text-secondary w-[35%] xBig:w-[30%]">
-              Få umiddelbar tomteanalyse og oppdag hvilke boliger du kan bygge
-              på din tomt.
+            <p className="text-xl text-secondary w-[23%]">
+              Få umiddelbar tomteanalyse og oppdag hva du kan bygge.
             </p>
           </div>
           <HomePageSearchDiv />

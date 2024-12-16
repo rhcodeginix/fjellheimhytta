@@ -8,6 +8,7 @@ import Advantages from "./homepage/advantages";
 import Analysis from "./homepage/analysis";
 import LatestFromMedia from "./homepage/latestFromMedia";
 import Chatbot from "@/components/Ui/chatbot";
+import OurPartners from "./homepage/ourPartners";
 // import ApiUtils from "@/api";
 
 const index = () => {
@@ -21,10 +22,10 @@ const index = () => {
         call api
       </button> */}
       <Chatbot />
-
       <MainSection />
       <HouseCabinMould />
       <HowItWorks />
+      <OurPartners />
       <Review />
       <Advantages />
       <Analysis />

@@ -65,6 +65,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
       }
     }
   }, [additionalData]);
+
   return (
     <div className="relative">
       <SideSpaceContainer className="relative">
@@ -77,14 +78,14 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
               <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
                 <table className="table-auto border-0 w-full text-left property_detail_tbl">
                   <tbody>
-                    <tr>
+                    {/* <tr>
                       <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                         Areal oppgitt
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                         0
                       </td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                         Areal beregnet
@@ -93,7 +94,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         {lamdaDataFromApi?.areaDetails}
                       </td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                         Arealkilde
                       </td>
@@ -108,7 +109,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                         21.12.2012
                       </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </div>
@@ -120,7 +121,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Seksjonert
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                        Nei
+                        {lamdaDataFromApi?.propertyDetails?.erSeksjonert}
                       </td>
                     </tr>
                     <tr>
@@ -128,7 +129,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Tinglyst
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                        Ja
+                        {lamdaDataFromApi?.propertyDetails?.tinglyst}
                       </td>
                     </tr>
                     <tr>
@@ -136,7 +137,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Kulturminner registrert
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                        Nei
+                        {lamdaDataFromApi?.propertyDetails?.harKulturminne}
                       </td>
                     </tr>
                     <tr>
@@ -144,17 +145,20 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Aktive festegrunner
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                        Nei
+                        {
+                          lamdaDataFromApi?.propertyDetails
+                            ?.harAktiveFestegrunner
+                        }
                       </td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                         Punktfeste
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                         Nei
                       </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </div>
@@ -206,7 +210,10 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Seksjonsnr
                       </td>
                       <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                        0
+                        {
+                          lamdaDataFromApi?.propertyDetails?.matrikkelnummer
+                            ?.seksjonsnummer
+                        }
                       </td>
                     </tr>
                     <tr>

@@ -69,10 +69,10 @@ const LatestFromMedia = () => {
                   </div>
                   <div className="w-[45%]">
                     <h5 className="text-blue text-sm font-semibold mb-3">
-                      Finanavsien • 10 nov 2024
+                      DN.no • 8 Nov 2024
                     </h5>
                     <h3 className="text-black font-semibold text-lg mb-4">
-                      MinTomt revolusjonerer tomteanalyse
+                      Mestergruppen satser på MinTomt
                     </h3>
                     <p className="text-secondary text-base mb-6">
                       Mestergruppen inngår samarbeid med{" "}

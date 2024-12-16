@@ -22,6 +22,38 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  // const searchAddress = async () => {
+  //   if (!storedAddress) {
+  //     console.error("No address data to search.");
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   const queryParams = storedAddress;
+  //   try {
+  //     const result = await ApiUtils.getSingleAddress(queryParams);
+  //     const matches = result.adresser.find(
+  //       (address: any) =>
+  //         JSON.stringify(address) === JSON.stringify(queryParams)
+  //     );
+  //     const lamdaApiData: any = {
+  //       kommunenummer: matches.kommunenummer,
+  //       gardsnummer: matches.gardsnummer,
+  //       bruksnummer: matches.bruksnummer,
+  //     };
+
+  //     if (matches) {
+  //       setGetAddress(matches);
+  //       await fetchLamdaData(lamdaApiData);
+  //       await fetchAdditionalData(matches.kommunenavn);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching address data:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const searchAddress = async () => {
     if (!storedAddress) {
       console.error("No address data to search.");
@@ -36,16 +68,31 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
         (address: any) =>
           JSON.stringify(address) === JSON.stringify(queryParams)
       );
-      const lamdaApiData: any = {
-        kommunenummer: matches.kommunenummer,
-        gardsnummer: matches.gardsnummer,
-        bruksnummer: matches.bruksnummer,
-      };
 
       if (matches) {
         setGetAddress(matches);
+
+        // Fetch Lamda Data
+        const lamdaApiData: any = {
+          kommunenummer: matches.kommunenummer,
+          gardsnummer: matches.gardsnummer,
+          bruksnummer: matches.bruksnummer,
+        };
+
         await fetchLamdaData(lamdaApiData);
-        await fetchAdditionalData(matches.kommunenavn);
+
+        // Extract areaDetails from LamdaData if available
+        const bodyContent = LamdaData?.body?.replace(/```json|```/g, "").trim();
+
+        if (bodyContent) {
+          const parsedData = JSON.parse(bodyContent);
+          const areaDetails = parsedData?.areaDetails || "";
+
+          // Fetch additional data with areaDetails
+          await fetchAdditionalData(matches.kommunenavn, areaDetails);
+        } else {
+          console.warn("LamdaData does not contain valid body content.");
+        }
       }
     } catch (error) {
       console.error("Error fetching address data:", error);
@@ -53,45 +100,92 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
-
   const fetchLamdaData = async (data: any) => {
     setLoadingLamdaData(true);
 
     try {
       const response = await ApiUtils.LamdaApi(data);
       setLamdaData(response);
+      localStorage.setItem("LamdaData", JSON.stringify(response));
     } catch (error: any) {
       console.error("Error fetching additional data:", error.message);
     } finally {
       setLoadingLamdaData(false);
     }
   };
+  useEffect(() => {
+    const savedLamdaData = localStorage.getItem("LamdaData");
+    if (savedLamdaData) {
+      setLamdaData(JSON.parse(savedLamdaData));
+    }
+  }, []);
 
-  const fetchAdditionalData = async (kommunenavn: string) => {
-    const a = LamdaData?.body?.replace(/```json|```/g, "").trim();
+  // const fetchAdditionalData = async (kommunenavn: string) => {
 
-    let areaDetails = "";
+  //   const bodyContent = LamdaData?.body?.replace(/```json|```/g, "").trim();
+
+  //   if (!bodyContent) {
+  //     console.error("LamdaData body is empty or undefined");
+  //     return;
+  //   }
+
+  //   let areaDetails = "";
+
+  //   try {
+  //     const parsedData = JSON.parse(bodyContent); // Parse JSON safely
+  //     areaDetails = parsedData?.areaDetails || "";
+
+  //     if (!areaDetails) {
+  //       console.warn("Parsed data does not contain 'areaDetails'");
+  //       return;
+  //     }
+
+  //     const data = {
+  //       question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+  //     };
+
+  //     setLoadingAdditionalData(true);
+
+  //     try {
+  //       const response = await ApiUtils.askApi(data);
+  //       setAdditionalData(response); // Store API response in state
+  //     } catch (error: any) {
+  //       console.error(
+  //         "Error fetching additional data from askApi:",
+  //         error.message
+  //       );
+  //     } finally {
+  //       setLoadingAdditionalData(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error parsing JSON from LamdaData body:", error);
+  //   }
+  // };
+  const fetchAdditionalData = async (
+    kommunenavn: string,
+    areaDetails: string
+  ) => {
+    if (!areaDetails) {
+      console.warn("Cannot fetch additional data without areaDetails.");
+      return;
+    }
+
+    const data = {
+      question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+    };
+
+    setLoadingAdditionalData(true);
 
     try {
-      const parsedData = JSON.parse(a);
-      areaDetails = parsedData?.areaDetails || "";
-
-      const data = {
-        question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
-      };
-
-      setLoadingAdditionalData(true);
-
-      try {
-        const response = await ApiUtils.askApi(data);
-        setAdditionalData(response);
-      } catch (error: any) {
-        console.error("Error fetching additional data:", error.message);
-      } finally {
-        setLoadingAdditionalData(false);
-      }
-    } catch (error) {
-      console.error("Error parsing JSON:", error);
+      const response = await ApiUtils.askApi(data);
+      setAdditionalData(response); // Store API response in state
+    } catch (error: any) {
+      console.error(
+        "Error fetching additional data from askApi:",
+        error.message
+      );
+    } finally {
+      setLoadingAdditionalData(false);
     }
   };
   useEffect(() => {
