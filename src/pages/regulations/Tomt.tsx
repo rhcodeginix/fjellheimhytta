@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
 import Ic_generelt from "@/public/images/Ic_generelt.svg";
-import Ic_tak from "@/public/images/Ic_tak.svg";
+// import Ic_tak from "@/public/images/Ic_tak.svg";
 import Ic_check_true from "@/public/images/Ic_check_true.svg";
 import Img_product_detail_map from "@/public/images/Img_product_detail_map.png";
 import Image from "next/image";
@@ -115,6 +115,8 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
       }
     }
   }, [additionalData]);
+
+  console.log(askData);
 
   return (
     <div className="relative">
@@ -294,7 +296,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                     {askData &&
                       askData?.conclusion?.map((a: any, index: number) => (
                         <div
-                          className="flex items-center gap-3 text-secondary text-base"
+                          className="flex items-start gap-3 text-secondary text-base"
                           key={index}
                         >
                           <Image src={Ic_check_true} alt="image" />
@@ -308,9 +310,9 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-black text-2xl font-semibold">
-                  Reguleringsbestemmelser
+                  Kommuneplan for Asker
                 </h2>
-                <Image src={Ic_tak} alt="image" />
+                <Image src={Ic_generelt} alt="image" />
               </div>
               <div className="flex flex-col gap-3">
                 {loadingAdditionalData ? (
@@ -318,15 +320,22 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                 ) : (
                   <>
                     {askData &&
-                      askData?.conclusion?.map((a: any, index: number) => (
-                        <div
-                          className="flex items-center gap-3 text-secondary text-base"
-                          key={index}
-                        >
-                          <Image src={Ic_check_true} alt="image" />
-                          <span>{a}</span>
-                        </div>
-                      ))}
+                      askData?.applicable_rules?.map(
+                        (a: any, index: number) => (
+                          <div
+                            className="flex items-start gap-3 text-secondary text-base"
+                            key={index}
+                          >
+                            <Image src={Ic_check_true} alt="image" />
+                            <div>
+                              {a.rule}{" "}
+                              <span className="text-primary font-bold">
+                                {a.section}
+                              </span>
+                            </div>
+                          </div>
+                        )
+                      )}
                   </>
                 )}
               </div>
