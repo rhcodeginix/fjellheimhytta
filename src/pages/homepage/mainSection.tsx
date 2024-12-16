@@ -13,7 +13,7 @@ const MainSection = () => {
         <SideSpaceContainer className="relative">
           <div className="flex justify-between items-end relative">
             <h1 className="text-black text-[60px] font-semibold leading-tight w-[75%] xBig:w-[53%] relative">
-              Realiser dine byggeprosjekter trygt og enkelt
+              Få umiddelbar tomteanalyse og oppdag hva du kan bygge.
               <Image
                 src={Img_header_underline}
                 alt="image"

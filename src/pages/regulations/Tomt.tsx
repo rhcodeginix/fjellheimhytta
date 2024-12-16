@@ -6,7 +6,7 @@ import Ic_generelt from "@/public/images/Ic_generelt.svg";
 import Ic_check_true from "@/public/images/Ic_check_true.svg";
 import Img_product_detail_map from "@/public/images/Img_product_detail_map.png";
 import Image from "next/image";
-import Ic_logo from "@/public/images/Ic_logo.svg";
+import Ic_steddy from "@/public/images/Ic_steddy.svg";
 import Ic_build_housing from "@/public/images/Ic_build_housing.svg";
 import Ic_build_garage from "@/public/images/Ic_build_garage.svg";
 import Ic_building_platting from "@/public/images/Ic_building_platting.svg";
@@ -133,10 +133,10 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                 <table className="table-auto border-0 w-full text-left property_detail_tbl">
                   <tbody>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Festenummer
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {
                           lamdaDataFromApi?.propertyDetails?.matrikkelnummer
                             ?.festenummer
@@ -144,18 +144,18 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Areal beregnet
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {lamdaDataFromApi?.areaDetails}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Etableringsdato
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {
                           lamdaDataFromApi?.propertyDetails?.etableringsdato
                             ?.date
@@ -163,47 +163,48 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
-                        Sist oppdatert(NEW)
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        Sist oppdatert
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {
-                          lamdaDataFromApi?.propertyDetails?.oppdateringsdato
-                            ?.timestamp
+                          lamdaDataFromApi?.propertyDetails?.oppdateringsdato?.timestamp.split(
+                            "T"
+                          )[0]
                         }
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
-                        Registrert Grunnerverv (NEW)
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        Registrert Grunnerverv
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.propertyDetails
-                            ?.harRegistrertGrunnerverv
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
-                        Registrert JordskifteKrevd (NEW)
-                      </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.propertyDetails
-                            ?.harRegistrertJordskifteKrevd
-                        }
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails
+                          ?.harRegistrertGrunnerverv === "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
-                        Inngår i annen eiendom (NEW)
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        Registrert JordskifteKrevd
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.propertyDetails
-                            ?.inngarISamlaFastEiendom
-                        }
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails
+                          ?.harRegistrertJordskifteKrevd === "true"
+                          ? "Ja"
+                          : "Nei"}
+                      </td>
+                    </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        Inngår i annen eiendom
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails
+                          ?.inngarISamlaFastEiendom === "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                   </tbody>
@@ -213,73 +214,89 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                 <table className="table-auto border-0 w-full text-left property_detail_tbl">
                   <tbody>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Seksjonert
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails?.erSeksjonert}
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails?.erSeksjonert ===
+                        "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Tinglyst
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails?.tinglyst}
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails?.tinglyst === "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Kulturminner registrert
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails?.harKulturminne}
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails?.harKulturminne ===
+                        "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Aktive festegrunner
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.propertyDetails
-                            ?.harAktiveFestegrunner
-                        }
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails
+                          ?.harAktiveFestegrunner === "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
-                        Anmerket klage (NEW)
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        Anmerket klage
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails?.harAnmerketKlage}
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
-                        Grunnforurensning (NEW)
-                      </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails?.harGrunnforurensing}
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails?.harAnmerketKlage ===
+                        "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
-                        Utgått (NEW)
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        Grunnforurensning
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails?.utgatt}
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails
+                          ?.harGrunnforurensing === "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        Utgått
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails?.utgatt === "true"
+                          ? "Ja"
+                          : "Nei"}
+                      </td>
+                    </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Under Sammenslåing
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.propertyDetails
-                            ?.underSammenslaingBestar
-                        }
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails
+                          ?.underSammenslaingBestar === "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                   </tbody>
@@ -289,50 +306,50 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                 <table className="table-auto border-0 w-full text-left property_detail_tbl">
                   <tbody>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Kommune
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {getAddress?.kommunenavn} Kommune
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Kommunenr
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {getAddress?.kommunenummer}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Gårdsnummer
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {getAddress?.gardsnummer}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Bruksnummer
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {getAddress?.bruksnummer}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Festenr
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {getAddress?.festenummer}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Seksjonsnr
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {
                           lamdaDataFromApi?.propertyDetails?.matrikkelnummer
                             ?.seksjonsnummer
@@ -340,33 +357,33 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Bruksnavn
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {lamdaDataFromApi?.propertyDetails?.bruksnavn}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Oppmåling ikke fullført
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.propertyDetails
-                            ?.oppmalingIkkeFullfort
-                        }
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails
+                          ?.oppmalingIkkeFullfort === "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm w-full max-w-[120px] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
                         Mangler grensepunktmerking
                       </td>
-                      <td className="text-left pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.propertyDetails
-                            ?.grensepunktmerkingMangler
-                        }
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {lamdaDataFromApi?.propertyDetails
+                          ?.grensepunktmerkingMangler === "true"
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                   </tbody>
@@ -444,7 +461,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
             />
             <div>
               <div className="flex items-center gap-[36px] mb-6">
-                <Image src={Ic_logo} alt="logo" />
+                <Image src={Ic_steddy} alt="logo" />
                 <p className="text-secondary text-sm">
                   Vi hjelper deg med{" "}
                   <span className="text-black font-semibold">
