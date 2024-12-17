@@ -217,7 +217,7 @@ const TomtTab = () => {
                   <Image src={Ic_search_location} alt="location" />
                   <div>
                     <span className="text-secondary text-base font-medium">
-                      Kommune:
+                      Adresse:
                     </span>{" "}
                     <span className="text-black font-medium text-lg">
                       {`${address.adressetekst}  ${address.postnummer} ${address.poststed}` ||
