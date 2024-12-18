@@ -8,7 +8,7 @@ import Img_NexonTechWhite from "@/public/images/Img_NexonTechWhite.png";
 const OurPartners = () => {
   return (
     <>
-      <div className="py-[80px] overflow-hidden bg-primary">
+      <div className="py-[80px] overflow-hidden bg-purple">
         <SideSpaceContainer className="relative">
           <div className="flex flex-col gap-8 items-center justify-center">
             <h3 className="text-white font-semibold text-[2rem] leading-[44.8px]">
