@@ -5,6 +5,8 @@ import Img_product_logo1 from "@/public/images/Img_product_logo1.png";
 import Img_product_logo2 from "@/public/images/Img_product_logo2.png";
 import Img_product3 from "@/public/images/Img_product3.png";
 import Img_product4 from "@/public/images/Img_product4.png";
+import Img_product5 from "@/public/images/Img_product5.png";
+import Img_product6 from "@/public/images/Img_product6.png";
 import Img_product_logo3 from "@/public/images/Img_product_logo3.png";
 import Img_product_logo4 from "@/public/images/Img_product_logo4.png";
 import Img_product_map1 from "@/public/images/Img_product_map1.png";
@@ -68,7 +70,7 @@ const AllProperty: React.FC<any> = () => {
     {
       id: 5,
       href: "",
-      image: Img_product1,
+      image: Img_product5,
       logo: Img_product_logo1,
       map: Img_product_map1,
       title: "Herskapelige Almgaard er en drømmebolig for familien",
@@ -80,7 +82,7 @@ const AllProperty: React.FC<any> = () => {
     {
       id: 6,
       href: "",
-      image: Img_product2,
+      image: Img_product6,
       logo: Img_product_logo2,
       map: Img_product_map1,
       title: "Drøbak - dette huset har en enkel, ren og moderne fasade",
