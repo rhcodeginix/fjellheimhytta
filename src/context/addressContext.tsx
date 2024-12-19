@@ -108,7 +108,7 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
       setLamdaData(response);
       localStorage.setItem("LamdaData", JSON.stringify(response));
     } catch (error: any) {
-      console.error("Error fetching additional data:", error.message);
+      console.error("Error fetching additional data:", error?.message);
     } finally {
       setLoadingLamdaData(false);
     }
@@ -152,7 +152,7 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
   //     } catch (error: any) {
   //       console.error(
   //         "Error fetching additional data from askApi:",
-  //         error.message
+  //         error?.message
   //       );
   //     } finally {
   //       setLoadingAdditionalData(false);
@@ -182,7 +182,7 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
     } catch (error: any) {
       console.error(
         "Error fetching additional data from askApi:",
-        error.message
+        error?.message
       );
     } finally {
       setLoadingAdditionalData(false);

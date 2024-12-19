@@ -41,7 +41,7 @@ const HusmodellTab = () => {
         );
         setData(filteredData);
       } catch (error: any) {
-        console.error(error.message);
+        console.error(error?.message);
       }
     }
   };

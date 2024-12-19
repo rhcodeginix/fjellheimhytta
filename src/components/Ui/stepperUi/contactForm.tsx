@@ -9,7 +9,7 @@ const ContactForm: React.FC<any> = () => {
     setIsChecked(!isChecked);
   };
   const validationSchema = Yup.object().shape({
-    checkbox: Yup.boolean().oneOf([true], "Required").required("Required"),
+    checkbox: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
 
   const handleSubmit = async (values: any) => {

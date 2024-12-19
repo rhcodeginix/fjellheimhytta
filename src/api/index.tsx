@@ -116,7 +116,7 @@ const ApiUtils = {
 
       return jsonData;
     } catch (error: any) {
-      console.error("Error in askApi:", error.message);
+      console.error("Error in askApi:", error?.message);
       throw error;
     }
   },

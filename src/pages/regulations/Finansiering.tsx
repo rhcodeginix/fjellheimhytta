@@ -33,26 +33,26 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
   const validationSchema = Yup.object().shape({
     existingLoan: Yup.string()
       .oneOf(["JA", "NEI"], "Please select an option")
-      .required("Required"),
+      .required("Påkrevd"),
     previousExperience: Yup.string()
       .oneOf(["JA", "NEI"], "Please select an option")
-      .required("Required"),
+      .required("Påkrevd"),
     collateral: Yup.string()
       .oneOf(["JA", "NEI"], "Please select an option")
-      .required("Required"),
+      .required("Påkrevd"),
     permissions: Yup.string()
       .oneOf(["JA", "NEI"], "Please select an option")
-      .required("Required"),
+      .required("Påkrevd"),
     buffer: Yup.string()
       .oneOf(["JA", "NEI"], "Please select an option")
-      .required("Required"),
+      .required("Påkrevd"),
     equityAmount: Yup.number()
       .typeError("Must be a number")
       .min(1, "Amount must be greater than 0")
-      .required("Required"),
+      .required("Påkrevd"),
     sharingData: Yup.boolean()
       .oneOf([true], "You must accept the sharing data")
-      .required("Required"),
+      .required("Påkrevd"),
   });
 
   const handleSubmit = async (values: any) => {
@@ -348,7 +348,7 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
                             11,01%
                           </h6>
                         </div>
-                        <div className="border w-full border-t border-b-0 border-r-0 border-l-0 border-darkGray"></div>
+                        {/* <div className="border w-full border-t border-b-0 border-r-0 border-l-0 border-darkGray"></div>
                         <div className="flex items-center justify-between">
                           <div className="text-secondary text-base font-medium">
                             Estimert kostnad per måned
@@ -356,7 +356,7 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
                           <h6 className="text-black font-semibold text-xl">
                             57.640 NOK
                           </h6>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="flex items-center justify-between">
                         <div>

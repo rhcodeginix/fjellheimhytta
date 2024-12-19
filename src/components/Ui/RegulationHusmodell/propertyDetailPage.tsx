@@ -220,12 +220,25 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
               <h2 className="text-black text-2xl font-semibold mb-4">
                 Film av Almgaard
               </h2>
-              <iframe
-                width="100%"
-                height="400px"
-                src="https://www.youtube.com/embed/tgbNymZ7vqY"
+
+              <div
+                style={{
+                  width: "100%",
+                  height: "400px",
+                }}
                 className="mb-8"
-              ></iframe>
+              >
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/JG5zEa754N8"
+                  title="Almgaard"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
               <ContactForm />
             </div>

@@ -49,9 +49,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   ];
 
   const validationLoginSchema = Yup.object().shape({
-    terms_condition: Yup.boolean()
-      .oneOf([true], "Required")
-      .required("Required"),
+    terms_condition: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
 
   const [isLoginChecked, setIsLoginChecked] = useState(false);

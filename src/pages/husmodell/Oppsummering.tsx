@@ -39,7 +39,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
     setIsChecked(!isChecked);
   };
   const validationSchema = Yup.object().shape({
-    checkbox: Yup.boolean().oneOf([true], "Required").required("Required"),
+    checkbox: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
 
   const handleSubmit = async (values: any) => {
@@ -51,9 +51,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
     setIsContactChecked(!isContactChecked);
   };
   const validationContactSchema = Yup.object().shape({
-    contactCheckbox: Yup.boolean()
-      .oneOf([true], "Required")
-      .required("Required"),
+    contactCheckbox: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
 
   const handleContactSubmit = async (values: any) => {
@@ -226,7 +224,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                     </div>
                     <h6 className="text-black font-bold text-base">11,01%</h6>
                   </div>
-                  <div className="border w-full border-t border-b-0 border-r-0 border-l-0 border-darkGray"></div>
+                  {/* <div className="border w-full border-t border-b-0 border-r-0 border-l-0 border-darkGray"></div>
                   <div className="flex items-center justify-between">
                     <div className="text-secondary text-base font-medium">
                       Estimert kostnad per måned
@@ -234,7 +232,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                     <h6 className="text-black font-semibold text-xl">
                       57.640 NOK
                     </h6>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex justify-end">
                   <Button

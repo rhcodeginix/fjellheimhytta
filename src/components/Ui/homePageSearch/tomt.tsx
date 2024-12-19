@@ -40,7 +40,7 @@ const TomtTab = () => {
         const json = await response.json();
         setAddressData(json.adresser);
       } catch (error: any) {
-        console.error(error.message);
+        console.error(error?.message);
       }
     }
   };
@@ -61,7 +61,7 @@ const TomtTab = () => {
         const json = await response.json();
         setKartData(json.adresser);
       } catch (error: any) {
-        console.error(error.message);
+        console.error(error?.message);
       }
     }
   };

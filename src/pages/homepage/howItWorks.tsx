@@ -28,8 +28,7 @@ const HowItWorks = () => {
     },
     {
       label: "Få boligforslag",
-      description:
-        "Basert på utnyttelsesgrad og planer lister vi mulige husmodeller",
+      description: "Se hva som kan bygges på eiendommen",
       image: Img_how_it_work,
       icon: Ic_how_work_house,
     },
