@@ -164,7 +164,7 @@
 // export default Chatbot;
 
 import React, { useEffect, useRef, useState } from "react";
-import Ic_chat_with_us from "@/public/images/Ic_chat_with_us.svg";
+// import Ic_chat_with_us from "@/public/images/Ic_chat_with_us.svg";
 import Ic_close from "@/public/images/Ic_close.svg";
 import Ic_Send from "@/public/images/Ic_Send.svg";
 import Ic_logo from "@/public/images/Ic_logo.svg";
