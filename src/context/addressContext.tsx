@@ -86,8 +86,11 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
 
         if (bodyContent) {
           const parsedData = JSON.parse(bodyContent);
+          console.log(parsedData);
 
-          const areaDetails = parsedData?.areaInformation?.beregnetAreal || "";
+          const areaDetails =
+            parsedData?.eiendomsInformasjon?.basisInformasjon?.areal_beregnet ||
+            "";
 
           // Fetch additional data with areaDetails
           await fetchAdditionalData(matches.kommunenavn, areaDetails);
