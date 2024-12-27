@@ -79,7 +79,7 @@ const GoogleMapComponent: React.FC<{ coordinates: any }> = ({
     strokeColor: "#FF0000",
     strokeOpacity: 1,
     strokeWeight: 2,
-    clickable: false,
+    // clickable: false,
     draggable: false,
     editable: false,
     visible: true,
@@ -104,7 +104,19 @@ const GoogleMapComponent: React.FC<{ coordinates: any }> = ({
     return path;
   };
   console.log(map);
+  const handleMapClick = (e: google.maps.MapMouseEvent) => {
+    const clickedLatLng: any = e.latLng;
+    const lat = clickedLatLng.lat();
+    const lng = clickedLatLng.lng();
 
+    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+    window.open(googleMapsUrl, "_blank");
+
+    if (map) {
+      map.panTo(clickedLatLng);
+      map.setZoom(12);
+    }
+  };
   return (
     <LoadScript
       googleMapsApiKey={`${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`}
@@ -117,7 +129,11 @@ const GoogleMapComponent: React.FC<{ coordinates: any }> = ({
         options={mapOptions}
       >
         {coordinates && coordinates.length > 0 && (
-          <Polygon paths={getClosedPath()} options={polygonOptions} />
+          <Polygon
+            paths={getClosedPath()}
+            options={polygonOptions}
+            onClick={handleMapClick}
+          />
         )}
       </GoogleMap>
     </LoadScript>

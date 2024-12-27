@@ -68,6 +68,7 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
         (address: any) =>
           JSON.stringify(address) === JSON.stringify(queryParams)
       );
+      setLoadingAdditionalData(true);
 
       if (matches) {
         setGetAddress(matches);

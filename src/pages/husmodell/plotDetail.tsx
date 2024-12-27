@@ -61,7 +61,6 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
       }
     }
   }, [additionalData]);
-  console.log(lamdaDataFromApi);
 
   return (
     <div className="relative">

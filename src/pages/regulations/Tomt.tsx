@@ -110,7 +110,6 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
       }
     }
   }, [additionalData]);
-  console.log(lamdaDataFromApi);
 
   if (loadingAdditionalData) {
     <Loader />;
