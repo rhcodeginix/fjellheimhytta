@@ -393,3 +393,9 @@ td {
 .chat-message.user .chat-message-text div {
   background: #d7e8ff;
 }
+
+.gm-style img[alt="Google"],
+.gmnoprint,
+.gm-style-cc {
+  display: none;
+}
