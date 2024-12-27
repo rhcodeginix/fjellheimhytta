@@ -14,7 +14,7 @@ import { useAddress } from "@/context/addressContext";
 const PropertyHusmodellDetail: React.FC<any> = ({ isShow }) => {
   const { getAddress } = useAddress();
   const [askData, setAskData] = useState<any | null>(null);
-  const { additionalData } = useAddress();
+  const { additionalData, loadingAdditionalData } = useAddress();
 
   useEffect(() => {
     if (additionalData?.answer) {
@@ -44,7 +44,7 @@ const PropertyHusmodellDetail: React.FC<any> = ({ isShow }) => {
           >
             <div className="w-full max-w-[335px]">
               <h2 className="text-black text-[32px] font-semibold mb-4 w-full truncate">
-                {getAddress?.adressetekst
+                {!loadingAdditionalData && getAddress?.adressetekst
                   ? getAddress?.adressetekst
                   : "Herskapelige Almgaard er en drømmebolig for familien"}
               </h2>
@@ -72,24 +72,29 @@ const PropertyHusmodellDetail: React.FC<any> = ({ isShow }) => {
                       </span>
                     </p>
                   </div>
-                  <div className="flex items-center gap-[16px]">
-                    <Image src={Ic_percentage_icon} alt="icon" />
-                    <p className="text-secondary text-sm font-semibold">
-                      Eiendommen har en{" "}
-                      <span className="text-black">
-                        utnyttelsesgrad på {askData?.bya_info?.bya_percentage}%
-                      </span>
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-[16px]">
-                    <Image src={Ic_square_mtr_icon} alt="icon" />
-                    <p className="text-secondary text-sm font-semibold">
-                      Boligen kan ha en{" "}
-                      <span className="text-black">
-                        grunnflate på {askData?.bya_info?.bya_area} m2
-                      </span>
-                    </p>
-                  </div>
+                  {!loadingAdditionalData && askData && (
+                    <div className="flex items-center gap-[16px]">
+                      <Image src={Ic_percentage_icon} alt="icon" />
+                      <p className="text-secondary text-sm font-semibold">
+                        Eiendommen har en{" "}
+                        <span className="text-black">
+                          utnyttelsesgrad på {askData?.bya_info?.bya_percentage}
+                          %
+                        </span>
+                      </p>
+                    </div>
+                  )}
+                  {!loadingAdditionalData && askData && (
+                    <div className="flex items-center gap-[16px]">
+                      <Image src={Ic_square_mtr_icon} alt="icon" />
+                      <p className="text-secondary text-sm font-semibold">
+                        Boligen kan ha en{" "}
+                        <span className="text-black">
+                          grunnflate på {askData?.bya_info?.bya_area} m2
+                        </span>
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
 

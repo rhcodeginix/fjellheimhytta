@@ -15,7 +15,7 @@ const PropertyDetail: React.FC<any> = ({ isShow }) => {
   const { getAddress } = useAddress();
 
   const [askData, setAskData] = useState<any | null>(null);
-  const { additionalData } = useAddress();
+  const { additionalData, loadingAdditionalData } = useAddress();
 
   useEffect(() => {
     if (additionalData?.answer) {
@@ -46,33 +46,36 @@ const PropertyDetail: React.FC<any> = ({ isShow }) => {
           >
             <div>
               <h2 className="text-black text-[32px] font-semibold mb-2">
-                {getAddress?.adressetekst}
+                {!loadingAdditionalData && getAddress?.adressetekst}
               </h2>
               <p className="text-secondary fs-xl mb-4">
-                {getAddress?.postnummer} {getAddress?.poststed}
+                {!loadingAdditionalData && getAddress?.postnummer}{" "}
+                {!loadingAdditionalData && getAddress?.poststed}
               </p>
               <div className="flex items-center gap-4">
                 <div className="text-secondary text-base">
                   Gnr:{" "}
                   <span className="text-black font-semibold">
-                    {getAddress?.gardsnummer}
+                    {!loadingAdditionalData && getAddress?.gardsnummer}
                   </span>
                 </div>
                 <div className="text-secondary text-base">
                   Bnr:{" "}
                   <span className="text-black font-semibold">
-                    {getAddress?.bruksnummer}
+                    {!loadingAdditionalData && getAddress?.bruksnummer}
                   </span>
                 </div>
                 <div className="text-secondary text-base">
                   Snr:{" "}
                   <span className="text-black font-semibold">
-                    {getAddress?.bokstav}
+                    {!loadingAdditionalData && getAddress?.bokstav}
                   </span>
                 </div>
                 <div className="text-secondary text-base">
                   <span className="text-black font-semibold">
-                    {getAddress?.representasjonspunkt &&
+                    {!loadingAdditionalData &&
+                      getAddress?.representasjonspunkt &&
+                      !loadingAdditionalData &&
                       getAddress?.representasjonspunkt.lat.toFixed(2)}
                   </span>{" "}
                   moh.
@@ -90,7 +93,7 @@ const PropertyDetail: React.FC<any> = ({ isShow }) => {
                     </span>
                   </p>
                 </div>
-                {askData && (
+                {!loadingAdditionalData && askData && (
                   <div className="flex items-center gap-[16px]">
                     <Image src={Ic_percentage_icon} alt="icon" />
                     <p className="text-secondary text-sm font-semibold">
@@ -101,7 +104,7 @@ const PropertyDetail: React.FC<any> = ({ isShow }) => {
                     </p>
                   </div>
                 )}
-                {askData && (
+                {!loadingAdditionalData && askData && (
                   <div className="flex items-center gap-[16px]">
                     <Image src={Ic_square_mtr_icon} alt="icon" />
                     <p className="text-secondary text-sm font-semibold">
