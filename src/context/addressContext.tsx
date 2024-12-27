@@ -86,7 +86,8 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
 
         if (bodyContent) {
           const parsedData = JSON.parse(bodyContent);
-          const areaDetails = parsedData?.areaDetails || "";
+
+          const areaDetails = parsedData?.areaInformation?.beregnetAreal || "";
 
           // Fetch additional data with areaDetails
           await fetchAdditionalData(matches.kommunenavn, areaDetails);
@@ -113,10 +114,25 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
       setLoadingLamdaData(false);
     }
   };
+  // useEffect(() => {
+  //   const savedLamdaData = localStorage.getItem("LamdaData");
+  //   if (savedLamdaData) {
+  //     setLamdaData(JSON.parse(savedLamdaData));
+  //   }
+  // }, []);
   useEffect(() => {
     const savedLamdaData = localStorage.getItem("LamdaData");
     if (savedLamdaData) {
-      setLamdaData(JSON.parse(savedLamdaData));
+      try {
+        setLamdaData(JSON.parse(savedLamdaData));
+      } catch (error) {
+        console.error(
+          "Failed to parse savedLamdaData from localStorage:",
+          error
+        );
+        // Optionally clear the invalid data from localStorage to avoid repeated errors
+        localStorage.removeItem("LamdaData");
+      }
     }
   }, []);
 
@@ -196,7 +212,9 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
 
   const updateAddress = (newAddress: any) => {
     setStoreAddress(newAddress);
-    localStorage.setItem("IPlot_Address", JSON.stringify(newAddress));
+    if (newAddress) {
+      localStorage.setItem("IPlot_Address", JSON.stringify(newAddress));
+    }
   };
 
   return (

@@ -4,7 +4,7 @@ import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
 import Ic_generelt from "@/public/images/Ic_generelt.svg";
 // import Ic_tak from "@/public/images/Ic_tak.svg";
 import Ic_check_true from "@/public/images/Ic_check_true.svg";
-import Img_product_detail_map from "@/public/images/Img_product_detail_map.png";
+// import Img_product_detail_map from "@/public/images/Img_product_detail_map.png";
 import Image from "next/image";
 import Ic_steddy from "@/public/images/Ic_steddy.svg";
 import Ic_build_housing from "@/public/images/Ic_build_housing.svg";
@@ -19,6 +19,7 @@ import { useUserLayoutContext } from "@/context/userLayoutContext";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import { useAddress } from "@/context/addressContext";
 import Loader from "@/components/Loader";
+import GoogleMapComponent from "@/components/Ui/map";
 
 const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   const items = [
@@ -101,13 +102,9 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   useEffect(() => {
     if (additionalData?.answer) {
       try {
-        const cleanAnswer = additionalData.answer
-          .replace(/```json|```/g, "")
-          .trim();
+        const cleanAnswer = additionalData.answer;
 
-        const data = JSON.parse(cleanAnswer);
-
-        setAskData(data);
+        setAskData(cleanAnswer);
       } catch (error) {
         console.error("Error parsing additionalData.answer:", error);
         setAskData(null);
@@ -115,8 +112,15 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
     }
   }, [additionalData]);
 
-  console.log(lamdaDataFromApi);
+  // console.log(
+  //   "lamdaDataFromApi==============================",
+  //   lamdaDataFromApi
+  // );
+  console.log("askData---------------", askData);
 
+  if (loadingAdditionalData) {
+    <Loader />;
+  }
   return (
     <div className="relative">
       <PropertyDetail isShow={false} />
@@ -136,8 +140,8 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {
-                          lamdaDataFromApi?.propertyDetails?.matrikkelnummer
-                            ?.festenummer
+                          lamdaDataFromApi?.propertyDetails?.matrikkelEnhet
+                            ?.matrikkelnummer?.festenummer
                         }
                       </td>
                     </tr>
@@ -146,7 +150,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Areal beregnet
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.areaDetails}
+                        {lamdaDataFromApi?.areaInformation?.beregnetAreal}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -155,8 +159,8 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {
-                          lamdaDataFromApi?.propertyDetails?.etableringsdato
-                            ?.date
+                          lamdaDataFromApi?.propertyDetails?.matrikkelEnhet
+                            ?.etableringsdato?.date
                         }
                       </td>
                     </tr>
@@ -177,7 +181,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Registrert Grunnerverv
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails
+                        {lamdaDataFromApi?.propertyDetails?.matrikkelEnhet
                           ?.harRegistrertGrunnerverv === "true"
                           ? "Ja"
                           : "Nei"}
@@ -188,7 +192,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Registrert JordskifteKrevd
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails
+                        {lamdaDataFromApi?.propertyDetails?.matrikkelEnhet
                           ?.harRegistrertJordskifteKrevd === "true"
                           ? "Ja"
                           : "Nei"}
@@ -199,7 +203,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Inngår i annen eiendom
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails
+                        {lamdaDataFromApi?.propertyDetails?.matrikkelEnhet
                           ?.inngarISamlaFastEiendom === "true"
                           ? "Ja"
                           : "Nei"}
@@ -216,8 +220,8 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Seksjonert
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails?.erSeksjonert ===
-                        "true"
+                        {lamdaDataFromApi?.propertyDetails?.matrikkelEnhet
+                          ?.erSeksjonert === "true"
                           ? "Ja"
                           : "Nei"}
                       </td>
@@ -227,7 +231,8 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Tinglyst
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.propertyDetails?.tinglyst === "true"
+                        {lamdaDataFromApi?.propertyDetails?.matrikkelEnhet
+                          ?.tinglyst === "true"
                           ? "Ja"
                           : "Nei"}
                       </td>
@@ -452,11 +457,14 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
             <h2 className="text-black text-2xl font-semibold mb-6">
               Kartutsnitt
             </h2>
-            <Image
-              src={Img_product_detail_map}
-              alt="image"
-              className="rounded-[12px] overflow-hidden w-full mb-[60px]"
-            />
+            <div className="rounded-[12px] overflow-hidden w-full mb-[60px]">
+              <GoogleMapComponent
+                coordinates={
+                  lamdaDataFromApi?.plotDetails?.coordinates
+                    ?.convertedCoordinates
+                }
+              />
+            </div>
             <div>
               <div className="flex items-center gap-[36px] mb-6">
                 <Image src={Ic_steddy} alt="logo" />

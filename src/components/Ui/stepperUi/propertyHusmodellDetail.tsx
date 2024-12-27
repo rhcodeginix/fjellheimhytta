@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Img_product_detail1 from "@/public/images/Img_product_detail1.png";
 import Img_product_detail2 from "@/public/images/Img_product_detail2.png";
@@ -13,7 +13,21 @@ import { useAddress } from "@/context/addressContext";
 
 const PropertyHusmodellDetail: React.FC<any> = ({ isShow }) => {
   const { getAddress } = useAddress();
+  const [askData, setAskData] = useState<any | null>(null);
+  const { additionalData } = useAddress();
 
+  useEffect(() => {
+    if (additionalData?.answer) {
+      try {
+        const cleanAnswer = additionalData.answer;
+
+        setAskData(cleanAnswer);
+      } catch (error) {
+        console.error("Error parsing additionalData.answer:", error);
+        setAskData(null);
+      }
+    }
+  }, [additionalData]);
   return (
     <>
       <div className="bg-lightPurple py-[20px] relative">
@@ -62,7 +76,9 @@ const PropertyHusmodellDetail: React.FC<any> = ({ isShow }) => {
                     <Image src={Ic_percentage_icon} alt="icon" />
                     <p className="text-secondary text-sm font-semibold">
                       Eiendommen har en{" "}
-                      <span className="text-black">utnyttelsesgrad på 25%</span>
+                      <span className="text-black">
+                        utnyttelsesgrad på {askData?.bya_info?.bya_percentage}%
+                      </span>
                     </p>
                   </div>
                   <div className="flex items-center gap-[16px]">
@@ -70,7 +86,7 @@ const PropertyHusmodellDetail: React.FC<any> = ({ isShow }) => {
                     <p className="text-secondary text-sm font-semibold">
                       Boligen kan ha en{" "}
                       <span className="text-black">
-                        grunnflate på 217,42 m2{" "}
+                        grunnflate på {askData?.bya_info?.bya_area} m2
                       </span>
                     </p>
                   </div>
