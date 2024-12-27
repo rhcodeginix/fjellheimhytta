@@ -111,6 +111,7 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
       }
     }
   }, [additionalData]);
+  console.log(lamdaDataFromApi);
 
   // console.log(
   //   "lamdaDataFromApi==============================",
