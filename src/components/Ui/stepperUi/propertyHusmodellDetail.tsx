@@ -78,8 +78,8 @@ const PropertyHusmodellDetail: React.FC<any> = ({ isShow }) => {
                       <p className="text-secondary text-sm font-semibold">
                         Eiendommen har en{" "}
                         <span className="text-black">
-                          utnyttelsesgrad på {askData?.bya_info?.bya_percentage}
-                          %
+                          utnyttelsesgrad på{" "}
+                          {askData?.bya_calculations?.input?.bya_percentage}%
                         </span>
                       </p>
                     </div>
@@ -90,7 +90,8 @@ const PropertyHusmodellDetail: React.FC<any> = ({ isShow }) => {
                       <p className="text-secondary text-sm font-semibold">
                         Boligen kan ha en{" "}
                         <span className="text-black">
-                          grunnflate på {askData?.bya_info?.bya_area} m2
+                          grunnflate på{" "}
+                          {askData?.bya_calculations?.input?.plot_size} m2
                         </span>
                       </p>
                     </div>
