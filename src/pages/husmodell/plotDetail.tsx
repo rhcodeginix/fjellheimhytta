@@ -79,10 +79,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Festenummer
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.festenummer
-                        }
+                            ?.basisInformasjon?.festenummer}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -90,10 +89,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Areal beregnet
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.areal_beregnet
-                        }
+                            ?.basisInformasjon?.areal_beregnet}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -101,10 +99,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Etableringsdato
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.etableringsdato
-                        }
+                            ?.basisInformasjon?.etableringsdato}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -112,11 +109,10 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Sist oppdatert
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
                             "T"
-                          )[0]
-                        }
+                          )[0]}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -124,10 +120,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Registrert Grunnerverv
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.harRegistrertGrunnerverv
-                        }
+                            ?.basisInformasjon?.harRegistrertGrunnerverv}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -135,10 +130,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Registrert JordskifteKrevd
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.harRegistrertJordskifteKrevd
-                        }
+                            ?.basisInformasjon?.harRegistrertJordskifteKrevd}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -146,10 +140,19 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Inngår i annen eiendom
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.inngarISamlaFastEiendom
-                        }
+                            ?.basisInformasjon?.inngarISamlaFastEiendom}
+                      </td>
+                    </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        parkering område per plass
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {!loadingAdditionalData &&
+                          askData?.bya_calculations?.results?.parking
+                            ?.area_per_space}
                       </td>
                     </tr>
                   </tbody>
@@ -163,10 +166,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Seksjonert
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.seksjonert
-                        }
+                            ?.basisInformasjon?.seksjonert}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -174,10 +176,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Tinglyst
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.tinglyst
-                        }
+                            ?.basisInformasjon?.tinglyst}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -185,10 +186,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Kulturminner registrert
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.kulturminner_registrert
-                        }
+                            ?.kulturminner_registrert}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -196,10 +196,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Aktive festegrunner
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.aktive_festegrunner
-                        }
+                            ?.aktive_festegrunner}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -207,10 +206,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Anmerket klage
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.anmerket_klage
-                        }
+                            ?.anmerket_klage}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -218,10 +216,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Grunnforurensning
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.grunnforurensning
-                        }
+                            ?.grunnforurensning}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -229,7 +226,8 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Utgått
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.eiendomsInformasjon?.status?.utgatt}
+                        {!loadingAdditionalData &&
+                          lamdaDataFromApi?.eiendomsInformasjon?.status?.utgatt}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -237,10 +235,21 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Under Sammenslåing
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.under_sammenslaing
-                        }
+                            ?.under_sammenslaing}
+                      </td>
+                    </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        parkering er usikker
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {!loadingAdditionalData &&
+                        askData?.bya_calculations?.results?.parking
+                          ?.is_uncertain === true
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                   </tbody>
@@ -254,10 +263,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Kommune
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.kommune
-                        }
+                            ?.kommune}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -265,10 +273,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Kommunenr
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.kommunenr
-                        }
+                            ?.kommunenr}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -276,10 +283,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Gårdsnummer
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.gaardsnummer
-                        }
+                            ?.gaardsnummer}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -287,10 +293,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Bruksnummer
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.bruksnummer
-                        }
+                            ?.bruksnummer}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -298,10 +303,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Festenr
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.festenr
-                        }
+                            ?.festenr}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -309,10 +313,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Seksjonsnr
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.seksjonsnr
-                        }
+                            ?.seksjonsnr}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -320,7 +323,8 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Bruksnavn
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn}
+                        {!loadingAdditionalData &&
+                          lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -328,10 +332,9 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Oppmåling ikke fullført
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.oppmaling_ikke_fullfort
-                        }
+                            ?.oppmaling_ikke_fullfort}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -339,10 +342,29 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Mangler grensepunktmerking
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
+                        {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.mangler_grensepunktmerking
-                        }
+                            ?.mangler_grensepunktmerking}
+                      </td>
+                    </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        parkering nødvendig plass
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {!loadingAdditionalData &&
+                          askData?.bya_calculations?.results?.parking
+                            ?.required_spaces}
+                      </td>
+                    </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        totalt parkering område
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {!loadingAdditionalData &&
+                          askData?.bya_calculations?.results?.parking
+                            ?.total_parking_area}
                       </td>
                     </tr>
                   </tbody>

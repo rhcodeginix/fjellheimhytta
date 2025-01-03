@@ -198,6 +198,16 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                             ?.basisInformasjon?.inngarISamlaFastEiendom}
                       </td>
                     </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        parkering område per plass
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {!loadingAdditionalData &&
+                          askData?.bya_calculations?.results?.parking
+                            ?.area_per_space}
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -281,6 +291,18 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.status
                             ?.under_sammenslaing}
+                      </td>
+                    </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        parkering er usikker
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {!loadingAdditionalData &&
+                        askData?.bya_calculations?.results?.parking
+                          ?.is_uncertain === true
+                          ? "Ja"
+                          : "Nei"}
                       </td>
                     </tr>
                   </tbody>
@@ -376,6 +398,26 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.status
                             ?.mangler_grensepunktmerking}
+                      </td>
+                    </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        parkering nødvendig plass
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {!loadingAdditionalData &&
+                          askData?.bya_calculations?.results?.parking
+                            ?.required_spaces}
+                      </td>
+                    </tr>
+                    <tr className="flex gap-[10px] justify-between">
+                      <td className="text-left pb-[16px] text-secondary text-sm">
+                        totalt parkering område
+                      </td>
+                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                        {!loadingAdditionalData &&
+                          askData?.bya_calculations?.results?.parking
+                            ?.total_parking_area}
                       </td>
                     </tr>
                   </tbody>
