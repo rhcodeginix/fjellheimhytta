@@ -7,6 +7,7 @@ import Ic_logo from "@/public/images/Ic_logo.svg";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Register = () => {
   const router = useRouter();
@@ -119,6 +120,12 @@ const Register = () => {
               </Form>
             )}
           </Formik>
+          <div className="flex items-center justify-center text-[#4F4F4F] mt-3">
+            You already have account?{" "}
+            <Link href={"/login"} className="text-black font-semibold">
+              &nbsp;Login Here
+            </Link>
+          </div>
         </div>
       </div>
     </>
