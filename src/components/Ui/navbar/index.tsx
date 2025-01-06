@@ -24,7 +24,7 @@ const Header = () => {
     <>
       <div
         className="sticky w-full top-0 bg-[#fff] border-b border-[#F2F4F7]"
-        style={{ zIndex: 9999999 }}
+        style={{ zIndex: 9999 }}
       >
         <SideSpaceContainer>
           <div className="py-[12px] md:py-[20px] flex justify-between gap-[32px] items-center">

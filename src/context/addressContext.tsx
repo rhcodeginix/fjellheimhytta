@@ -1,5 +1,7 @@
 import ApiUtils from "@/api";
+import ErrorPopup from "@/components/Ui/error";
 import React, { createContext, useState, useEffect, ReactNode } from "react";
+import { toast } from "react-hot-toast";
 
 const AddressContext = createContext<any | undefined>(undefined);
 
@@ -11,6 +13,7 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
   const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
   const [LamdaData, setLamdaData] = useState<any | undefined>(null);
   const [loadingLamdaData, setLoadingLamdaData] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   useEffect(() => {
     const addressFromStorage = localStorage.getItem("IPlot_Address");
@@ -56,14 +59,23 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
 
   const searchAddress = async () => {
     if (!storedAddress) {
-      console.error("No address data to search.");
+      toast.error("No address data to search.", {
+        position: "top-right",
+      });
       setLoading(false);
+
       return;
     }
-
+    const timeoutId = setTimeout(() => {
+      toast.error("Request timed out. Please try again later.", {
+        position: "top-right",
+      });
+      setLoading(false);
+    }, 10000);
     const queryParams = storedAddress;
     try {
       const result = await ApiUtils.getSingleAddress(queryParams);
+      clearTimeout(timeoutId);
       const matches = result.adresser.find(
         (address: any) =>
           JSON.stringify(address) === JSON.stringify(queryParams)
@@ -73,7 +85,6 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
       if (matches) {
         setGetAddress(matches);
 
-        // Fetch Lamda Data
         const lamdaApiData: any = {
           kommunenummer: matches.kommunenummer,
           gardsnummer: matches.gardsnummer,
@@ -82,24 +93,36 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
 
         await fetchLamdaData(lamdaApiData);
 
-        // Extract areaDetails from LamdaData if available
         const bodyContent = LamdaData?.body?.replace(/```json|```/g, "").trim();
 
         if (bodyContent) {
           const parsedData = JSON.parse(bodyContent);
-
+          console.log(parsedData);
+          if (parsedData.message === "Request failed with status code 503") {
+            setLoadingAdditionalData(false);
+            // toast.error("Something went Wrong!", {
+            //   position: "top-right",
+            // });
+            setShowErrorPopup(true);
+            clearTimeout(timeoutId);
+            localStorage.removeItem("LamdaData");
+          }
           const areaDetails =
             parsedData?.eiendomsInformasjon?.basisInformasjon?.areal_beregnet ||
             "";
 
-          // Fetch additional data with areaDetails
           await fetchAdditionalData(matches.kommunenavn, areaDetails);
         } else {
           console.warn("LamdaData does not contain valid body content.");
+
+          setLoadingAdditionalData(false);
+          clearTimeout(timeoutId);
+          localStorage.removeItem("LamdaData");
         }
       }
     } catch (error) {
       console.error("Error fetching address data:", error);
+      clearTimeout(timeoutId);
     } finally {
       setLoading(false);
     }
@@ -133,53 +156,11 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
           "Failed to parse savedLamdaData from localStorage:",
           error
         );
-        // Optionally clear the invalid data from localStorage to avoid repeated errors
         localStorage.removeItem("LamdaData");
       }
     }
   }, []);
 
-  // const fetchAdditionalData = async (kommunenavn: string) => {
-
-  //   const bodyContent = LamdaData?.body?.replace(/```json|```/g, "").trim();
-
-  //   if (!bodyContent) {
-  //     console.error("LamdaData body is empty or undefined");
-  //     return;
-  //   }
-
-  //   let areaDetails = "";
-
-  //   try {
-  //     const parsedData = JSON.parse(bodyContent); // Parse JSON safely
-  //     areaDetails = parsedData?.areaDetails || "";
-
-  //     if (!areaDetails) {
-  //       console.warn("Parsed data does not contain 'areaDetails'");
-  //       return;
-  //     }
-
-  //     const data = {
-  //       question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
-  //     };
-
-  //     setLoadingAdditionalData(true);
-
-  //     try {
-  //       const response = await ApiUtils.askApi(data);
-  //       setAdditionalData(response); // Store API response in state
-  //     } catch (error: any) {
-  //       console.error(
-  //         "Error fetching additional data from askApi:",
-  //         error?.message
-  //       );
-  //     } finally {
-  //       setLoadingAdditionalData(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error parsing JSON from LamdaData body:", error);
-  //   }
-  // };
   const fetchAdditionalData = async (
     kommunenavn: string,
     areaDetails: string
@@ -194,15 +175,24 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
     };
 
     setLoadingAdditionalData(true);
+    let timeoutId: any;
 
     try {
+      timeoutId = setTimeout(() => {
+        toast.error("Error fetching additional data: Request timed out.", {
+          position: "top-right",
+        });
+        setLoadingAdditionalData(false);
+      }, 10000);
       const response = await ApiUtils.askApi(data);
-      setAdditionalData(response); // Store API response in state
+      clearTimeout(timeoutId);
+      setAdditionalData(response);
     } catch (error: any) {
       console.error(
         "Error fetching additional data from askApi:",
         error?.message
       );
+      clearTimeout(timeoutId);
     } finally {
       setLoadingAdditionalData(false);
     }
@@ -235,6 +225,7 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
+      {showErrorPopup && <ErrorPopup />}
     </AddressContext.Provider>
   );
 };

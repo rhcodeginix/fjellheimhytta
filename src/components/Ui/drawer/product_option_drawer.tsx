@@ -78,7 +78,7 @@ const PropertyOptionDrawer: React.FC<any> = ({
         keepMounted: true,
       }}
       sx={{
-        zIndex: 9999999,
+        zIndex: 9999,
       }}
     >
       <Box

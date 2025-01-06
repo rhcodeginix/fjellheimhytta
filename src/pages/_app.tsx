@@ -1,40 +1,36 @@
-import "../styles/globals.css";
-import UserLayout from "@/components/Layout/userLayout";
-import { useRouter } from "next/router";
 import { AppProps } from "next/app";
+import "../styles/globals.css";
+import ProtectedRoute from "@/components/Layout/protectedRoute";
+import { useRouter } from "next/router";
+import UserLayout from "@/components/Layout/userLayout";
+import { isAuthenticated } from "@/utils/auth";
 import { Toaster } from "react-hot-toast";
-import { useEffect } from "react";
-import useAuth from "@/hooks/useAuth";
-import Loader from "@/components/Loader";
+
+const publicRoutes = ["/login", "/register"];
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const currentUrl = router.asPath;
 
-  const Layout = UserLayout;
-  const isAuthenticated = useAuth();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [currentUrl]);
-  if (!currentUrl) {
-    return <div>404 - Page Not Found</div>;
+  if (isAuthenticated()) {
+    if (publicRoutes.includes(router.pathname)) {
+      if (typeof window !== "undefined") {
+        window.location.href = "/";
+        return null;
+      }
+    }
   }
 
-  if (isAuthenticated === null) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+  if (publicRoutes.includes(router.pathname)) {
+    return <Component {...pageProps} />;
   }
+
   return (
-    <main>
-      <Layout isAuthenticated={isAuthenticated}>
+    <ProtectedRoute>
+      <UserLayout>
         <Component {...pageProps} />
         <Toaster />
-      </Layout>
-    </main>
+      </UserLayout>
+    </ProtectedRoute>
   );
 }
 
