@@ -48,7 +48,6 @@ const Login = () => {
         toast.success("Login successfully", { position: "top-right" });
         localStorage.setItem("Iplot_email", user.email);
         router.push("/");
-        // console.log("Logged in:", user);
       })
       .catch((error) => {
         console.log(error.message);

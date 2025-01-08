@@ -203,7 +203,7 @@ const TomtTab = () => {
             {addressData &&
               addressData.map((address: any, index: number) => (
                 <Link
-                  href="/regulations"
+                  href={`/regulations?kommunenummer=${address.kommunenummer}&gardsnummer=${address.gardsnummer}&bruksnummer=${address.bruksnummer}&kommunenavn=${address.kommunenavn}`}
                   className="p-3 flex items-center gap-4 hover:bg-lightGreen"
                   key={index}
                   onClick={() => {
@@ -240,7 +240,7 @@ const TomtTab = () => {
             {KartData &&
               KartData.map((kart: any, index: number) => (
                 <Link
-                  href="/regulations"
+                  href={`/regulations?kommunenummer=${kart.kommunenummer}&gardsnummer=${kart.gardsnummer}&bruksnummer=${kart.bruksnummer}&kommunenavn=${kart.kommunenavn}`}
                   className="p-3 flex items-center gap-4 hover:bg-lightGreen"
                   key={index}
                   onClick={() => {

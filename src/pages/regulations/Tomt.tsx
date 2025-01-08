@@ -17,11 +17,15 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
-import { useAddress } from "@/context/addressContext";
 import Loader from "@/components/Loader";
 import GoogleMapComponent from "@/components/Ui/map";
 
-const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
+const Tomt: React.FC<any> = ({
+  handleNext,
+  lamdaDataFromApi,
+  loadingAdditionalData,
+  additionalData,
+}) => {
   const items = [
     {
       id: 1,
@@ -96,7 +100,6 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   }, [isPopupOpen]);
 
   const [askData, setAskData] = useState<any | null>(null);
-  const { additionalData, loadingAdditionalData } = useAddress();
 
   useEffect(() => {
     if (additionalData?.answer) {
@@ -116,7 +119,11 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   }
   return (
     <div className="relative">
-      <PropertyDetail isShow={false} />
+      <PropertyDetail
+        isShow={false}
+        additionalData={additionalData}
+        loadingAdditionalData={loadingAdditionalData}
+      />
       <SideSpaceContainer className="relative">
         <div className="pt-[26px] pb-[46px] relative flex gap-[40px]">
           <div className="w-[66%]">
@@ -298,11 +305,12 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         parkering er usikker
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {!loadingAdditionalData &&
-                        askData?.bya_calculations?.results?.parking
-                          ?.is_uncertain === true
-                          ? "Ja"
-                          : "Nei"}
+                        {!loadingAdditionalData
+                          ? askData?.bya_calculations?.results?.parking
+                              ?.is_uncertain === true
+                            ? "Ja"
+                            : "Nei"
+                          : null}
                       </td>
                     </tr>
                   </tbody>

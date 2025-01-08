@@ -1,23 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
 import Link from "next/link";
 import Ic_logo from "@/public/images/Ic_logo.svg";
 import Ic_Avatar from "@/public/images/Ic_Avatar.png";
+import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import Image from "next/image";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const { loginUser, setLoginUser } = useUserLayoutContext();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
     setLoginUser(isLoggedIn);
   }, []);
-
+  const router = useRouter();
   const handleLogin = () => {
     localStorage.setItem("min_tomt_login", "true");
     setLoginUser(true);
+  };
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
   };
 
   return (
@@ -63,15 +69,38 @@ const Header = () => {
               </div>
 
               {loginUser ? (
-                <div className="flex items-center gap-3">
-                  <Image
-                    src={Ic_Avatar}
-                    alt="avatar"
-                    className="rounded-full"
-                  />
-                  <span className="text-black font-medium text-base">
-                    André Fenger
-                  </span>
+                <div className="relative">
+                  <div
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={toggleDropdown}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={Ic_Avatar}
+                        alt="avatar"
+                        className="rounded-full"
+                      />
+                      <span className="text-black font-medium text-base">
+                        André Fenger
+                      </span>
+                    </div>
+                    <Image src={Ic_chevron_down} alt="arrow" />
+                  </div>
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-primary rounded-md shadow-lg">
+                      <button
+                        className="block px-4 py-2 text-sm text-black w-full text-left"
+                        onClick={() => {
+                          localStorage.removeItem("min_tomt_login");
+                          localStorage.removeItem("Iplot_email");
+                          setLoginUser(false);
+                          router.push("/login");
+                        }}
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <Button

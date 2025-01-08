@@ -4,7 +4,12 @@ import TomtTab from "@/components/Ui/homePageSearch/tomt";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import PlotAllProperty from "@/components/Ui/Husmodell/plotAllProperty";
 
-const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
+const Tomt: React.FC<any> = ({
+  handleNext,
+  lamdaDataFromApi,
+  loadingAdditionalData,
+  additionalData,
+}) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -15,7 +20,11 @@ const Tomt: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
 
   return (
     <div className="relative">
-      <PropertyHusmodellDetail isShow={false} />
+      <PropertyHusmodellDetail
+        isShow={false}
+        loadingAdditionalData={loadingAdditionalData}
+        additionalData={additionalData}
+      />
       <div className="py-4">
         <SideSpaceContainer>
           <TomtTab />

@@ -11,10 +11,13 @@ import Ic_product_detail_position from "@/public/images/Ic_product_detail_positi
 import Ic_chevron_right from "@/public/images/Ic_chevron_right.svg";
 import { useAddress } from "@/context/addressContext";
 
-const PropertyHusmodellDetail: React.FC<any> = ({ isShow }) => {
+const PropertyHusmodellDetail: React.FC<any> = ({
+  isShow,
+  loadingAdditionalData,
+  additionalData,
+}) => {
   const { getAddress } = useAddress();
   const [askData, setAskData] = useState<any | null>(null);
-  const { additionalData, loadingAdditionalData } = useAddress();
 
   useEffect(() => {
     if (additionalData?.answer) {

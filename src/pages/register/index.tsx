@@ -8,6 +8,9 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
+import { toast } from "react-hot-toast";
 
 const Register = () => {
   const router = useRouter();
@@ -22,16 +25,37 @@ const Register = () => {
   const handleSubmit = async (values: any) => {
     const auth = getAuth();
 
-    createUserWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log("Logged in:", user);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      const user = userCredential.user;
+
+      const userDocRef = doc(db, "users", user.uid);
+
+      const docSnap = await getDoc(userDocRef);
+
+      if (!docSnap.exists()) {
+        await setDoc(userDocRef, {
+          email: user.email,
+          uid: user.uid,
+          createdAt: new Date(),
+        });
         router.push("/login");
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+        toast.success("User Create Successfully", { position: "top-right" });
+      }
+    } catch (error: any) {
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("User already exists.", { position: "top-right" });
+      } else {
+        console.error("Error:", error.message);
+        toast.error("An error occurred. Please try again.", {
+          position: "top-right",
+        });
+      }
+    }
   };
 
   return (

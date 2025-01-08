@@ -132,7 +132,8 @@ const HusmodellTab = () => {
             {data &&
               data.map((address: any, index: number) => (
                 <Link
-                  href="/husmodell"
+                  // href="/husmodell"
+                  href={`/husmodell?kommunenummer=${address.kommunenummer}&gardsnummer=${address.gardsnummer}&bruksnummer=${address.bruksnummer}&kommunenavn=${address.kommunenavn}`}
                   className="p-3 flex items-center gap-4 hover:bg-lightGreen"
                   key={index}
                   onClick={() => {

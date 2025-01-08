@@ -21,14 +21,31 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   if (publicRoutes.includes(router.pathname)) {
-    return <Component {...pageProps} />;
+    return (
+      <>
+        <Component {...pageProps} />
+        <Toaster
+          toastOptions={{
+            style: {
+              zIndex: 9999999999,
+            },
+          }}
+        />
+      </>
+    );
   }
 
   return (
     <ProtectedRoute>
       <UserLayout>
         <Component {...pageProps} />
-        <Toaster />
+        <Toaster
+          toastOptions={{
+            style: {
+              zIndex: 9999999999,
+            },
+          }}
+        />
       </UserLayout>
     </ProtectedRoute>
   );
