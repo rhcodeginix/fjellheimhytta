@@ -21,6 +21,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { useAddress } from "@/context/addressContext";
 
 const HusmodellDetail = () => {
   const [currIndex, setCurrIndex] = useState(0);
@@ -31,6 +32,7 @@ const HusmodellDetail = () => {
   const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [additionalData, setAdditionalData] = useState<any | undefined>(null);
+  const { getAddress } = useAddress();
 
   const hasFetchedData = useRef(false);
   useEffect(() => {
@@ -142,16 +144,18 @@ const HusmodellDetail = () => {
       !hasFetchedData.current &&
       !loadingAdditionalData &&
       lamdaDataFromApi &&
-      additionalData
+      additionalData &&
+      getAddress
     ) {
       hasFetchedData.current = true;
       const property = {
         lamdaDataFromApi,
         additionalData,
+        getAddress,
       };
       addSearchAddress(property);
     }
-  }, [loadingAdditionalData, lamdaDataFromApi, additionalData]);
+  }, [loadingAdditionalData, lamdaDataFromApi, additionalData, getAddress]);
 
   const handleNext = () => {
     if (currIndex < steps.length - 1) {

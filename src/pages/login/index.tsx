@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/common/button";
 import { Field, Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import Ic_logo from "@/public/images/Ic_logo.svg";
 import Img_login_google from "@/public/images/Img_login_google.svg";
@@ -15,67 +15,64 @@ import {
 } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Loader from "@/components/Loader";
 
 const Login = () => {
-  // const requiredEmail = "andré.finger@gmail.com";
-  // const requiredPassword = "andré@123";
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      //   .email("Invalid email address")
-      .required("Email is required"),
-    // .test(
-    //   "email-match",
-    //   "Email not match!",
-    //   (value) => value === requiredEmail
-    // ),
+    email: Yup.string().required("Email is required"),
+
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
-    // .test(
-    //   "password-match",
-    //   "Password Not Match",
-    //   (value) => value === requiredPassword
-    // ),
   });
 
   const handleSubmit = async (values: any) => {
-    signInWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        const user: any = userCredential.user;
-        localStorage.setItem("min_tomt_login", "true");
-        toast.success("Login successfully", { position: "top-right" });
-        localStorage.setItem("Iplot_email", user.email);
-        router.push("/");
-      })
-      .catch((error) => {
-        console.log(error.message);
+    setLoading(true);
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      const user: any = userCredential.user;
+      localStorage.setItem("min_tomt_login", "true");
+      toast.success("Login successfully", { position: "top-right" });
+      localStorage.setItem("Iplot_email", user.email);
+      router.push("/");
+    } catch (error) {
+      console.error("Error during sign-in", error);
+      toast.error("Login failed. Please check your credentials.", {
+        position: "top-right",
       });
+    } finally {
+      setLoading(false);
+    }
   };
   const googleProvider = new GoogleAuthProvider();
 
   const signInWithGoogle = async () => {
+    setLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user: any = result.user;
-
       toast.success("Google sign-in successful!", { position: "top-right" });
-
-      setTimeout(() => {
-        localStorage.setItem("min_tomt_login", "true");
-        localStorage.setItem("Iplot_email", user?.email);
-      }, 500);
+      localStorage.setItem("min_tomt_login", "true");
+      localStorage.setItem("Iplot_email", user?.email);
     } catch (error) {
       console.error("Error during Google Sign-In", error);
       toast.error("Google sign-in failed. Please try again.", {
         position: "top-right",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
+    <div className="relative">
       <div className="w-full h-screen flex items-center justify-center">
         <div
           className="w-full mx-4 max-w-[490px] bg-white p-7"
@@ -157,7 +154,12 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </>
+      {loading && (
+        <div className="absolute top-0 left-0">
+          <Loader />
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -33,6 +33,7 @@ const PropertyDetail: React.FC<any> = ({
     }
   }, [additionalData]);
 
+  
   return (
     <>
       <div className="bg-lightPurple py-[20px] relative">

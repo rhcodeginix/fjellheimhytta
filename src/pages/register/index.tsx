@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/common/button";
 import { Field, Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import Ic_logo from "@/public/images/Ic_logo.svg";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
@@ -11,6 +11,7 @@ import Link from "next/link";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { toast } from "react-hot-toast";
+import Loader from "@/components/Loader";
 
 const Register = () => {
   const router = useRouter();
@@ -22,9 +23,11 @@ const Register = () => {
       .required("Password is required"),
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (values: any) => {
     const auth = getAuth();
-
+    setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -41,6 +44,7 @@ const Register = () => {
         await setDoc(userDocRef, {
           email: user.email,
           uid: user.uid,
+          name: values.name,
           createdAt: new Date(),
         });
         router.push("/login");
@@ -55,11 +59,13 @@ const Register = () => {
           position: "top-right",
         });
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
+    <div className="relative">
       <div className="w-full h-screen flex items-center justify-center">
         <div
           className="w-full mx-4 max-w-[490px] bg-white p-7"
@@ -152,7 +158,12 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </>
+      {loading && (
+        <div className="absolute top-0 left-0">
+          <Loader />
+        </div>
+      )}
+    </div>
   );
 };
 

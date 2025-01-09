@@ -21,6 +21,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { useAddress } from "@/context/addressContext";
 
 const Regulations = () => {
   const [currIndex, setCurrIndex] = useState(0);
@@ -31,6 +32,8 @@ const Regulations = () => {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [additionalData, setAdditionalData] = useState<any | undefined>(null);
   const hasFetchedData = useRef(false);
+  const { getAddress } = useAddress();
+
   useEffect(() => {
     const fetchData = async () => {
       setLoadingAdditionalData(true);
@@ -140,16 +143,18 @@ const Regulations = () => {
       !hasFetchedData.current &&
       !loadingAdditionalData &&
       lamdaDataFromApi &&
-      additionalData
+      additionalData &&
+      getAddress
     ) {
       hasFetchedData.current = true;
       const property = {
         lamdaDataFromApi,
         additionalData,
+        getAddress,
       };
       addSearchAddress(property);
     }
-  }, [loadingAdditionalData, lamdaDataFromApi, additionalData]);
+  }, [loadingAdditionalData, lamdaDataFromApi, additionalData, getAddress]);
 
   const handleNext = () => {
     if (currIndex < steps.length - 1) {

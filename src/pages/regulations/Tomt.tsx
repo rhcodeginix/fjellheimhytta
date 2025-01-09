@@ -497,11 +497,13 @@ const Tomt: React.FC<any> = ({
               Kartutsnitt
             </h2>
             <div className="rounded-[12px] overflow-hidden w-full mb-[60px]">
-              <GoogleMapComponent
-                coordinates={
-                  lamdaDataFromApi?.coordinates?.convertedCoordinates
-                }
-              />
+              <div className="h-[400px]">
+                <GoogleMapComponent
+                  coordinates={
+                    lamdaDataFromApi?.coordinates?.convertedCoordinates
+                  }
+                />
+              </div>
             </div>
             <div>
               <div className="flex items-center gap-[36px] mb-6">

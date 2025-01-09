@@ -12,7 +12,9 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const addressFromStorage = localStorage.getItem("IPlot_Address");
     if (addressFromStorage) {
-      setStoreAddress(JSON.parse(addressFromStorage));
+      const parsedAddress = JSON.parse(addressFromStorage);
+      setStoreAddress(parsedAddress);
+      setGetAddress(parsedAddress);
     } else {
       console.error("No address data found in localStorage");
       setLoading(false);
@@ -64,6 +66,7 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
     setStoreAddress(newAddress);
     if (newAddress) {
       localStorage.setItem("IPlot_Address", JSON.stringify(newAddress));
+      setGetAddress(newAddress); 
     }
   };
 

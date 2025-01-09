@@ -152,7 +152,7 @@ const GoogleMapComponent: React.FC<{ coordinates: any }> = ({
 
   const containerStyle = {
     width: "100%",
-    height: "400px",
+    height: "100%",
   };
 
   const bounds = coordinates?.length
