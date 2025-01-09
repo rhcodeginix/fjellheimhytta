@@ -31,9 +31,9 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     const timeoutId = setTimeout(() => {
-      toast.error("Request timed out. Please try again later.", {
-        position: "top-right",
-      });
+      // toast.error("Request timed out. Please try again later.", {
+      //   position: "top-right",
+      // });
       setLoading(false);
     }, 10000);
     const queryParams = storedAddress;
@@ -66,7 +66,7 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
     setStoreAddress(newAddress);
     if (newAddress) {
       localStorage.setItem("IPlot_Address", JSON.stringify(newAddress));
-      setGetAddress(newAddress); 
+      setGetAddress(newAddress);
     }
   };
 
