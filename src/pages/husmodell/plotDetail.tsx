@@ -61,6 +61,19 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
       }
     }
   }, [additionalData]);
+  function formatDateToDDMMYYYY(dateString: any) {
+    const dateObject: any = new Date(dateString);
+
+    if (isNaN(dateObject)) {
+      return "Invalid Date";
+    }
+
+    const day = String(dateObject.getDate()).padStart(2, "0");
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = dateObject.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
 
   return (
     <div className="relative">
@@ -100,8 +113,10 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {!loadingAdditionalData &&
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.etableringsdato}
+                          formatDateToDDMMYYYY(
+                            lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.etableringsdato
+                          )}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -110,19 +125,20 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {!loadingAdditionalData &&
-                          lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
-                            "T"
-                          )[0]}
+                          formatDateToDDMMYYYY(
+                            lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
+                              "T"
+                            )[0]
+                          )}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
                       <td className="text-left pb-[16px] text-secondary text-sm">
-                        Registrert Grunnerverv
+                        Total allowed bya
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {!loadingAdditionalData &&
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.harRegistrertGrunnerverv}
+                          askData?.bya_calculations?.results?.total_allowed_bya}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -245,11 +261,12 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         parkering er usikker
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {!loadingAdditionalData &&
-                        askData?.bya_calculations?.results?.parking
-                          ?.is_uncertain === true
-                          ? "Ja"
-                          : "Nei"}
+                        {!loadingAdditionalData
+                          ? askData?.bya_calculations?.results?.parking
+                              ?.is_uncertain === true
+                            ? "Ja"
+                            : "Nei"
+                          : null}
                       </td>
                     </tr>
                   </tbody>

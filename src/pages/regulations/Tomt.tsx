@@ -53,6 +53,20 @@ const Tomt: React.FC<any> = ({
     },
   ];
 
+  function formatDateToDDMMYYYY(dateString: any) {
+    const dateObject: any = new Date(dateString);
+
+    if (isNaN(dateObject)) {
+      return "Invalid Date";
+    }
+
+    const day = String(dateObject.getDate()).padStart(2, "0");
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const year = dateObject.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  }
+
   const validationLoginSchema = Yup.object().shape({
     terms_condition: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
@@ -160,8 +174,10 @@ const Tomt: React.FC<any> = ({
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {!loadingAdditionalData &&
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.etableringsdato}
+                          formatDateToDDMMYYYY(
+                            lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.etableringsdato
+                          )}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
@@ -170,9 +186,11 @@ const Tomt: React.FC<any> = ({
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
                         {!loadingAdditionalData &&
-                          lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
-                            "T"
-                          )[0]}
+                          formatDateToDDMMYYYY(
+                            lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
+                              "T"
+                            )[0]
+                          )}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">
