@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import Ic_logo from "@/public/images/Ic_logo.svg";
 import Img_login_google from "@/public/images/Img_login_google.svg";
-import { auth } from "@/config/firebaseConfig";
+import { auth, db } from "@/config/firebaseConfig";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import {
@@ -16,15 +16,14 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Loader from "@/components/Loader";
-// import { doc, setDoc } from "firebase/firestore";
-// import NameModal from "./nameModal";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import NameModal from "./nameModal";
 
 const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [newUser, setNewUser] = useState<any>(null);
-  // setNewUser(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newUser, setNewUser] = useState<any>(null);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required"),
@@ -62,67 +61,49 @@ const Login = () => {
 
   const googleProvider = new GoogleAuthProvider();
 
-  // const handleNameSubmit = async (name: any) => {
-  //   if (newUser) {
-  //     try {
-  //       const userDocRef = doc(db, "users", newUser.uid);
-  //       await setDoc(userDocRef, {
-  //         email: newUser.email,
-  //         name: name,
-  //         uid: newUser.uid,
-  //       });
+  const handleNameSubmit = async (name: any) => {
+    if (newUser) {
+      try {
+        const userDocRef = doc(db, "users", newUser.uid);
+        await setDoc(userDocRef, {
+          email: newUser.email,
+          name: name,
+          uid: newUser.uid,
+        });
 
-  //       toast.success("Google sign-in successful!", { position: "top-right" });
-  //       localStorage.setItem("min_tomt_login", "true");
-  //       localStorage.setItem("Iplot_email", newUser.email);
-  //       router.push("/");
-  //     } catch (error) {
-  //       console.error("Error saving new user", error);
-  //       toast.error("Registration failed. Please try again.", {
-  //         position: "top-right",
-  //       });
-  //     } finally {
-  //       setIsModalOpen(false); // Close the modal
-  //     }
-  //   }
-  // };
-
-  // const signInWithGoogle = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const result = await signInWithPopup(auth, googleProvider);
-  //     const user: any = result.user;
-
-  //     const userDocRef = doc(db, "users", user.uid);
-  //     const userDoc = await getDoc(userDocRef);
-
-  //     if (userDoc.exists()) {
-  //       toast.success("Google sign-in successfull!", { position: "top-right" });
-  //       localStorage.setItem("min_tomt_login", "true");
-  //       localStorage.setItem("Iplot_email", user?.email);
-  //       router.push("/");
-  //     } else {
-  //       setNewUser(user);
-  //       setIsModalOpen(true);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during Google Sign-In", error);
-  //     toast.error("Google sign-in failed. Please try again.", {
-  //       position: "top-right",
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+        toast.success("Google sign-in successful!", { position: "top-right" });
+        localStorage.setItem("min_tomt_login", "true");
+        localStorage.setItem("Iplot_email", newUser.email);
+        router.push("/");
+      } catch (error) {
+        console.error("Error saving new user", error);
+        toast.error("Registration failed. Please try again.", {
+          position: "top-right",
+        });
+      } finally {
+        setIsModalOpen(false); // Close the modal
+      }
+    }
+  };
 
   const signInWithGoogle = async () => {
     setLoading(true);
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user: any = result.user;
-      toast.success("Google sign-in successful!", { position: "top-right" });
-      localStorage.setItem("min_tomt_login", "true");
-      localStorage.setItem("Iplot_email", user?.email);
+
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        toast.success("Google sign-in successfull!", { position: "top-right" });
+        localStorage.setItem("min_tomt_login", "true");
+        localStorage.setItem("Iplot_email", user?.email);
+        router.push("/");
+      } else {
+        setNewUser(user);
+        setIsModalOpen(true);
+      }
     } catch (error) {
       console.error("Error during Google Sign-In", error);
       toast.error("Google sign-in failed. Please try again.", {
@@ -132,6 +113,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+
   return (
     <div className="relative">
       <div className="w-full h-screen flex items-center justify-center">
@@ -220,11 +202,11 @@ const Login = () => {
           <Loader />
         </div>
       )}
-      {/* <NameModal
+      <NameModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleNameSubmit}
-      /> */}
+      />
     </div>
   );
 };
