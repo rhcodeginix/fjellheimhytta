@@ -115,7 +115,11 @@ const PropertyDetail: React.FC<any> = ({
                       Boligen kan ha en{" "}
                       <span className="text-black">
                         grunnflate på{" "}
-                        {askData?.bya_calculations?.input?.plot_size} m2
+                        {
+                          askData?.bya_calculations?.results
+                            ?.available_building_area
+                        }{" "}
+                        m2
                       </span>
                     </p>
                   </div>
