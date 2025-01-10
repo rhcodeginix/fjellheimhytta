@@ -43,6 +43,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
       price: "295.899 NOK",
     },
   ];
+  const { getAddress } = useAddress();
 
   const router = useRouter();
 
@@ -69,7 +70,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
     }
 
     const day = String(dateObject.getDate()).padStart(2, "0");
-    const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
     const year = dateObject.getFullYear();
 
     return `${day}-${month}-${year}`;
@@ -280,9 +281,10 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Kommune
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {!loadingAdditionalData &&
+                        {/* {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.kommune}
+                            ?.kommune} */}
+                        {!loadingAdditionalData && getAddress?.kommunenavn}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">

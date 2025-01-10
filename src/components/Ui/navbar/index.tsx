@@ -6,7 +6,7 @@ import Ic_logo from "@/public/images/Ic_logo.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import Image from "next/image";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "@/config/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -67,7 +67,18 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  const handleLogout = async () => {
+    try {
+      await signOut(auth); // Firebase signOut method
+      localStorage.removeItem("min_tomt_login");
+      localStorage.removeItem("I_plot_email");
+      setLoginUser(false);
+      setUserName(null); // Reset the userName
+      setIsDropdownOpen(false); // Close the dropdown
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
   return (
     <>
       <div
@@ -145,12 +156,7 @@ const Header = () => {
                       <Link
                         href={"/login"}
                         className="block px-4 py-2 text-sm hover:bg-lightPurple text-black w-full text-left cursor-pointer"
-                        onClick={() => {
-                          localStorage.removeItem("min_tomt_login");
-                          localStorage.removeItem("Iplot_email");
-                          setLoginUser(false);
-                          setIsDropdownOpen(false);
-                        }}
+                        onClick={handleLogout}
                       >
                         Logout
                       </Link>

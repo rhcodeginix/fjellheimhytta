@@ -57,7 +57,8 @@ const index = () => {
               userProperties.map((property: any, index) => (
                 <Link
                   key={index}
-                  href={`/regulations?kommunenummer=${property?.getAddress?.kommunenummer}&gardsnummer=${property?.getAddress?.gardsnummer}&bruksnummer=${property?.getAddress?.bruksnummer}&kommunenavn=${property?.getAddress?.kommunenavn}`}
+                  href={`/regulations?propertyId=${property?.propertyId}`}
+                  // href={`/regulations?kommunenummer=${property?.getAddress?.kommunenummer}&gardsnummer=${property?.getAddress?.gardsnummer}&bruksnummer=${property?.getAddress?.bruksnummer}&kommunenavn=${property?.getAddress?.kommunenavn}`}
                   className="relative"
                   onClick={() => {
                     localStorage.setItem(

@@ -44,7 +44,7 @@ const Login = () => {
       const user: any = userCredential.user;
       localStorage.setItem("min_tomt_login", "true");
       toast.success("Login successfully", { position: "top-right" });
-      localStorage.setItem("Iplot_email", user.email);
+      localStorage.setItem("I_plot_email", user.email);
       router.push("/");
     } catch (error) {
       console.error("Error during sign-in", error);
@@ -73,7 +73,7 @@ const Login = () => {
 
         toast.success("Google sign-in successful!", { position: "top-right" });
         localStorage.setItem("min_tomt_login", "true");
-        localStorage.setItem("Iplot_email", newUser.email);
+        localStorage.setItem("I_plot_email", newUser.email);
         router.push("/");
       } catch (error) {
         console.error("Error saving new user", error);
@@ -98,7 +98,7 @@ const Login = () => {
       if (userDoc.exists()) {
         toast.success("Google sign-in successfull!", { position: "top-right" });
         localStorage.setItem("min_tomt_login", "true");
-        localStorage.setItem("Iplot_email", user?.email);
+        localStorage.setItem("I_plot_email", user?.email);
         router.push("/");
       } else {
         setNewUser(user);

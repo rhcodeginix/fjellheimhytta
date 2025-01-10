@@ -19,6 +19,7 @@ import { useUserLayoutContext } from "@/context/userLayoutContext";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Loader from "@/components/Loader";
 import GoogleMapComponent from "@/components/Ui/map";
+import { useAddress } from "@/context/addressContext";
 
 const Tomt: React.FC<any> = ({
   handleNext,
@@ -26,6 +27,8 @@ const Tomt: React.FC<any> = ({
   loadingAdditionalData,
   additionalData,
 }) => {
+  const { getAddress } = useAddress();
+
   const items = [
     {
       id: 1,
@@ -341,9 +344,10 @@ const Tomt: React.FC<any> = ({
                         Kommune
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {!loadingAdditionalData &&
+                        {/* {!loadingAdditionalData &&
                           lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.kommune}
+                            ?.kommune} */}
+                        {!loadingAdditionalData && getAddress?.kommunenavn}
                       </td>
                     </tr>
                     <tr className="flex gap-[10px] justify-between">

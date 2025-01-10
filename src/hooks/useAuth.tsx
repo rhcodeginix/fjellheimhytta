@@ -6,7 +6,7 @@ const useAuth = () => {
   const router = useRouter();
 
   const checkAuth = () => {
-    const email = localStorage.getItem("Iplot_email");
+    const email = localStorage.getItem("I_plot_email");
 
     if (email) {
       setIsAuthenticated(true);
