@@ -103,7 +103,6 @@
 
 //     return path;
 //   };
-//   console.log(map);
 //   const handleMapClick = (e: google.maps.MapMouseEvent) => {
 //     const clickedLatLng: any = e.latLng;
 //     const lat = clickedLatLng.lat();

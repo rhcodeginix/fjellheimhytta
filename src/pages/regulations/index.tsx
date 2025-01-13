@@ -22,6 +22,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useAddress } from "@/context/addressContext";
+import { useUserLayoutContext } from "@/context/userLayoutContext";
 
 const Regulations = () => {
   const [currIndex, setCurrIndex] = useState(0);
@@ -36,6 +37,22 @@ const Regulations = () => {
   const { getAddress } = useAddress();
   const [userUID, setUserUID] = useState(null);
 
+  const { loginUser, setLoginUser } = useUserLayoutContext();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
+    if (isLoggedIn) {
+      setLoginUser(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (!loginUser) {
+      setIsPopupOpen(true);
+    } else {
+      setIsPopupOpen(false);
+    }
+  }, [loginUser]);
   useEffect(() => {
     const fetchData = async () => {
       setLoadingAdditionalData(true);
@@ -91,8 +108,9 @@ const Regulations = () => {
         }
       }
     };
-
-    fetchData();
+    if (loginUser) {
+      fetchData();
+    }
   }, [kommunenummer, gardsnummer, bruksnummer]);
 
   useEffect(() => {
@@ -216,6 +234,8 @@ const Regulations = () => {
           lamdaDataFromApi={lamdaDataFromApi}
           loadingAdditionalData={loadingAdditionalData}
           additionalData={additionalData}
+          loginUser={loginUser}
+          isPopupOpen={isPopupOpen}
         />
       ),
     },

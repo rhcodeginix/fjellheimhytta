@@ -81,7 +81,7 @@ const Login = () => {
           position: "top-right",
         });
       } finally {
-        setIsModalOpen(false); // Close the modal
+        setIsModalOpen(false);
       }
     }
   };
@@ -125,7 +125,9 @@ const Login = () => {
           }}
         >
           <div className="flex justify-center mb-10">
-            <Image src={Ic_logo} alt="logo" fetchPriority="high" />
+            <Link href={"/"}>
+              <Image src={Ic_logo} alt="logo" fetchPriority="high" />
+            </Link>
           </div>
           <Formik
             initialValues={{ email: "", password: "" }}

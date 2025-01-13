@@ -35,6 +35,7 @@ const HomePageSearchDiv = () => {
               textTransform: "inherit",
               color: "#344054",
               fontSize: "18px",
+              fontFamily: '"Inter", sans-serif',
             },
             "& .MuiTab-root.Mui-selected": {
               color: "#6941c6 !important",

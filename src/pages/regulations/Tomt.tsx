@@ -15,19 +15,29 @@ import Ic_vapp from "@/public/images/Ic_vapp.svg";
 import Button from "@/components/common/button";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
-import { useUserLayoutContext } from "@/context/userLayoutContext";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Loader from "@/components/Loader";
 import GoogleMapComponent from "@/components/Ui/map";
 import { useAddress } from "@/context/addressContext";
+import { useRouter } from "next/router";
 
-const Tomt: React.FC<any> = ({
+const Tomt: React.FC<{
+  loginUser: any;
+  additionalData: any;
+  loadingAdditionalData: any;
+  handleNext: any;
+  lamdaDataFromApi: any;
+  isPopupOpen: any;
+}> = ({
   handleNext,
   lamdaDataFromApi,
   loadingAdditionalData,
   additionalData,
+  loginUser,
+  isPopupOpen,
 }) => {
   const { getAddress } = useAddress();
+  const router = useRouter();
 
   const items = [
     {
@@ -79,29 +89,8 @@ const Tomt: React.FC<any> = ({
     setIsLoginChecked(!isLoginChecked);
   };
 
-  const { loginUser, setLoginUser } = useUserLayoutContext();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
-    if (isLoggedIn) {
-      setLoginUser(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!loginUser) {
-      setIsPopupOpen(true);
-    } else {
-      setIsPopupOpen(false);
-    }
-  }, [loginUser]);
-
-  const handleLoginSubmit = async (values: any) => {
-    console.log(values);
-    setIsPopupOpen(false);
-    localStorage.setItem("min_tomt_login", "true");
-    setLoginUser(true);
+  const handleLoginSubmit = async () => {
+    router.push("/login");
   };
 
   useEffect(() => {

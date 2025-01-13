@@ -19,10 +19,7 @@ const Header = () => {
     const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
     setLoginUser(isLoggedIn);
   }, []);
-  const handleLogin = () => {
-    localStorage.setItem("min_tomt_login", "true");
-    setLoginUser(true);
-  };
+
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
@@ -164,11 +161,12 @@ const Header = () => {
                   )}
                 </div>
               ) : (
-                <Button
-                  text="Logg inn"
-                  className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
-                  onClick={handleLogin}
-                />
+                <Link href={"/login"}>
+                  <Button
+                    text="Logg inn"
+                    className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
+                  />
+                </Link>
               )}
             </div>
           </div>

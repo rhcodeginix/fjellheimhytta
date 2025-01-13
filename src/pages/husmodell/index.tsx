@@ -9,6 +9,7 @@ import { useUserLayoutContext } from "@/context/userLayoutContext";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import Ic_vapp from "@/public/images/Ic_vapp.svg";
+import { useRouter } from "next/router";
 
 const bedroomOptions = [
   "1+ soverom",
@@ -63,6 +64,7 @@ const Husmodell = () => {
   const [selectAllBedrooms, setSelectAllBedrooms] = useState(false);
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [selectedSortBy, setSelectedSortBy] = useState("Relevans");
+  const router = useRouter();
 
   const toggleDropdown = (dropdownId: string) => {
     setOpenDropdown((prev) => (prev === dropdownId ? null : dropdownId));
@@ -160,11 +162,8 @@ const Husmodell = () => {
       document.body.style.overflow = "auto";
     };
   }, [isPopupOpen]);
-  const handleLoginSubmit = async (values: any) => {
-    console.log(values);
-    setIsPopupOpen(false);
-    localStorage.setItem("min_tomt_login", "true");
-    setLoginUser(true);
+  const handleLoginSubmit = async () => {
+    router.push("/login");
   };
   return (
     <>

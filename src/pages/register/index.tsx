@@ -74,9 +74,9 @@ const Register = () => {
               "0px 8px 8px -4px #10182808, 0px 20px 24px -4px #10182814",
           }}
         >
-          <div className="flex justify-center mb-10">
+          <Link href={"/"}>
             <Image src={Ic_logo} alt="logo" fetchPriority="high" />
-          </div>
+          </Link>
           <Formik
             initialValues={{ email: "", password: "", name: "" }}
             validationSchema={validationSchema}

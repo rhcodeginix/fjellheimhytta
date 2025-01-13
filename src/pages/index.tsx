@@ -9,18 +9,10 @@ import Analysis from "./homepage/analysis";
 import LatestFromMedia from "./homepage/latestFromMedia";
 import Chatbot from "@/components/Ui/chatbot";
 import OurPartners from "./homepage/ourPartners";
-// import ApiUtils from "@/api";
 
 const index = () => {
   return (
     <div className="relative">
-      {/* <button
-        onClick={() => {
-          ApiUtils.LamdaApi(requestData);
-        }}
-      >
-        call api
-      </button> */}
       <Chatbot />
       <MainSection />
       <HouseCabinMould />

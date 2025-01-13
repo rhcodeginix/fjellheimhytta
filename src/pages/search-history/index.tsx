@@ -37,7 +37,6 @@ const index = () => {
           setLoading(false);
         }
       } else {
-        console.log("No user is logged in.");
         setLoading(false);
       }
     });
