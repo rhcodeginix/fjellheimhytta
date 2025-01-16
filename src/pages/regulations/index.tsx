@@ -36,6 +36,7 @@ const Regulations = () => {
   const hasFetchedData = useRef(false);
   const { getAddress } = useAddress();
   const [userUID, setUserUID] = useState(null);
+  const [isCall, setIsCall] = useState(false);
 
   const { loginUser, setLoginUser } = useUserLayoutContext();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -108,10 +109,10 @@ const Regulations = () => {
         }
       }
     };
-    if (loginUser) {
+    if (isCall) {
       fetchData();
     }
-  }, [kommunenummer, gardsnummer, bruksnummer]);
+  }, [kommunenummer, gardsnummer, bruksnummer, isCall]);
 
   useEffect(() => {
     if (propertyId && userUID) {
@@ -236,6 +237,8 @@ const Regulations = () => {
           additionalData={additionalData}
           loginUser={loginUser}
           isPopupOpen={isPopupOpen}
+          setIsPopupOpen={setIsPopupOpen}
+          setIsCall={setIsCall}
         />
       ),
     },

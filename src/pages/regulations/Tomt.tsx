@@ -19,6 +19,7 @@ import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Loader from "@/components/Loader";
 import GoogleMapComponent from "@/components/Ui/map";
 import { useAddress } from "@/context/addressContext";
+import LoginForm from "../login/loginForm";
 import { useRouter } from "next/router";
 
 const Tomt: React.FC<{
@@ -28,6 +29,8 @@ const Tomt: React.FC<{
   handleNext: any;
   lamdaDataFromApi: any;
   isPopupOpen: any;
+  setIsPopupOpen: any;
+  setIsCall: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -35,9 +38,11 @@ const Tomt: React.FC<{
   additionalData,
   loginUser,
   isPopupOpen,
+  setIsPopupOpen,
+  setIsCall,
 }) => {
-  const { getAddress } = useAddress();
   const router = useRouter();
+  const { getAddress } = useAddress();
 
   const items = [
     {
@@ -65,6 +70,7 @@ const Tomt: React.FC<{
       price: "295.899 NOK",
     },
   ];
+  const [loginPopup, setLoginPopup] = useState(false);
 
   function formatDateToDDMMYYYY(dateString: any) {
     const dateObject: any = new Date(dateString);
@@ -90,7 +96,9 @@ const Tomt: React.FC<{
   };
 
   const handleLoginSubmit = async () => {
-    router.push("/login");
+    setIsPopupOpen(false);
+    setLoginPopup(true);
+    router.push(`${router.asPath}&login_popup=true`);
   };
 
   useEffect(() => {
@@ -119,6 +127,12 @@ const Tomt: React.FC<{
       }
     }
   }, [additionalData]);
+
+  const router_query: any = { ...router.query };
+
+  delete router_query.login_popup;
+
+  const queryString = new URLSearchParams(router_query).toString();
 
   if (loadingAdditionalData) {
     <Loader />;
@@ -664,6 +678,19 @@ const Tomt: React.FC<{
               )}
             </Formik>
           </div>
+        </div>
+      )}
+
+      {loginPopup && !loginUser && (
+        <div
+          className="fixed top-0 left-0 flex justify-center items-center h-full w-full"
+          style={{ zIndex: 9999999 }}
+        >
+          <LoginForm
+            path={`${router.pathname}?${queryString}`}
+            setLoginPopup={setLoginPopup}
+            setIsCall={setIsCall}
+          />
         </div>
       )}
     </div>

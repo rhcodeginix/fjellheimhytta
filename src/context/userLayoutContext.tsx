@@ -1,4 +1,11 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import { useRouter } from "next/router";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect,
+} from "react";
 
 type UserLayoutContextType = {
   loginUser: boolean;
@@ -21,6 +28,13 @@ export const useUserLayoutContext = () => {
 
 export const UserLayoutProvider = ({ children }: { children: ReactNode }) => {
   const [loginUser, setLoginUser] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    const storedLoginStatus = localStorage.getItem("min_tomt_login");
+    if (storedLoginStatus === "true") {
+      setLoginUser(true);
+    }
+  }, [router.asPath]);
 
   return (
     <UserLayoutContext.Provider value={{ loginUser, setLoginUser }}>
