@@ -31,6 +31,7 @@ const Regulations = () => {
   const { kommunenummer, gardsnummer, bruksnummer, kommunenavn, propertyId } =
     router.query;
   const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
+  const [loadingLamdaData, setLoadingLamdaData] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [additionalData, setAdditionalData] = useState<any | undefined>(null);
   const hasFetchedData = useRef(false);
@@ -45,6 +46,7 @@ const Regulations = () => {
     const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
     if (isLoggedIn) {
       setLoginUser(true);
+      setIsCall(true);
     }
   }, []);
   useEffect(() => {
@@ -56,15 +58,13 @@ const Regulations = () => {
   }, [loginUser]);
   useEffect(() => {
     const fetchData = async () => {
-      setLoadingAdditionalData(true);
-
       if (kommunenummer && gardsnummer && bruksnummer) {
+        setLoadingLamdaData(true);
         const lamdaApiData: any = {
           kommunenummer,
           gardsnummer,
           bruksnummer,
         };
-
         try {
           const response = await ApiUtils.LamdaApi(lamdaApiData);
           const cleanAnswer = response.body.replace(/```json|```/g, "").trim();
@@ -72,10 +72,12 @@ const Regulations = () => {
           const data = JSON.parse(cleanAnswer);
 
           setLamdaDataFromApi(data);
+          setLoadingLamdaData(false);
 
           if (cleanAnswer) {
             if (data.message === "Request failed with status code 503") {
               setLoadingAdditionalData(false);
+              setLoadingLamdaData(false);
               setShowErrorPopup(true);
             }
             const areaDetails =
@@ -116,7 +118,8 @@ const Regulations = () => {
 
   useEffect(() => {
     if (propertyId && userUID) {
-      setLoadingAdditionalData(true);
+      setLoadingLamdaData(true);
+
       const fetchProperty = async () => {
         const propertiesCollectionRef = collection(
           db,
@@ -143,7 +146,7 @@ const Regulations = () => {
         } catch (error) {
           console.error("Error fetching user's properties:", error);
         } finally {
-          setLoadingAdditionalData(false);
+          setLoadingLamdaData(false);
         }
       };
 
@@ -239,6 +242,7 @@ const Regulations = () => {
           isPopupOpen={isPopupOpen}
           setIsPopupOpen={setIsPopupOpen}
           setIsCall={setIsCall}
+          loadingLamdaData={loadingLamdaData}
         />
       ),
     },
