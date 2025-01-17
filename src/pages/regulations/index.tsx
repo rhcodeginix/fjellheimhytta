@@ -27,6 +27,9 @@ import { useUserLayoutContext } from "@/context/userLayoutContext";
 const Regulations = () => {
   const [currIndex, setCurrIndex] = useState(0);
   const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
+  const [CadastreDataFromApi, setCadastreDataFromApi] = useState<any | null>(
+    null
+  );
   const router = useRouter();
   const { kommunenummer, gardsnummer, bruksnummer, kommunenavn, propertyId } =
     router.query;
@@ -71,6 +74,10 @@ const Regulations = () => {
 
           const data = JSON.parse(cleanAnswer);
 
+          const CadastreDataResponse =
+            await ApiUtils.fetchCadastreData(lamdaApiData);
+          setCadastreDataFromApi(CadastreDataResponse.item);
+
           setLamdaDataFromApi(data);
           setLoadingLamdaData(false);
 
@@ -107,6 +114,7 @@ const Regulations = () => {
             }
           }
         } catch (error: any) {
+          setShowErrorPopup(true);
           console.error("Error fetching additional data:", error?.message);
         }
       }
@@ -140,6 +148,7 @@ const Regulations = () => {
           if (foundProperty) {
             setAdditionalData(foundProperty?.additionalData);
             setLamdaDataFromApi(foundProperty?.lamdaDataFromApi);
+            setCadastreDataFromApi(foundProperty?.CadastreDataFromApi);
           } else {
             console.log("No property found with the given ID.");
           }
@@ -203,17 +212,25 @@ const Regulations = () => {
       !loadingAdditionalData &&
       lamdaDataFromApi &&
       additionalData &&
-      getAddress
+      getAddress &&
+      CadastreDataFromApi
     ) {
       hasFetchedData.current = true;
       const property = {
         lamdaDataFromApi,
         additionalData,
         getAddress,
+        CadastreDataFromApi,
       };
       addSearchAddress(property);
     }
-  }, [loadingAdditionalData, lamdaDataFromApi, additionalData, getAddress]);
+  }, [
+    loadingAdditionalData,
+    lamdaDataFromApi,
+    additionalData,
+    getAddress,
+    CadastreDataFromApi,
+  ]);
 
   const handleNext = () => {
     if (currIndex < steps.length - 1) {
@@ -243,6 +260,7 @@ const Regulations = () => {
           setIsPopupOpen={setIsPopupOpen}
           setIsCall={setIsCall}
           loadingLamdaData={loadingLamdaData}
+          CadastreDataFromApi={CadastreDataFromApi}
         />
       ),
     },

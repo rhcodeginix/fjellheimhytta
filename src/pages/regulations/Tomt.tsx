@@ -33,6 +33,7 @@ const Tomt: React.FC<{
   setIsPopupOpen: any;
   setIsCall: any;
   loadingLamdaData: any;
+  CadastreDataFromApi: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -43,6 +44,7 @@ const Tomt: React.FC<{
   setIsPopupOpen,
   setIsCall,
   loadingLamdaData,
+  CadastreDataFromApi,
 }) => {
   const router = useRouter();
   const { getAddress } = useAddress();
@@ -250,6 +252,52 @@ const Tomt: React.FC<{
                             }
                           </td>
                         </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            numberOfPlots
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.numberOfPlots === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            pointHitch
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.pointHitch === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            zeroConcession
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.zeroConcession === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            unitName
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.unitName}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            specifiedArea
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.specifiedArea}
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -349,12 +397,111 @@ const Tomt: React.FC<{
                             parkering er usikker
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {!loadingAdditionalData
-                              ? askData?.bya_calculations?.results?.parking
-                                  ?.is_uncertain === true
-                                ? "Ja"
-                                : "Nei"
-                              : null}
+                            {askData?.bya_calculations?.results?.parking
+                              ?.is_uncertain === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            agriculturalCadastre
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.agriculturalCadastre === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            canBeMortgaged
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.canBeMortgaged === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            canBeSold
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.canBeSold === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            hasActiveLeasedLand
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.hasActiveLeasedLand === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            hasBuilding
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.hasBuilding === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            hasHolidayHome
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.hasHolidayHome === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            hasHousing
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.hasHousing === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            hasNotedComplaint
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.hasNotedComplaint === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            hasOldCadastre
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.hasOldCadastre === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            hasRegisteredLandAcquisition
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.hasRegisteredLandAcquisition ===
+                            true
+                              ? "Ja"
+                              : "Nei"}
                           </td>
                         </tr>
                       </tbody>
@@ -479,6 +626,84 @@ const Tomt: React.FC<{
                               askData?.bya_calculations?.results?.parking
                                 ?.total_parking_area
                             }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            hasSingleHeritage
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.hasSingleHeritage === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            hasSoilContamination
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.hasSoilContamination === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            leasehold
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.ident?.leasehold === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            leaseholdUnitNumber
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.ident?.leaseholdUnitNumber}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            includedInTotalRealEstate
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.includedInTotalRealEstate ===
+                            true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            isHistoricalRegisteredLand
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.isHistoricalRegisteredLand ===
+                            true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            isRegisteredLand
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.isRegisteredLand === true
+                              ? "Ja"
+                              : "Nei"}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            regionnavn
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {CadastreDataFromApi?.municipality?.regionName}
                           </td>
                         </tr>
                       </tbody>
