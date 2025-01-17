@@ -150,388 +150,402 @@ const Tomt: React.FC<{
       <SideSpaceContainer className="relative">
         <div className="pt-[26px] pb-[46px] relative flex gap-[40px]">
           <div className="w-[66%]">
-            <h2 className="text-black text-2xl font-semibold mb-6">
-              Eiendomsinformajon
-            </h2>
-            <div className="w-full flex gap-8 mb-[60px]">
-              <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
-                <table className="table-auto border-0 w-full text-left property_detail_tbl">
-                  <tbody>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Festenummer
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.festenummer
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Areal beregnet
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.areal_beregnet
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Etableringsdato
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {formatDateToDDMMYYYY(
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.etableringsdato
-                        )}
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Sist oppdatert
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {formatDateToDDMMYYYY(
-                          lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
-                            "T"
-                          )[0]
-                        )}
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Total allowed bya
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {askData?.bya_calculations?.results?.total_allowed_bya}
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Registrert JordskifteKrevd
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.harRegistrertJordskifteKrevd
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Inngår i annen eiendom
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.inngarISamlaFastEiendom
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        parkering område per plass
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          askData?.bya_calculations?.results?.parking
-                            ?.area_per_space
-                        }
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
-                <table className="table-auto border-0 w-full text-left property_detail_tbl">
-                  <tbody>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Seksjonert
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.seksjonert
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Tinglyst
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.tinglyst
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Kulturminner registrert
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.kulturminner_registrert
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Aktive festegrunner
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.aktive_festegrunner
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Anmerket klage
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.anmerket_klage
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Grunnforurensning
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.grunnforurensning
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Utgått
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.eiendomsInformasjon?.status?.utgatt}
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Under Sammenslåing
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.under_sammenslaing
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        parkering er usikker
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {!loadingAdditionalData
-                          ? askData?.bya_calculations?.results?.parking
-                              ?.is_uncertain === true
-                            ? "Ja"
-                            : "Nei"
-                          : null}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
-                <table className="table-auto border-0 w-full text-left property_detail_tbl">
-                  <tbody>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Kommune
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {/* {
+            {loadingLamdaData ? (
+              <Loader />
+            ) : (
+              <>
+                <h2 className="text-black text-2xl font-semibold mb-6">
+                  Eiendomsinformajon
+                </h2>
+                <div className="w-full flex gap-8 mb-[60px]">
+                  <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
+                    <table className="table-auto border-0 w-full text-left property_detail_tbl">
+                      <tbody>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Festenummer
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.basisInformasjon?.festenummer
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Areal beregnet
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.basisInformasjon?.areal_beregnet
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Etableringsdato
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {formatDateToDDMMYYYY(
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.basisInformasjon?.etableringsdato
+                            )}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Sist oppdatert
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {formatDateToDDMMYYYY(
+                              lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
+                                "T"
+                              )[0]
+                            )}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Total allowed bya
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              askData?.bya_calculations?.results
+                                ?.total_allowed_bya
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Registrert JordskifteKrevd
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.basisInformasjon?.harRegistrertJordskifteKrevd
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Inngår i annen eiendom
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.basisInformasjon?.inngarISamlaFastEiendom
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            parkering område per plass
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              askData?.bya_calculations?.results?.parking
+                                ?.area_per_space
+                            }
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
+                    <table className="table-auto border-0 w-full text-left property_detail_tbl">
+                      <tbody>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Seksjonert
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.basisInformasjon?.seksjonert
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Tinglyst
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.basisInformasjon?.tinglyst
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Kulturminner registrert
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon?.status
+                                ?.kulturminner_registrert
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Aktive festegrunner
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon?.status
+                                ?.aktive_festegrunner
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Anmerket klage
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon?.status
+                                ?.anmerket_klage
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Grunnforurensning
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon?.status
+                                ?.grunnforurensning
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Utgått
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon?.status
+                                ?.utgatt
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Under Sammenslåing
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon?.status
+                                ?.under_sammenslaing
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            parkering er usikker
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {!loadingAdditionalData
+                              ? askData?.bya_calculations?.results?.parking
+                                  ?.is_uncertain === true
+                                ? "Ja"
+                                : "Nei"
+                              : null}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
+                    <table className="table-auto border-0 w-full text-left property_detail_tbl">
+                      <tbody>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Kommune
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {/* {
                           lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
                             ?.kommune} */}
-                        {getAddress?.kommunenavn}
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Kommunenr
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.kommunenr
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Gårdsnummer
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.gaardsnummer
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Bruksnummer
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.bruksnummer
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Festenr
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.festenr
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Seksjonsnr
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.seksjonsnr
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Bruksnavn
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn}
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Oppmåling ikke fullført
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.oppmaling_ikke_fullfort
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        Mangler grensepunktmerking
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon?.status
-                            ?.mangler_grensepunktmerking
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        parkering nødvendig plass
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          askData?.bya_calculations?.results?.parking
-                            ?.required_spaces
-                        }
-                      </td>
-                    </tr>
-                    <tr className="flex gap-[10px] justify-between">
-                      <td className="text-left pb-[16px] text-secondary text-sm">
-                        totalt parkering område
-                      </td>
-                      <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {
-                          askData?.bya_calculations?.results?.parking
-                            ?.total_parking_area
-                        }
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="relative">
-              {loadingAdditionalData ? (
-                <Loading />
-              ) : (
-                <>
-                  <div className="mb-[34px] relative">
-                    <div className="flex justify-between items-center mb-6">
-                      <h2 className="text-black text-2xl font-semibold">
-                        Reguleringsbestemmelser
-                      </h2>
-                      <Image src={Ic_generelt} alt="image" />
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <>
-                        {askData &&
-                          askData?.conclusion?.map((a: any, index: number) => (
-                            <div
-                              className="flex items-start gap-3 text-secondary text-base"
-                              key={index}
-                            >
-                              <Image src={Ic_check_true} alt="image" />
-                              <span>{a}</span>
-                            </div>
-                          ))}
-                      </>
-                    </div>
+                            {getAddress?.kommunenavn}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Kommunenr
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.kommune_info?.kommunenr
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Gårdsnummer
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.kommune_info?.gaardsnummer
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Bruksnummer
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.kommune_info?.bruksnummer
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Festenr
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.kommune_info?.festenr
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Seksjonsnr
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon
+                                ?.kommune_info?.seksjonsnr
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Bruksnavn
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn}
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Oppmåling ikke fullført
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon?.status
+                                ?.oppmaling_ikke_fullfort
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            Mangler grensepunktmerking
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              lamdaDataFromApi?.eiendomsInformasjon?.status
+                                ?.mangler_grensepunktmerking
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            parkering nødvendig plass
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              askData?.bya_calculations?.results?.parking
+                                ?.required_spaces
+                            }
+                          </td>
+                        </tr>
+                        <tr className="flex gap-[10px] justify-between">
+                          <td className="text-left pb-[16px] text-secondary text-sm">
+                            totalt parkering område
+                          </td>
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
+                            {
+                              askData?.bya_calculations?.results?.parking
+                                ?.total_parking_area
+                            }
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                  <div className="relative">
-                    <div className="flex justify-between items-center mb-6">
-                      <h2 className="text-black text-2xl font-semibold">
-                        Kommuneplan for Asker
-                      </h2>
-                      <Image src={Ic_generelt} alt="image" />
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      {askData &&
-                        askData?.applicable_rules?.map(
-                          (a: any, index: number) => (
-                            <div
-                              className="flex items-start gap-3 text-secondary text-base"
-                              key={index}
-                            >
-                              <Image src={Ic_check_true} alt="image" />
-                              <div>
-                                {a.rule}{" "}
-                                <span className="text-primary font-bold">
-                                  {a.section}
-                                </span>
-                              </div>
-                            </div>
-                          )
-                        )}
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
+                </div>
+                <div className="relative">
+                  {loadingAdditionalData ? (
+                    <Loading />
+                  ) : (
+                    <>
+                      <div className="mb-[34px] relative">
+                        <div className="flex justify-between items-center mb-6">
+                          <h2 className="text-black text-2xl font-semibold">
+                            Reguleringsbestemmelser
+                          </h2>
+                          <Image src={Ic_generelt} alt="image" />
+                        </div>
+                        <div className="flex flex-col gap-3">
+                          <>
+                            {askData &&
+                              askData?.conclusion?.map(
+                                (a: any, index: number) => (
+                                  <div
+                                    className="flex items-start gap-3 text-secondary text-base"
+                                    key={index}
+                                  >
+                                    <Image src={Ic_check_true} alt="image" />
+                                    <span>{a}</span>
+                                  </div>
+                                )
+                              )}
+                          </>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <div className="flex justify-between items-center mb-6">
+                          <h2 className="text-black text-2xl font-semibold">
+                            Kommuneplan for Asker
+                          </h2>
+                          <Image src={Ic_generelt} alt="image" />
+                        </div>
+                        <div className="flex flex-col gap-3">
+                          {askData &&
+                            askData?.applicable_rules?.map(
+                              (a: any, index: number) => (
+                                <div
+                                  className="flex items-start gap-3 text-secondary text-base"
+                                  key={index}
+                                >
+                                  <Image src={Ic_check_true} alt="image" />
+                                  <div>
+                                    {a.rule}{" "}
+                                    <span className="text-primary font-bold">
+                                      {a.section}
+                                    </span>
+                                  </div>
+                                </div>
+                              )
+                            )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
           </div>
           <div className="w-[34%]">
             <h2 className="text-black text-2xl font-semibold mb-6">
