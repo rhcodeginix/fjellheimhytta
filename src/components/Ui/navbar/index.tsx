@@ -3,6 +3,8 @@ import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
 import Link from "next/link";
 import Ic_logo from "@/public/images/Ic_logo.svg";
+import Ic_menu from "@/public/images/Ic_menu.svg";
+import Ic_close from "@/public/images/Ic_close.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import Image from "next/image";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
@@ -14,7 +16,10 @@ const Header = () => {
   const { loginUser, setLoginUser } = useUserLayoutContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
     setLoginUser(isLoggedIn);
@@ -84,14 +89,23 @@ const Header = () => {
       >
         <SideSpaceContainer>
           <div className="py-[12px] md:py-[20px] flex justify-between gap-[32px] items-center">
-            <Link href={"/"} className="">
-              <Image src={Ic_logo} alt="logo" />
-            </Link>
-            <div
-              className="items-center justify-between flex"
-              style={{ flexGrow: "1" }}
-            >
-              <div className="items-center gap-10 hidden md:flex">
+            <div className="flex items-center gap-3">
+              <Image
+                src={Ic_menu}
+                alt="menu"
+                className="lg:hidden"
+                onClick={toggleDrawer}
+              />
+              <Link href={"/"}>
+                <Image
+                  src={Ic_logo}
+                  alt="logo"
+                  className="w-[90px] lg:w-auto"
+                />
+              </Link>
+            </div>
+            <div className="items-center justify-between flex lg:flex-grow">
+              <div className="items-center gap-10 hidden lg:flex">
                 <Link
                   href={""}
                   className="text-base text-secondary font-medium"
@@ -125,15 +139,19 @@ const Header = () => {
                       className="flex items-center gap-2 cursor-pointer"
                       onClick={toggleDropdown}
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-[40px] h-[40px] flex items-center justify-center rounded-full border border-primary bg-lightPurple font-semibold">
+                      <div className="flex items-center gap-2 md:gap-3">
+                        <div className="w-[32px] md:w-[40px] h-[32px] md:h-[40px] flex items-center justify-center rounded-full border border-primary bg-lightPurple font-semibold">
                           {userName[0]}
                         </div>
-                        <span className="text-black font-medium text-base">
+                        <span className="text-black font-medium text-sm md:text-base">
                           {userName}
                         </span>
                       </div>
-                      <Image src={Ic_chevron_down} alt="arrow" />
+                      <Image
+                        src={Ic_chevron_down}
+                        alt="arrow"
+                        className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                      />
                     </div>
                   )}
                   {isDropdownOpen && (
@@ -171,6 +189,48 @@ const Header = () => {
             </div>
           </div>
         </SideSpaceContainer>
+      </div>
+
+      {/* Side Drawer */}
+      <div
+        style={{
+          transition: "transform 1s, box-shadow 1s",
+          transform: isDrawerOpen ? "translateX(0)" : "translateX(-100%)",
+          background: isDrawerOpen ? "rgba(0, 0, 0, 0.6)" : "",
+          zIndex: 999999,
+        }}
+        className={`fixed top-0 left-0 w-full h-screen z-50`}
+      >
+        <div className="bg-white h-full px-4 sm:px-5 md:px-8 lg:px-10 big:px-[120px] w-[85%]">
+          <div className="flex items-center justify-between py-4 mb-4">
+            <div className="gap-[12px] flex items-center">
+              <Link href={"/"}>
+                <Image
+                  src={Ic_logo}
+                  alt="logo"
+                  className="w-[100px] lg:w-auto"
+                />
+              </Link>
+            </div>
+            <button onClick={toggleDrawer} className="text-3xl">
+              <Image src={Ic_close} alt="close" />
+            </button>
+          </div>
+          <div className="flex flex-col items-start font-medium gap-4">
+            <Link href={""} className="text-base text-secondary font-medium">
+              Hvordan fungerer MinTomt?
+            </Link>
+            <Link href={""} className="text-base text-secondary font-medium">
+              Priser
+            </Link>
+            <Link href={""} className="text-base text-secondary font-medium">
+              Referanser
+            </Link>
+            <Link href={""} className="text-base text-secondary font-medium">
+              Kontakt
+            </Link>
+          </div>
+        </div>
       </div>
     </>
   );

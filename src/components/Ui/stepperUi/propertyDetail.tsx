@@ -10,6 +10,7 @@ import Ic_product_detail_avatar from "@/public/images/Ic_product_detail_avatar.s
 import Ic_product_detail_position from "@/public/images/Ic_product_detail_position.svg";
 import Ic_chevron_right from "@/public/images/Ic_chevron_right.svg";
 import { useAddress } from "@/context/addressContext";
+import Loading from "@/components/Loading";
 
 const PropertyDetail: React.FC<any> = ({
   isShow,
@@ -49,36 +50,33 @@ const PropertyDetail: React.FC<any> = ({
           >
             <div>
               <h2 className="text-black text-[32px] font-semibold mb-2">
-                {!loadingAdditionalData && getAddress?.adressetekst}
+                {getAddress?.adressetekst}
               </h2>
               <p className="text-secondary fs-xl mb-4">
-                {!loadingAdditionalData && getAddress?.postnummer}{" "}
-                {!loadingAdditionalData && getAddress?.poststed}
+                {getAddress?.postnummer} {getAddress?.poststed}
               </p>
               <div className="flex items-center gap-4">
                 <div className="text-secondary text-base">
                   Gnr:{" "}
                   <span className="text-black font-semibold">
-                    {!loadingAdditionalData && getAddress?.gardsnummer}
+                    {getAddress?.gardsnummer}
                   </span>
                 </div>
                 <div className="text-secondary text-base">
                   Bnr:{" "}
                   <span className="text-black font-semibold">
-                    {!loadingAdditionalData && getAddress?.bruksnummer}
+                    {getAddress?.bruksnummer}
                   </span>
                 </div>
                 <div className="text-secondary text-base">
                   Snr:{" "}
                   <span className="text-black font-semibold">
-                    {!loadingAdditionalData && getAddress?.bokstav}
+                    {getAddress?.bokstav}
                   </span>
                 </div>
                 <div className="text-secondary text-base">
                   <span className="text-black font-semibold">
-                    {!loadingAdditionalData &&
-                      getAddress?.representasjonspunkt &&
-                      !loadingAdditionalData &&
+                    {getAddress?.representasjonspunkt &&
                       getAddress?.representasjonspunkt.lat.toFixed(2)}
                   </span>{" "}
                   moh.
@@ -86,42 +84,50 @@ const PropertyDetail: React.FC<any> = ({
               </div>
             </div>
             <div className="flex items-center gap-[24px]">
-              <div className="flex flex-col gap-[16px]">
-                <div className="flex items-center gap-[16px]">
-                  <Image src={Ic_Check_icon} alt="icon" />
-                  <p className="text-secondary text-sm font-semibold">
-                    Denne eiendommen er{" "}
-                    <span className="text-black">
-                      ferdig regulert til boligformål
-                    </span>
-                  </p>
-                </div>
-                {!loadingAdditionalData && askData && (
-                  <div className="flex items-center gap-[16px]">
-                    <Image src={Ic_percentage_icon} alt="icon" />
-                    <p className="text-secondary text-sm font-semibold">
-                      Eiendommen har en{" "}
-                      <span className="text-black">
-                        utnyttelsesgrad på{" "}
-                        {askData?.bya_calculations?.input?.bya_percentage}%
-                      </span>
-                    </p>
+              <div className="relative">
+                {loadingAdditionalData ? (
+                  <div className="w-[300px] flex flex-col gap-[16px] items-center h-full">
+                    <Loading />
                   </div>
-                )}
-                {!loadingAdditionalData && askData && (
-                  <div className="flex items-center gap-[16px]">
-                    <Image src={Ic_square_mtr_icon} alt="icon" />
-                    <p className="text-secondary text-sm font-semibold">
-                      Boligen kan ha en{" "}
-                      <span className="text-black">
-                        grunnflate på{" "}
-                        {
-                          askData?.bya_calculations?.results
-                            ?.available_building_area
-                        }{" "}
-                        m2
-                      </span>
-                    </p>
+                ) : (
+                  <div className="flex flex-col gap-[16px]">
+                    <div className="flex items-center gap-[16px]">
+                      <Image src={Ic_Check_icon} alt="icon" />
+                      <p className="text-secondary text-sm font-semibold">
+                        Denne eiendommen er{" "}
+                        <span className="text-black">
+                          ferdig regulert til boligformål
+                        </span>
+                      </p>
+                    </div>
+                    {!loadingAdditionalData && askData && (
+                      <div className="flex items-center gap-[16px]">
+                        <Image src={Ic_percentage_icon} alt="icon" />
+                        <p className="text-secondary text-sm font-semibold">
+                          Eiendommen har en{" "}
+                          <span className="text-black">
+                            utnyttelsesgrad på{" "}
+                            {askData?.bya_calculations?.input?.bya_percentage}%
+                          </span>
+                        </p>
+                      </div>
+                    )}
+                    {!loadingAdditionalData && askData && (
+                      <div className="flex items-center gap-[16px]">
+                        <Image src={Ic_square_mtr_icon} alt="icon" />
+                        <p className="text-secondary text-sm font-semibold">
+                          Boligen kan ha en{" "}
+                          <span className="text-black">
+                            grunnflate på{" "}
+                            {
+                              askData?.bya_calculations?.results
+                                ?.available_building_area
+                            }{" "}
+                            m2
+                          </span>
+                        </p>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
