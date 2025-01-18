@@ -76,7 +76,8 @@ const Regulations = () => {
 
           const CadastreDataResponse =
             await ApiUtils.fetchCadastreData(lamdaApiData);
-          setCadastreDataFromApi(CadastreDataResponse.item);
+
+          setCadastreDataFromApi(CadastreDataResponse.apis);
 
           setLamdaDataFromApi(data);
           setLoadingLamdaData(false);

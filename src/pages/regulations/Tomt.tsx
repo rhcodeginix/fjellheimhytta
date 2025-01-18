@@ -4,7 +4,6 @@ import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
 import Ic_generelt from "@/public/images/Ic_generelt.svg";
 // import Ic_tak from "@/public/images/Ic_tak.svg";
 import Ic_check_true from "@/public/images/Ic_check_true.svg";
-// import Img_product_detail_map from "@/public/images/Img_product_detail_map.png";
 import Image from "next/image";
 import Ic_steddy from "@/public/images/Ic_steddy.svg";
 import Ic_build_housing from "@/public/images/Ic_build_housing.svg";
@@ -22,6 +21,7 @@ import { useAddress } from "@/context/addressContext";
 import LoginForm from "../login/loginForm";
 import { useRouter } from "next/router";
 import Loading from "@/components/Loading";
+import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
 
 const Tomt: React.FC<{
   loginUser: any;
@@ -138,6 +138,17 @@ const Tomt: React.FC<{
   delete router_query.login_popup;
 
   const queryString = new URLSearchParams(router_query).toString();
+  // console.log(CadastreDataFromApi?.buildingsApi?.response?.items);
+
+  // const nearbyBuildingCoordinates =
+  //   CadastreDataFromApi?.buildingsApi?.response?.items.map((building: any) => {
+  //     const [longitude, latitude] =
+  //       building.geojson.features[0].geometry.coordinates;
+  //     return {
+  //       latitude,
+  //       longitude,
+  //     };
+  //   });
 
   if (loadingLamdaData) {
     <Loader />;
@@ -219,28 +230,7 @@ const Tomt: React.FC<{
                             }
                           </td>
                         </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Registrert JordskifteKrevd
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.basisInformasjon?.harRegistrertJordskifteKrevd
-                            }
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Inngår i annen eiendom
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.basisInformasjon?.inngarISamlaFastEiendom
-                            }
-                          </td>
-                        </tr>
+
                         <tr className="flex gap-[10px] justify-between">
                           <td className="text-left pb-[16px] text-secondary text-sm">
                             parkering område per plass
@@ -257,7 +247,8 @@ const Tomt: React.FC<{
                             numberOfPlots
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.numberOfPlots === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .numberOfPlots === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -267,7 +258,8 @@ const Tomt: React.FC<{
                             pointHitch
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.pointHitch === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .pointHitch === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -277,7 +269,8 @@ const Tomt: React.FC<{
                             zeroConcession
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.zeroConcession === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .zeroConcession === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -287,7 +280,10 @@ const Tomt: React.FC<{
                             unitName
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.unitName}
+                            {
+                              CadastreDataFromApi?.cadastreApi?.response?.item
+                                .unitName
+                            }
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -295,7 +291,10 @@ const Tomt: React.FC<{
                             specifiedArea
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.specifiedArea}
+                            {
+                              CadastreDataFromApi?.cadastreApi?.response?.item
+                                .specifiedArea
+                            }
                           </td>
                         </tr>
                       </tbody>
@@ -408,7 +407,8 @@ const Tomt: React.FC<{
                             agriculturalCadastre
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.agriculturalCadastre === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .agriculturalCadastre === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -418,7 +418,8 @@ const Tomt: React.FC<{
                             canBeMortgaged
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.canBeMortgaged === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .canBeMortgaged === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -428,7 +429,8 @@ const Tomt: React.FC<{
                             canBeSold
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.canBeSold === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .canBeSold === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -438,7 +440,8 @@ const Tomt: React.FC<{
                             hasActiveLeasedLand
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.hasActiveLeasedLand === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .hasActiveLeasedLand === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -448,7 +451,8 @@ const Tomt: React.FC<{
                             hasBuilding
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.hasBuilding === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .hasBuilding === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -458,7 +462,8 @@ const Tomt: React.FC<{
                             hasHolidayHome
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.hasHolidayHome === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .hasHolidayHome === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -468,7 +473,8 @@ const Tomt: React.FC<{
                             hasHousing
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.hasHousing === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .hasHousing === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -478,7 +484,8 @@ const Tomt: React.FC<{
                             hasNotedComplaint
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.hasNotedComplaint === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .hasNotedComplaint === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -488,7 +495,8 @@ const Tomt: React.FC<{
                             hasOldCadastre
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.hasOldCadastre === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .hasOldCadastre === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -498,8 +506,8 @@ const Tomt: React.FC<{
                             hasRegisteredLandAcquisition
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.hasRegisteredLandAcquisition ===
-                            true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .hasRegisteredLandAcquisition === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -633,7 +641,8 @@ const Tomt: React.FC<{
                             hasSingleHeritage
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.hasSingleHeritage === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .hasSingleHeritage === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -643,7 +652,8 @@ const Tomt: React.FC<{
                             hasSoilContamination
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.hasSoilContamination === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .hasSoilContamination === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -653,7 +663,8 @@ const Tomt: React.FC<{
                             leasehold
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.ident?.leasehold === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .ident?.leasehold === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -663,7 +674,10 @@ const Tomt: React.FC<{
                             leaseholdUnitNumber
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.ident?.leaseholdUnitNumber}
+                            {
+                              CadastreDataFromApi?.cadastreApi?.response?.item
+                                .ident?.leaseholdUnitNumber
+                            }
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -671,8 +685,8 @@ const Tomt: React.FC<{
                             includedInTotalRealEstate
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.includedInTotalRealEstate ===
-                            true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .includedInTotalRealEstate === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -682,8 +696,8 @@ const Tomt: React.FC<{
                             isHistoricalRegisteredLand
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.isHistoricalRegisteredLand ===
-                            true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .isHistoricalRegisteredLand === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -693,7 +707,8 @@ const Tomt: React.FC<{
                             isRegisteredLand
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.isRegisteredLand === true
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .isRegisteredLand === true
                               ? "Ja"
                               : "Nei"}
                           </td>
@@ -703,7 +718,10 @@ const Tomt: React.FC<{
                             regionnavn
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.municipality?.regionName}
+                            {
+                              CadastreDataFromApi?.cadastreApi?.response?.item
+                                .municipality?.regionName
+                            }
                           </td>
                         </tr>
                       </tbody>
@@ -782,6 +800,7 @@ const Tomt: React.FC<{
                   coordinates={
                     lamdaDataFromApi?.coordinates?.convertedCoordinates
                   }
+                  // nearbyBuildingCoordinates={nearbyBuildingCoordinates}
                 />
               </div>
             </div>
@@ -838,11 +857,82 @@ const Tomt: React.FC<{
           ></div>
         )}
       </SideSpaceContainer>
+
+      <SideSpaceContainer>
+        {loadingLamdaData ? (
+          <div className="relative">
+            <Loading />
+          </div>
+        ) : (
+          <>
+            <h2 className="text-black text-2xl font-semibold mb-6">
+              Buildings Near by
+            </h2>
+            <div className="grid grid-cols-4 gap-6 mb-16">
+              {CadastreDataFromApi?.buildingsApi?.response?.items.map(
+                (item: any, index: number) => (
+                  <div
+                    className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4"
+                    key={index}
+                  >
+                    <div className="flex flex-col gap-4">
+                      <div className="w-full h-[177px] rounded-[8px]">
+                        <GoogleMapNearByComponent
+                          coordinates={item?.position?.geometry?.coordinates}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <h3 className="text-black font-semibold text-lg second_line_elipse">
+                          {item?.typeOfBuilding?.text}
+                        </h3>
+                        <p className="text-sm text-[#4A5578]">
+                          {item?.buildingStatus?.text}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-[2px]">
+                      <div className="text-[#4A5578] text-sm">
+                        Total Floors:{" "}
+                        <span className="text-black font-medium text-base">
+                          {item?.numberOfFloors}
+                        </span>
+                      </div>
+                      <div className="text-[#4A5578] text-sm">
+                        Building Area:{" "}
+                        <span className="text-black font-medium text-base">
+                          {item?.builtUpArea} m2
+                        </span>
+                      </div>
+                      <div className="text-[#4A5578] text-sm">
+                        Approved Date:{" "}
+                        <span className="text-black font-medium text-base">
+                          {formatDateToDDMMYYYY(item?.approvedDate?.timestamp)}
+                        </span>
+                      </div>
+                      <div className="text-[#4A5578] text-sm">
+                        Primary Floor Area:{" "}
+                        <span className="text-black font-medium text-base">
+                          {item?.floors[0]?.totalUsableArea} m2
+                        </span>
+                      </div>
+                      <div className="text-[#4A5578] font-bold text-sm">
+                        Makes up 10.89% of possible BYA
+                      </div>
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          </>
+        )}
+      </SideSpaceContainer>
+
       <div
         className="sticky bottom-0 bg-white py-6"
         style={{
           boxShadow:
             "0px -4px 6px -2px #10182808, 0px -12px 16px -4px #10182814",
+          zIndex: 9999,
         }}
       >
         <SideSpaceContainer>

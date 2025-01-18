@@ -143,39 +143,25 @@ const ApiUtils = {
     }
   },
   fetchCadastreData: async function (data: any) {
-    const url = `https://api.ambita.com/realty/v1/cadastres/${data.kommunenummer}-${data.gardsnummer}-${data.bruksnummer}-0-0?page=1&pagesize=50&positions=true`;
+    // const url = `https://api.ambita.com/realty/v1/cadastres/${data.kommunenummer}-${data.gardsnummer}-${data.bruksnummer}-0-0?page=1&pagesize=50&positions=true`;
+    const url = `https://2nbi2lu6ki.execute-api.eu-north-1.amazonaws.com/default/cadastre/${data.kommunenummer}-${data.gardsnummer}-${data.bruksnummer}-0-0`;
 
-    const tokenUrl = "https://api.ambita.com/authentication/v2/token";
-    const tokenHeaders = {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Cookie:
-        "PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgYzZjNjMxMWMtOTQ4Yy00MjE0LWFhODktOTBiNzgyODA3ZTNkIn0sIm5iZiI6MTczNzA5NDg4NywiaWF0IjoxNzM3MDk0ODg3fQ.cn1cUU0kycWIcCu0VOYM0a1I8E9_lT2cRR8RSbPtb1A",
-    };
+    // const tokenUrl = "https://api.ambita.com/authentication/v2/token";
+    // const tokenHeaders = {
+    //   "Content-Type": "application/x-www-form-urlencoded",
+    //   Cookie:
+    //     "PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgYzZjNjMxMWMtOTQ4Yy00MjE0LWFhODktOTBiNzgyODA3ZTNkIn0sIm5iZiI6MTczNzA5NDg4NywiaWF0IjoxNzM3MDk0ODg3fQ.cn1cUU0kycWIcCu0VOYM0a1I8E9_lT2cRR8RSbPtb1A",
+    // };
 
-    const body = new URLSearchParams({
-      client_id: "NYEINFOLAND",
-      grant_type: "password",
-      username: "fenger@iplot.no",
-      password: "Iplot123!!!",
-    });
+    // const body = new URLSearchParams({
+    //   client_id: "NYEINFOLAND",
+    //   grant_type: "password",
+    //   username: "fenger@iplot.no",
+    //   password: "Iplot123!!!",
+    // });
 
     try {
-      const tokenResponse = await fetch(tokenUrl, {
-        method: "POST",
-        headers: tokenHeaders,
-        body: body.toString(),
-      });
-
-      if (!tokenResponse.ok) {
-        throw new Error(
-          `Failed to fetch new access token! status: ${tokenResponse.status}`
-        );
-      }
-
-      const tokenData = await tokenResponse.json();
-
       const headers = {
-        Authorization: `Bearer ${tokenData.access_token}`,
         "Content-Type": "application/json",
         Cookie:
           "PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgOTIxYmE3ODgtZTA1Ny00Y2YxLWI1ZjAtNmY5YTE5MTkyYWJmIn0sIm5iZiI6MTczNzA5MzczNiwiaWF0IjoxNzM3MDkzNzM2fQ.OwLpiBh_Jr2OZ3HrKYjF_Y1_OwdTal2ENZ1yjenuJM8",
