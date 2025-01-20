@@ -179,10 +179,11 @@ const Tomt: React.FC<{
                             Festenummer
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.basisInformasjon?.festenummer
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.festenummer
+                              ? lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.festenummer
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -190,10 +191,11 @@ const Tomt: React.FC<{
                             Areal beregnet
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.basisInformasjon?.areal_beregnet
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.areal_beregnet
+                              ? lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.areal_beregnet
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -201,10 +203,13 @@ const Tomt: React.FC<{
                             Etableringsdato
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {formatDateToDDMMYYYY(
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.basisInformasjon?.etableringsdato
-                            )}
+                            {lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.etableringsdato
+                              ? formatDateToDDMMYYYY(
+                                  lamdaDataFromApi?.eiendomsInformasjon
+                                    ?.basisInformasjon?.etableringsdato
+                                )
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -212,11 +217,14 @@ const Tomt: React.FC<{
                             Sist oppdatert
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {formatDateToDDMMYYYY(
-                              lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
-                                "T"
-                              )[0]
-                            )}
+                            {lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.sist_oppdatert
+                              ? formatDateToDDMMYYYY(
+                                  lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
+                                    "T"
+                                  )[0]
+                                )
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -224,10 +232,11 @@ const Tomt: React.FC<{
                             Total allowed bya
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              askData?.bya_calculations?.results
-                                ?.total_allowed_bya
-                            }
+                            {askData?.bya_calculations?.results
+                              ?.total_allowed_bya
+                              ? askData?.bya_calculations?.results
+                                  ?.total_allowed_bya
+                              : "-"}
                           </td>
                         </tr>
 
@@ -236,10 +245,11 @@ const Tomt: React.FC<{
                             parkering område per plass
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              askData?.bya_calculations?.results?.parking
-                                ?.area_per_space
-                            }
+                            {askData?.bya_calculations?.results?.parking
+                              ?.area_per_space
+                              ? askData?.bya_calculations?.results?.parking
+                                  ?.area_per_space
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -280,10 +290,11 @@ const Tomt: React.FC<{
                             unitName
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              CadastreDataFromApi?.cadastreApi?.response?.item
-                                .unitName
-                            }
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .unitName
+                              ? CadastreDataFromApi?.cadastreApi?.response?.item
+                                  .unitName
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -291,10 +302,11 @@ const Tomt: React.FC<{
                             specifiedArea
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              CadastreDataFromApi?.cadastreApi?.response?.item
-                                .specifiedArea
-                            }
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .specifiedArea
+                              ? CadastreDataFromApi?.cadastreApi?.response?.item
+                                  .specifiedArea
+                              : "-"}
                           </td>
                         </tr>
                       </tbody>
@@ -308,10 +320,11 @@ const Tomt: React.FC<{
                             Seksjonert
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.basisInformasjon?.seksjonert
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.seksjonert
+                              ? lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.seksjonert
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -319,10 +332,11 @@ const Tomt: React.FC<{
                             Tinglyst
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.basisInformasjon?.tinglyst
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.tinglyst
+                              ? lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.tinglyst
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -330,10 +344,11 @@ const Tomt: React.FC<{
                             Kulturminner registrert
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon?.status
-                                ?.kulturminner_registrert
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.status
+                              ?.kulturminner_registrert
+                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                                  ?.kulturminner_registrert
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -341,10 +356,11 @@ const Tomt: React.FC<{
                             Aktive festegrunner
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon?.status
-                                ?.aktive_festegrunner
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.status
+                              ?.aktive_festegrunner
+                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                                  ?.aktive_festegrunner
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -352,10 +368,11 @@ const Tomt: React.FC<{
                             Anmerket klage
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon?.status
-                                ?.anmerket_klage
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.status
+                              ?.anmerket_klage
+                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                                  ?.anmerket_klage
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -363,10 +380,11 @@ const Tomt: React.FC<{
                             Grunnforurensning
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon?.status
-                                ?.grunnforurensning
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.status
+                              ?.grunnforurensning
+                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                                  ?.grunnforurensning
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -374,10 +392,11 @@ const Tomt: React.FC<{
                             Utgått
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon?.status
-                                ?.utgatt
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.status
+                              ?.utgatt
+                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                                  ?.utgatt
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -385,10 +404,11 @@ const Tomt: React.FC<{
                             Under Sammenslåing
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon?.status
-                                ?.under_sammenslaing
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.status
+                              ?.under_sammenslaing
+                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                                  ?.under_sammenslaing
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -534,10 +554,11 @@ const Tomt: React.FC<{
                             Kommunenr
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.kommune_info?.kommunenr
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                              ?.kommunenr
+                              ? lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.kommune_info?.kommunenr
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -545,10 +566,11 @@ const Tomt: React.FC<{
                             Gårdsnummer
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.kommune_info?.gaardsnummer
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                              ?.gaardsnummer
+                              ? lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.kommune_info?.gaardsnummer
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -556,10 +578,11 @@ const Tomt: React.FC<{
                             Bruksnummer
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.kommune_info?.bruksnummer
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                              ?.bruksnummer
+                              ? lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.kommune_info?.bruksnummer
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -567,10 +590,11 @@ const Tomt: React.FC<{
                             Festenr
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.kommune_info?.festenr
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                              ?.festenr
+                              ? lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.kommune_info?.festenr
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -578,10 +602,11 @@ const Tomt: React.FC<{
                             Seksjonsnr
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.kommune_info?.seksjonsnr
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                              ?.seksjonsnr
+                              ? lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.kommune_info?.seksjonsnr
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -589,7 +614,9 @@ const Tomt: React.FC<{
                             Bruksnavn
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn}
+                            {lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
+                              ? lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -597,10 +624,11 @@ const Tomt: React.FC<{
                             Oppmåling ikke fullført
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon?.status
-                                ?.oppmaling_ikke_fullfort
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.status
+                              ?.oppmaling_ikke_fullfort
+                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                                  ?.oppmaling_ikke_fullfort
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -608,10 +636,11 @@ const Tomt: React.FC<{
                             Mangler grensepunktmerking
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              lamdaDataFromApi?.eiendomsInformasjon?.status
-                                ?.mangler_grensepunktmerking
-                            }
+                            {lamdaDataFromApi?.eiendomsInformasjon?.status
+                              ?.mangler_grensepunktmerking
+                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                                  ?.mangler_grensepunktmerking
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -619,10 +648,11 @@ const Tomt: React.FC<{
                             parkering nødvendig plass
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              askData?.bya_calculations?.results?.parking
-                                ?.required_spaces
-                            }
+                            {askData?.bya_calculations?.results?.parking
+                              ?.required_spaces
+                              ? askData?.bya_calculations?.results?.parking
+                                  ?.required_spaces
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -630,10 +660,11 @@ const Tomt: React.FC<{
                             totalt parkering område
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              askData?.bya_calculations?.results?.parking
-                                ?.total_parking_area
-                            }
+                            {askData?.bya_calculations?.results?.parking
+                              ?.total_parking_area
+                              ? askData?.bya_calculations?.results?.parking
+                                  ?.total_parking_area
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -674,10 +705,11 @@ const Tomt: React.FC<{
                             leaseholdUnitNumber
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              CadastreDataFromApi?.cadastreApi?.response?.item
-                                .ident?.leaseholdUnitNumber
-                            }
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .ident?.leaseholdUnitNumber
+                              ? CadastreDataFromApi?.cadastreApi?.response?.item
+                                  .ident?.leaseholdUnitNumber
+                              : "-"}
                           </td>
                         </tr>
                         <tr className="flex gap-[10px] justify-between">
@@ -718,10 +750,11 @@ const Tomt: React.FC<{
                             regionnavn
                           </td>
                           <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {
-                              CadastreDataFromApi?.cadastreApi?.response?.item
-                                .municipality?.regionName
-                            }
+                            {CadastreDataFromApi?.cadastreApi?.response?.item
+                              .municipality?.regionName
+                              ? CadastreDataFromApi?.cadastreApi?.response?.item
+                                  .municipality?.regionName
+                              : "-"}
                           </td>
                         </tr>
                       </tbody>
