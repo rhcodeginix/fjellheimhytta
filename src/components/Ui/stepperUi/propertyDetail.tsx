@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
-import Img_product_detail1 from "@/public/images/Img_product_detail1.png";
-import Img_product_detail2 from "@/public/images/Img_product_detail2.png";
+import Img_line_bg from "@/public/images/Img_line_bg.png";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import Ic_Check_icon from "@/public/images/Ic_Check_icon.svg";
-import Ic_percentage_icon from "@/public/images/Ic_percentage_icon.svg";
-import Ic_square_mtr_icon from "@/public/images/Ic_square_mtr_icon.svg";
+import Ic_check_green_icon from "@/public/images/Ic_check_green_icon.svg";
 import Ic_product_detail_avatar from "@/public/images/Ic_product_detail_avatar.svg";
 import Ic_product_detail_position from "@/public/images/Ic_product_detail_position.svg";
 import Ic_chevron_right from "@/public/images/Ic_chevron_right.svg";
@@ -14,33 +11,18 @@ import Loading from "@/components/Loading";
 
 const PropertyDetail: React.FC<any> = ({
   isShow,
-  additionalData,
   loadingAdditionalData,
+  askData,
 }) => {
   const { getAddress } = useAddress();
-
-  const [askData, setAskData] = useState<any | null>(null);
-
-  useEffect(() => {
-    if (additionalData?.answer) {
-      try {
-        const cleanAnswer = additionalData.answer;
-
-        setAskData(cleanAnswer);
-      } catch (error) {
-        console.error("Error parsing additionalData.answer:", error);
-        setAskData(null);
-      }
-    }
-  }, [additionalData]);
 
   return (
     <>
       <div className="bg-lightPurple py-[20px] relative">
         <Image
-          src={Img_product_detail1}
+          src={Img_line_bg}
           alt="image"
-          className="absolute top-0 left-0"
+          className="absolute top-0 left-0 w-full h-full"
           style={{ zIndex: 1 }}
         />
         <SideSpaceContainer>
@@ -52,9 +34,11 @@ const PropertyDetail: React.FC<any> = ({
               <h2 className="text-black text-[32px] font-semibold mb-2">
                 {getAddress?.adressetekst}
               </h2>
-              <p className="text-secondary fs-xl mb-4">
+              <p className="text-secondary text-xl">
                 {getAddress?.postnummer} {getAddress?.poststed}
               </p>
+            </div>
+            <div className="flex items-center gap-[24px]">
               <div className="flex items-center gap-4">
                 <div className="text-secondary text-base">
                   Gnr:{" "}
@@ -81,55 +65,6 @@ const PropertyDetail: React.FC<any> = ({
                   </span>{" "}
                   moh.
                 </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-[24px]">
-              <div className="relative">
-                {loadingAdditionalData ? (
-                  <div className="w-[300px] flex flex-col gap-[16px] items-center h-full">
-                    <Loading />
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-[16px]">
-                    <div className="flex items-center gap-[16px]">
-                      <Image src={Ic_Check_icon} alt="icon" />
-                      <p className="text-secondary text-sm font-semibold">
-                        Denne eiendommen er{" "}
-                        <span className="text-black">
-                          ferdig regulert til boligformål
-                        </span>
-                      </p>
-                    </div>
-                    {!loadingAdditionalData && askData && (
-                      <div className="flex items-center gap-[16px]">
-                        <Image src={Ic_percentage_icon} alt="icon" />
-                        <p className="text-secondary text-sm font-semibold">
-                          Eiendommen har en{" "}
-                          <span className="text-black">
-                            utnyttelsesgrad på{" "}
-                            {askData?.bya_calculations?.input?.bya_percentage}%
-                          </span>
-                        </p>
-                      </div>
-                    )}
-                    {!loadingAdditionalData && askData && (
-                      <div className="flex items-center gap-[16px]">
-                        <Image src={Ic_square_mtr_icon} alt="icon" />
-                        <p className="text-secondary text-sm font-semibold">
-                          Boligen kan ha en{" "}
-                          <span className="text-black">
-                            grunnflate på{" "}
-                            {
-                              askData?.bya_calculations?.results
-                                ?.available_building_area
-                            }{" "}
-                            m2
-                          </span>
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
               </div>
               {isShow && (
                 <div
@@ -159,12 +94,62 @@ const PropertyDetail: React.FC<any> = ({
             </div>
           </div>
         </SideSpaceContainer>
-        <Image
-          src={Img_product_detail2}
-          alt="image"
-          className="absolute top-0 right-0"
-          style={{ zIndex: 1 }}
-        />
+      </div>
+      <div className="bg-darkGreen py-5 relative">
+        <SideSpaceContainer>
+          {loadingAdditionalData ? (
+            <div className="w-[300px] flex flex-col gap-[16px] items-center h-full">
+              <Loading />
+            </div>
+          ) : (
+            <div className="flex gap-[125px] justify-between">
+              <div className="w-1/4 flex items-start gap-3">
+                <Image src={Ic_check_green_icon} alt="check" />
+                <div className="flex flex-col gap-1">
+                  <p className="text-white text-sm">Eiendommen er</p>
+                  <p className="text-white text-base font-semibold">
+                    ferdig regulert til boligformål
+                  </p>
+                </div>
+              </div>
+              <div className="w-1/4 flex items-start gap-3">
+                <Image src={Ic_check_green_icon} alt="check" />
+                <div className="flex flex-col gap-1">
+                  <p className="text-white text-sm">Eiendommen har en</p>
+                  <p className="text-white text-base font-semibold">
+                    Utnyttelsesgrad på{" "}
+                    {askData?.bya_calculations?.input?.bya_percentage}%
+                  </p>
+                </div>
+              </div>
+              <div className="w-1/4 flex items-start gap-3">
+                <Image src={Ic_check_green_icon} alt="check" />
+                <div className="flex flex-col gap-1">
+                  <p className="text-white text-sm">Ekisterende BYA</p>
+                  <p className="text-white text-base font-semibold">
+                    Utnyttelsesgrad på 18%
+                  </p>
+                  <p className="text-white text-sm">Tilgjengelig BYA 7% </p>
+                </div>
+              </div>
+              <div className="w-1/4 flex items-start gap-3">
+                <Image src={Ic_check_green_icon} alt="check" />
+                <div className="flex flex-col gap-1">
+                  <p className="text-white text-sm">Boligen kan ha en</p>
+                  <p className="text-white text-base font-semibold">
+                    Grunnflate på{" "}
+                    {
+                      askData?.bya_calculations?.results
+                        ?.available_building_area
+                    }{" "}
+                    m2
+                  </p>
+                  <p className="text-white text-sm">Tilgjengelig 67,42 m2</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </SideSpaceContainer>
       </div>
     </>
   );

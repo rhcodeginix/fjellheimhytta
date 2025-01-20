@@ -24,6 +24,7 @@ const config: Config = {
       red: "red",
       gray2: "#D0D5DD",
       gray3: "#F9F9FB",
+      darkGreen: "#125D56",
     },
     borderColor: {
       transparent: "transparent",

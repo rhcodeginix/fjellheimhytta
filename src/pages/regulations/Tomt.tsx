@@ -6,10 +6,6 @@ import Ic_generelt from "@/public/images/Ic_generelt.svg";
 import Ic_check_true from "@/public/images/Ic_check_true.svg";
 import Image from "next/image";
 import Ic_steddy from "@/public/images/Ic_steddy.svg";
-import Ic_build_housing from "@/public/images/Ic_build_housing.svg";
-import Ic_build_garage from "@/public/images/Ic_build_garage.svg";
-import Ic_building_platting from "@/public/images/Ic_building_platting.svg";
-import Ic_Superstructure from "@/public/images/Ic_Superstructure.svg";
 import Ic_vapp from "@/public/images/Ic_vapp.svg";
 import Button from "@/components/common/button";
 import * as Yup from "yup";
@@ -49,32 +45,6 @@ const Tomt: React.FC<{
   const router = useRouter();
   const { getAddress } = useAddress();
 
-  const items = [
-    {
-      id: 1,
-      imageSrc: Ic_build_housing,
-      title: "Bygge bolig",
-      price: "2.490.000 NOK",
-    },
-    {
-      id: 2,
-      imageSrc: Ic_build_garage,
-      title: "Bygge garasje",
-      price: "295.899 NOK",
-    },
-    {
-      id: 1,
-      imageSrc: Ic_Superstructure,
-      title: "Påbygg",
-      price: "490.000 NOK",
-    },
-    {
-      id: 1,
-      imageSrc: Ic_building_platting,
-      title: "Bygge platting",
-      price: "295.899 NOK",
-    },
-  ];
   const [loginPopup, setLoginPopup] = useState(false);
 
   function formatDateToDDMMYYYY(dateString: any) {
@@ -88,7 +58,7 @@ const Tomt: React.FC<{
     const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
     const year = dateObject.getFullYear();
 
-    return `${day}-${month}-${year}`;
+    return `${day}.${month}.${year}`;
   }
 
   const validationLoginSchema = Yup.object().shape({
@@ -138,17 +108,6 @@ const Tomt: React.FC<{
   delete router_query.login_popup;
 
   const queryString = new URLSearchParams(router_query).toString();
-  // console.log(CadastreDataFromApi?.buildingsApi?.response?.items);
-
-  // const nearbyBuildingCoordinates =
-  //   CadastreDataFromApi?.buildingsApi?.response?.items.map((building: any) => {
-  //     const [longitude, latitude] =
-  //       building.geojson.features[0].geometry.coordinates;
-  //     return {
-  //       latitude,
-  //       longitude,
-  //     };
-  //   });
 
   if (loadingLamdaData) {
     <Loader />;
@@ -157,610 +116,517 @@ const Tomt: React.FC<{
     <div className="relative">
       <PropertyDetail
         isShow={false}
-        additionalData={additionalData}
         loadingAdditionalData={loadingAdditionalData}
+        askData={askData}
       />
-      <SideSpaceContainer className="relative">
-        <div className="pt-[26px] pb-[46px] relative flex gap-[40px]">
+
+      <SideSpaceContainer className="relative pt-[60px] pb-[46px]">
+        <h2 className="text-black text-2xl font-semibold mb-6">
+          Eiendomsinformajon
+        </h2>
+        <div className="grid grid-cols-6 gap-6 mb-[60px]">
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Festenummer</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                ?.festenummer
+                ? lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                    ?.festenummer
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Areal beregnet</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                ?.areal_beregnet
+                ? lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                    ?.areal_beregnet
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Etableringsdato</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                ?.etableringsdato
+                ? formatDateToDDMMYYYY(
+                    lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                      ?.etableringsdato
+                  )
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Sist oppdatert</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                ?.sist_oppdatert
+                ? formatDateToDDMMYYYY(
+                    lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
+                      "T"
+                    )[0]
+                  )
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Total allowed bya</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {askData?.bya_calculations?.results?.total_allowed_bya
+                ? askData?.bya_calculations?.results?.total_allowed_bya
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">
+              parkering område per plass
+            </div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {askData?.bya_calculations?.results?.parking?.area_per_space
+                ? askData?.bya_calculations?.results?.parking?.area_per_space
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">numberOfPlots</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .numberOfPlots === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">pointHitch</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item.pointHitch ===
+              true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">zeroConcession</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .zeroConcession === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">unitName</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item.unitName
+                ? CadastreDataFromApi?.cadastreApi?.response?.item.unitName
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">specifiedArea</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item.specifiedArea
+                ? CadastreDataFromApi?.cadastreApi?.response?.item.specifiedArea
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Seksjonert</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                ?.seksjonert
+                ? lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                    ?.seksjonert
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Tinglyst</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.tinglyst
+                ? lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                    ?.tinglyst
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">
+              Kulturminner registrert
+            </div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.status
+                ?.kulturminner_registrert
+                ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                    ?.kulturminner_registrert
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Aktive festegrunner</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.status
+                ?.aktive_festegrunner
+                ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                    ?.aktive_festegrunner
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Anmerket klage</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.status?.anmerket_klage
+                ? lamdaDataFromApi?.eiendomsInformasjon?.status?.anmerket_klage
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Grunnforurensning</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.status?.grunnforurensning
+                ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                    ?.grunnforurensning
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Utgått</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.status?.utgatt
+                ? lamdaDataFromApi?.eiendomsInformasjon?.status?.utgatt
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Under Sammenslåing</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.status?.under_sammenslaing
+                ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                    ?.under_sammenslaing
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">parkering er usikker</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {askData?.bya_calculations?.results?.parking?.is_uncertain ===
+              true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">agriculturalCadastre</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .agriculturalCadastre === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">canBeMortgaged</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .canBeMortgaged === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">canBeSold</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item.canBeSold ===
+              true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">hasActiveLeasedLand</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .hasActiveLeasedLand === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">hasBuilding</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item.hasBuilding ===
+              true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">hasHolidayHome</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .hasHolidayHome === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">hasHousing</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item.hasHousing ===
+              true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">hasNotedComplaint</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .hasNotedComplaint === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">hasOldCadastre</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .hasOldCadastre === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">
+              hasRegisteredLandAcquisition
+            </div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .hasRegisteredLandAcquisition === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Kommune</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {/* {
+                          lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                            ?.kommune} */}
+              {getAddress?.kommunenavn}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Kommunenr</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.kommunenr
+                ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.kommunenr
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Gårdsnummer</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.gaardsnummer
+                ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                    ?.gaardsnummer
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Bruksnummer</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.bruksnummer
+                ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                    ?.bruksnummer
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Festenr</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.festenr
+                ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.festenr
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Seksjonsnr</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.seksjonsnr
+                ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                    ?.seksjonsnr
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">Bruksnavn</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
+                ? lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">
+              Oppmåling ikke fullført
+            </div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.status
+                ?.oppmaling_ikke_fullfort
+                ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                    ?.oppmaling_ikke_fullfort
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">
+              Mangler grensepunktmerking
+            </div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {lamdaDataFromApi?.eiendomsInformasjon?.status
+                ?.mangler_grensepunktmerking
+                ? lamdaDataFromApi?.eiendomsInformasjon?.status
+                    ?.mangler_grensepunktmerking
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">
+              parkering nødvendig plass
+            </div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {askData?.bya_calculations?.results?.parking?.required_spaces
+                ? askData?.bya_calculations?.results?.parking?.required_spaces
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">
+              totalt parkering område
+            </div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {askData?.bya_calculations?.results?.parking?.total_parking_area
+                ? askData?.bya_calculations?.results?.parking
+                    ?.total_parking_area
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">hasSingleHeritage</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .hasSingleHeritage === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">hasSoilContamination</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .hasSoilContamination === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">leasehold</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item.ident
+                ?.leasehold === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">leaseholdUnitNumber</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item.ident
+                ?.leaseholdUnitNumber
+                ? CadastreDataFromApi?.cadastreApi?.response?.item.ident
+                    ?.leaseholdUnitNumber
+                : "-"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">
+              includedInTotalRealEstate
+            </div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .includedInTotalRealEstate === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">
+              isHistoricalRegisteredLand
+            </div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .isHistoricalRegisteredLand === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">isRegisteredLand</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .isRegisteredLand === true
+                ? "Ja"
+                : "Nei"}
+            </div>
+          </div>
+          <div className="flex gap-1 flex-col">
+            <div className="text-secondary text-sm">regionnavn</div>
+            <div className="text-black text-sm font-semibold w-full truncate">
+              {CadastreDataFromApi?.cadastreApi?.response?.item.municipality
+                ?.regionName
+                ? CadastreDataFromApi?.cadastreApi?.response?.item.municipality
+                    ?.regionName
+                : "-"}
+            </div>
+          </div>
+        </div>
+        <div className="relative flex gap-[40px]">
+          <div className="w-[34%]">
+            <h2 className="text-black text-2xl font-semibold mb-6">
+              Kartutsnitt
+            </h2>
+            <div className="rounded-[12px] overflow-hidden w-full mb-[60px]">
+              <div className="h-[400px]">
+                <GoogleMapComponent
+                  coordinates={
+                    lamdaDataFromApi?.coordinates?.convertedCoordinates
+                  }
+                  // nearbyBuildingCoordinates={nearbyBuildingCoordinates}
+                />
+              </div>
+            </div>
+            <div className="flex items-center gap-[36px] mb-6 bg-[#F9F9FB] rounded-[8px] py-5 px-6">
+              <Image src={Ic_steddy} alt="logo" />
+              <p className="text-secondary text-sm">
+                Vi hjelper deg med{" "}
+                <span className="text-black font-semibold">
+                  reguleringer, søknader
+                </span>{" "}
+                og{" "}
+                <span className="text-black font-semibold">
+                  innheter tilbud.
+                </span>
+              </p>
+            </div>
+            <ContactForm />
+          </div>
           <div className="w-[66%]">
             {loadingLamdaData ? (
               <Loader />
             ) : (
               <>
-                <h2 className="text-black text-2xl font-semibold mb-6">
-                  Eiendomsinformajon
-                </h2>
-                <div className="w-full flex gap-8 mb-[60px]">
-                  <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
-                    <table className="table-auto border-0 w-full text-left property_detail_tbl">
-                      <tbody>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Festenummer
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon
-                              ?.basisInformasjon?.festenummer
-                              ? lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.basisInformasjon?.festenummer
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Areal beregnet
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon
-                              ?.basisInformasjon?.areal_beregnet
-                              ? lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.basisInformasjon?.areal_beregnet
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Etableringsdato
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon
-                              ?.basisInformasjon?.etableringsdato
-                              ? formatDateToDDMMYYYY(
-                                  lamdaDataFromApi?.eiendomsInformasjon
-                                    ?.basisInformasjon?.etableringsdato
-                                )
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Sist oppdatert
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon
-                              ?.basisInformasjon?.sist_oppdatert
-                              ? formatDateToDDMMYYYY(
-                                  lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
-                                    "T"
-                                  )[0]
-                                )
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Total allowed bya
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {askData?.bya_calculations?.results
-                              ?.total_allowed_bya
-                              ? askData?.bya_calculations?.results
-                                  ?.total_allowed_bya
-                              : "-"}
-                          </td>
-                        </tr>
-
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            parkering område per plass
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {askData?.bya_calculations?.results?.parking
-                              ?.area_per_space
-                              ? askData?.bya_calculations?.results?.parking
-                                  ?.area_per_space
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            numberOfPlots
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .numberOfPlots === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            pointHitch
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .pointHitch === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            zeroConcession
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .zeroConcession === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            unitName
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .unitName
-                              ? CadastreDataFromApi?.cadastreApi?.response?.item
-                                  .unitName
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            specifiedArea
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .specifiedArea
-                              ? CadastreDataFromApi?.cadastreApi?.response?.item
-                                  .specifiedArea
-                              : "-"}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
-                    <table className="table-auto border-0 w-full text-left property_detail_tbl">
-                      <tbody>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Seksjonert
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon
-                              ?.basisInformasjon?.seksjonert
-                              ? lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.basisInformasjon?.seksjonert
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Tinglyst
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon
-                              ?.basisInformasjon?.tinglyst
-                              ? lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.basisInformasjon?.tinglyst
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Kulturminner registrert
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.status
-                              ?.kulturminner_registrert
-                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                                  ?.kulturminner_registrert
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Aktive festegrunner
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.status
-                              ?.aktive_festegrunner
-                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                                  ?.aktive_festegrunner
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Anmerket klage
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.status
-                              ?.anmerket_klage
-                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                                  ?.anmerket_klage
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Grunnforurensning
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.status
-                              ?.grunnforurensning
-                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                                  ?.grunnforurensning
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Utgått
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.status
-                              ?.utgatt
-                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                                  ?.utgatt
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Under Sammenslåing
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.status
-                              ?.under_sammenslaing
-                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                                  ?.under_sammenslaing
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            parkering er usikker
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {askData?.bya_calculations?.results?.parking
-                              ?.is_uncertain === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            agriculturalCadastre
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .agriculturalCadastre === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            canBeMortgaged
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .canBeMortgaged === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            canBeSold
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .canBeSold === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            hasActiveLeasedLand
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .hasActiveLeasedLand === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            hasBuilding
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .hasBuilding === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            hasHolidayHome
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .hasHolidayHome === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            hasHousing
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .hasHousing === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            hasNotedComplaint
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .hasNotedComplaint === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            hasOldCadastre
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .hasOldCadastre === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            hasRegisteredLandAcquisition
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .hasRegisteredLandAcquisition === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="w-2/6 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
-                    <table className="table-auto border-0 w-full text-left property_detail_tbl">
-                      <tbody>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Kommune
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {/* {
-                          lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.kommune} */}
-                            {getAddress?.kommunenavn}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Kommunenr
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                              ?.kommunenr
-                              ? lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.kommune_info?.kommunenr
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Gårdsnummer
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                              ?.gaardsnummer
-                              ? lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.kommune_info?.gaardsnummer
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Bruksnummer
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                              ?.bruksnummer
-                              ? lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.kommune_info?.bruksnummer
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Festenr
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                              ?.festenr
-                              ? lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.kommune_info?.festenr
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Seksjonsnr
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                              ?.seksjonsnr
-                              ? lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.kommune_info?.seksjonsnr
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Bruksnavn
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
-                              ? lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Oppmåling ikke fullført
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.status
-                              ?.oppmaling_ikke_fullfort
-                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                                  ?.oppmaling_ikke_fullfort
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            Mangler grensepunktmerking
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {lamdaDataFromApi?.eiendomsInformasjon?.status
-                              ?.mangler_grensepunktmerking
-                              ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                                  ?.mangler_grensepunktmerking
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            parkering nødvendig plass
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {askData?.bya_calculations?.results?.parking
-                              ?.required_spaces
-                              ? askData?.bya_calculations?.results?.parking
-                                  ?.required_spaces
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            totalt parkering område
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {askData?.bya_calculations?.results?.parking
-                              ?.total_parking_area
-                              ? askData?.bya_calculations?.results?.parking
-                                  ?.total_parking_area
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            hasSingleHeritage
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .hasSingleHeritage === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            hasSoilContamination
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .hasSoilContamination === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            leasehold
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .ident?.leasehold === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            leaseholdUnitNumber
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .ident?.leaseholdUnitNumber
-                              ? CadastreDataFromApi?.cadastreApi?.response?.item
-                                  .ident?.leaseholdUnitNumber
-                              : "-"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            includedInTotalRealEstate
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .includedInTotalRealEstate === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            isHistoricalRegisteredLand
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .isHistoricalRegisteredLand === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            isRegisteredLand
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .isRegisteredLand === true
-                              ? "Ja"
-                              : "Nei"}
-                          </td>
-                        </tr>
-                        <tr className="flex gap-[10px] justify-between">
-                          <td className="text-left pb-[16px] text-secondary text-sm">
-                            regionnavn
-                          </td>
-                          <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                            {CadastreDataFromApi?.cadastreApi?.response?.item
-                              .municipality?.regionName
-                              ? CadastreDataFromApi?.cadastreApi?.response?.item
-                                  .municipality?.regionName
-                              : "-"}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
                 <div className="relative">
                   {loadingAdditionalData ? (
                     <Loading />
@@ -823,62 +689,6 @@ const Tomt: React.FC<{
               </>
             )}
           </div>
-          <div className="w-[34%]">
-            <h2 className="text-black text-2xl font-semibold mb-6">
-              Kartutsnitt
-            </h2>
-            <div className="rounded-[12px] overflow-hidden w-full mb-[60px]">
-              <div className="h-[400px]">
-                <GoogleMapComponent
-                  coordinates={
-                    lamdaDataFromApi?.coordinates?.convertedCoordinates
-                  }
-                  // nearbyBuildingCoordinates={nearbyBuildingCoordinates}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center gap-[36px] mb-6">
-                <Image src={Ic_steddy} alt="logo" />
-                <p className="text-secondary text-sm">
-                  Vi hjelper deg med{" "}
-                  <span className="text-black font-semibold">
-                    reguleringer, søknader
-                  </span>{" "}
-                  og{" "}
-                  <span className="text-black font-semibold">
-                    innheter tilbud.
-                  </span>
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-6 mb-6">
-                {items.map((item, index) => (
-                  <div key={index}>
-                    <Image
-                      src={item.imageSrc}
-                      alt={item.title}
-                      className="rounded-full overflow-hidden w-[80px] h-[80px] mb-3"
-                    />
-                    <h6 className="text-black font-medium text-base mb-2">
-                      {item.title}
-                    </h6>
-                    <div className="gap-4 flex items-center justify-between mb-3">
-                      <p className="text-secondary text-sm">Pris fra</p>
-                      <h5 className="text-black text-base font-semibold">
-                        {item.price}
-                      </h5>
-                    </div>
-                    <Button
-                      text="Utforsk boliger"
-                      className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
-                      path=""
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-            <ContactForm />
-          </div>
         </div>
         {!loginUser && (
           <div
@@ -899,7 +709,7 @@ const Tomt: React.FC<{
         ) : (
           <>
             <h2 className="text-black text-2xl font-semibold mb-6">
-              Buildings Near by
+              Eksisterende bebyggelse
             </h2>
             <div className="grid grid-cols-4 gap-6 mb-16">
               {CadastreDataFromApi?.buildingsApi?.response?.items.map(
@@ -925,31 +735,49 @@ const Tomt: React.FC<{
                     </div>
                     <div className="flex flex-col gap-[2px]">
                       <div className="text-[#4A5578] text-sm">
-                        Total Floors:{" "}
+                        Antall etasjer:{" "}
                         <span className="text-black font-medium text-base">
                           {item?.numberOfFloors}
                         </span>
                       </div>
                       <div className="text-[#4A5578] text-sm">
-                        Building Area:{" "}
+                        Bruksareal:{" "}
                         <span className="text-black font-medium text-base">
                           {item?.builtUpArea} m2
                         </span>
                       </div>
                       <div className="text-[#4A5578] text-sm">
-                        Approved Date:{" "}
+                        Rammetillatelse:{" "}
                         <span className="text-black font-medium text-base">
                           {formatDateToDDMMYYYY(item?.approvedDate?.timestamp)}
                         </span>
                       </div>
                       <div className="text-[#4A5578] text-sm">
-                        Primary Floor Area:{" "}
+                        Igangsettelse:{" "}
+                        <span className="text-black font-medium text-base">
+                          {formatDateToDDMMYYYY(item?.approvedDate?.timestamp)}
+                        </span>
+                      </div>
+                      <div className="text-[#4A5578] text-sm">
+                        Midleritidg bruk:{" "}
+                        <span className="text-black font-medium text-base">
+                          {formatDateToDDMMYYYY(item?.approvedDate?.timestamp)}
+                        </span>
+                      </div>
+                      <div className="text-[#4A5578] text-sm">
+                        Ferdigattest:{" "}
+                        <span className="text-black font-medium text-base">
+                          {formatDateToDDMMYYYY(item?.approvedDate?.timestamp)}
+                        </span>
+                      </div>
+                      <div className="text-[#4A5578] text-sm">
+                        Bebygd areal (BYA):{" "}
                         <span className="text-black font-medium text-base">
                           {item?.floors[0]?.totalUsableArea} m2
                         </span>
                       </div>
                       <div className="text-[#4A5578] font-bold text-sm">
-                        Makes up 10.89% of possible BYA
+                        Bygningen utgjør 10.89% av BYA
                       </div>
                     </div>
                   </div>
