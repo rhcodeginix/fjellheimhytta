@@ -14,6 +14,7 @@ const PropertyDetail: React.FC<any> = ({
   loadingAdditionalData,
   askData,
   CadastreDataFromApi,
+  lamdaDataFromApi,
 }) => {
   const { getAddress } = useAddress();
 
@@ -137,7 +138,8 @@ const PropertyDetail: React.FC<any> = ({
 
                       if (
                         data.length >= 2 &&
-                        askData?.bya_calculations?.results?.total_allowed_bya
+                        lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                          ?.areal_beregnet
                       ) {
                         const totalData = data.reduce(
                           (acc: number, currentValue: number) =>
@@ -146,8 +148,10 @@ const PropertyDetail: React.FC<any> = ({
                         );
 
                         const result =
-                          askData?.bya_calculations?.results
-                            ?.total_allowed_bya - totalData;
+                          (totalData /
+                            lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.areal_beregnet) *
+                          100;
                         const formattedResult = result.toFixed(2);
 
                         return formattedResult;
@@ -176,14 +180,16 @@ const PropertyDetail: React.FC<any> = ({
                         );
 
                         const result =
-                          askData?.bya_calculations?.results
-                            ?.total_allowed_bya - totalData;
+                          (totalData /
+                            lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.areal_beregnet) *
+                          100;
                         const formattedResult: any = result.toFixed(2);
 
                         return (
-                          formattedResult -
-                          askData?.bya_calculations?.input?.bya_percentage
-                        );
+                          askData?.bya_calculations?.input?.bya_percentage -
+                          formattedResult
+                        ).toFixed(2);
                       } else {
                         return "0";
                       }
@@ -205,7 +211,32 @@ const PropertyDetail: React.FC<any> = ({
                     m<sup>2</sup>
                   </p>
                   <p className="text-white text-sm">
-                    Tilgjengelig 67,42 m<sup>2</sup>
+                    Tilgjengelig{" "}
+                    {(() => {
+                      const data =
+                        CadastreDataFromApi?.buildingsApi?.response?.items?.map(
+                          (item: any) => item?.builtUpArea
+                        ) ?? [];
+
+                      if (
+                        data.length >= 2 &&
+                        askData?.bya_calculations?.results?.total_allowed_bya
+                      ) {
+                        const totalData = data.reduce(
+                          (acc: number, currentValue: number) =>
+                            acc + currentValue,
+                          0
+                        );
+
+                        return (
+                          totalData -
+                          askData?.bya_calculations?.results?.total_allowed_bya
+                        ).toFixed(2);
+                      } else {
+                        return "0";
+                      }
+                    })()}{" "}
+                    m<sup>2</sup>
                   </p>
                 </div>
               </div>

@@ -112,6 +112,59 @@ const Tomt: React.FC<{
 
   const queryString = new URLSearchParams(router_query).toString();
 
+  // const captureScreenshotAndDownloadPDF = () => {
+  //   const element: any = document.querySelector("#regulationDocument");
+
+  //   if (!element) {
+  //     console.error("Element to capture not found");
+  //     return;
+  //   }
+
+  //   html2canvas(element, {
+  //     allowTaint: true,
+  //     useCORS: true,
+  //     logging: true,
+  //   })
+  //     .then((canvas) => {
+  //       const pdf = new jsPDF("p", "mm", "a4");
+
+  //       const imageData = canvas.toDataURL("image/png");
+
+  //       const pageWidth = pdf.internal.pageSize.width;
+  //       const pageHeight = pdf.internal.pageSize.height;
+
+  //       const padding = 6;
+
+  //       const imgWidth = canvas.width;
+  //       const imgHeight = canvas.height;
+
+  //       const newWidth = pageWidth - 2 * padding;
+
+  //       const scaleFactor = newWidth / imgWidth;
+  //       const newHeight = imgHeight * scaleFactor;
+
+  //       if (newHeight > pageHeight - 2 * padding) {
+  //         const scaleDownFactor = (pageHeight - 2 * padding) / newHeight;
+  //         const scaledHeight = newHeight * scaleDownFactor;
+  //         pdf.addImage(
+  //           imageData,
+  //           "PNG",
+  //           padding,
+  //           padding,
+  //           newWidth,
+  //           scaledHeight
+  //         );
+  //       } else {
+  //         pdf.addImage(imageData, "PNG", padding, padding, newWidth, newHeight);
+  //       }
+
+  //       pdf.save("min_tomt_regulation.pdf");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error capturing screenshot: ", error);
+  //     });
+  // };
+
   const captureScreenshotAndDownloadPDF = () => {
     const element: any = document.querySelector("#regulationDocument");
 
@@ -120,49 +173,69 @@ const Tomt: React.FC<{
       return;
     }
 
-    html2canvas(element, {
-      allowTaint: true,
-      useCORS: true,
-      logging: true,
-    })
-      .then((canvas) => {
-        const pdf = new jsPDF("p", "mm", "a4");
+    const svgElement: any = document.querySelector("#logo");
 
-        const imageData = canvas.toDataURL("image/png");
+    if (!svgElement) {
+      console.error("SVG element not found");
+      return;
+    }
 
-        const pageWidth = pdf.internal.pageSize.width;
-        const pageHeight = pdf.internal.pageSize.height;
+    // Convert SVG to PNG using html2canvas
+    html2canvas(svgElement, { useCORS: true }).then((svgCanvas) => {
+      const svgImageData = svgCanvas.toDataURL("image/png");
 
-        const padding = 6;
-
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-
-        const newWidth = pageWidth - 2 * padding;
-
-        const scaleFactor = newWidth / imgWidth;
-        const newHeight = imgHeight * scaleFactor;
-
-        if (newHeight > pageHeight - 2 * padding) {
-          const scaleDownFactor = (pageHeight - 2 * padding) / newHeight;
-          const scaledHeight = newHeight * scaleDownFactor;
-          pdf.addImage(
-            imageData,
-            "PNG",
-            padding,
-            padding,
-            newWidth,
-            scaledHeight
-          );
-        } else {
-          pdf.addImage(imageData, "PNG", padding, padding, newWidth, newHeight);
-        }
-
-        pdf.save("Iplot_regulation.pdf");
+      html2canvas(element, {
+        allowTaint: true,
+        useCORS: true,
+        logging: true,
       })
-      .catch((error) => {
-        console.error("Error capturing screenshot: ", error);
-      });
+        .then((canvas) => {
+          const pdf = new jsPDF("p", "mm", "a4");
+
+          const imageData = canvas.toDataURL("image/png");
+
+          const pageWidth = pdf.internal.pageSize.width;
+          const pageHeight = pdf.internal.pageSize.height;
+
+          const padding = 6;
+
+          const imgWidth = canvas.width;
+          const imgHeight = canvas.height;
+
+          const newWidth = pageWidth - 2 * padding;
+          const scaleFactor = newWidth / imgWidth;
+          const newHeight = imgHeight * scaleFactor;
+
+          pdf.addImage(svgImageData, "PNG", padding, padding, 20, 10);
+
+          if (newHeight > pageHeight - 2 * padding) {
+            const scaleDownFactor = (pageHeight - 2 * padding) / newHeight;
+            const scaledHeight = newHeight * scaleDownFactor;
+            pdf.addImage(
+              imageData,
+              "PNG",
+              padding,
+              padding + 12,
+              newWidth,
+              scaledHeight - 14
+            );
+          } else {
+            pdf.addImage(
+              imageData,
+              "PNG",
+              padding,
+              padding + 60,
+              newWidth,
+              newHeight - 14
+            );
+          }
+
+          pdf.save(`min_tomt_regulation_${lamdaDataFromApi?.propertyId}.pdf`);
+        })
+        .catch((error) => {
+          console.error("Error capturing screenshot: ", error);
+        });
+    });
   };
 
   if (loadingLamdaData) {
@@ -176,6 +249,7 @@ const Tomt: React.FC<{
           loadingAdditionalData={loadingAdditionalData}
           askData={askData}
           CadastreDataFromApi={CadastreDataFromApi}
+          lamdaDataFromApi={lamdaDataFromApi}
         />
 
         <SideSpaceContainer className="relative pt-[60px] pb-[46px]">

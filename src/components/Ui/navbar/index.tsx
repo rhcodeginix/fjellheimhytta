@@ -102,6 +102,7 @@ const Header = () => {
                   src={Ic_logo}
                   alt="logo"
                   className="w-[90px] lg:w-auto"
+                  id="logo"
                 />
               </Link>
             </div>
