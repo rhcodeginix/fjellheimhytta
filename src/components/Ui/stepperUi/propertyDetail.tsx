@@ -139,10 +139,16 @@ const PropertyDetail: React.FC<any> = ({
                         data.length >= 2 &&
                         askData?.bya_calculations?.results?.total_allowed_bya
                       ) {
+                        const totalData = data.reduce(
+                          (acc: number, currentValue: number) =>
+                            acc + currentValue,
+                          0
+                        );
+
                         const result =
-                          (data[0] + data[1]) /
-                          askData?.bya_calculations?.results?.total_allowed_bya;
-                        const formattedResult = (result * 100).toFixed(2);
+                          askData?.bya_calculations?.results
+                            ?.total_allowed_bya - totalData;
+                        const formattedResult = result.toFixed(2);
 
                         return formattedResult;
                       } else {
@@ -163,10 +169,16 @@ const PropertyDetail: React.FC<any> = ({
                         data.length >= 2 &&
                         askData?.bya_calculations?.results?.total_allowed_bya
                       ) {
+                        const totalData = data.reduce(
+                          (acc: number, currentValue: number) =>
+                            acc + currentValue,
+                          0
+                        );
+
                         const result =
-                          (data[0] + data[1]) /
-                          askData?.bya_calculations?.results?.total_allowed_bya;
-                        const formattedResult: any = (result * 100).toFixed(2);
+                          askData?.bya_calculations?.results
+                            ?.total_allowed_bya - totalData;
+                        const formattedResult: any = result.toFixed(2);
 
                         return (
                           formattedResult -
