@@ -186,14 +186,10 @@ const PropertyDetail: React.FC<any> = ({
                   <p className="text-white text-sm">Boligen kan ha en</p>
                   <p className="text-white text-base font-semibold">
                     Grunnflate på{" "}
-                    {/* {
+                    {
                       askData?.bya_calculations?.results
                         ?.available_building_area
-                    }{" "} */}
-                    {
-                      CadastreDataFromApi?.buildingsApi?.response?.items[0]
-                        .totalFloorSpace
-                    }
+                    }{" "}
                     m<sup>2</sup>
                   </p>
                   <p className="text-white text-sm">

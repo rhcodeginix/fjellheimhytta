@@ -85,6 +85,7 @@ const Header = () => {
     <>
       <div
         className="sticky w-full top-0 bg-[#fff] border-b border-[#F2F4F7]"
+        id="navbar"
         style={{ zIndex: 9999 }}
       >
         <SideSpaceContainer>
