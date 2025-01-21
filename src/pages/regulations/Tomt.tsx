@@ -158,7 +158,7 @@ const Tomt: React.FC<{
           pdf.addImage(imageData, "PNG", padding, padding, newWidth, newHeight);
         }
 
-        pdf.save("screenshot.pdf");
+        pdf.save("Iplot_regulation.pdf");
       })
       .catch((error) => {
         console.error("Error capturing screenshot: ", error);
