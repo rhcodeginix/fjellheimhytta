@@ -13,6 +13,7 @@ const PropertyDetail: React.FC<any> = ({
   isShow,
   loadingAdditionalData,
   askData,
+  CadastreDataFromApi,
 }) => {
   const { getAddress } = useAddress();
 
@@ -102,7 +103,7 @@ const PropertyDetail: React.FC<any> = ({
               <Loading />
             </div>
           ) : (
-            <div className="flex gap-[125px] justify-between">
+            <div className="flex gap-[70px] justify-between">
               <div className="w-1/4 flex items-start gap-3">
                 <Image src={Ic_check_green_icon} alt="check" />
                 <div className="flex flex-col gap-1">
@@ -127,9 +128,56 @@ const PropertyDetail: React.FC<any> = ({
                 <div className="flex flex-col gap-1">
                   <p className="text-white text-sm">Ekisterende BYA</p>
                   <p className="text-white text-base font-semibold">
-                    Utnyttelsesgrad på 18%
+                    Utnyttelsesgrad på{" "}
+                    {(() => {
+                      const data =
+                        CadastreDataFromApi?.buildingsApi?.response?.items?.map(
+                          (item: any) => item?.builtUpArea
+                        ) ?? [];
+
+                      if (
+                        data.length >= 2 &&
+                        askData?.bya_calculations?.results?.total_allowed_bya
+                      ) {
+                        const result =
+                          (data[0] + data[1]) /
+                          askData?.bya_calculations?.results?.total_allowed_bya;
+                        const formattedResult = (result * 100).toFixed(2);
+
+                        return formattedResult;
+                      } else {
+                        return "0";
+                      }
+                    })()}
+                    %
                   </p>
-                  <p className="text-white text-sm">Tilgjengelig BYA 7% </p>
+                  <p className="text-white text-sm">
+                    Tilgjengelig BYA{" "}
+                    {(() => {
+                      const data =
+                        CadastreDataFromApi?.buildingsApi?.response?.items?.map(
+                          (item: any) => item?.builtUpArea
+                        ) ?? [];
+
+                      if (
+                        data.length >= 2 &&
+                        askData?.bya_calculations?.results?.total_allowed_bya
+                      ) {
+                        const result =
+                          (data[0] + data[1]) /
+                          askData?.bya_calculations?.results?.total_allowed_bya;
+                        const formattedResult: any = (result * 100).toFixed(2);
+
+                        return (
+                          formattedResult -
+                          askData?.bya_calculations?.input?.bya_percentage
+                        );
+                      } else {
+                        return "0";
+                      }
+                    })()}
+                    %
+                  </p>
                 </div>
               </div>
               <div className="w-1/4 flex items-start gap-3">
@@ -138,13 +186,19 @@ const PropertyDetail: React.FC<any> = ({
                   <p className="text-white text-sm">Boligen kan ha en</p>
                   <p className="text-white text-base font-semibold">
                     Grunnflate på{" "}
-                    {
+                    {/* {
                       askData?.bya_calculations?.results
                         ?.available_building_area
-                    }{" "}
-                    m2
+                    }{" "} */}
+                    {
+                      CadastreDataFromApi?.buildingsApi?.response?.items[0]
+                        .totalFloorSpace
+                    }
+                    m<sup>2</sup>
                   </p>
-                  <p className="text-white text-sm">Tilgjengelig 67,42 m2</p>
+                  <p className="text-white text-sm">
+                    Tilgjengelig 67,42 m<sup>2</sup>
+                  </p>
                 </div>
               </div>
             </div>

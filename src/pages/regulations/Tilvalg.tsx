@@ -191,7 +191,8 @@ const Tilvalg: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-secondary text-sm">
-                    <span className="text-black font-semibold">233</span> m2
+                    <span className="text-black font-semibold">233</span> m
+                    <sup>2</sup>
                   </div>
                   <div className="h-[12px] w-[1px] border-l border-gray"></div>
                   <div className="text-secondary text-sm">

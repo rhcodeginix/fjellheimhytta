@@ -118,6 +118,7 @@ const Tomt: React.FC<{
         isShow={false}
         loadingAdditionalData={loadingAdditionalData}
         askData={askData}
+        CadastreDataFromApi={CadastreDataFromApi}
       />
 
       <SideSpaceContainer className="relative pt-[60px] pb-[46px]">
@@ -139,10 +140,17 @@ const Tomt: React.FC<{
             <div className="text-secondary text-sm">Areal beregnet</div>
             <div className="text-black text-sm font-semibold w-full truncate">
               {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                ?.areal_beregnet
-                ? lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                    ?.areal_beregnet
-                : "-"}
+                ?.areal_beregnet ? (
+                <>
+                  {
+                    lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                      ?.areal_beregnet
+                  }{" "}
+                  m<sup>2</sup>
+                </>
+              ) : (
+                "-"
+              )}
             </div>
           </div>
           <div className="flex gap-1 flex-col">
@@ -173,9 +181,14 @@ const Tomt: React.FC<{
           <div className="flex gap-1 flex-col">
             <div className="text-secondary text-sm">Total allowed bya</div>
             <div className="text-black text-sm font-semibold w-full truncate">
-              {askData?.bya_calculations?.results?.total_allowed_bya
-                ? askData?.bya_calculations?.results?.total_allowed_bya
-                : "-"}
+              {askData?.bya_calculations?.results?.total_allowed_bya ? (
+                <>
+                  {askData?.bya_calculations?.results?.total_allowed_bya} m
+                  <sup>2</sup>
+                </>
+              ) : (
+                "-"
+              )}
             </div>
           </div>
           <div className="flex gap-1 flex-col">
@@ -183,9 +196,14 @@ const Tomt: React.FC<{
               parkering område per plass
             </div>
             <div className="text-black text-sm font-semibold w-full truncate">
-              {askData?.bya_calculations?.results?.parking?.area_per_space
-                ? askData?.bya_calculations?.results?.parking?.area_per_space
-                : "-"}
+              {askData?.bya_calculations?.results?.parking?.area_per_space ? (
+                <>
+                  {askData?.bya_calculations?.results?.parking?.area_per_space}{" "}
+                  m<sup>2</sup>
+                </>
+              ) : (
+                "-"
+              )}
             </div>
           </div>
           <div className="flex gap-1 flex-col">
@@ -226,9 +244,18 @@ const Tomt: React.FC<{
           <div className="flex gap-1 flex-col">
             <div className="text-secondary text-sm">specifiedArea</div>
             <div className="text-black text-sm font-semibold w-full truncate">
-              {CadastreDataFromApi?.cadastreApi?.response?.item.specifiedArea
-                ? CadastreDataFromApi?.cadastreApi?.response?.item.specifiedArea
-                : "-"}
+              {CadastreDataFromApi?.cadastreApi?.response?.item
+                .specifiedArea ? (
+                <>
+                  {
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .specifiedArea
+                  }{" "}
+                  m<sup>2</sup>
+                </>
+              ) : (
+                "-"
+              )}
             </div>
           </div>
           <div className="flex gap-1 flex-col">
@@ -407,7 +434,6 @@ const Tomt: React.FC<{
                 : "Nei"}
             </div>
           </div>
-
           <div className="flex gap-1 flex-col">
             <div className="text-secondary text-sm">Kommune</div>
             <div className="text-black text-sm font-semibold w-full truncate">
@@ -497,9 +523,14 @@ const Tomt: React.FC<{
               parkering nødvendig plass
             </div>
             <div className="text-black text-sm font-semibold w-full truncate">
-              {askData?.bya_calculations?.results?.parking?.required_spaces
-                ? askData?.bya_calculations?.results?.parking?.required_spaces
-                : "-"}
+              {askData?.bya_calculations?.results?.parking?.required_spaces ? (
+                <>
+                  {askData?.bya_calculations?.results?.parking?.required_spaces}{" "}
+                  m<sup>2</sup>
+                </>
+              ) : (
+                "-"
+              )}
             </div>
           </div>
           <div className="flex gap-1 flex-col">
@@ -507,10 +538,18 @@ const Tomt: React.FC<{
               totalt parkering område
             </div>
             <div className="text-black text-sm font-semibold w-full truncate">
-              {askData?.bya_calculations?.results?.parking?.total_parking_area
-                ? askData?.bya_calculations?.results?.parking
-                    ?.total_parking_area
-                : "-"}
+              {askData?.bya_calculations?.results?.parking
+                ?.total_parking_area ? (
+                <>
+                  {
+                    askData?.bya_calculations?.results?.parking
+                      ?.total_parking_area
+                  }{" "}
+                  m<sup>2</sup>
+                </>
+              ) : (
+                "-"
+              )}
             </div>
           </div>
           <div className="flex gap-1 flex-col">
@@ -743,13 +782,15 @@ const Tomt: React.FC<{
                       <div className="text-[#4A5578] text-sm">
                         Bruksareal:{" "}
                         <span className="text-black font-medium text-base">
-                          {item?.builtUpArea} m2
+                          {item?.totalFloorSpace} m<sup>2</sup>
                         </span>
                       </div>
                       <div className="text-[#4A5578] text-sm">
                         Rammetillatelse:{" "}
                         <span className="text-black font-medium text-base">
-                          {formatDateToDDMMYYYY(item?.approvedDate?.timestamp)}
+                          {formatDateToDDMMYYYY(
+                            item?.registeredApprovedDate?.timestamp
+                          )}
                         </span>
                       </div>
                       <div className="text-[#4A5578] text-sm">
@@ -761,23 +802,42 @@ const Tomt: React.FC<{
                       <div className="text-[#4A5578] text-sm">
                         Midleritidg bruk:{" "}
                         <span className="text-black font-medium text-base">
-                          {formatDateToDDMMYYYY(item?.approvedDate?.timestamp)}
+                          {formatDateToDDMMYYYY(item?.usedDate?.timestamp)}
                         </span>
                       </div>
                       <div className="text-[#4A5578] text-sm">
                         Ferdigattest:{" "}
                         <span className="text-black font-medium text-base">
-                          {formatDateToDDMMYYYY(item?.approvedDate?.timestamp)}
+                          {formatDateToDDMMYYYY(
+                            item?.buildingStatusHistory[0]
+                              ?.buildingStatusRegisteredDate?.timestamp
+                          )}
                         </span>
                       </div>
                       <div className="text-[#4A5578] text-sm">
                         Bebygd areal (BYA):{" "}
                         <span className="text-black font-medium text-base">
-                          {item?.floors[0]?.totalUsableArea} m2
+                          {item?.builtUpArea} m<sup>2</sup>
                         </span>
                       </div>
                       <div className="text-[#4A5578] font-bold text-sm">
-                        Bygningen utgjør 10.89% av BYA
+                        Bygningen utgjør{" "}
+                        {(() => {
+                          if (
+                            item?.builtUpArea &&
+                            askData?.bya_calculations?.results
+                              ?.total_allowed_bya
+                          ) {
+                            return (
+                              (item.builtUpArea /
+                                askData.bya_calculations.results
+                                  .total_allowed_bya) *
+                              100
+                            ).toFixed(2);
+                          }
+                          return 0;
+                        })()}
+                        % av BYA
                       </div>
                     </div>
                   </div>

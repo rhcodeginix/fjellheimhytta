@@ -42,7 +42,7 @@ const Property: React.FC<any> = ({ propertyList, LinkHref }) => {
           <div className="flex items-center gap-4">
             <div className="text-secondary text-sm">
               <span className="text-black font-semibold">{property.area}</span>{" "}
-              m2
+              m<sup>2</sup>
             </div>
             <div className="h-[12px] w-[1px] border-l border-gray"></div>
             <div className="text-secondary text-sm">

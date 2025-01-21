@@ -29,7 +29,8 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
           </h5>
           <div className="flex items-center gap-3">
             <div className="text-secondary text-base">
-              <span className="text-black text-base font-semibold">233</span> m2
+              <span className="text-black text-base font-semibold">233</span> m
+              <sup>2</sup>
             </div>
             <div className="h-[12px] w-[1px] border-l border-gray"></div>
             <div className="text-secondary text-base">

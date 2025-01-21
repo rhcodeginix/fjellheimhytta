@@ -61,7 +61,8 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-secondary text-sm">
-                    <span className="text-black font-semibold">233</span> m2
+                    <span className="text-black font-semibold">233</span> m
+                    <sup>2</sup>
                   </div>
                   <div className="h-[12px] w-[1px] border-l border-gray"></div>
                   <div className="text-secondary text-sm">
@@ -82,7 +83,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
                           BRA total
                         </td>
                         <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          244 m2
+                          244 m<sup>2</sup>
                         </td>
                       </tr>
                       <tr>
@@ -90,7 +91,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
                           BRA bolig
                         </td>
                         <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          233 m2
+                          233 m<sup>2</sup>
                         </td>
                       </tr>
                       <tr>
@@ -98,7 +99,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
                           P-rom:
                         </td>
                         <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          221 m2
+                          221 m<sup>2</sup>
                         </td>
                       </tr>
                       <tr>
@@ -106,7 +107,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
                           Bebygd Areal
                         </td>
                         <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          152 m2
+                          152 m<sup>2</sup>
                         </td>
                       </tr>
                       <tr>

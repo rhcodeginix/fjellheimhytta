@@ -118,7 +118,7 @@ const PropertyOptionDrawer: React.FC<any> = ({
             <div className="flex items-center gap-3">
               <div className="text-secondary text-base">
                 <span className="text-black text-base font-semibold">233</span>{" "}
-                m2
+                m<sup>2</sup>
               </div>
               <div className="h-[12px] w-[1px] border-l border-gray"></div>
               <div className="text-secondary text-base">

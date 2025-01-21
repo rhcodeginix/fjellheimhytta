@@ -53,7 +53,8 @@ const PropertyHusmodellDetail: React.FC<any> = ({
               </h2>
               <div className="flex items-center gap-4">
                 <div className="text-secondary text-base">
-                  m2: <span className="text-black font-semibold">232</span>
+                  m<sup>2</sup>:{" "}
+                  <span className="text-black font-semibold">232</span>
                 </div>
                 <div className="text-secondary text-base">
                   soverom: <span className="text-black font-semibold">5</span>
@@ -94,7 +95,8 @@ const PropertyHusmodellDetail: React.FC<any> = ({
                         Boligen kan ha en{" "}
                         <span className="text-black">
                           grunnflate på{" "}
-                          {askData?.bya_calculations?.input?.plot_size} m2
+                          {askData?.bya_calculations?.input?.plot_size} m
+                          <sup>2</sup>
                         </span>
                       </p>
                     </div>

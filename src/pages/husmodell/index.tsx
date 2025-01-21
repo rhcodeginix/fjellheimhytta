@@ -318,10 +318,10 @@ const Husmodell = () => {
                       </div>
                       <div className="flex items-center justify-between h-[30px] mt-2">
                         <div className="border-gray2 border rounded-[8px] py-2 px-[14px] flex items-center justify-center text-secondary text-xs">
-                          Fra {sizeRange[0]} m2
+                          Fra {sizeRange[0]} m<sup>2</sup>
                         </div>
                         <div className="border-gray2 border rounded-[8px] py-2 px-[14px] flex items-center justify-center text-secondary text-xs">
-                          Til {sizeRange[1]} m2
+                          Til {sizeRange[1]} m<sup>2</sup>
                         </div>
                       </div>
                     </div>
