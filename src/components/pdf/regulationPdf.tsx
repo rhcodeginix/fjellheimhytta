@@ -1,57 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
 import Ic_generelt from "@/public/images/Ic_generelt.svg";
 import Ic_info_circle from "@/public/images/Ic_info_circle.svg";
 import Ic_check_true from "@/public/images/Ic_check_true.svg";
 import Image from "next/image";
-import Ic_steddy from "@/public/images/Ic_steddy.svg";
-import Ic_download from "@/public/images/Ic_download.svg";
 import Ic_check from "@/public/images/Ic_check.svg";
+import Ic_logo from "@/public/images/Ic_logo.svg";
 import Ic_x_close from "@/public/images/Ic_x_close.svg";
-import Ic_vapp from "@/public/images/Ic_vapp.svg";
-import Button from "@/components/common/button";
-import * as Yup from "yup";
-import { Formik, Form, Field } from "formik";
-import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Loader from "@/components/Loader";
 import GoogleMapComponent from "@/components/Ui/map";
 import { useAddress } from "@/context/addressContext";
-import LoginForm from "../login/loginForm";
-import { useRouter } from "next/router";
 import Loading from "@/components/Loading";
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
-import RegulationPdf from "@/components/pdf/regulationPdf";
 
-const Tomt: React.FC<{
-  loginUser: any;
+const RegulationPdf: React.FC<{
   additionalData: any;
   loadingAdditionalData: any;
-  handleNext: any;
   lamdaDataFromApi: any;
-  isPopupOpen: any;
-  setIsPopupOpen: any;
-  setIsCall: any;
   loadingLamdaData: any;
   CadastreDataFromApi: any;
 }> = ({
-  handleNext,
   lamdaDataFromApi,
   loadingAdditionalData,
   additionalData,
-  loginUser,
-  isPopupOpen,
-  setIsPopupOpen,
-  setIsCall,
   loadingLamdaData,
   CadastreDataFromApi,
 }) => {
-  const router = useRouter();
   const { getAddress } = useAddress();
 
-  const [loginPopup, setLoginPopup] = useState(false);
   const [dropdownState, setDropdownState] = useState({
     Tomteopplysninger: false,
     KommunaleData: false,
@@ -68,7 +44,6 @@ const Tomt: React.FC<{
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        // Close all dropdowns if clicked outside
         setDropdownState((prevState: any) =>
           Object.keys(prevState).reduce(
             (acc: any, key) => {
@@ -109,38 +84,11 @@ const Tomt: React.FC<{
     }
 
     const day = String(dateObject.getDate()).padStart(2, "0");
-    const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
     const year = dateObject.getFullYear();
 
     return `${day}.${month}.${year}`;
   }
-
-  const validationLoginSchema = Yup.object().shape({
-    terms_condition: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
-  });
-
-  const [isLoginChecked, setIsLoginChecked] = useState(false);
-  const handleLoginCheckboxChange = () => {
-    setIsLoginChecked(!isLoginChecked);
-  };
-
-  const handleLoginSubmit = async () => {
-    setIsPopupOpen(false);
-    setLoginPopup(true);
-    router.push(`${router.asPath}&login_popup=true`);
-  };
-
-  useEffect(() => {
-    if (isPopupOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isPopupOpen]);
 
   const [askData, setAskData] = useState<any | null>(null);
 
@@ -157,301 +105,26 @@ const Tomt: React.FC<{
     }
   }, [additionalData]);
 
-  const router_query: any = { ...router.query };
-
-  delete router_query.login_popup;
-
-  const queryString = new URLSearchParams(router_query).toString();
-
-  const captureScreenshotAndDownloadPDF = () => {
-    const element: any = document.querySelector("#regulationDocument");
-
-    if (!element) {
-      console.error("Element to capture not found");
-      return;
-    }
-    const clonedElement = element.cloneNode(true) as HTMLElement;
-
-    clonedElement.style.display = "flex";
-    document.body.appendChild(clonedElement);
-
-    html2canvas(clonedElement, {
-      allowTaint: true,
-      useCORS: true,
-      logging: true,
-    })
-      .then((canvas) => {
-        document.body.removeChild(clonedElement);
-
-        const pdf = new jsPDF("p", "mm", "a4");
-
-        const imageData = canvas.toDataURL("image/png");
-
-        const pageWidth = pdf.internal.pageSize.width;
-        const pageHeight = pdf.internal.pageSize.height;
-
-        const padding = 0;
-
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-
-        const newWidth = pageWidth - 2;
-
-        const scaleFactor = newWidth / imgWidth;
-        const newHeight = imgHeight * scaleFactor;
-
-        if (newHeight > pageHeight - 2) {
-          const scaleDownFactor = (pageHeight - 2) / newHeight;
-          const scaledHeight = newHeight * scaleDownFactor;
-          pdf.addImage(
-            imageData,
-            "PNG",
-            padding,
-            padding,
-            newWidth,
-            scaledHeight
-          );
-        } else {
-          pdf.addImage(imageData, "PNG", padding, padding, newWidth, newHeight);
-        }
-
-        pdf.save(`min_tomt_regulation_${lamdaDataFromApi?.propertyId}.pdf`);
-      })
-      .catch((error) => {
-        document.body.removeChild(clonedElement);
-        console.error("Error capturing screenshot: ", error);
-      });
-  };
-
   if (loadingLamdaData) {
     <Loader />;
   }
   return (
     <div className="relative">
       <div>
-        <PropertyDetail
-          isShow={false}
-          loadingAdditionalData={loadingAdditionalData}
-          askData={askData}
-          CadastreDataFromApi={CadastreDataFromApi}
-          lamdaDataFromApi={lamdaDataFromApi}
-        />
-
-        <SideSpaceContainer className="relative pt-[60px] pb-[46px]">
+        <div className="border-b border-[#EFF1F5] py-6 mb-8">
+          <SideSpaceContainer>
+            <Image
+              src={Ic_logo}
+              alt="logo"
+              className="w-[90px] lg:w-auto"
+              id="logo"
+            />
+          </SideSpaceContainer>
+        </div>
+        <SideSpaceContainer className="relative">
           <h2 className="text-black text-2xl font-semibold mb-6">
             Eiendomsinformasjon
           </h2>
-          {/* <div className="grid grid-cols-6 gap-6 mb-[60px]">
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">numberOfPlots</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .numberOfPlots === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">pointHitch</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item.pointHitch ===
-                true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">zeroConcession</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .zeroConcession === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">unitName</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item.unitName
-                  ? CadastreDataFromApi?.cadastreApi?.response?.item.unitName
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">specifiedArea</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .specifiedArea ? (
-                  <>
-                    {
-                      CadastreDataFromApi?.cadastreApi?.response?.item
-                        .specifiedArea
-                    }{" "}
-                    m<sup>2</sup>
-                  </>
-                ) : (
-                  "-"
-                )}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Seksjonert</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                  ?.seksjonert
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                      ?.seksjonert
-                  : "-"}
-              </div>
-            </div>
-         
-           
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Aktive festegrunner</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.status
-                  ?.aktive_festegrunner
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.aktive_festegrunner
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Anmerket klage</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.status?.anmerket_klage
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.anmerket_klage
-                  : "-"}
-              </div>
-            </div>
-           
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Utgått</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.status?.utgatt
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.status?.utgatt
-                  : "-"}
-              </div>
-            </div>
-           
-        
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">agriculturalCadastre</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .agriculturalCadastre === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-           
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">hasNotedComplaint</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasNotedComplaint === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">hasOldCadastre</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasOldCadastre === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">
-                hasRegisteredLandAcquisition
-              </div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasRegisteredLandAcquisition === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Festenr</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.festenr
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.festenr
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Bruksnavn</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">hasSingleHeritage</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasSingleHeritage === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">hasSoilContamination</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasSoilContamination === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">leasehold</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item.ident
-                  ?.leasehold === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">leaseholdUnitNumber</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item.ident
-                  ?.leaseholdUnitNumber
-                  ? CadastreDataFromApi?.cadastreApi?.response?.item.ident
-                      ?.leaseholdUnitNumber
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">
-                includedInTotalRealEstate
-              </div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .includedInTotalRealEstate === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">
-                isHistoricalRegisteredLand
-              </div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .isHistoricalRegisteredLand === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-          </div> */}
 
           <div className="grid grid-cols-3 gap-6 mb-[60px]">
             <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
@@ -1018,112 +691,82 @@ const Tomt: React.FC<{
               </div>
             </div>
           </div>
-          <div className="relative flex gap-[40px]">
-            <div className="w-[34%]">
-              <h2 className="text-black text-2xl font-semibold mb-6">
-                Kartutsnitt
-              </h2>
-              <div className="rounded-[12px] overflow-hidden w-full mb-[60px]">
-                <div className="h-[400px]">
-                  <GoogleMapComponent
-                    coordinates={
-                      lamdaDataFromApi?.coordinates?.convertedCoordinates
-                    }
-                    // nearbyBuildingCoordinates={nearbyBuildingCoordinates}
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-[36px] mb-6 bg-[#F9F9FB] rounded-[8px] py-5 px-6">
-                <Image src={Ic_steddy} alt="logo" />
-                <p className="text-secondary text-sm">
-                  Vi hjelper deg med{" "}
-                  <span className="text-black font-semibold">
-                    reguleringer, søknader
-                  </span>{" "}
-                  og{" "}
-                  <span className="text-black font-semibold">
-                    innheter tilbud.
-                  </span>
-                </p>
-              </div>
-              <ContactForm />
-            </div>
-            <div className="w-[66%]">
-              {loadingLamdaData ? (
-                <Loader />
-              ) : (
-                <>
-                  <div className="relative">
-                    {loadingAdditionalData ? (
-                      <Loading />
-                    ) : (
-                      <>
-                        <div className="mb-[34px] relative">
-                          <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-black text-2xl font-semibold">
-                              Reguleringsbestemmelser
-                            </h2>
-                            <Image src={Ic_generelt} alt="image" />
-                          </div>
-                          <div className="flex flex-col gap-3">
-                            <>
-                              {askData &&
-                                askData?.conclusion?.map(
-                                  (a: any, index: number) => (
-                                    <div
-                                      className="flex items-start gap-3 text-secondary text-base"
-                                      key={index}
-                                    >
-                                      <Image src={Ic_check_true} alt="image" />
-                                      <span>{a}</span>
-                                    </div>
-                                  )
-                                )}
-                            </>
-                          </div>
-                        </div>
-                        <div className="relative">
-                          <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-black text-2xl font-semibold">
-                              Kommuneplan for Asker
-                            </h2>
-                            <Image src={Ic_generelt} alt="image" />
-                          </div>
-                          <div className="flex flex-col gap-3">
-                            {askData &&
-                              askData?.applicable_rules?.map(
-                                (a: any, index: number) => (
-                                  <div
-                                    className="flex items-start gap-3 text-secondary text-base"
-                                    key={index}
-                                  >
-                                    <Image src={Ic_check_true} alt="image" />
-                                    <div>
-                                      {a.rule}{" "}
-                                      <span className="text-primary font-bold">
-                                        {a.section}
-                                      </span>
-                                    </div>
-                                  </div>
-                                )
-                              )}
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
+          <h2 className="text-black text-2xl font-semibold mb-6">
+            Kartutsnitt
+          </h2>
+          <div className="rounded-[12px] overflow-hidden w-full mb-[60px]">
+            <div className="h-[600px]">
+              <GoogleMapComponent
+                coordinates={
+                  lamdaDataFromApi?.coordinates?.convertedCoordinates
+                }
+              />
             </div>
           </div>
-          {!loginUser && (
-            <div
-              className="absolute top-0 h-full w-full left-0"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(255, 255, 255, 0.7) 100%, rgba(255, 255, 255, 0.7) 100%)",
-              }}
-            ></div>
+          {loadingLamdaData ? (
+            <Loader />
+          ) : (
+            <>
+              <div className="relative">
+                {loadingAdditionalData ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <div className="mb-[34px] relative">
+                      <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-black text-2xl font-semibold">
+                          Reguleringsbestemmelser
+                        </h2>
+                        <Image src={Ic_generelt} alt="image" />
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        <>
+                          {askData &&
+                            askData?.conclusion?.map(
+                              (a: any, index: number) => (
+                                <div
+                                  className="flex items-start gap-3 text-secondary text-base"
+                                  key={index}
+                                >
+                                  <Image src={Ic_check_true} alt="image" />
+                                  <span>{a}</span>
+                                </div>
+                              )
+                            )}
+                        </>
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-black text-2xl font-semibold">
+                          Kommuneplan for Asker
+                        </h2>
+                        <Image src={Ic_generelt} alt="image" />
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        {askData &&
+                          askData?.applicable_rules?.map(
+                            (a: any, index: number) => (
+                              <div
+                                className="flex items-start gap-3 text-secondary text-base"
+                                key={index}
+                              >
+                                <Image src={Ic_check_true} alt="image" />
+                                <div>
+                                  {a.rule}{" "}
+                                  <span className="text-primary font-bold">
+                                    {a.section}
+                                  </span>
+                                </div>
+                              </div>
+                            )
+                          )}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </>
           )}
         </SideSpaceContainer>
 
@@ -1138,17 +781,6 @@ const Tomt: React.FC<{
                 <h2 className="text-black text-2xl font-semibold">
                   Eksisterende bebyggelse
                 </h2>
-                {!loadingAdditionalData && (
-                  <div
-                    className="flex gap-2 items-center cursor-pointer"
-                    onClick={captureScreenshotAndDownloadPDF}
-                  >
-                    <Image src={Ic_download} alt="download" />
-                    <h4 className="text-primary text-base font-semibold">
-                      Download Regulation Document
-                    </h4>
-                  </div>
-                )}
               </div>
               <div className="grid grid-cols-4 gap-6 mb-16">
                 {CadastreDataFromApi?.buildingsApi?.response?.items.map(
@@ -1250,130 +882,8 @@ const Tomt: React.FC<{
           )}
         </SideSpaceContainer>
       </div>
-      <div
-        className="sticky bottom-0 bg-white py-6"
-        style={{
-          boxShadow:
-            "0px -4px 6px -2px #10182808, 0px -12px 16px -4px #10182814",
-          zIndex: 9999,
-        }}
-      >
-        <SideSpaceContainer>
-          <div className="flex justify-end gap-4 items-center">
-            <Button
-              text="Tilbake"
-              className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
-              path="/"
-            />
-            <Button
-              text="Velg husmodell"
-              className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-              onClick={() => {
-                handleNext();
-              }}
-            />
-          </div>
-        </SideSpaceContainer>
-      </div>
-
-      {isPopupOpen && !loginUser && (
-        <div className="fixed top-0 left-0 flex justify-center items-center h-full w-full">
-          <div
-            className="bg-white p-8 rounded-[8px] w-[787px]"
-            style={{
-              boxShadow:
-                "0px 8px 8px -4px rgba(16, 24, 40, 0.031), 0px 20px 24px -4px rgba(16, 24, 40, 0.078)",
-            }}
-          >
-            <h2 className="text-black text-[24px] font-semibold mb-2 text-center">
-              Registrer deg
-            </h2>
-            <p className="text-secondary text-base text-center mb-2">
-              Logg inn med{" "}
-              <span className="font-semibold text-black">Vipps</span> for å få
-              se{" "}
-              <span className="font-semibold text-black">
-                alle bestemmelser og finne <br />
-                boliger som passer på denne eiendommen
-              </span>
-            </p>
-            <Formik
-              initialValues={{ terms_condition: false }}
-              validationSchema={validationLoginSchema}
-              onSubmit={handleLoginSubmit}
-            >
-              {({ values, setFieldValue, errors, touched }) => (
-                <Form>
-                  <div className="flex items-center justify-center flex-col">
-                    <label className="flex items-center gap-[12px] container w-max">
-                      <Field
-                        type="checkbox"
-                        name="terms_condition"
-                        checked={isLoginChecked}
-                        onChange={() => {
-                          setFieldValue(
-                            "terms_condition",
-                            !values.terms_condition
-                          );
-                          handleLoginCheckboxChange();
-                        }}
-                      />
-                      <span className="checkmark checkmark_primary"></span>
-
-                      <div className="text-secondary text-base">
-                        Jeg aksepterer{" "}
-                        <span className="text-primary">Vilkårene</span> og har
-                        lest{" "}
-                        <span className="text-primary">
-                          Personvernerklæringen
-                        </span>
-                      </div>
-                    </label>
-                    {errors.terms_condition && touched.terms_condition && (
-                      <div className="text-red text-sm">
-                        {errors.terms_condition}
-                      </div>
-                    )}
-                    <div className="flex justify-end mt-6">
-                      <button
-                        className="
-                            text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                      >
-                        Fortsett med <Image src={Ic_vapp} alt="logo" />
-                      </button>
-                    </div>
-                  </div>
-                </Form>
-              )}
-            </Formik>
-          </div>
-        </div>
-      )}
-
-      {loginPopup && !loginUser && (
-        <div
-          className="fixed top-0 left-0 flex justify-center items-center h-full w-full"
-          style={{ zIndex: 9999999 }}
-        >
-          <LoginForm
-            path={`${router.pathname}?${queryString}`}
-            setLoginPopup={setLoginPopup}
-            setIsCall={setIsCall}
-          />
-        </div>
-      )}
-
-      <div className="hidden" id="regulationDocument">
-        <RegulationPdf
-          lamdaDataFromApi={lamdaDataFromApi}
-          loadingAdditionalData={loadingAdditionalData}
-          additionalData={additionalData}
-          loadingLamdaData={loadingLamdaData}
-          CadastreDataFromApi={CadastreDataFromApi}
-        />
-      </div>
     </div>
   );
 };
 
-export default Tomt;
+export default RegulationPdf;

@@ -25,6 +25,7 @@ const config: Config = {
       gray2: "#D0D5DD",
       gray3: "#F9F9FB",
       darkGreen: "#125D56",
+      grayText: "#4A5578",
     },
     borderColor: {
       transparent: "transparent",
