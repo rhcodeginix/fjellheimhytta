@@ -1307,11 +1307,71 @@ const Tomt: React.FC<{
                       <div className="flex items-center gap-1">
                         <p className="text-grayText text-sm">BYA Inntil:</p>
                         <h6 className="text-black font-medium">
-                          {build.BYAInntil} m<sup>2</sup>
+                          {(() => {
+                      const data =
+                        CadastreDataFromApi?.buildingsApi?.response?.items?.map(
+                          (item: any) => item?.builtUpArea
+                        ) ?? [];
+
+                      if (
+                        data.length >= 2 &&
+                        askData?.bya_calculations?.results?.total_allowed_bya
+                      ) {
+                        const totalData = data.reduce(
+                          (acc: number, currentValue: number) =>
+                            acc + currentValue,
+                          0
+                        );
+
+                        return (
+                          <>
+                            {(
+                              askData?.bya_calculations?.results
+                                ?.total_allowed_bya - totalData
+                            ).toFixed(2)}
+                            m<sup>2</sup>
+                          </>
+                        );
+                      } else {
+                        return "0";
+                      }
+                    })()}
                         </h6>
                       </div>
                       <div className="text-grayText text-sm font-bold">
-                        Du har {build.tilgjengelig}% tilgjengelig BYA
+                        Du har 
+                        {(() => {
+                      const data =
+                        CadastreDataFromApi?.buildingsApi?.response?.items?.map(
+                          (item: any) => item?.builtUpArea
+                        ) ?? [];
+
+                      if (
+                        data.length >= 2 &&
+                        askData?.bya_calculations?.results?.total_allowed_bya
+                      ) {
+                        const totalData = data.reduce(
+                          (acc: number, currentValue: number) =>
+                            acc + currentValue,
+                          0
+                        );
+
+                        const result =
+                          (totalData /
+                            lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.areal_beregnet) *
+                          100;
+                        const formattedResult: any = result.toFixed(2);
+
+                        return `${(
+                          askData?.bya_calculations?.input?.bya_percentage -
+                          formattedResult
+                        ).toFixed(2)} %`;
+                      } else {
+                        return "0";
+                      }
+                    })()}{" "}
+                        tilgjengelig BYA
                       </div>
                     </div>
                     <Button
