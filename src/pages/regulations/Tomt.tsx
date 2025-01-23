@@ -1339,7 +1339,7 @@ const Tomt: React.FC<{
                         </h6>
                       </div>
                       <div className="text-grayText text-sm font-bold">
-                        Du har 
+                        Du har{" "}
                         {(() => {
                       const data =
                         CadastreDataFromApi?.buildingsApi?.response?.items?.map(
