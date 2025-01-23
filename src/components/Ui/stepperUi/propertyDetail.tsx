@@ -125,12 +125,11 @@ const PropertyDetail: React.FC<any> = ({
                           100;
                         const formattedResult = result.toFixed(2);
 
-                        return formattedResult;
+                        return `${formattedResult}  %`;
                       } else {
                         return "0";
                       }
                     })()}
-                    %
                   </p>
                   <p className="text-white text-sm">
                     Tilgjengelig BYA{" "}
@@ -157,15 +156,14 @@ const PropertyDetail: React.FC<any> = ({
                           100;
                         const formattedResult: any = result.toFixed(2);
 
-                        return (
+                        return `${(
                           askData?.bya_calculations?.input?.bya_percentage -
                           formattedResult
-                        ).toFixed(2);
+                        ).toFixed(2)} %`;
                       } else {
                         return "0";
                       }
                     })()}
-                    %
                   </p>
                 </div>
               </div>
@@ -200,14 +198,18 @@ const PropertyDetail: React.FC<any> = ({
                         );
 
                         return (
-                          askData?.bya_calculations?.results
-                            ?.total_allowed_bya - totalData
-                        ).toFixed(2);
+                          <>
+                            {(
+                              askData?.bya_calculations?.results
+                                ?.total_allowed_bya - totalData
+                            ).toFixed(2)}
+                            m<sup>2</sup>
+                          </>
+                        );
                       } else {
                         return "0";
                       }
-                    })()}{" "}
-                    m<sup>2</sup>
+                    })()}
                   </p>
                 </div>
               </div>

@@ -5,7 +5,6 @@ import Tomt from "./Tomt";
 import Husmodell from "./Husmodell";
 import Tilvalg from "./Tilvalg";
 import Tilbud from "./Tilbud";
-import Okonomi from "./Okonomi";
 import Finansiering from "./Finansiering";
 import Oppsummering from "./Oppsummering";
 import { useRouter } from "next/router";
@@ -293,7 +292,7 @@ const Regulations = () => {
       ),
     },
     {
-      name: "Husmodell",
+      name: "Hva kan du bygge?",
       component: (
         <Husmodell handleNext={handleNext} handlePrevious={handlePrevious} />
       ),
@@ -308,12 +307,6 @@ const Regulations = () => {
       name: "Tilbud",
       component: (
         <Tilbud handleNext={handleNext} handlePrevious={handlePrevious} />
-      ),
-    },
-    {
-      name: "Økonomi",
-      component: (
-        <Okonomi handleNext={handleNext} handlePrevious={handlePrevious} />
       ),
     },
     {

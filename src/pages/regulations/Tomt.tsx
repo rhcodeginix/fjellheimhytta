@@ -10,6 +10,11 @@ import Ic_check from "@/public/images/Ic_check.svg";
 import Ic_x_close from "@/public/images/Ic_x_close.svg";
 import Ic_logo from "@/public/images/Ic_logo.svg";
 import Ic_vapp from "@/public/images/Ic_vapp.svg";
+import Ic_garaje from "@/public/images/Ic_garaje.svg";
+import Ic_house from "@/public/images/Ic_house.svg";
+import Ic_ofc from "@/public/images/Ic_ofc.svg";
+import Ic_pergola from "@/public/images/Ic_pergola.svg";
+import Ic_cabin from "@/public/images/Ic_cabin.svg";
 import Button from "@/components/common/button";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
@@ -24,6 +29,39 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
 
+const buildOption: any = [
+  {
+    icon: Ic_garaje,
+    name: "Garasje eller carport",
+    BYAInntil: "67,42",
+    tilgjengelig: 7,
+  },
+  {
+    icon: Ic_house,
+    name: "Hagestue, bod eller drivhus",
+    BYAInntil: "67,42",
+    tilgjengelig: 7,
+  },
+  {
+    icon: Ic_ofc,
+    name: "Verksted, atelier eller kontor",
+    BYAInntil: "67,42",
+    tilgjengelig: 7,
+  },
+  {
+    icon: Ic_pergola,
+    name: "Frittliggende pergola",
+    BYAInntil: "67,42",
+    tilgjengelig: 7,
+  },
+  {
+    icon: Ic_cabin,
+    name: "Hytte, fritidsbolig eller anneks",
+    BYAInntil: "67,42",
+    tilgjengelig: 7,
+  },
+];
+
 const Tomt: React.FC<{
   loginUser: any;
   loadingAdditionalData: any;
@@ -36,7 +74,7 @@ const Tomt: React.FC<{
   CadastreDataFromApi: any;
   askData: any;
 }> = ({
-  // handleNext,
+  handleNext,
   lamdaDataFromApi,
   loadingAdditionalData,
   askData,
@@ -49,6 +87,7 @@ const Tomt: React.FC<{
 }) => {
   const router = useRouter();
   const { getAddress } = useAddress();
+  const popup = useRef<HTMLDivElement>(null);
 
   const [loginPopup, setLoginPopup] = useState(false);
   const [dropdownState, setDropdownState] = useState({
@@ -141,6 +180,31 @@ const Tomt: React.FC<{
       document.body.style.overflow = "auto";
     };
   }, [isPopupOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popup.current && !popup.current.contains(event.target as Node)) {
+        setIsBuild(false);
+        // body?.classList.remove("overflow-hidden");
+        // body?.classList.remove("h-screen");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   if (isBuild) {
+  //     body?.classList.add("overflow-hidden");
+  //     body?.classList.add("h-screen");
+  //   } else {
+  //     body?.classList.remove("overflow-hidden");
+  //     body?.classList.remove("h-screen");
+  //   }
+  // }, [isBuild]);
 
   const router_query: any = { ...router.query };
 
@@ -704,7 +768,6 @@ const Tomt: React.FC<{
                     Inkludert i totalt eiendom
                   </p>
                   <h5 className="text-base text-black font-medium">
-                    <Image src={Ic_check} alt="check" />
                     {CadastreDataFromApi?.cadastreApi?.response?.item
                       .includedInTotalRealEstate === "Ja" ||
                     CadastreDataFromApi?.cadastreApi?.response?.item
@@ -1006,7 +1069,7 @@ const Tomt: React.FC<{
                               />
                             </div>
                             <div className="flex flex-col gap-1">
-                              <h3 className="text-black font-semibold text-lg second_line_elipse">
+                              <h3 className="text-black font-semibold text-lg one_line_elipse">
                                 {item?.typeOfBuilding?.text}
                               </h3>
                               <p className="text-sm text-grayText">
@@ -1114,9 +1177,7 @@ const Tomt: React.FC<{
             <Button
               text="Velg husmodell"
               className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-              onClick={() => {
-                setIsBuild(true);
-              }}
+              onClick={() => setIsBuild(true)}
             />
           </div>
         </SideSpaceContainer>
@@ -1217,64 +1278,65 @@ const Tomt: React.FC<{
           }}
         >
           <div
-            className="bg-white p-8 rounded-[8px] w-[787px]"
+            className="bg-white rounded-[8px] w-[80%] relative max-h-[80%] overflow-y-auto"
             style={{
               boxShadow:
                 "0px 8px 8px -4px rgba(16, 24, 40, 0.031), 0px 20px 24px -4px rgba(16, 24, 40, 0.078)",
             }}
+            ref={popup}
           >
-            <h2 className="text-black text-[24px] font-semibold mb-2 text-center">
+            <h2 className="text-black text-[24px] font-semibold mb-6 text-center pt-6 px-6">
               Hva vil du bygge?
             </h2>
-            <Formik
-              initialValues={{ terms_condition: false }}
-              validationSchema={validationLoginSchema}
-              onSubmit={handleLoginSubmit}
-            >
-              {({ values, setFieldValue, errors, touched }) => (
-                <Form>
-                  <div className="flex items-center justify-center flex-col">
-                    <label className="flex items-center gap-[12px] container w-max">
-                      <Field
-                        type="checkbox"
-                        name="terms_condition"
-                        checked={isLoginChecked}
-                        onChange={() => {
-                          setFieldValue(
-                            "terms_condition",
-                            !values.terms_condition
-                          );
-                          handleLoginCheckboxChange();
-                        }}
-                      />
-                      <span className="checkmark checkmark_primary"></span>
-
-                      <div className="text-secondary text-base">
-                        Jeg aksepterer{" "}
-                        <span className="text-primary">Vilkårene</span> og har
-                        lest{" "}
-                        <span className="text-primary">
-                          Personvernerklæringen
-                        </span>
+            <div className="grid grid-cols-3 gap-6 mb-[40px] px-6">
+              {buildOption.map((build: any, index: any) => {
+                return (
+                  <div
+                    className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4"
+                    key={index}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-[60px] h-[60px] rounded-full bg-lightPurple customShadow flex items-center justify-center">
+                        <Image src={build.icon} alt="garaje" />
                       </div>
-                    </label>
-                    {errors.terms_condition && touched.terms_condition && (
-                      <div className="text-red text-sm">
-                        {errors.terms_condition}
-                      </div>
-                    )}
-                    <div className="flex justify-end mt-6">
-                      <button
-                        className="
-                            text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                      >
-                        Fortsett med <Image src={Ic_vapp} alt="logo" />
-                      </button>
+                      <h5 className="text-black text-lg font-semibold">
+                        {build.name}
+                      </h5>
                     </div>
+                    <div className="flex flex-col gap-[2px]">
+                      <div className="flex items-center gap-1">
+                        <p className="text-grayText text-sm">BYA Inntil:</p>
+                        <h6 className="text-black font-medium">
+                          {build.BYAInntil} m<sup>2</sup>
+                        </h6>
+                      </div>
+                      <div className="text-grayText text-sm font-bold">
+                        Du har {build.tilgjengelig}% tilgjengelig BYA
+                      </div>
+                    </div>
+                    <Button
+                      text="Velg"
+                      className="border-2 border-primary text-primary sm:text-base w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
+                    />
                   </div>
-                </Form>
-              )}
-            </Formik>
+                );
+              })}
+            </div>
+            <div className="flex items-center gap-6 justify-end sticky bottom-0 bg-white px-6 py-4 shadow-shadow1">
+              <Button
+                text="Tilbake"
+                className="border-2 border-primary text-primary sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
+                onClick={() => setIsBuild(false)}
+              />
+              <Button
+                text="Neste"
+                className="border border-primary bg-primary text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                onClick={() => {
+                  handleNext();
+                  window.location.reload();
+                }}
+              />
+            </div>
           </div>
         </div>
       )}

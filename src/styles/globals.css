@@ -19,11 +19,11 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-.second_line_elipse {
+.one_line_elipse {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
 /* --- */
@@ -107,7 +107,8 @@ input::placeholder {
 
 .screen-indicator {
   background-color: #dcdfea;
-  width: 14.29%;
+  min-width: 16.6%;
+  max-width: 100%;
   height: 4px;
   transition: 0.7s all;
   position: absolute;
@@ -129,11 +130,11 @@ input::placeholder {
   gap: 8px;
   width: 10%;
   color: #344054;
+  white-space: nowrap;
   cursor: pointer;
 }
 .screen-indicator-span span {
   font-size: 14px;
-  font-weight: 500;
 }
 
 .screen-indicator.current {
@@ -141,6 +142,7 @@ input::placeholder {
 }
 .screen-indicator-span.current span {
   color: #6941c6;
+  font-weight: 500;
 }
 .screen-indicator-span.current .screen-index {
   background-color: #6941c6;
@@ -284,4 +286,10 @@ td {
   box-shadow:
     0px 4px 6px -2px #10182808,
     0px 12px 16px -4px #10182814;
+}
+
+.customShadow {
+  box-shadow:
+    0px 1px 2px 0px #1018280f,
+    0px 1px 3px 0px #1018281a;
 }
