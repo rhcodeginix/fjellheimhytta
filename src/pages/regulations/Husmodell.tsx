@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
 import AllProperty from "@/components/Ui/RegulationHusmodell/allProperty";
 import { useRouter } from "next/router";
 import PropertyDetailPage from "@/components/Ui/RegulationHusmodell/propertyDetailPage";
@@ -18,7 +17,6 @@ const Husmodell: React.FC<any> = ({ handleNext, handlePrevious }) => {
 
   return (
     <div className="relative">
-      <PropertyDetail isShow={propertyAllDetail ? true : false} />
       {propertyAllDetail ? (
         <PropertyDetailPage
           handleNext={handleNext}

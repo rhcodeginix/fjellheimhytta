@@ -3,14 +3,10 @@ import Image from "next/image";
 import Img_line_bg from "@/public/images/Img_line_bg.png";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Ic_check_green_icon from "@/public/images/Ic_check_green_icon.svg";
-import Ic_product_detail_avatar from "@/public/images/Ic_product_detail_avatar.svg";
-import Ic_product_detail_position from "@/public/images/Ic_product_detail_position.svg";
-import Ic_chevron_right from "@/public/images/Ic_chevron_right.svg";
 import { useAddress } from "@/context/addressContext";
 import Loading from "@/components/Loading";
 
 const PropertyDetail: React.FC<any> = ({
-  isShow,
   loadingAdditionalData,
   askData,
   CadastreDataFromApi,
@@ -68,31 +64,6 @@ const PropertyDetail: React.FC<any> = ({
                   moh.
                 </div>
               </div>
-              {isShow && (
-                <div
-                  className="bg-white rounded-[8px] py-[18px] px-[22px]"
-                  style={{
-                    boxShadow:
-                      "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
-                  }}
-                >
-                  <p className="text-black text-sm mb-3">Din boligkonsulent</p>
-                  <div className="flex items-center gap-[8px]">
-                    <Image
-                      src={Ic_product_detail_avatar}
-                      alt="image"
-                      className="h-[48px] w-[48px] rounded-full"
-                    />
-                    <div>
-                      <h4 className="text-base text-black font-semibold">
-                        Simen Wolmer
-                      </h4>
-                      <Image src={Ic_product_detail_position} alt="image" />
-                    </div>
-                    <Image src={Ic_chevron_right} alt="icon" />
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </SideSpaceContainer>
@@ -229,8 +200,8 @@ const PropertyDetail: React.FC<any> = ({
                         );
 
                         return (
-                          totalData -
-                          askData?.bya_calculations?.results?.total_allowed_bya
+                          askData?.bya_calculations?.results
+                            ?.total_allowed_bya - totalData
                         ).toFixed(2);
                       } else {
                         return "0";

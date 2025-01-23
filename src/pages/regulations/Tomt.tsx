@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
 import Ic_generelt from "@/public/images/Ic_generelt.svg";
 import Ic_info_circle from "@/public/images/Ic_info_circle.svg";
 import Ic_check_true from "@/public/images/Ic_check_true.svg";
@@ -9,6 +8,7 @@ import Ic_steddy from "@/public/images/Ic_steddy.svg";
 import Ic_download from "@/public/images/Ic_download.svg";
 import Ic_check from "@/public/images/Ic_check.svg";
 import Ic_x_close from "@/public/images/Ic_x_close.svg";
+import Ic_logo from "@/public/images/Ic_logo.svg";
 import Ic_vapp from "@/public/images/Ic_vapp.svg";
 import Button from "@/components/common/button";
 import * as Yup from "yup";
@@ -23,11 +23,9 @@ import Loading from "@/components/Loading";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
-import RegulationPdf from "@/components/pdf/regulationPdf";
 
 const Tomt: React.FC<{
   loginUser: any;
-  additionalData: any;
   loadingAdditionalData: any;
   handleNext: any;
   lamdaDataFromApi: any;
@@ -36,11 +34,12 @@ const Tomt: React.FC<{
   setIsCall: any;
   loadingLamdaData: any;
   CadastreDataFromApi: any;
+  askData: any;
 }> = ({
-  handleNext,
+  // handleNext,
   lamdaDataFromApi,
   loadingAdditionalData,
-  additionalData,
+  askData,
   loginUser,
   isPopupOpen,
   setIsPopupOpen,
@@ -61,6 +60,7 @@ const Tomt: React.FC<{
     SpesielleRegistreringer: false,
   });
 
+  const [isBuild, setIsBuild] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -142,21 +142,6 @@ const Tomt: React.FC<{
     };
   }, [isPopupOpen]);
 
-  const [askData, setAskData] = useState<any | null>(null);
-
-  useEffect(() => {
-    if (additionalData?.answer) {
-      try {
-        const cleanAnswer = additionalData.answer;
-
-        setAskData(cleanAnswer);
-      } catch (error) {
-        console.error("Error parsing additionalData.answer:", error);
-        setAskData(null);
-      }
-    }
-  }, [additionalData]);
-
   const router_query: any = { ...router.query };
 
   delete router_query.login_popup;
@@ -165,24 +150,30 @@ const Tomt: React.FC<{
 
   const captureScreenshotAndDownloadPDF = () => {
     const element: any = document.querySelector("#regulationDocument");
+    const not_show: any = document.querySelector("#not_show");
+    const logoDiv: any = document.querySelector("#logoDiv");
+    const notShow: any = document.querySelectorAll(".notShow");
 
     if (!element) {
       console.error("Element to capture not found");
       return;
     }
-    const clonedElement = element.cloneNode(true) as HTMLElement;
+    if (not_show) {
+      not_show.style.display = "none";
+    }
+    if (logoDiv) {
+      logoDiv.style.display = "block";
+    }
+    notShow.forEach((btn: any) => {
+      btn.style.display = "none";
+    });
 
-    clonedElement.style.display = "flex";
-    document.body.appendChild(clonedElement);
-
-    html2canvas(clonedElement, {
+    html2canvas(element, {
       allowTaint: true,
       useCORS: true,
       logging: true,
     })
       .then((canvas) => {
-        document.body.removeChild(clonedElement);
-
         const pdf = new jsPDF("p", "mm", "a4");
 
         const imageData = canvas.toDataURL("image/png");
@@ -214,12 +205,28 @@ const Tomt: React.FC<{
         } else {
           pdf.addImage(imageData, "PNG", padding, padding, newWidth, newHeight);
         }
-
+        if (not_show) {
+          not_show.style.display = "block";
+        }
+        if (logoDiv) {
+          logoDiv.style.display = "none";
+        }
+        notShow.forEach((btn: any) => {
+          btn.style.display = "flex";
+        });
         pdf.save(`min_tomt_regulation_${lamdaDataFromApi?.propertyId}.pdf`);
       })
       .catch((error) => {
-        document.body.removeChild(clonedElement);
         console.error("Error capturing screenshot: ", error);
+        if (not_show) {
+          not_show.style.display = "block";
+        }
+        if (logoDiv) {
+          logoDiv.style.display = "none";
+        }
+        notShow.forEach((btn: any) => {
+          btn.style.display = "flex";
+        });
       });
   };
 
@@ -228,230 +235,20 @@ const Tomt: React.FC<{
   }
   return (
     <div className="relative">
-      <div>
-        <PropertyDetail
-          isShow={false}
-          loadingAdditionalData={loadingAdditionalData}
-          askData={askData}
-          CadastreDataFromApi={CadastreDataFromApi}
-          lamdaDataFromApi={lamdaDataFromApi}
-        />
-
+      <div id="regulationDocument">
+        <div
+          className="border-b border-[#EFF1F5] py-6 pb-8"
+          id="logoDiv"
+          style={{ display: "none" }}
+        >
+          <SideSpaceContainer>
+            <Image src={Ic_logo} alt="logo" className="w-[100px] lg:w-auto" />
+          </SideSpaceContainer>
+        </div>
         <SideSpaceContainer className="relative pt-[60px] pb-[46px]">
           <h2 className="text-black text-2xl font-semibold mb-6">
             Eiendomsinformasjon
           </h2>
-          {/* <div className="grid grid-cols-6 gap-6 mb-[60px]">
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">numberOfPlots</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .numberOfPlots === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">pointHitch</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item.pointHitch ===
-                true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">zeroConcession</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .zeroConcession === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">unitName</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item.unitName
-                  ? CadastreDataFromApi?.cadastreApi?.response?.item.unitName
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">specifiedArea</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .specifiedArea ? (
-                  <>
-                    {
-                      CadastreDataFromApi?.cadastreApi?.response?.item
-                        .specifiedArea
-                    }{" "}
-                    m<sup>2</sup>
-                  </>
-                ) : (
-                  "-"
-                )}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Seksjonert</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                  ?.seksjonert
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                      ?.seksjonert
-                  : "-"}
-              </div>
-            </div>
-         
-           
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Aktive festegrunner</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.status
-                  ?.aktive_festegrunner
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.aktive_festegrunner
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Anmerket klage</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.status?.anmerket_klage
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.anmerket_klage
-                  : "-"}
-              </div>
-            </div>
-           
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Utgått</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.status?.utgatt
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.status?.utgatt
-                  : "-"}
-              </div>
-            </div>
-           
-        
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">agriculturalCadastre</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .agriculturalCadastre === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-           
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">hasNotedComplaint</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasNotedComplaint === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">hasOldCadastre</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasOldCadastre === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">
-                hasRegisteredLandAcquisition
-              </div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasRegisteredLandAcquisition === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Festenr</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.festenr
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.festenr
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">Bruksnavn</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
-                  ? lamdaDataFromApi?.eiendomsInformasjon?.bruksnavn
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">hasSingleHeritage</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasSingleHeritage === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">hasSoilContamination</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .hasSoilContamination === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">leasehold</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item.ident
-                  ?.leasehold === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">leaseholdUnitNumber</div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item.ident
-                  ?.leaseholdUnitNumber
-                  ? CadastreDataFromApi?.cadastreApi?.response?.item.ident
-                      ?.leaseholdUnitNumber
-                  : "-"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">
-                includedInTotalRealEstate
-              </div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .includedInTotalRealEstate === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-            <div className="flex gap-1 flex-col">
-              <div className="text-secondary text-sm">
-                isHistoricalRegisteredLand
-              </div>
-              <div className="text-black text-sm font-semibold w-full truncate">
-                {CadastreDataFromApi?.cadastreApi?.response?.item
-                  .isHistoricalRegisteredLand === true
-                  ? "Ja"
-                  : "Nei"}
-              </div>
-            </div>
-          </div> */}
 
           <div className="grid grid-cols-3 gap-6 mb-[60px]">
             <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
@@ -461,7 +258,7 @@ const Tomt: React.FC<{
                   <Image
                     src={Ic_info_circle}
                     alt="info"
-                    className="cursor-pointer"
+                    className="notShow cursor-pointer"
                     onClick={() => toggleDropdown("Tomteopplysninger")}
                   />
                   {dropdownState.Tomteopplysninger && (
@@ -542,7 +339,9 @@ const Tomt: React.FC<{
                   <p className="text-sm text-grayText">Er registrert land</p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .isRegisteredLand === "Ja" || true ? (
+                      .isRegisteredLand === "Ja" ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .isRegisteredLand === true ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -568,7 +367,7 @@ const Tomt: React.FC<{
                   <Image
                     src={Ic_info_circle}
                     alt="info"
-                    className="cursor-pointer"
+                    className="notShow cursor-pointer"
                     onClick={() => toggleDropdown("KommunaleData")}
                   />
                   {dropdownState.KommunaleData && (
@@ -656,7 +455,7 @@ const Tomt: React.FC<{
                   <Image
                     src={Ic_info_circle}
                     alt="info"
-                    className="cursor-pointer"
+                    className="notShow cursor-pointer"
                     onClick={() => toggleDropdown("Eiendomsstatus")}
                   />
                   {dropdownState.Eiendomsstatus && (
@@ -682,7 +481,9 @@ const Tomt: React.FC<{
                   <p className="text-sm text-grayText">Kan selges</p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .canBeSold === true || "Ja" ? (
+                      .canBeSold === true ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .canBeSold === "Ja" ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -693,7 +494,9 @@ const Tomt: React.FC<{
                   <p className="text-sm text-grayText">Kan belånes</p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .canBeMortgaged === true || "Ja" ? (
+                      .canBeMortgaged === true ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .canBeMortgaged === "Ja" ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -704,7 +507,9 @@ const Tomt: React.FC<{
                   <p className="text-sm text-grayText">Har bygning</p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasBuilding === true || "Ja" ? (
+                      .hasBuilding === true ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .hasBuilding === "Ja" ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -715,7 +520,9 @@ const Tomt: React.FC<{
                   <p className="text-sm text-grayText">Har fritidsbolig</p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasHolidayHome === true || "Ja" ? (
+                      .hasHolidayHome === true ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .hasHolidayHome === "Ja" ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -726,18 +533,9 @@ const Tomt: React.FC<{
                   <p className="text-sm text-grayText">Har bolig</p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasHousing === true || "Ja" ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Har nærkunder</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .canBeMortgaged === true || "Ja" ? (
+                      .hasHousing === true ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .hasHousing === "Ja" ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -753,7 +551,7 @@ const Tomt: React.FC<{
                   <Image
                     src={Ic_info_circle}
                     alt="info"
-                    className="cursor-pointer"
+                    className="notShow cursor-pointer"
                     onClick={() => toggleDropdown("Parkeringsinformasjon")}
                   />
                   {dropdownState.Parkeringsinformasjon && (
@@ -853,7 +651,7 @@ const Tomt: React.FC<{
                   <Image
                     src={Ic_info_circle}
                     alt="info"
-                    className="cursor-pointer"
+                    className="notShow cursor-pointer"
                     onClick={() => toggleDropdown("YtterligereEiendomsforhold")}
                   />
                   {dropdownState.YtterligereEiendomsforhold && (
@@ -878,14 +676,23 @@ const Tomt: React.FC<{
                 <div className="flex items-center justify-between gap-1">
                   <p className="text-sm text-grayText">Har pestforekomster</p>
                   <h5 className="text-base text-black font-medium">
-                    <Image src={Ic_check} alt="check" />
+                    {CadastreDataFromApi?.cadastreApi?.response?.item
+                      .hasSoilContamination === "Ja" ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .hasSoilContamination === true ? (
+                      <Image src={Ic_check} alt="check" />
+                    ) : (
+                      <Image src={Ic_x_close} alt="check" />
+                    )}
                   </h5>
                 </div>
                 <div className="flex items-center justify-between gap-1">
                   <p className="text-sm text-grayText">Har aktiv leiestand</p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasActiveLeasedLand === "Ja" || true ? (
+                      .hasActiveLeasedLand === "Ja" ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .hasActiveLeasedLand === true ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -898,6 +705,14 @@ const Tomt: React.FC<{
                   </p>
                   <h5 className="text-base text-black font-medium">
                     <Image src={Ic_check} alt="check" />
+                    {CadastreDataFromApi?.cadastreApi?.response?.item
+                      .includedInTotalRealEstate === "Ja" ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .includedInTotalRealEstate === true ? (
+                      <Image src={Ic_check} alt="check" />
+                    ) : (
+                      <Image src={Ic_x_close} alt="check" />
+                    )}
                   </h5>
                 </div>
                 <div className="flex items-center justify-between gap-1">
@@ -906,7 +721,9 @@ const Tomt: React.FC<{
                   </p>
                   <h5 className="text-base text-black font-medium">
                     {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.kulturminner_registrert === "Ja" || true ? (
+                      ?.kulturminner_registrert === "Ja" ||
+                    lamdaDataFromApi?.eiendomsInformasjon?.status
+                      ?.kulturminner_registrert === true ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -917,7 +734,9 @@ const Tomt: React.FC<{
                   <p className="text-sm text-grayText">Grunnforurensning</p>
                   <h5 className="text-base text-black font-medium">
                     {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.grunnforurensning === "Ja" || true ? (
+                      ?.grunnforurensning === "Ja" ||
+                    lamdaDataFromApi?.eiendomsInformasjon?.status
+                      ?.grunnforurensning === true ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -933,7 +752,7 @@ const Tomt: React.FC<{
                   <Image
                     src={Ic_info_circle}
                     alt="info"
-                    className="cursor-pointer"
+                    className="notShow cursor-pointer"
                     onClick={() => toggleDropdown("SpesielleRegistreringer")}
                   />
                   {dropdownState.SpesielleRegistreringer && (
@@ -958,14 +777,23 @@ const Tomt: React.FC<{
                 <div className="flex items-center justify-between gap-1">
                   <p className="text-sm text-grayText">Sammenslåtte tomter</p>
                   <h5 className="text-base text-black font-medium">
-                    <Image src={Ic_check} alt="check" />
+                    {CadastreDataFromApi?.cadastreApi?.response?.item
+                      .numberOfPlots === "Ja" ||
+                    CadastreDataFromApi?.cadastreApi?.response?.item
+                      .numberOfPlots === true ? (
+                      <Image src={Ic_check} alt="check" />
+                    ) : (
+                      <Image src={Ic_x_close} alt="check" />
+                    )}
                   </h5>
                 </div>
                 <div className="flex items-center justify-between gap-1">
                   <p className="text-sm text-grayText">Tinglyst</p>
                   <h5 className="text-base text-black font-medium">
                     {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                      ?.tinglyst === "Ja" || true ? (
+                      ?.tinglyst === "Ja" ||
+                    lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                      ?.tinglyst === true ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -984,7 +812,9 @@ const Tomt: React.FC<{
                   </p>
                   <h5 className="text-base text-black font-medium">
                     {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.oppmaling_ikke_fullfort === "Ja" || true ? (
+                      ?.oppmaling_ikke_fullfort === "Ja" ||
+                    lamdaDataFromApi?.eiendomsInformasjon?.status
+                      ?.oppmaling_ikke_fullfort === true ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -997,7 +827,9 @@ const Tomt: React.FC<{
                   </p>
                   <h5 className="text-base text-black font-medium">
                     {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.mangler_grensepunktmerking === "Ja" || true ? (
+                      ?.mangler_grensepunktmerking === "Ja" ||
+                    lamdaDataFromApi?.eiendomsInformasjon?.status
+                      ?.mangler_grensepunktmerking === true ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -1008,7 +840,11 @@ const Tomt: React.FC<{
                   <p className="text-sm text-grayText">Under sammenslåing</p>
                   <h5 className="text-base text-black font-medium">
                     {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.under_sammenslaing === "Ja" || true ? (
+                      ?.under_sammenslaing === "Ja" ||
+                    (lamdaDataFromApi?.eiendomsInformasjon?.status
+                      ?.under_sammenslaing ===
+                      "Ja") ===
+                      true ? (
                       <Image src={Ic_check} alt="check" />
                     ) : (
                       <Image src={Ic_x_close} alt="check" />
@@ -1029,24 +865,25 @@ const Tomt: React.FC<{
                     coordinates={
                       lamdaDataFromApi?.coordinates?.convertedCoordinates
                     }
-                    // nearbyBuildingCoordinates={nearbyBuildingCoordinates}
                   />
                 </div>
               </div>
-              <div className="flex items-center gap-[36px] mb-6 bg-[#F9F9FB] rounded-[8px] py-5 px-6">
-                <Image src={Ic_steddy} alt="logo" />
-                <p className="text-secondary text-sm">
-                  Vi hjelper deg med{" "}
-                  <span className="text-black font-semibold">
-                    reguleringer, søknader
-                  </span>{" "}
-                  og{" "}
-                  <span className="text-black font-semibold">
-                    innheter tilbud.
-                  </span>
-                </p>
+              <div id="not_show">
+                <div className="flex items-center gap-[36px] mb-6 bg-[#F9F9FB] rounded-[8px] py-5 px-6">
+                  <Image src={Ic_steddy} alt="logo" />
+                  <p className="text-secondary text-sm">
+                    Vi hjelper deg med{" "}
+                    <span className="text-black font-semibold">
+                      reguleringer, søknader
+                    </span>{" "}
+                    og{" "}
+                    <span className="text-black font-semibold">
+                      innheter tilbud.
+                    </span>
+                  </p>
+                </div>
+                <ContactForm />
               </div>
-              <ContactForm />
             </div>
             <div className="w-[66%]">
               {loadingLamdaData ? (
@@ -1134,118 +971,127 @@ const Tomt: React.FC<{
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-black text-2xl font-semibold">
-                  Eksisterende bebyggelse
-                </h2>
-                {!loadingAdditionalData && (
-                  <div
-                    className="flex gap-2 items-center cursor-pointer"
-                    onClick={captureScreenshotAndDownloadPDF}
-                  >
-                    <Image src={Ic_download} alt="download" />
-                    <h4 className="text-primary text-base font-semibold">
-                      Download Regulation Document
-                    </h4>
+              {CadastreDataFromApi?.buildingsApi?.response?.items.length >
+                0 && (
+                <>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-black text-2xl font-semibold">
+                      Eksisterende bebyggelse
+                    </h2>
+                    {!loadingAdditionalData && (
+                      <div
+                        className="flex gap-2 items-center cursor-pointer notShow"
+                        onClick={captureScreenshotAndDownloadPDF}
+                      >
+                        <Image src={Ic_download} alt="download" />
+                        <h4 className="text-primary text-base font-semibold">
+                          Download Regulation Document
+                        </h4>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <div className="grid grid-cols-4 gap-6 mb-16">
-                {CadastreDataFromApi?.buildingsApi?.response?.items.map(
-                  (item: any, index: number) => (
-                    <div
-                      className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4"
-                      key={index}
-                    >
-                      <div className="flex flex-col gap-4">
-                        <div className="w-full h-[177px] rounded-[8px]">
-                          <GoogleMapNearByComponent
-                            coordinates={item?.position?.geometry?.coordinates}
-                          />
+                  <div className="grid grid-cols-4 gap-6 mb-16">
+                    {CadastreDataFromApi?.buildingsApi?.response?.items.map(
+                      (item: any, index: number) => (
+                        <div
+                          className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4"
+                          key={index}
+                        >
+                          <div className="flex flex-col gap-4">
+                            <div className="w-full h-[177px] rounded-[8px]">
+                              <GoogleMapNearByComponent
+                                coordinates={
+                                  item?.position?.geometry?.coordinates
+                                }
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <h3 className="text-black font-semibold text-lg second_line_elipse">
+                                {item?.typeOfBuilding?.text}
+                              </h3>
+                              <p className="text-sm text-grayText">
+                                {item?.buildingStatus?.text}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-[2px]">
+                            <div className="text-grayText text-sm">
+                              Antall etasjer:{" "}
+                              <span className="text-black font-medium text-base">
+                                {item?.numberOfFloors}
+                              </span>
+                            </div>
+                            <div className="text-grayText text-sm">
+                              Bruksareal:{" "}
+                              <span className="text-black font-medium text-base">
+                                {item?.totalFloorSpace} m<sup>2</sup>
+                              </span>
+                            </div>
+                            <div className="text-grayText text-sm">
+                              Rammetillatelse:{" "}
+                              <span className="text-black font-medium text-base">
+                                {formatDateToDDMMYYYY(
+                                  item?.registeredApprovedDate?.timestamp
+                                )}
+                              </span>
+                            </div>
+                            <div className="text-grayText text-sm">
+                              Igangsettelse:{" "}
+                              <span className="text-black font-medium text-base">
+                                {formatDateToDDMMYYYY(
+                                  item?.approvedDate?.timestamp
+                                )}
+                              </span>
+                            </div>
+                            <div className="text-grayText text-sm">
+                              Midleritidg bruk:{" "}
+                              <span className="text-black font-medium text-base">
+                                {formatDateToDDMMYYYY(
+                                  item?.usedDate?.timestamp
+                                )}
+                              </span>
+                            </div>
+                            <div className="text-grayText text-sm">
+                              Ferdigattest:{" "}
+                              <span className="text-black font-medium text-base">
+                                {formatDateToDDMMYYYY(
+                                  item?.buildingStatusHistory[0]
+                                    ?.buildingStatusRegisteredDate?.timestamp
+                                )}
+                              </span>
+                            </div>
+                            <div className="text-grayText text-sm">
+                              Bebygd areal (BYA):{" "}
+                              <span className="text-black font-medium text-base">
+                                {item?.builtUpArea} m<sup>2</sup>
+                              </span>
+                            </div>
+                            <div className="text-grayText font-bold text-sm">
+                              Bygningen utgjør{" "}
+                              {(() => {
+                                if (
+                                  item?.builtUpArea &&
+                                  askData?.bya_calculations?.results
+                                    ?.total_allowed_bya
+                                ) {
+                                  return (
+                                    (item.builtUpArea /
+                                      askData.bya_calculations.results
+                                        .total_allowed_bya) *
+                                    100
+                                  ).toFixed(2);
+                                }
+                                return 0;
+                              })()}
+                              % av BYA
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex flex-col gap-1">
-                          <h3 className="text-black font-semibold text-lg second_line_elipse">
-                            {item?.typeOfBuilding?.text}
-                          </h3>
-                          <p className="text-sm text-grayText">
-                            {item?.buildingStatus?.text}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-[2px]">
-                        <div className="text-grayText text-sm">
-                          Antall etasjer:{" "}
-                          <span className="text-black font-medium text-base">
-                            {item?.numberOfFloors}
-                          </span>
-                        </div>
-                        <div className="text-grayText text-sm">
-                          Bruksareal:{" "}
-                          <span className="text-black font-medium text-base">
-                            {item?.totalFloorSpace} m<sup>2</sup>
-                          </span>
-                        </div>
-                        <div className="text-grayText text-sm">
-                          Rammetillatelse:{" "}
-                          <span className="text-black font-medium text-base">
-                            {formatDateToDDMMYYYY(
-                              item?.registeredApprovedDate?.timestamp
-                            )}
-                          </span>
-                        </div>
-                        <div className="text-grayText text-sm">
-                          Igangsettelse:{" "}
-                          <span className="text-black font-medium text-base">
-                            {formatDateToDDMMYYYY(
-                              item?.approvedDate?.timestamp
-                            )}
-                          </span>
-                        </div>
-                        <div className="text-grayText text-sm">
-                          Midleritidg bruk:{" "}
-                          <span className="text-black font-medium text-base">
-                            {formatDateToDDMMYYYY(item?.usedDate?.timestamp)}
-                          </span>
-                        </div>
-                        <div className="text-grayText text-sm">
-                          Ferdigattest:{" "}
-                          <span className="text-black font-medium text-base">
-                            {formatDateToDDMMYYYY(
-                              item?.buildingStatusHistory[0]
-                                ?.buildingStatusRegisteredDate?.timestamp
-                            )}
-                          </span>
-                        </div>
-                        <div className="text-grayText text-sm">
-                          Bebygd areal (BYA):{" "}
-                          <span className="text-black font-medium text-base">
-                            {item?.builtUpArea} m<sup>2</sup>
-                          </span>
-                        </div>
-                        <div className="text-grayText font-bold text-sm">
-                          Bygningen utgjør{" "}
-                          {(() => {
-                            if (
-                              item?.builtUpArea &&
-                              askData?.bya_calculations?.results
-                                ?.total_allowed_bya
-                            ) {
-                              return (
-                                (item.builtUpArea /
-                                  askData.bya_calculations.results
-                                    .total_allowed_bya) *
-                                100
-                              ).toFixed(2);
-                            }
-                            return 0;
-                          })()}
-                          % av BYA
-                        </div>
-                      </div>
-                    </div>
-                  )
-                )}
-              </div>
+                      )
+                    )}
+                  </div>
+                </>
+              )}
             </>
           )}
         </SideSpaceContainer>
@@ -1269,7 +1115,7 @@ const Tomt: React.FC<{
               text="Velg husmodell"
               className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
-                handleNext();
+                setIsBuild(true);
               }}
             />
           </div>
@@ -1363,15 +1209,75 @@ const Tomt: React.FC<{
         </div>
       )}
 
-      <div className="hidden" id="regulationDocument">
-        <RegulationPdf
-          lamdaDataFromApi={lamdaDataFromApi}
-          loadingAdditionalData={loadingAdditionalData}
-          additionalData={additionalData}
-          loadingLamdaData={loadingLamdaData}
-          CadastreDataFromApi={CadastreDataFromApi}
-        />
-      </div>
+      {isBuild && !loadingAdditionalData && (
+        <div
+          className="fixed top-0 left-0 flex justify-center items-center h-full w-full bg-[#00000080]"
+          style={{
+            zIndex: 999999999,
+          }}
+        >
+          <div
+            className="bg-white p-8 rounded-[8px] w-[787px]"
+            style={{
+              boxShadow:
+                "0px 8px 8px -4px rgba(16, 24, 40, 0.031), 0px 20px 24px -4px rgba(16, 24, 40, 0.078)",
+            }}
+          >
+            <h2 className="text-black text-[24px] font-semibold mb-2 text-center">
+              Hva vil du bygge?
+            </h2>
+            <Formik
+              initialValues={{ terms_condition: false }}
+              validationSchema={validationLoginSchema}
+              onSubmit={handleLoginSubmit}
+            >
+              {({ values, setFieldValue, errors, touched }) => (
+                <Form>
+                  <div className="flex items-center justify-center flex-col">
+                    <label className="flex items-center gap-[12px] container w-max">
+                      <Field
+                        type="checkbox"
+                        name="terms_condition"
+                        checked={isLoginChecked}
+                        onChange={() => {
+                          setFieldValue(
+                            "terms_condition",
+                            !values.terms_condition
+                          );
+                          handleLoginCheckboxChange();
+                        }}
+                      />
+                      <span className="checkmark checkmark_primary"></span>
+
+                      <div className="text-secondary text-base">
+                        Jeg aksepterer{" "}
+                        <span className="text-primary">Vilkårene</span> og har
+                        lest{" "}
+                        <span className="text-primary">
+                          Personvernerklæringen
+                        </span>
+                      </div>
+                    </label>
+                    {errors.terms_condition && touched.terms_condition && (
+                      <div className="text-red text-sm">
+                        {errors.terms_condition}
+                      </div>
+                    )}
+                    <div className="flex justify-end mt-6">
+                      <button
+                        className="
+                            text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                      >
+                        Fortsett med <Image src={Ic_vapp} alt="logo" />
+                      </button>
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

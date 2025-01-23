@@ -106,17 +106,28 @@ input::placeholder {
 }
 
 .screen-indicator {
-  background-color: #eaecf0;
-  width: 100%;
+  background-color: #dcdfea;
+  width: 14.29%;
   height: 4px;
   transition: 0.7s all;
-  position: relative;
+  position: absolute;
+  z-index: -1;
+}
+.screen-index {
+  background: #eff1f5;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  color: #111322;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .screen-indicator-span {
   display: flex;
-  width: 14.29%;
-  flex-direction: column;
+  align-items: center;
   gap: 8px;
+  width: 10%;
   color: #344054;
   cursor: pointer;
 }
@@ -130,6 +141,14 @@ input::placeholder {
 }
 .screen-indicator-span.current span {
   color: #6941c6;
+}
+.screen-indicator-span.current .screen-index {
+  background-color: #6941c6;
+  color: white;
+}
+.screen-indicator-span.completed .screen-index {
+  color: white;
+  background-color: #277252;
 }
 .screen-indicator.completed {
   background-color: #277252;

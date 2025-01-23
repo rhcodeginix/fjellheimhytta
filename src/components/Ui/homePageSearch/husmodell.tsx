@@ -141,6 +141,8 @@ const HusmodellTab = () => {
                       "IPlot_Address",
                       JSON.stringify(address)
                     );
+                    const currIndex = 0;
+                    localStorage.setItem("currIndex", currIndex.toString());
                     setStoreAddress(address);
                   }}
                 >

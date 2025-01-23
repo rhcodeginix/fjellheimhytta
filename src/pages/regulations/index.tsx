@@ -25,7 +25,19 @@ import { useAddress } from "@/context/addressContext";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 
 const Regulations = () => {
-  const [currIndex, setCurrIndex] = useState(0);
+  const [currIndex, setCurrIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedIndex = localStorage.getItem("currIndex");
+      if (savedIndex) {
+        setCurrIndex(Number(savedIndex));
+      } else {
+        setCurrIndex(0);
+      }
+    }
+  }, [currIndex]);
+
   const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
   const [CadastreDataFromApi, setCadastreDataFromApi] = useState<any | null>(
     null
@@ -234,18 +246,33 @@ const Regulations = () => {
   ]);
 
   const handleNext = () => {
-    if (currIndex < steps.length - 1) {
+    if (typeof currIndex === "number" && currIndex < steps.length - 1) {
       setCurrIndex(currIndex + 1);
     }
   };
   const handlePrevious = () => {
-    if (currIndex > 0) {
+    if (typeof currIndex === "number" && currIndex > 0) {
       setCurrIndex(currIndex - 1);
     }
   };
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currIndex]);
+
+  const [askData, setAskData] = useState<any | null>(null);
+
+  useEffect(() => {
+    if (additionalData?.answer) {
+      try {
+        const cleanAnswer = additionalData.answer;
+
+        setAskData(cleanAnswer);
+      } catch (error) {
+        console.error("Error parsing additionalData.answer:", error);
+        setAskData(null);
+      }
+    }
+  }, [additionalData]);
 
   const steps = [
     {
@@ -255,13 +282,13 @@ const Regulations = () => {
           handleNext={handleNext}
           lamdaDataFromApi={lamdaDataFromApi}
           loadingAdditionalData={loadingAdditionalData}
-          additionalData={additionalData}
           loginUser={loginUser}
           isPopupOpen={isPopupOpen}
           setIsPopupOpen={setIsPopupOpen}
           setIsCall={setIsCall}
           loadingLamdaData={loadingLamdaData}
           CadastreDataFromApi={CadastreDataFromApi}
+          askData={askData}
         />
       ),
     },
@@ -307,6 +334,10 @@ const Regulations = () => {
         steps={steps}
         currIndex={currIndex}
         setCurrIndex={setCurrIndex}
+        lamdaDataFromApi={lamdaDataFromApi}
+        loadingAdditionalData={loadingAdditionalData}
+        CadastreDataFromApi={CadastreDataFromApi}
+        askData={askData}
       />
       {showErrorPopup && <ErrorPopup />}
     </>

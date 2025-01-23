@@ -211,6 +211,8 @@ const TomtTab = () => {
                       "IPlot_Address",
                       JSON.stringify(address)
                     );
+                    const currIndex = 0;
+                    localStorage.setItem("currIndex", currIndex.toString());
                     setStoreAddress(address);
                   }}
                 >
@@ -246,6 +248,8 @@ const TomtTab = () => {
                   onClick={() => {
                     localStorage.setItem("IPlot_Address", JSON.stringify(kart));
                     setStoreAddress(kart);
+                    const currIndex = 0;
+                    localStorage.setItem("currIndex", currIndex.toString());
                   }}
                 >
                   <Image src={Ic_search_location} alt="location" />

@@ -1,6 +1,5 @@
 import React from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
 import AccordionTab from "@/components/Ui/accordion/accordionTab";
 import Img_product_3d_img1 from "@/public/images/Img_product_3d_img1.png";
 import Img_product_3d_img2 from "@/public/images/Img_product_3d_img2.png";
@@ -90,7 +89,6 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
   ];
   return (
     <div className="relative">
-      <PropertyDetail isShow={true} />
       <SideSpaceContainer>
         <div className="pt-[24px] pb-[147px]">
           <AccordionTab sections={sections} />
