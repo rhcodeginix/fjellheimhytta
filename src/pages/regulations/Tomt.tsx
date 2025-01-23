@@ -1131,21 +1131,16 @@ const Tomt: React.FC<{
                             </div>
                             <div className="text-grayText font-bold text-sm">
                               Bygningen utgjør{" "}
-                              {(() => {
-                                if (
-                                  item?.builtUpArea &&
-                                  askData?.bya_calculations?.results
-                                    ?.total_allowed_bya
-                                ) {
-                                  return (
-                                    (item.builtUpArea /
-                                      askData.bya_calculations.results
-                                        .total_allowed_bya) *
-                                    100
-                                  ).toFixed(2);
-                                }
-                                return 0;
-                              })()}
+                              (() => {
+  const builtUpArea = item?.builtUpArea;
+  const totalAllowedBya = askData?.bya_calculations?.results?.total_allowed_bya;
+
+  if (builtUpArea && totalAllowedBya > 0) {
+    return ((builtUpArea / totalAllowedBya) * 100).toFixed(2);
+  }
+
+  return "0.00"; // Return a string to maintain consistency with .toFixed(2)
+})();
                               % av BYA
                             </div>
                           </div>
