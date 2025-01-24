@@ -1137,18 +1137,16 @@ const Tomt: React.FC<{
                                   askData?.bya_calculations?.results
                                     ?.total_allowed_bya;
 
-                                if (
-                                  builtUpArea &&
-                                  totalAllowedBya &&
-                                  totalAllowedBya > 0
-                                ) {
-                                  const percentage =
-                                    (builtUpArea / totalAllowedBya) * 100;
-                                  return `${percentage.toFixed(2)}%`;
+                                if (builtUpArea && totalAllowedBya > 0) {
+                                  return `${(
+                                    (builtUpArea / totalAllowedBya) *
+                                    100
+                                  ).toFixed(2)} %`;
                                 }
-                                return "0%";
-                              })()}
-                              % av BYA
+
+                                return "0";
+                              })()}{" "}
+                              av BYA
                             </div>
                           </div>
                         </div>
@@ -1179,7 +1177,16 @@ const Tomt: React.FC<{
             <Button
               text="Velg husmodell"
               className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-              onClick={() => setIsBuild(true)}
+              onClick={() => {
+                if (
+                  CadastreDataFromApi?.buildingsApi?.response?.items?.length > 0
+                ) {
+                  setIsBuild(true);
+                } else {
+                  handleNext();
+                  window.location.reload();
+                }
+              }}
             />
           </div>
         </SideSpaceContainer>
@@ -1380,7 +1387,7 @@ const Tomt: React.FC<{
                     </div>
                     <Button
                       text="Velg"
-                      className="border-2 border-primary text-primary sm:text-base w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
+                      className="border-2 border-primary bg-primary text-white sm:text-base w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
                     />
                   </div>
                 );
