@@ -108,15 +108,17 @@ const PropertyDetail: React.FC<any> = ({
                         ) ?? [];
 
                       if (
-                        data.length >= 1 &&
+                        // data.length >= 1 &&
                         lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
                           ?.areal_beregnet
                       ) {
-                        const totalData = data.reduce(
-                          (acc: number, currentValue: number) =>
-                            acc + currentValue,
-                          0
-                        );
+                        const totalData = data
+                          ? data.reduce(
+                              (acc: number, currentValue: number) =>
+                                acc + currentValue,
+                              0
+                            )
+                          : 0;
 
                         const result =
                           (totalData /
