@@ -57,11 +57,14 @@ const PropertyDetail: React.FC<any> = ({
                   </span>
                 </div>
                 <div className="text-secondary text-base">
+                  moh.{" "}
                   <span className="text-black font-semibold">
                     {getAddress?.representasjonspunkt &&
-                      getAddress?.representasjonspunkt.lat.toFixed(2)}
-                  </span>{" "}
-                  moh.
+                      getAddress?.representasjonspunkt.lat
+                        .toFixed(2)
+                        .toString()
+                        .replace(".", ",")}
+                  </span>
                 </div>
               </div>
             </div>
