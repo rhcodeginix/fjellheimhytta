@@ -108,7 +108,7 @@ const PropertyDetail: React.FC<any> = ({
                         ) ?? [];
 
                       if (
-                        data.length >= 2 &&
+                        data.length >= 1 &&
                         lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
                           ?.areal_beregnet
                       ) {
