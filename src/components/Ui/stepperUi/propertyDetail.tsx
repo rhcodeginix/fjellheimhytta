@@ -140,14 +140,16 @@ const PropertyDetail: React.FC<any> = ({
                         ) ?? [];
 
                       if (
-                        data.length >= 2 &&
+                        // data.length >= 1 &&
                         askData?.bya_calculations?.results?.total_allowed_bya
                       ) {
-                        const totalData = data.reduce(
-                          (acc: number, currentValue: number) =>
-                            acc + currentValue,
-                          0
-                        );
+                        const totalData = data
+                          ? data.reduce(
+                              (acc: number, currentValue: number) =>
+                                acc + currentValue,
+                              0
+                            )
+                          : 0;
 
                         const result =
                           (totalData /
@@ -188,14 +190,16 @@ const PropertyDetail: React.FC<any> = ({
                         ) ?? [];
 
                       if (
-                        data.length >= 2 &&
+                        // data.length >= 1 &&
                         askData?.bya_calculations?.results?.total_allowed_bya
                       ) {
-                        const totalData = data.reduce(
-                          (acc: number, currentValue: number) =>
-                            acc + currentValue,
-                          0
-                        );
+                        const totalData = data
+                          ? data.reduce(
+                              (acc: number, currentValue: number) =>
+                                acc + currentValue,
+                              0
+                            )
+                          : 0;
 
                         return (
                           <>
@@ -208,6 +212,15 @@ const PropertyDetail: React.FC<any> = ({
                         );
                       } else {
                         return "0";
+                        // return (
+                        //   <>
+                        //     {
+                        //       askData?.bya_calculations?.results
+                        //         ?.available_building_area
+                        //     }{" "}
+                        //     m<sup>2</sup>
+                        //   </>
+                        // );
                       }
                     })()}
                   </p>
