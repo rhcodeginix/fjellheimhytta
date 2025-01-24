@@ -387,7 +387,7 @@ const Tomt: React.FC<{
                   </h5>
                 </div>
                 <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Totalt utalt BYA</p>
+                  <p className="text-sm text-grayText">Tomtens totale BYA</p>
                   <h5 className="text-base text-black font-medium">
                     {askData?.bya_calculations?.results?.total_allowed_bya ? (
                       <>
