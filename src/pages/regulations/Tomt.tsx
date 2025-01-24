@@ -738,7 +738,7 @@ const Tomt: React.FC<{
               </h2>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Har pestforekomster</p>
+                  <p className="text-sm text-grayText">Har forurensning</p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
                       .hasSoilContamination === "Ja" ||
@@ -751,7 +751,9 @@ const Tomt: React.FC<{
                   </h5>
                 </div>
                 <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Har aktiv leiestand</p>
+                  <p className="text-sm text-grayText">
+                    Har aktive festegrunner
+                  </p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
                       .hasActiveLeasedLand === "Ja" ||
@@ -765,7 +767,7 @@ const Tomt: React.FC<{
                 </div>
                 <div className="flex items-center justify-between gap-1">
                   <p className="text-sm text-grayText">
-                    Inkludert i totalt eiendom
+                    Inngår i samlet eiendom
                   </p>
                   <h5 className="text-base text-black font-medium">
                     {CadastreDataFromApi?.cadastreApi?.response?.item
