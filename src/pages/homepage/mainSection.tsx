@@ -9,21 +9,21 @@ import HomePageSearchDiv from "@/components/Ui/homePageSearch";
 const MainSection = () => {
   return (
     <>
-      <div className="pt-[80px] pb-[120px] overflow-hidden">
+      <div className="pt-[44px] md:pt-[58px] desktop:pt-[80px] pb-[48px] md:pb-[80px] desktop:pb-[120px] overflow-hidden">
         <SideSpaceContainer className="relative">
-          <div className="flex justify-between items-end relative">
-            <h1 className="text-black text-[60px] font-semibold leading-tight w-[75%] xBig:w-[53%] relative">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-end relative gap-3">
+            <h1 className="text-black text-[24px] sm:text-[32px] md:text-[40px] lg:text-[48px] desktop:text-[52px] big:text-[60px] font-semibold leading-tight w-full lg:w-[75%] xBig:w-[53%] relative">
               Få umiddelbar tomteanalyse og oppdag hva du kan bygge.
               <Image
                 src={Img_header_underline}
                 alt="image"
-                className="absolute top-[54%] left-[43%] xBig:left-[38%]"
+                className="absolute top-[54%] left-[43%] xBig:left-[38%] hidden md:block"
                 style={{
                   transform: "translateY(-50%)",
                 }}
               />
             </h1>
-            <p className="text-xl text-secondary w-[23%]">
+            <p className="text-sm md:text-base lg:text-lg big:text-xl text-secondary w-full lg:w-[23%]">
               Få umiddelbar tomteanalyse og oppdag hva du kan bygge.
             </p>
           </div>

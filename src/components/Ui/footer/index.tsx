@@ -9,41 +9,60 @@ const Footer = () => {
     <>
       <div className="bg-navyBlue">
         <SideSpaceContainer>
-          <div className="pt-[80px] pb-[48px] flex items-end justify-between">
+          <div className="pt-[40px] md:pt-[52px] lg:pt-[80px] pb-[24px] md:pb-[36px] lg:pb-[48px] flex flex-col desktop:flex-row desktop:items-end gap-6 justify-between">
             <div>
-              <Image src={Ic_logo} alt="logo" className="mb-[36px]" />
-              <div className="flex gap-[24px] items-end">
-                <span className="text-white font-medium text-base">
-                  39 Bruton Street <br />
+              <Image
+                src={Ic_logo}
+                alt="logo"
+                className="mb-[20px] lg:mb-[36px] w-[90px] lg:w-auto"
+              />
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 sm:items-end">
+                <span className="text-white font-medium text-sm md:text-base">
+                  39 Bruton Street <br className="hidden sm:block" />
                   San Francisco, CA 94130
                 </span>
-                <span className="text-white font-medium text-base">
+                <span className="text-white font-medium text-sm md:text-base">
                   +47 XX XX XX XX
                 </span>
-                <span className="text-white font-medium text-base">
+                <span className="text-white font-medium text-sm md:text-base">
                   hei@mintomt.no
                 </span>
               </div>
             </div>
             <div>
-              <div className="items-center gap-[38px] flex mb-[12px]">
-                <Link href={""} className="text-base text-white font-medium">
+              <div className="sm:items-center gap-4 lg:gap-[38px] flex flex-col sm:flex-row mb-[12px]">
+                <Link
+                  href={""}
+                  className="text-sm md:text-base text-white font-medium"
+                >
                   Hvordan fungerer MinTomt?
                 </Link>
-                <Link href={""} className="text-base text-white font-medium">
+                <Link
+                  href={""}
+                  className="text-sm md:text-base text-white font-medium"
+                >
                   Priser
                 </Link>
-                <Link href={""} className="text-base text-white font-medium">
+                <Link
+                  href={""}
+                  className="text-sm md:text-base text-white font-medium"
+                >
                   Referanser
                 </Link>
-                <Link href={""} className="text-base text-white font-medium">
+                <Link
+                  href={""}
+                  className="text-sm md:text-base text-white font-medium"
+                >
                   Kontakt
                 </Link>
-                <Link href={""} className="text-base text-white font-medium">
+                <Link
+                  href={""}
+                  className="text-sm md:text-base text-white font-medium"
+                >
                   Logg inn
                 </Link>
               </div>
-              <p className="text-sm text-white font-medium text-end">
+              <p className="text-xs md:text-sm text-white font-medium desktop:text-end">
                 © 2024 iPlot AS. All rights reserved.
               </p>
             </div>
