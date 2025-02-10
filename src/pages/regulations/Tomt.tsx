@@ -20,7 +20,7 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Loader from "@/components/Loader";
-import GoogleMapComponent from "@/components/Ui/map";
+// import GoogleMapComponent from "@/components/Ui/map";
 import { useAddress } from "@/context/addressContext";
 import LoginForm from "../login/loginForm";
 import { useRouter } from "next/router";
@@ -28,6 +28,7 @@ import Loading from "@/components/Loading";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
+import GoogleMapComponent from "@/components/Ui/map";
 
 const buildOption: any = [
   {
@@ -185,8 +186,6 @@ const Tomt: React.FC<{
     const handleClickOutside = (event: MouseEvent) => {
       if (popup.current && !popup.current.contains(event.target as Node)) {
         setIsBuild(false);
-        // body?.classList.remove("overflow-hidden");
-        // body?.classList.remove("h-screen");
       }
     };
 
@@ -195,16 +194,6 @@ const Tomt: React.FC<{
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (isBuild) {
-  //     body?.classList.add("overflow-hidden");
-  //     body?.classList.add("h-screen");
-  //   } else {
-  //     body?.classList.remove("overflow-hidden");
-  //     body?.classList.remove("h-screen");
-  //   }
-  // }, [isBuild]);
 
   const router_query: any = { ...router.query };
 
@@ -292,6 +281,29 @@ const Tomt: React.FC<{
           btn.style.display = "flex";
         });
       });
+  };
+  const images = [
+    {
+      id: 1,
+      src: "https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=Planomrade_02,Arealformal_02,Grenser_og_juridiske_linjer_02&STYLES=default,default,default&CRS=EPSG:25833&BBOX=247280.927,6632310.511,247327.443,6632355.779&WIDTH=800&HEIGHT=600&FORMAT=image/png",
+      alt: "Reguleringsplan image",
+    },
+    {
+      id: 2,
+      src: "https://wms.geonorge.no/skwms1/wms.matrikkelkart?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=MatrikkelKart&STYLES=default&CRS=EPSG:25833&BBOX=247200.927,6632230.511,247407.443,6632435.779&WIDTH=1024&HEIGHT=768&FORMAT=image/png",
+      alt: "Matrikkelkart image",
+    },
+  ];
+  const [selectedImage, setSelectedImage] = useState<any>(images[0]);
+  const [loading, setLoading] = useState(false);
+
+  const handleImageClick = (image: any) => {
+    if (selectedImage.id === image.id) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+    setSelectedImage(image);
   };
 
   if (loadingLamdaData) {
@@ -924,8 +936,33 @@ const Tomt: React.FC<{
               <h2 className="text-black text-2xl font-semibold mb-6">
                 Kartutsnitt
               </h2>
-              <div className="rounded-[12px] overflow-hidden w-full mb-[60px]">
-                <div className="h-[400px]">
+              <div className="w-full mb-[60px]">
+                <div className="h-[400px] rounded-[12px] overflow-hidden w-full relative">
+                  {loading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-10">
+                      <div className="spinner-border animate-spin border-t-4 border-b-4 border-blue-500 w-12 h-12 border-solid rounded-full"></div>
+                    </div>
+                  )}
+                  <img
+                    src={selectedImage.src}
+                    alt={selectedImage.alt}
+                    className="h-full w-full"
+                    onLoad={() => setLoading(false)}
+                    onError={() => setLoading(false)}
+                  />
+                </div>
+                <div className="mt-4 gap-3 flex items-center justify-center">
+                  {images.map((image) => (
+                    <img
+                      key={image.id}
+                      src={image.src}
+                      alt={image.alt}
+                      className="h-[130px] w-[130px] rounded-[12px] cursor-pointer"
+                      onClick={() => handleImageClick(image)}
+                    />
+                  ))}
+                </div>
+                <div className="h-[400px] rounded-[12px] overflow-hidden w-full relative mt-8">
                   <GoogleMapComponent
                     coordinates={
                       lamdaDataFromApi?.coordinates?.convertedCoordinates
