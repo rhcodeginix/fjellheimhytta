@@ -970,7 +970,7 @@ const Tomt: React.FC<{
           <h2 className="text-black text-2xl font-semibold mb-6">
             Kartutsnitt
           </h2>
-          <div className="relative flex gap-[40px]">
+          <div className="relative flex gap-[60px]">
             <div className="w-[60%]">
               <div className="w-full flex gap-5 h-[500px] items-center">
                 <div className="h-full rounded-[12px] overflow-hidden w-[87%] relative border border-[#7D89B0]">
