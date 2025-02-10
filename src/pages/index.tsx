@@ -8,12 +8,10 @@ import Advantages from "./homepage/advantages";
 import Analysis from "./homepage/analysis";
 import LatestFromMedia from "./homepage/latestFromMedia";
 import OurPartners from "./homepage/ourPartners";
-// import WMSMap from "./homepage/wms";
 
 const index = () => {
   return (
     <div className="relative">
-      {/* <WMSMap /> */}
       <MainSection />
       <HouseCabinMould />
       <HowItWorks />

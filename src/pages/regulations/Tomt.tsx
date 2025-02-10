@@ -14,6 +14,8 @@ import Ic_garaje from "@/public/images/Ic_garaje.svg";
 import Ic_house from "@/public/images/Ic_house.svg";
 import Ic_ofc from "@/public/images/Ic_ofc.svg";
 import Ic_pergola from "@/public/images/Ic_pergola.svg";
+import Ic_chevron_up from "@/public/images/Ic_chevron_up.svg";
+import Ic_chevron_right from "@/public/images/Ic_chevron_right.svg";
 import Ic_cabin from "@/public/images/Ic_cabin.svg";
 import Button from "@/components/common/button";
 import * as Yup from "yup";
@@ -282,23 +284,57 @@ const Tomt: React.FC<{
         });
       });
   };
-  const images = [
-    {
-      id: 1,
-      src: "https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=Planomrade_02,Arealformal_02,Grenser_og_juridiske_linjer_02&STYLES=default,default,default&CRS=EPSG:25833&BBOX=247280.927,6632310.511,247327.443,6632355.779&WIDTH=800&HEIGHT=600&FORMAT=image/png",
-      alt: "Reguleringsplan image",
-    },
-    {
-      id: 2,
-      src: "https://wms.geonorge.no/skwms1/wms.matrikkelkart?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=MatrikkelKart&STYLES=default&CRS=EPSG:25833&BBOX=247200.927,6632230.511,247407.443,6632435.779&WIDTH=1024&HEIGHT=768&FORMAT=image/png",
-      alt: "Matrikkelkart image",
-    },
-  ];
-  const [selectedImage, setSelectedImage] = useState<any>(images[0]);
-  const [loading, setLoading] = useState(false);
 
+  const BBOXData =
+    CadastreDataFromApi?.cadastreApi?.response?.item?.geojson?.bbox;
+
+  const isValidBBOX = Array.isArray(BBOXData) && BBOXData.length === 4;
+  const scrollContainerRef: any = useRef(null);
+
+  const scrollByAmount = 90;
+
+  const handleScrollUp = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        top: -scrollByAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handleScrollDown = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({
+        top: scrollByAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const images = isValidBBOX
+    ? [
+        {
+          id: 1,
+          src: `https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=Planomrade_02,Arealformal_02,Grenser_og_juridiske_linjer_02&STYLES=default,default,default&CRS=EPSG:25833&BBOX=${BBOXData[0]},${BBOXData[1]},${BBOXData[2]},${BBOXData[3]}&WIDTH=800&HEIGHT=600&FORMAT=image/png`,
+          alt: "Reguleringsplan image",
+        },
+        {
+          id: 2,
+          src: `https://wms.geonorge.no/skwms1/wms.matrikkelkart?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=MatrikkelKart&STYLES=default&CRS=EPSG:25833&BBOX=${BBOXData[0]},${BBOXData[1]},${BBOXData[2]},${BBOXData[3]}&WIDTH=1024&HEIGHT=768&FORMAT=image/png`,
+          alt: "Matrikkelkart image",
+        },
+      ]
+    : [];
+
+  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (!selectedImage && images.length > 0) {
+      setSelectedImage(images[0]);
+    }
+  }, [images, selectedImage]);
   const handleImageClick = (image: any) => {
-    if (selectedImage.id === image.id) {
+    if (selectedImage?.id === image.id) {
       setLoading(false);
     } else {
       setLoading(true);
@@ -931,128 +967,290 @@ const Tomt: React.FC<{
               </div>
             </div>
           </div>
+          <h2 className="text-black text-2xl font-semibold mb-6">
+            Kartutsnitt
+          </h2>
           <div className="relative flex gap-[40px]">
-            <div className="w-[34%]">
-              <h2 className="text-black text-2xl font-semibold mb-6">
-                Kartutsnitt
-              </h2>
-              <div className="w-full mb-[60px]">
-                <div className="h-[400px] rounded-[12px] overflow-hidden w-full relative">
+            <div className="w-[60%]">
+              <div className="w-full flex gap-5 h-[500px] items-center">
+                <div className="h-full rounded-[12px] overflow-hidden w-[87%] relative border border-[#7D89B0]">
                   {loading && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-10">
                       <div className="spinner-border animate-spin border-t-4 border-b-4 border-blue-500 w-12 h-12 border-solid rounded-full"></div>
                     </div>
                   )}
                   <img
-                    src={selectedImage.src}
-                    alt={selectedImage.alt}
+                    src={selectedImage?.src}
+                    alt={selectedImage?.alt}
                     className="h-full w-full"
                     onLoad={() => setLoading(false)}
                     onError={() => setLoading(false)}
                   />
+                  <div
+                    className="absolute top-0 left-[4px] flex items-center justify-center h-full"
+                    style={{
+                      zIndex: 99999,
+                    }}
+                  >
+                    <div
+                      className={`bg-white h-[44px] w-[44px] rounded-full flex items-center justify-center ${selectedImage?.id === images[0]?.id ? "opacity-50" : "opacity-100"}`}
+                      style={{
+                        boxShadow:
+                          "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
+                      }}
+                    >
+                      <Image
+                        src={Ic_chevron_right}
+                        alt="arrow"
+                        className={`${selectedImage?.id !== images[0]?.id && "cursor-pointer"} rotate-180`}
+                        onClick={() => {
+                          if (selectedImage?.id !== images[0]?.id) {
+                            const currentIndex = images.findIndex(
+                              (img) => img.id === selectedImage.id
+                            );
+                            setLoading(true);
+
+                            const nextIndex = currentIndex - 1;
+                            if (nextIndex >= 0) {
+                              setSelectedImage(images[nextIndex]);
+                              handleScrollUp();
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    className={`absolute bottom-0 right-[4px] flex items-center justify-center h-full`}
+                    style={{
+                      zIndex: 99999,
+                    }}
+                  >
+                    <div
+                      className={`bg-white h-[44px] w-[44px] rounded-full flex items-center justify-center ${selectedImage?.id === images[images.length - 1]?.id ? "opacity-50" : "opacity-100"}`}
+                      style={{
+                        boxShadow:
+                          "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
+                      }}
+                    >
+                      <Image
+                        src={Ic_chevron_right}
+                        alt="arrow"
+                        className={`${selectedImage?.id !== images[images.length - 1]?.id && "cursor-pointer"}`}
+                        onClick={() => {
+                          if (
+                            selectedImage?.id !== images[images.length - 1]?.id
+                          ) {
+                            const currentIndex = images.findIndex(
+                              (img) => img.id === selectedImage.id
+                            );
+                            setLoading(true);
+
+                            const nextIndex = currentIndex + 1;
+                            if (nextIndex < images.length) {
+                              setSelectedImage(images[nextIndex]);
+                            }
+                            handleScrollDown();
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-4 gap-3 flex items-center justify-center">
-                  {images.map((image) => (
-                    <img
-                      key={image.id}
-                      src={image.src}
-                      alt={image.alt}
-                      className="h-[130px] w-[130px] rounded-[12px] cursor-pointer"
-                      onClick={() => handleImageClick(image)}
-                    />
-                  ))}
+                <div className="relative w-[13%] h-max max-h-[500px]">
+                  <div
+                    className="gap-3 flex flex-col w-full overflow-y-auto overFlowScrollHidden h-full max-h-[500px] my-auto"
+                    ref={scrollContainerRef}
+                  >
+                    {images.map((image, index) => (
+                      <div className="relative" key={index}>
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className={`h-[90px] w-full rounded-[12px] cursor-pointer ${selectedImage?.id === image?.id ? "border-2 border-primary" : "border border-[#7D89B033]"}`}
+                          style={{
+                            zIndex: 999,
+                          }}
+                          onClick={() => handleImageClick(image)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  {images.length > 4 && (
+                    <div
+                      className="absolute top-0 left-0 h-[90px] w-full"
+                      style={{
+                        zIndex: 9999,
+                        background:
+                          "linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 90.63%)",
+                      }}
+                    ></div>
+                  )}
+                  {images.length > 4 && (
+                    <div
+                      className="absolute bottom-0 left-0 h-[90px] w-full"
+                      style={{
+                        zIndex: 9999,
+                        background:
+                          "linear-gradient(0deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 90.63%)",
+                      }}
+                    ></div>
+                  )}
+                  {images.length > 4 && (
+                    <div
+                      className="absolute top-0 left-0 flex items-center justify-center w-full"
+                      style={{
+                        zIndex: 99999,
+                      }}
+                    >
+                      <Image
+                        src={Ic_chevron_up}
+                        alt="arrow"
+                        className={`${selectedImage?.id !== images[0]?.id ? "cursor-pointer opacity-100" : "opacity-50"}`}
+                        onClick={() => {
+                          if (selectedImage?.id !== images[0]?.id) {
+                            const currentIndex = images.findIndex(
+                              (img) => img.id === selectedImage.id
+                            );
+                            setLoading(true);
+
+                            const nextIndex = currentIndex - 1;
+                            if (nextIndex >= 0) {
+                              setSelectedImage(images[nextIndex]);
+                              handleScrollUp();
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                  )}
+                  {images.length > 4 && (
+                    <div
+                      className="absolute bottom-0 left-0 flex items-center justify-center w-full"
+                      style={{
+                        zIndex: 99999,
+                      }}
+                    >
+                      <Image
+                        src={Ic_chevron_up}
+                        alt="arrow"
+                        className={`${selectedImage?.id !== images[images.length - 1]?.id ? "cursor-pointer opacity-100" : "opacity-50"} rotate-180`}
+                        onClick={() => {
+                          if (
+                            selectedImage?.id !== images[images.length - 1]?.id
+                          ) {
+                            const currentIndex = images.findIndex(
+                              (img) => img.id === selectedImage.id
+                            );
+                            setLoading(true);
+
+                            const nextIndex = currentIndex + 1;
+                            if (nextIndex < images.length) {
+                              setSelectedImage(images[nextIndex]);
+                            }
+                            handleScrollDown();
+                          }
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
-                <div className="h-[400px] rounded-[12px] overflow-hidden w-full relative mt-8">
-                  <GoogleMapComponent
-                    coordinates={
-                      lamdaDataFromApi?.coordinates?.convertedCoordinates
-                    }
-                  />
-                </div>
-              </div>
-              <div id="not_show">
-                <div className="flex items-center gap-[36px] mb-6 bg-[#F9F9FB] rounded-[8px] py-5 px-6">
-                  <Image src={Ic_steddy} alt="logo" />
-                  <p className="text-secondary text-sm">
-                    Vi hjelper deg med{" "}
-                    <span className="text-black font-semibold">
-                      reguleringer, søknader
-                    </span>{" "}
-                    og{" "}
-                    <span className="text-black font-semibold">
-                      innheter tilbud.
-                    </span>
-                  </p>
-                </div>
-                <ContactForm />
               </div>
             </div>
-            <div className="w-[66%]">
-              {loadingLamdaData ? (
-                <Loader />
-              ) : (
-                <>
-                  <div className="relative">
-                    {loadingAdditionalData ? (
-                      <Loading />
-                    ) : (
-                      <>
-                        <div className="mb-[34px] relative">
-                          <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-black text-2xl font-semibold">
-                              Reguleringsbestemmelser
-                            </h2>
-                            <Image src={Ic_generelt} alt="image" />
-                          </div>
-                          <div className="flex flex-col gap-3">
-                            <>
-                              {askData &&
-                                askData?.conclusion?.map(
-                                  (a: any, index: number) => (
-                                    <div
-                                      className="flex items-start gap-3 text-secondary text-base"
-                                      key={index}
-                                    >
-                                      <Image src={Ic_check_true} alt="image" />
-                                      <span>{a}</span>
-                                    </div>
-                                  )
-                                )}
-                            </>
-                          </div>
-                        </div>
-                        <div className="relative">
-                          <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-black text-2xl font-semibold">
-                              Kommuneplan for Asker
-                            </h2>
-                            <Image src={Ic_generelt} alt="image" />
-                          </div>
-                          <div className="flex flex-col gap-3">
-                            {askData &&
-                              askData?.applicable_rules?.map(
-                                (a: any, index: number) => (
-                                  <div
-                                    className="flex items-start gap-3 text-secondary text-base"
-                                    key={index}
-                                  >
-                                    <Image src={Ic_check_true} alt="image" />
-                                    <div>
-                                      {a.rule}{" "}
-                                      <span className="text-primary font-bold">
-                                        {a.section}
-                                      </span>
-                                    </div>
-                                  </div>
-                                )
-                              )}
-                          </div>
-                        </div>
-                      </>
-                    )}
+            <div className="w-[40%]">
+              <div className="h-[500px] rounded-[12px] overflow-hidden w-full">
+                <GoogleMapComponent
+                  coordinates={
+                    lamdaDataFromApi?.coordinates?.convertedCoordinates
+                  }
+                />
+              </div>
+            </div>
+          </div>
+          {loadingLamdaData ? (
+            <Loader />
+          ) : (
+            <>
+              <div className="relative">
+                {loadingAdditionalData ? (
+                  <Loading />
+                ) : (
+                  <div className="flex gap-[60px] mt-[60px]">
+                    <div className="relative w-1/2">
+                      <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-black text-2xl font-semibold">
+                          Reguleringsbestemmelser
+                        </h2>
+                        <Image src={Ic_generelt} alt="image" />
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        <>
+                          {askData &&
+                            askData?.conclusion?.map(
+                              (a: any, index: number) => (
+                                <div
+                                  className="flex items-start gap-3 text-secondary text-base"
+                                  key={index}
+                                >
+                                  <Image src={Ic_check_true} alt="image" />
+                                  <span>{a}</span>
+                                </div>
+                              )
+                            )}
+                        </>
+                      </div>
+                    </div>
+                    <div className="relative w-1/2">
+                      <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-black text-2xl font-semibold">
+                          Kommuneplan for Asker
+                        </h2>
+                        <Image src={Ic_generelt} alt="image" />
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        {askData &&
+                          askData?.applicable_rules?.map(
+                            (a: any, index: number) => (
+                              <div
+                                className="flex items-start gap-3 text-secondary text-base"
+                                key={index}
+                              >
+                                <Image src={Ic_check_true} alt="image" />
+                                <div>
+                                  {a.rule}{" "}
+                                  <span className="text-primary font-bold">
+                                    {a.section}
+                                  </span>
+                                </div>
+                              </div>
+                            )
+                          )}
+                      </div>
+                    </div>
                   </div>
-                </>
-              )}
+                )}
+              </div>
+            </>
+          )}
+          <div
+            id="not_show"
+            className="mt-[60px] flex w-full gap-6 items-start"
+          >
+            <div className="flex items-center gap-[36px] mb-6 bg-[#F9F9FB] rounded-[8px] py-5 px-6 w-1/2">
+              <Image src={Ic_steddy} alt="logo" />
+              <p className="text-secondary text-sm">
+                Vi hjelper deg med{" "}
+                <span className="text-black font-semibold">
+                  reguleringer, søknader
+                </span>{" "}
+                og{" "}
+                <span className="text-black font-semibold">
+                  innheter tilbud.
+                </span>
+              </p>
+            </div>
+            <div className="w-1/2">
+              <ContactForm />
             </div>
           </div>
           {!loginUser && (
