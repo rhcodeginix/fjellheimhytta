@@ -21,20 +21,20 @@ const HomePageSearchDiv = () => {
           alignItems: "center",
           justifyContent: "center",
         }}
-        className="my-[48px]"
+        className="my-[24px] lg:my-[48px]"
       >
         {/* Tabs Navigation */}
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="horizontal tabs"
-          className="mb-6"
+          className="mb-4 md:mb-6 text-base lg:text-lg"
           sx={{
             "& .MuiTab-root": {
               fontWeight: 500,
               textTransform: "inherit",
               color: "#344054",
-              fontSize: "18px",
+              // fontSize: "18px",
               fontFamily: '"Inter", sans-serif',
             },
             "& .MuiTab-root.Mui-selected": {
@@ -51,7 +51,7 @@ const HomePageSearchDiv = () => {
           <Tab
             label="Start med tomt"
             {...a11yProps(0)}
-            className="py-4 px-3 text-[#344054] text-lg"
+            className="p-2 lg:py-4 lg:px-3 text-[#344054] text-base lg:text-lg"
             // sx={{
             //   color: "#344054",
             // }}
@@ -59,7 +59,7 @@ const HomePageSearchDiv = () => {
           <Tab
             label="Start med husmodell"
             {...a11yProps(1)}
-            className="py-4 px-3 text-[#344054] text-lg"
+            className="p-2 lg:py-4 lg:px-3 text-[#344054] text-base lg:text-lg"
           />
         </Tabs>
 

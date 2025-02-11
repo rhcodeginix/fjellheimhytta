@@ -119,12 +119,12 @@ const TomtTab = () => {
   return (
     <>
       <div
-        className={`shadow-shadow1 border-gray border rounded-[112px] flex items-center relative justify-between p-3 ${
+        className={`shadow-shadow1 border-gray border rounded-[24px] md:rounded-[112px] flex flex-col md:flex-row items-center relative justify-between p-3 ${
           isAddressFocused || isKartFocused ? "bg-lightGreen" : "bg-[#fff]"
         }`}
         ref={containerRef}
       >
-        <div className="flex items-center justify-between w-10/12">
+        <div className="flex flex-col lg:flex-row items-center justify-between w-10/12">
           <div
             className={`w-full rounded-[88px] py-2 px-9 items-center flex justify-between ${isAddressFocused ? "bg-white" : "bg-transparent"} relative`}
             style={{

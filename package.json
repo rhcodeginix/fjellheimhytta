@@ -50,6 +50,7 @@
     "react-share": "^5.1.0",
     "react-slick": "^0.30.2",
     "react-social-media-embed": "^2.5.13",
+    "recharts": "^2.15.1",
     "sharp": "^0.33.3",
     "slick-carousel": "^1.8.1",
     "xml2js": "^0.6.2",

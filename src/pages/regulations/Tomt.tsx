@@ -31,6 +31,7 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
 import GoogleMapComponent from "@/components/Ui/map";
+import Eierinformasjon from "@/components/Ui/regulation.tsx/Eierinformasjon";
 
 const buildOption: any = [
   {
@@ -310,12 +311,17 @@ const Tomt: React.FC<{
       });
     }
   };
-
+  const adjustedBBOX: any = isValidBBOX && [
+    BBOXData[0] - 30,
+    BBOXData[1] - 30,
+    BBOXData[2] + 30,
+    BBOXData[3] + 30,
+  ];
   const images = isValidBBOX
     ? [
         {
           id: 1,
-          src: `https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=Planomrade_02,Arealformal_02,Grenser_og_juridiske_linjer_02&STYLES=default,default,default&CRS=EPSG:25833&BBOX=${BBOXData[0]},${BBOXData[1]},${BBOXData[2]},${BBOXData[3]}&WIDTH=800&HEIGHT=600&FORMAT=image/png`,
+          src: `https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=Planomrade_02,Arealformal_02,Grenser_og_juridiske_linjer_02&STYLES=default,default,default&CRS=EPSG:25833&BBOX=${adjustedBBOX[0]},${adjustedBBOX[1]},${adjustedBBOX[2]},${adjustedBBOX[3]}&WIDTH=800&HEIGHT=600&FORMAT=image/png`,
           alt: "Reguleringsplan image",
         },
         {
@@ -361,7 +367,6 @@ const Tomt: React.FC<{
           <h2 className="text-black text-2xl font-semibold mb-6">
             Eiendomsinformasjon
           </h2>
-
           <div className="grid grid-cols-3 gap-6 mb-[60px]">
             <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
               <h2 className="text-black text-lg font-semibold flex items-center gap-2">
@@ -968,6 +973,12 @@ const Tomt: React.FC<{
             </div>
           </div>
           <h2 className="text-black text-2xl font-semibold mb-6">
+            Eierinformasjon
+          </h2>
+          <Eierinformasjon
+            data={CadastreDataFromApi?.ownersApi?.response?.items}
+          />
+          <h2 className="text-black text-2xl font-semibold mb-6">
             Kartutsnitt
           </h2>
           <div className="relative flex gap-[60px]">
@@ -998,25 +1009,25 @@ const Tomt: React.FC<{
                         boxShadow:
                           "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
                       }}
+                      onClick={() => {
+                        if (selectedImage?.id !== images[0]?.id) {
+                          const currentIndex = images.findIndex(
+                            (img) => img.id === selectedImage.id
+                          );
+                          setLoading(true);
+
+                          const nextIndex = currentIndex - 1;
+                          if (nextIndex >= 0) {
+                            setSelectedImage(images[nextIndex]);
+                            handleScrollUp();
+                          }
+                        }
+                      }}
                     >
                       <Image
                         src={Ic_chevron_right}
                         alt="arrow"
                         className={`${selectedImage?.id !== images[0]?.id && "cursor-pointer"} rotate-180`}
-                        onClick={() => {
-                          if (selectedImage?.id !== images[0]?.id) {
-                            const currentIndex = images.findIndex(
-                              (img) => img.id === selectedImage.id
-                            );
-                            setLoading(true);
-
-                            const nextIndex = currentIndex - 1;
-                            if (nextIndex >= 0) {
-                              setSelectedImage(images[nextIndex]);
-                              handleScrollUp();
-                            }
-                          }
-                        }}
                       />
                     </div>
                   </div>
@@ -1032,27 +1043,27 @@ const Tomt: React.FC<{
                         boxShadow:
                           "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
                       }}
+                      onClick={() => {
+                        if (
+                          selectedImage?.id !== images[images.length - 1]?.id
+                        ) {
+                          const currentIndex = images.findIndex(
+                            (img) => img.id === selectedImage.id
+                          );
+                          setLoading(true);
+
+                          const nextIndex = currentIndex + 1;
+                          if (nextIndex < images.length) {
+                            setSelectedImage(images[nextIndex]);
+                          }
+                          handleScrollDown();
+                        }
+                      }}
                     >
                       <Image
                         src={Ic_chevron_right}
                         alt="arrow"
                         className={`${selectedImage?.id !== images[images.length - 1]?.id && "cursor-pointer"}`}
-                        onClick={() => {
-                          if (
-                            selectedImage?.id !== images[images.length - 1]?.id
-                          ) {
-                            const currentIndex = images.findIndex(
-                              (img) => img.id === selectedImage.id
-                            );
-                            setLoading(true);
-
-                            const nextIndex = currentIndex + 1;
-                            if (nextIndex < images.length) {
-                              setSelectedImage(images[nextIndex]);
-                            }
-                            handleScrollDown();
-                          }
-                        }}
                       />
                     </div>
                   </div>
