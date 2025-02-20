@@ -52,40 +52,42 @@ const Stepper: React.FC<StepperProps> = ({
     <>
       <>
         <SideSpaceContainer>
-          <div className="stepper-wrapper">
-            <div className="progress"></div>
-            {steps.map((step, index) => (
-              <div
-                key={index}
-                className={`screen-indicator-span ${
-                  index < currIndex
-                    ? "completed"
-                    : index === currIndex
-                      ? "current"
-                      : ""
-                }`}
-                onClick={() => handleStepClick(index)}
-                style={{
-                  color: index === currIndex ? "#2a343e" : "",
-                }}
-              >
-                <div className="flex items-center bg-white gap-2 px-2">
-                  <span className="screen-index">{index + 1}</span>
-                  <span>{step.name}</span>
+          <div className="stepper_main overFlowScrollHidden">
+            <div className="stepper-wrapper">
+              <div className="progress"></div>
+              {steps.map((step, index) => (
+                <div
+                  key={index}
+                  className={`screen-indicator-span ${
+                    index < currIndex
+                      ? "completed"
+                      : index === currIndex
+                        ? "current"
+                        : ""
+                  }`}
+                  onClick={() => handleStepClick(index)}
+                  style={{
+                    color: index === currIndex ? "#2a343e" : "",
+                  }}
+                >
+                  <div className="flex items-center bg-white gap-1.5 md:gap-2 px-1 md:px-2">
+                    <span className="screen-index">{index + 1}</span>
+                    <span>{step.name}</span>
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div
+                      className={`screen-indicator ${
+                        index < currIndex
+                          ? "completed"
+                          : index === currIndex
+                            ? "current"
+                            : ""
+                      }`}
+                    ></div>
+                  )}
                 </div>
-                {index < steps.length - 1 && (
-                  <div
-                    className={`screen-indicator ${
-                      index < currIndex
-                        ? "completed"
-                        : index === currIndex
-                          ? "current"
-                          : ""
-                    }`}
-                  ></div>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </SideSpaceContainer>
         <PropertyDetail

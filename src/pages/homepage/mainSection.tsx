@@ -9,7 +9,10 @@ import HomePageSearchDiv from "@/components/Ui/homePageSearch";
 const MainSection = () => {
   return (
     <>
-      <div className="pt-[44px] md:pt-[58px] desktop:pt-[80px] pb-[48px] md:pb-[80px] desktop:pb-[120px] overflow-hidden">
+      <div
+        className="pt-[44px] md:pt-[58px] desktop:pt-[80px] pb-[48px] md:pb-[80px] desktop:pb-[120px] overflow-hidden relative"
+        style={{ zIndex: 999 }}
+      >
         <SideSpaceContainer className="relative">
           <div className="flex flex-col sm:flex-row justify-between sm:items-end relative gap-3">
             <h1 className="text-black text-[24px] sm:text-[32px] md:text-[40px] lg:text-[48px] desktop:text-[52px] big:text-[60px] font-semibold leading-tight w-full lg:w-[75%] xBig:w-[53%] relative">
@@ -28,7 +31,7 @@ const MainSection = () => {
             </p>
           </div>
           <HomePageSearchDiv />
-          <div className="w-full relative" style={{ zIndex: 999 }}>
+          <div className="w-full relative" style={{ zIndex: 99 }}>
             <Image src={Img_Main_banner_img} alt="image" className="w-full" />
           </div>
           <div

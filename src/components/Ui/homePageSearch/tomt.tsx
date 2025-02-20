@@ -119,14 +119,15 @@ const TomtTab = () => {
   return (
     <>
       <div
-        className={`shadow-shadow1 border-gray border rounded-[24px] md:rounded-[112px] flex flex-col md:flex-row items-center relative justify-between p-3 ${
+        className={`shadow-shadow1 border-gray border rounded-[24px] desktop:rounded-[112px] flex flex-col desktop:flex-row desktop:items-center relative justify-between p-3 ${
           isAddressFocused || isKartFocused ? "bg-lightGreen" : "bg-[#fff]"
         }`}
         ref={containerRef}
+        style={{ zIndex: 999 }}
       >
-        <div className="flex flex-col lg:flex-row items-center justify-between w-10/12">
+        <div className="flex flex-col desktop:flex-row desktop:items-center desktop:justify-between w-full desktop:w-10/12">
           <div
-            className={`w-full rounded-[88px] py-2 px-9 items-center flex justify-between ${isAddressFocused ? "bg-white" : "bg-transparent"} relative`}
+            className={`w-full rounded-[12px] desktop:rounded-[88px] py-2 px-2 desktop:px-9 desktop:items-center flex desktop:justify-between ${isAddressFocused ? "bg-white" : "bg-transparent"} relative`}
             style={{
               boxShadow: isAddressFocused
                 ? "0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.1)"
@@ -134,12 +135,14 @@ const TomtTab = () => {
             }}
             onClick={() => addressInputRef.current?.focus()}
           >
-            <div>
-              <div className="text-black mb-2 text-base">Adresse</div>
+            <div className="w-[92%] desktop:w-auto">
+              <div className="text-black mb-2 text-sm desktop:text-base">
+                Adresse
+              </div>
               <input
                 ref={addressInputRef}
                 type="text"
-                className="focus:border-0 focus-within:border-0 focus:outline-none text-black text-xl font-medium bg-transparent"
+                className="focus:border-0 focus-within:border-0 focus:outline-none text-black text-base desktop:text-xl font-medium bg-transparent"
                 placeholder="Søk på adresse"
                 onFocus={handleAddressFocus}
                 onBlur={handleAddressBlur}
@@ -157,10 +160,11 @@ const TomtTab = () => {
             )}
           </div>
 
-          <div className="h-[60px] w-[1px] bg-[#EAECF0] mx-8"></div>
+          <div className="h-[60px] w-[1px] bg-[#EAECF0] mx-8 hidden desktop:flex"></div>
+          <div className="h-[1px] w-full bg-[#EAECF0] my-3 desktop:hidden"></div>
 
           <div
-            className={`w-full rounded-[88px] py-2 px-9 items-center flex justify-between ${isKartFocused ? "bg-white" : "bg-transparent"} relative`}
+            className={`w-full rounded-[12px] desktop:rounded-[88px] py-2 px-2 desktop:px-9 desktop:items-center flex desktop:justify-between ${isKartFocused ? "bg-white" : "bg-transparent"} relative`}
             style={{
               boxShadow: isKartFocused
                 ? "0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.1)"
@@ -168,12 +172,14 @@ const TomtTab = () => {
             }}
             onClick={() => kartInputRef.current?.focus()}
           >
-            <div>
-              <div className="text-black mb-2 text-base">Kart</div>
+            <div className="w-[92%] desktop:w-auto">
+              <div className="text-black mb-2 text-sm desktop:text-base">
+                Kart
+              </div>
               <input
                 ref={kartInputRef}
                 type="text"
-                className="focus:border-0 focus-within:border-0 focus:outline-none text-black text-xl font-medium bg-transparent"
+                className="focus:border-0 focus-within:border-0 focus:outline-none text-black text-base desktop:text-xl font-medium bg-transparent"
                 placeholder="Søk i kart"
                 onFocus={handleKartFocus}
                 onBlur={handleKartBlur}
@@ -191,11 +197,11 @@ const TomtTab = () => {
             )}
           </div>
         </div>
-        {addressData && addressData.length > 0 && (
+        {addressInputValue && addressData && addressData.length > 0 && (
           <div
-            className="absolute top-[108px] left-0 bg-white rounded-[8px] py-[12px] px-[16px] w-full h-[400px] overflow-auto"
+            className="absolute top-[90px] desktop:top-[108px] left-0 bg-white rounded-[8px] py-[12px] p-2.5 desktop:px-[16px] w-full h-auto max-h-[400px] overflow-auto"
             style={{
-              zIndex: 99999,
+              zIndex: 999,
               boxShadow:
                 "rgba(16, 24, 40, 0.09) 0px 4px 6px -2px, rgba(16, 24, 40, 0.09) 0px 12px 16px -4px",
             }}
@@ -204,7 +210,7 @@ const TomtTab = () => {
               addressData.map((address: any, index: number) => (
                 <Link
                   href={`/regulations?kommunenummer=${address.kommunenummer}&gardsnummer=${address.gardsnummer}&bruksnummer=${address.bruksnummer}&kommunenavn=${address.kommunenavn}`}
-                  className="p-3 flex items-center gap-4 hover:bg-lightGreen"
+                  className="p-2 desktop:p-3 flex items-center gap-2.5 desktop:gap-4 hover:bg-lightGreen"
                   key={index}
                   onClick={() => {
                     localStorage.setItem(
@@ -218,10 +224,10 @@ const TomtTab = () => {
                 >
                   <Image src={Ic_search_location} alt="location" />
                   <div>
-                    <span className="text-secondary text-base font-medium">
+                    <span className="text-secondary text-sm desktop:text-base font-medium">
                       Adresse:
                     </span>{" "}
-                    <span className="text-black font-medium text-lg">
+                    <span className="text-black font-medium text-base desktop:text-lg">
                       {`${address.adressetekst}  ${address.postnummer} ${address.poststed}` ||
                         "N/A"}
                     </span>
@@ -230,11 +236,11 @@ const TomtTab = () => {
               ))}
           </div>
         )}
-        {KartData && KartData.length > 0 && (
+        {kartInputValue && KartData && KartData.length > 0 && (
           <div
-            className="absolute top-[108px] left-0 bg-white rounded-[8px] py-[12px] px-[16px] w-full h-[400px] overflow-auto"
+            className="absolute top-[180px] desktop:top-[108px] left-0 bg-white rounded-[8px] py-[12px]  p-2.5 desktop:px-[16px] w-full h-auto max-h-[400px] overflow-auto"
             style={{
-              zIndex: 99999,
+              zIndex: 999,
               boxShadow:
                 "rgba(16, 24, 40, 0.09) 0px 4px 6px -2px, rgba(16, 24, 40, 0.09) 0px 12px 16px -4px",
             }}
@@ -243,7 +249,7 @@ const TomtTab = () => {
               KartData.map((kart: any, index: number) => (
                 <Link
                   href={`/regulations?kommunenummer=${kart.kommunenummer}&gardsnummer=${kart.gardsnummer}&bruksnummer=${kart.bruksnummer}&kommunenavn=${kart.kommunenavn}`}
-                  className="p-3 flex items-center gap-4 hover:bg-lightGreen"
+                  className="p-2 desktop:p-3 flex items-center gap-2.5 desktop:gap-4 hover:bg-lightGreen"
                   key={index}
                   onClick={() => {
                     localStorage.setItem("IPlot_Address", JSON.stringify(kart));
@@ -254,10 +260,10 @@ const TomtTab = () => {
                 >
                   <Image src={Ic_search_location} alt="location" />
                   <div>
-                    <span className="text-secondary text-base font-medium">
+                    <span className="text-secondary text-sm desktop:text-base font-medium">
                       Kommune:
                     </span>{" "}
-                    <span className="text-black font-medium text-lg">
+                    <span className="text-black font-medium text-base desktop:text-lg">
                       {`${kart.adressetekst}  ${kart.postnummer} ${kart.poststed}` ||
                         "N/A"}
                     </span>
@@ -267,13 +273,21 @@ const TomtTab = () => {
           </div>
         )}
         <div
-          className={`p-[22px] cursor-pointer flex justify-center items-center bg-primary rounded-full gap-[10px] transition-all duration-300 ease-out ${
-            isAddressFocused || isKartFocused ? "w-[180px]" : "w-[76px]"
+          className={`ml-auto desktop:ml-0 mt-4 desktop:mt-0 p-3 desktop:p-[22px] cursor-pointer flex justify-center items-center bg-primary rounded-[12px] desktop:rounded-full gap-[10px] transition-all duration-300 ease-out ${
+            isAddressFocused || isKartFocused
+              ? "w-[120px] desktop:w-[180px]"
+              : "w-[48px] desktop:w-[76px]"
           }`}
         >
-          <Image src={Ic_search} alt="search" />
+          <Image
+            src={Ic_search}
+            alt="search"
+            className="w-6 h-6 desktop:w-auto desktop:h-auto"
+          />
           {(isAddressFocused || isKartFocused) && (
-            <span className={`text-white font-medium text-xl slide-in-text`}>
+            <span
+              className={`text-white font-medium text-lg desktop:text-xl slide-in-text`}
+            >
               Search
             </span>
           )}

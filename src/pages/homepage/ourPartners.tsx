@@ -8,16 +8,28 @@ import Img_NexonTechWhite from "@/public/images/Img_NexonTechWhite.png";
 const OurPartners = () => {
   return (
     <>
-      <div className="py-[80px] overflow-hidden bg-purple">
+      <div className="py-[44px] md:py-[58px] desktop:py-[80px] overflow-hidden bg-purple">
         <SideSpaceContainer className="relative">
           <div className="flex flex-col gap-8 items-center justify-center">
-            <h3 className="text-white font-semibold text-[2rem] leading-[44.8px]">
+            <h3 className="text-white font-semibold text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px] leading-[44.8px]">
               Våre samarbeidspartnere
             </h3>
-            <div className="flex items-center justify-center w-full gap-[96px]">
-              <Image src={Img_pms_SB1_Halling_Valdr_verti_pos} alt="logo" />
-              <Image src={Img_steddy} alt="logo" />
-              <Image src={Img_NexonTechWhite} alt="logo" />
+            <div className="flex items-center justify-between sm:justify-center w-full gap-5 md:gap-12 desktop:gap-[96px] overflow-x-auto overFlowScrollHidden">
+              <Image
+                src={Img_pms_SB1_Halling_Valdr_verti_pos}
+                alt="logo"
+                className="w-[136px] md:w-[170px] desktop:w-auto"
+              />
+              <Image
+                src={Img_steddy}
+                alt="logo"
+                className="w-[136px] md:w-[170px] desktop:w-auto"
+              />
+              <Image
+                src={Img_NexonTechWhite}
+                alt="logo"
+                className="w-[136px] md:w-[170px] desktop:w-auto"
+              />
             </div>
           </div>
         </SideSpaceContainer>

@@ -21,14 +21,14 @@ const HomePageSearchDiv = () => {
           alignItems: "center",
           justifyContent: "center",
         }}
-        className="my-[24px] lg:my-[48px]"
+        className="my-[32px] lg:my-[48px]"
       >
         {/* Tabs Navigation */}
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="horizontal tabs"
-          className="mb-4 md:mb-6 text-base lg:text-lg"
+          className="mb-5 md:mb-6 text-base lg:text-lg"
           sx={{
             "& .MuiTab-root": {
               fontWeight: 500,

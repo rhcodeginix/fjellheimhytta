@@ -33,11 +33,11 @@ const Review = () => {
   return (
     <>
       <SideSpaceContainer>
-        <div className="py-[120px]">
-          <h2 className="text-black font-semibold text-[48px] leading-[56px] mb-[20px] text-center tracking-[-1px]">
+        <div className="py-[44px] md:py-[58px] desktop:py-[120px]">
+          <h2 className="text-black font-semibold text-[24px] md:text-[28px] lg:text-[32px] desktop:text-[48px] desktop:leading-[56px] mb-3 lg:mb-[20px] text-center desktop:tracking-[-1px]">
             Dette sier noen av våre kunder om oss
           </h2>
-          <p className="text-center text-secondary font-medium text-lg leading-[21.78px] mb-[48px]">
+          <p className="text-center text-secondary font-medium text-sm md:text-base lg:text-lg leading-[21.78px] mb-6 lg:mb-[48px]">
             Roterende sitater fra kunder som har brukt iPlot og er fornøyde med
             tjenesten.
           </p>

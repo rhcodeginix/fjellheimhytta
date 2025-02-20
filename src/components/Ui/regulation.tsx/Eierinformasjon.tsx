@@ -36,7 +36,7 @@ const EierinformasjonData: any = [
 
 const Eierinformasjon: React.FC<{ data: any }> = ({ data }) => {
   return (
-    <div className="mb-[60px] flex gap-6">
+    <div className="flex gap-6">
       <div
         className="w-1/3 p-5 rounded-lg h-max"
         style={{

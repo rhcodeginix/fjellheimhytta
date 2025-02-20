@@ -82,27 +82,27 @@ const HusmodellTab = () => {
   return (
     <>
       <div
-        className={`shadow-shadow1 border-gray border rounded-[112px] flex items-center relative justify-between p-3 ${isFocused ? "bg-lightGreen" : "bg-[#fff]"}`}
+        className={`shadow-shadow1 border-gray border rounded-[24px] desktop:rounded-[112px] flex flex-col desktop:flex-row desktop:items-center relative justify-between p-3 ${isFocused ? "bg-lightGreen" : "bg-[#fff]"}`}
         ref={containerRef}
         onClick={() => inputRef.current?.focus()}
       >
-        <div className="flex items-center justify-between w-10/12">
+        <div className="flex flex-col lg:flex-row desktop:items-center desktop:justify-between w-full desktop:w-10/12">
           <div
-            className="w-full rounded-[88px] py-2 px-9 items-center flex justify-between bg-white relative"
+            className="w-full rounded-[12px] desktop:rounded-[88px] py-2 px-2 desktop:px-9 desktop:items-center flex desktop:justify-between bg-white relative"
             style={{
               boxShadow: isFocused
                 ? "0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.1)"
                 : "",
             }}
           >
-            <div>
-              <div className="text-black mb-2 text-base">
+            <div className="w-[92%] desktop:w-auto">
+              <div className="text-black mb-2 text-sm desktop:text-base">
                 Velg kommune du vurderer å bygge i:
               </div>
               <input
                 ref={inputRef}
                 type="text"
-                className="focus:border-0 focus-within:border-0 focus:outline-none text-black text-xl font-medium bg-transparent"
+                className="focus:border-0 focus-within:border-0 focus:outline-none text-black text-base desktop:text-xl font-medium bg-transparent"
                 placeholder="Velg kommune"
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -120,9 +120,9 @@ const HusmodellTab = () => {
             )}
           </div>
         </div>
-        {isFocused && data && data.length > 0 && (
+        {inputValue && isFocused && data && data.length > 0 && (
           <div
-            className="absolute top-[108px] left-0 bg-white rounded-[8px] py-[12px] px-[16px] w-full h-[400px] overflow-auto"
+            className="absolute top-[90px] desktop:top-[108px] left-0 bg-white rounded-[8px] py-[12px]  p-2.5 desktop:px-[16px] w-full h-auto max-h-[400px] overflow-auto"
             style={{
               boxShadow:
                 "rgba(16, 24, 40, 0.09) 0px 4px 6px -2px, rgba(16, 24, 40, 0.09) 0px 12px 16px -4px",
@@ -134,7 +134,7 @@ const HusmodellTab = () => {
                 <Link
                   // href="/husmodell"
                   href={`/husmodell?kommunenummer=${address.kommunenummer}&gardsnummer=${address.gardsnummer}&bruksnummer=${address.bruksnummer}&kommunenavn=${address.kommunenavn}`}
-                  className="p-3 flex items-center gap-4 hover:bg-lightGreen"
+                  className="p-2 desktop:p-3 flex items-center gap-2.5 desktop:gap-4 hover:bg-lightGreen"
                   key={index}
                   onClick={() => {
                     localStorage.setItem(
@@ -148,10 +148,10 @@ const HusmodellTab = () => {
                 >
                   <Image src={Ic_search_location} alt="location" />
                   <div>
-                    <span className="text-secondary text-base font-medium">
+                    <span className="text-secondary text-sm desktop:text-base font-medium">
                       Kommune:
                     </span>{" "}
-                    <span className="text-black font-medium text-lg">
+                    <span className="text-black font-medium text-base desktop:text-lg">
                       {`${address.kommunenavn} Kommune (${address.kommunenummer})` ||
                         "N/A"}
                     </span>
@@ -174,13 +174,21 @@ const HusmodellTab = () => {
           </div>
         )}
         <div
-          className={`p-[22px] cursor-pointer flex justify-center items-center bg-primary rounded-full gap-[10px] transition-all duration-300 ease-out ${
-            isFocused ? "w-[180px]" : "w-[76px]"
+          className={`ml-auto desktop:ml-0 mt-4 desktop:mt-0 p-3 desktop:p-[22px] cursor-pointer flex justify-center items-center bg-primary rounded-[12px] desktop:rounded-full gap-[10px] transition-all duration-300 ease-out ${
+            isFocused
+              ? "w-[120px] desktop:w-[180px]"
+              : "w-[48px] desktop:w-[76px]"
           }`}
         >
-          <Image src={Ic_search} alt="search" />
+          <Image
+            src={Ic_search}
+            alt="search"
+            className="w-6 h-6 desktop:w-auto desktop:h-auto"
+          />
           {isFocused && (
-            <span className={`text-white font-medium text-xl slide-in-text`}>
+            <span
+              className={`text-white font-medium text-lg desktop:text-xl slide-in-text`}
+            >
               Search
             </span>
           )}

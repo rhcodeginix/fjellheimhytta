@@ -22,7 +22,6 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Loader from "@/components/Loader";
-// import GoogleMapComponent from "@/components/Ui/map";
 import { useAddress } from "@/context/addressContext";
 import LoginForm from "../login/loginForm";
 import { useRouter } from "next/router";
@@ -37,32 +36,22 @@ const buildOption: any = [
   {
     icon: Ic_garaje,
     name: "Garasje eller carport",
-    BYAInntil: "67,42",
-    tilgjengelig: 7,
   },
   {
     icon: Ic_house,
     name: "Hagestue, bod eller drivhus",
-    BYAInntil: "67,42",
-    tilgjengelig: 7,
   },
   {
     icon: Ic_ofc,
     name: "Verksted, atelier eller kontor",
-    BYAInntil: "67,42",
-    tilgjengelig: 7,
   },
   {
     icon: Ic_pergola,
     name: "Frittliggende pergola",
-    BYAInntil: "67,42",
-    tilgjengelig: 7,
   },
   {
     icon: Ic_cabin,
     name: "Hytte, fritidsbolig eller anneks",
-    BYAInntil: "67,42",
-    tilgjengelig: 7,
   },
 ];
 
@@ -297,7 +286,7 @@ const Tomt: React.FC<{
   const handleScrollUp = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        top: -scrollByAmount,
+        left: -scrollByAmount,
         behavior: "smooth",
       });
     }
@@ -306,7 +295,7 @@ const Tomt: React.FC<{
   const handleScrollDown = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        top: scrollByAmount,
+        left: scrollByAmount,
         behavior: "smooth",
       });
     }
@@ -347,6 +336,17 @@ const Tomt: React.FC<{
     }
     setSelectedImage(image);
   };
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const toggleAccordion = () => {
+    setIsOpen(!isOpen);
+  };
+  const tabs: any = [
+    { id: "Regulering", label: "Regulering" },
+    { id: "Eierinformasjon", label: "Eierinformasjon" },
+    { id: "Bygninger", label: "Bygninger" },
+  ];
+  const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
 
   if (loadingLamdaData) {
     <Loader />;
@@ -364,903 +364,1127 @@ const Tomt: React.FC<{
           </SideSpaceContainer>
         </div>
         <SideSpaceContainer className="relative pt-[60px] pb-[46px]">
-          <h2 className="text-black text-2xl font-semibold mb-6">
-            Eiendomsinformasjon
-          </h2>
-          <div className="grid grid-cols-3 gap-6 mb-[60px]">
-            <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
-              <h2 className="text-black text-lg font-semibold flex items-center gap-2">
-                Tomteopplysninger
-                <div className="relative">
-                  <Image
-                    src={Ic_info_circle}
-                    alt="info"
-                    className="notShow cursor-pointer"
-                    onClick={() => toggleDropdown("Tomteopplysninger")}
-                  />
-                  {dropdownState.Tomteopplysninger && (
-                    <div
-                      className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
-                      style={{
-                        boxShadow:
-                          "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
-                        zIndex: 999999999,
-                        transform: "translateX(-50%)",
-                        left: "50%",
-                      }}
-                      ref={dropdownRef}
-                    >
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the indo.
-                    </div>
-                  )}
-                </div>
-              </h2>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Areal beregnet</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                      ?.areal_beregnet ? (
-                      <>
-                        {
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.areal_beregnet
-                        }{" "}
-                        m<sup>2</sup>
-                      </>
-                    ) : (
-                      "-"
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Etableringsårs dato</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                      ?.etableringsdato
-                      ? formatDateToDDMMYYYY(
-                          lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.etableringsdato
-                        )
-                      : "-"}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Sist oppdatert</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                      ?.sist_oppdatert
-                      ? formatDateToDDMMYYYY(
-                          lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
-                            "T"
-                          )[0]
-                        )
-                      : "-"}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Tomtens totale BYA</p>
-                  <h5 className="text-base text-black font-medium">
-                    {askData?.bya_calculations?.results?.total_allowed_bya ? (
-                      <>
-                        {askData?.bya_calculations?.results?.total_allowed_bya}{" "}
-                        m<sup>2</sup>
-                      </>
-                    ) : (
-                      "-"
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Er registrert land</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .isRegisteredLand === "Ja" ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .isRegisteredLand === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Festenummer</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                      ?.festenummer
-                      ? lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                          ?.festenummer
-                      : "-"}
-                  </h5>
-                </div>
-              </div>
+          <div
+            className="p-6 rounded-lg"
+            style={{
+              boxShadow:
+                "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
+            }}
+          >
+            <div
+              className="flex items-center justify-between gap-2 cursor-pointer"
+              onClick={toggleAccordion}
+            >
+              <h3 className="text-black text-2xl font-semibold">
+                Eiendomsinformasjon
+              </h3>
+              {isOpen ? (
+                <Image src={Ic_chevron_up} alt="arrow" />
+              ) : (
+                <Image src={Ic_chevron_up} alt="arrow" className="rotate-180" />
+              )}
             </div>
-            <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
-              <h2 className="text-black text-lg font-semibold flex items-center gap-2">
-                Kommunale data
-                <div className="relative">
-                  <Image
-                    src={Ic_info_circle}
-                    alt="info"
-                    className="notShow cursor-pointer"
-                    onClick={() => toggleDropdown("KommunaleData")}
-                  />
-                  {dropdownState.KommunaleData && (
-                    <div
-                      className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
-                      style={{
-                        boxShadow:
-                          "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
-                        zIndex: 999999999,
-                        transform: "translateX(-50%)",
-                        left: "50%",
-                      }}
-                      ref={dropdownRef}
-                    >
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the indo.
-                    </div>
-                  )}
-                </div>
-              </h2>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Kommune</p>
-                  <h5 className="text-base text-black font-medium">
-                    {/* {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.kommune} */}
-                    {getAddress?.kommunenavn}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Kommunenummer</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                      ?.kommunenr
-                      ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                          ?.kommunenr
-                      : "-"}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Gårdsnummer</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                      ?.gaardsnummer
-                      ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                          ?.gaardsnummer
-                      : "-"}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Bruksnummer</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                      ?.bruksnummer
-                      ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                          ?.bruksnummer
-                      : "-"}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Seksjonsnummer</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                      ?.seksjonsnr
-                      ? lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                          ?.seksjonsnr
-                      : "-"}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Fylke</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .municipality?.regionName
-                      ? CadastreDataFromApi?.cadastreApi?.response?.item
-                          .municipality?.regionName
-                      : "-"}
-                  </h5>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
-              <h2 className="text-black text-lg font-semibold flex items-center gap-2">
-                Eiendomsstatus
-                <div className="relative">
-                  <Image
-                    src={Ic_info_circle}
-                    alt="info"
-                    className="notShow cursor-pointer"
-                    onClick={() => toggleDropdown("Eiendomsstatus")}
-                  />
-                  {dropdownState.Eiendomsstatus && (
-                    <div
-                      className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
-                      style={{
-                        boxShadow:
-                          "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
-                        zIndex: 999999999,
-                        transform: "translateX(-50%)",
-                        left: "50%",
-                      }}
-                      ref={dropdownRef}
-                    >
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the indo.
-                    </div>
-                  )}
-                </div>
-              </h2>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Kan selges</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .canBeSold === true ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .canBeSold === "Ja" ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Kan belånes</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .canBeMortgaged === true ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .canBeMortgaged === "Ja" ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Har bygning</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasBuilding === true ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasBuilding === "Ja" ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Har fritidsbolig</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasHolidayHome === true ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasHolidayHome === "Ja" ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Har bolig</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasHousing === true ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasHousing === "Ja" ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
-              <h2 className="text-black text-lg font-semibold flex items-center gap-2">
-                Parkeringsinformasjon
-                <div className="relative">
-                  <Image
-                    src={Ic_info_circle}
-                    alt="info"
-                    className="notShow cursor-pointer"
-                    onClick={() => toggleDropdown("Parkeringsinformasjon")}
-                  />
-                  {dropdownState.Parkeringsinformasjon && (
-                    <div
-                      className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
-                      style={{
-                        boxShadow:
-                          "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
-                        zIndex: 999999999,
-                        transform: "translateX(-50%)",
-                        left: "50%",
-                      }}
-                      ref={dropdownRef}
-                    >
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the indo.
-                    </div>
-                  )}
-                </div>
-              </h2>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">
-                    Parkering reservert plass
-                  </p>
-                  <h5 className="text-base text-black font-medium">
-                    {askData?.bya_calculations?.results?.parking
-                      ?.required_spaces ? (
-                      <>
-                        {
-                          askData?.bya_calculations?.results?.parking
-                            ?.required_spaces
-                        }{" "}
-                        {/* m<sup>2</sup> */}
-                        stk
-                      </>
-                    ) : (
-                      "-"
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">
-                    Parkering område per plass
-                  </p>
-                  <h5 className="text-base text-black font-medium">
-                    {askData?.bya_calculations?.results?.parking
-                      ?.area_per_space ? (
-                      <>
-                        {
-                          askData?.bya_calculations?.results?.parking
-                            ?.area_per_space
-                        }{" "}
-                        m<sup>2</sup>
-                      </>
-                    ) : (
-                      "-"
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">
-                    Totalt parkeringsområde
-                  </p>
-                  <h5 className="text-base text-black font-medium">
-                    {askData?.bya_calculations?.results?.parking
-                      ?.total_parking_area ? (
-                      <>
-                        {
-                          askData?.bya_calculations?.results?.parking
-                            ?.total_parking_area
-                        }{" "}
-                        m<sup>2</sup>
-                      </>
-                    ) : (
-                      "-"
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Parkering er usikker</p>
-                  <h5 className="text-base text-black font-medium">
-                    {askData?.bya_calculations?.results?.parking
-                      ?.is_uncertain === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
-              <h2 className="text-black text-lg font-semibold flex items-center gap-2">
-                Ytterligere eiendomsforhold
-                <div className="relative">
-                  <Image
-                    src={Ic_info_circle}
-                    alt="info"
-                    className="notShow cursor-pointer"
-                    onClick={() => toggleDropdown("YtterligereEiendomsforhold")}
-                  />
-                  {dropdownState.YtterligereEiendomsforhold && (
-                    <div
-                      className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
-                      style={{
-                        boxShadow:
-                          "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
-                        zIndex: 999999999,
-                        transform: "translateX(-50%)",
-                        left: "50%",
-                      }}
-                      ref={dropdownRef}
-                    >
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the indo.
-                    </div>
-                  )}
-                </div>
-              </h2>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Har forurensning</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasSoilContamination === "Ja" ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasSoilContamination === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">
-                    Har aktive festegrunner
-                  </p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasActiveLeasedLand === "Ja" ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .hasActiveLeasedLand === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">
-                    Inngår i samlet eiendom
-                  </p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .includedInTotalRealEstate === "Ja" ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .includedInTotalRealEstate === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">
-                    Kulturminner registrert
-                  </p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.kulturminner_registrert === "Ja" ||
-                    lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.kulturminner_registrert === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Grunnforurensning</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.grunnforurensning === "Ja" ||
-                    lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.grunnforurensning === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
-              <h2 className="text-black text-lg font-semibold flex items-center gap-2">
-                Spesielle registreringer
-                <div className="relative">
-                  <Image
-                    src={Ic_info_circle}
-                    alt="info"
-                    className="notShow cursor-pointer"
-                    onClick={() => toggleDropdown("SpesielleRegistreringer")}
-                  />
-                  {dropdownState.SpesielleRegistreringer && (
-                    <div
-                      className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
-                      style={{
-                        boxShadow:
-                          "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
-                        zIndex: 999999999,
-                        transform: "translateX(-50%)",
-                        left: "50%",
-                      }}
-                      ref={dropdownRef}
-                    >
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the indo.
-                    </div>
-                  )}
-                </div>
-              </h2>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Sammenslåtte tomter</p>
-                  <h5 className="text-base text-black font-medium">
-                    {CadastreDataFromApi?.cadastreApi?.response?.item
-                      .numberOfPlots === "Ja" ||
-                    CadastreDataFromApi?.cadastreApi?.response?.item
-                      .numberOfPlots === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Tinglyst</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                      ?.tinglyst === "Ja" ||
-                    lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                      ?.tinglyst === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Ugyldig</p>
-                  <h5 className="text-base text-black font-medium">
-                    <Image src={Ic_check} alt="check" />
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">
-                    Oppmåling ikke fullført
-                  </p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.oppmaling_ikke_fullfort === "Ja" ||
-                    lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.oppmaling_ikke_fullfort === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">
-                    Mangler grenseoppmerking
-                  </p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.mangler_grensepunktmerking === "Ja" ||
-                    lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.mangler_grensepunktmerking === true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-                <div className="flex items-center justify-between gap-1">
-                  <p className="text-sm text-grayText">Under sammenslåing</p>
-                  <h5 className="text-base text-black font-medium">
-                    {lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.under_sammenslaing === "Ja" ||
-                    (lamdaDataFromApi?.eiendomsInformasjon?.status
-                      ?.under_sammenslaing ===
-                      "Ja") ===
-                      true ? (
-                      <Image src={Ic_check} alt="check" />
-                    ) : (
-                      <Image src={Ic_x_close} alt="check" />
-                    )}
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <h2 className="text-black text-2xl font-semibold mb-6">
-            Eierinformasjon
-          </h2>
-          <Eierinformasjon
-            data={CadastreDataFromApi?.ownersApi?.response?.items}
-          />
-          <h2 className="text-black text-2xl font-semibold mb-6">
-            Kartutsnitt
-          </h2>
-          <div className="relative flex gap-[60px]">
-            <div className="w-[60%]">
-              <div className="w-full flex gap-5 h-[500px] items-center">
-                <div className="h-full rounded-[12px] overflow-hidden w-[87%] relative border border-[#7D89B0]">
-                  {loading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-10">
-                      <div className="spinner-border animate-spin border-t-4 border-b-4 border-blue-500 w-12 h-12 border-solid rounded-full"></div>
-                    </div>
-                  )}
-                  <img
-                    src={selectedImage?.src}
-                    alt={selectedImage?.alt}
-                    className="h-full w-full"
-                    onLoad={() => setLoading(false)}
-                    onError={() => setLoading(false)}
-                  />
-                  <div
-                    className="absolute top-0 left-[4px] flex items-center justify-center h-full"
-                    style={{
-                      zIndex: 99999,
-                    }}
-                  >
-                    <div
-                      className={`bg-white h-[44px] w-[44px] rounded-full flex items-center justify-center ${selectedImage?.id === images[0]?.id ? "opacity-50" : "opacity-100"}`}
-                      style={{
-                        boxShadow:
-                          "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
-                      }}
-                      onClick={() => {
-                        if (selectedImage?.id !== images[0]?.id) {
-                          const currentIndex = images.findIndex(
-                            (img) => img.id === selectedImage.id
-                          );
-                          setLoading(true);
-
-                          const nextIndex = currentIndex - 1;
-                          if (nextIndex >= 0) {
-                            setSelectedImage(images[nextIndex]);
-                            handleScrollUp();
-                          }
-                        }
-                      }}
-                    >
-                      <Image
-                        src={Ic_chevron_right}
-                        alt="arrow"
-                        className={`${selectedImage?.id !== images[0]?.id && "cursor-pointer"} rotate-180`}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className={`absolute bottom-0 right-[4px] flex items-center justify-center h-full`}
-                    style={{
-                      zIndex: 99999,
-                    }}
-                  >
-                    <div
-                      className={`bg-white h-[44px] w-[44px] rounded-full flex items-center justify-center ${selectedImage?.id === images[images.length - 1]?.id ? "opacity-50" : "opacity-100"}`}
-                      style={{
-                        boxShadow:
-                          "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
-                      }}
-                      onClick={() => {
-                        if (
-                          selectedImage?.id !== images[images.length - 1]?.id
-                        ) {
-                          const currentIndex = images.findIndex(
-                            (img) => img.id === selectedImage.id
-                          );
-                          setLoading(true);
-
-                          const nextIndex = currentIndex + 1;
-                          if (nextIndex < images.length) {
-                            setSelectedImage(images[nextIndex]);
-                          }
-                          handleScrollDown();
-                        }
-                      }}
-                    >
-                      <Image
-                        src={Ic_chevron_right}
-                        alt="arrow"
-                        className={`${selectedImage?.id !== images[images.length - 1]?.id && "cursor-pointer"}`}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="relative w-[13%] h-max max-h-[500px]">
-                  <div
-                    className="gap-3 flex flex-col w-full overflow-y-auto overFlowScrollHidden h-full max-h-[500px] my-auto"
-                    ref={scrollContainerRef}
-                  >
-                    {images.map((image, index) => (
-                      <div className="relative" key={index}>
-                        <img
-                          src={image.src}
-                          alt={image.alt}
-                          className={`h-[90px] w-full rounded-[12px] cursor-pointer ${selectedImage?.id === image?.id ? "border-2 border-primary" : "border border-[#7D89B033]"}`}
-                          style={{
-                            zIndex: 999,
-                          }}
-                          onClick={() => handleImageClick(image)}
+            <div className={`mt-6 ${isOpen ? "block" : "hidden"}`}>
+              <div className="flex gap-6">
+                <div className="grid grid-cols-3 gap-6">
+                  <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
+                    <h2 className="text-black text-lg font-semibold flex items-center gap-2">
+                      Tomteopplysninger
+                      <div className="relative">
+                        <Image
+                          src={Ic_info_circle}
+                          alt="info"
+                          className="notShow cursor-pointer"
+                          onClick={() => toggleDropdown("Tomteopplysninger")}
                         />
+                        {dropdownState.Tomteopplysninger && (
+                          <div
+                            className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                            style={{
+                              boxShadow:
+                                "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
+                              zIndex: 999999999,
+                              transform: "translateX(-50%)",
+                              left: "50%",
+                            }}
+                            ref={dropdownRef}
+                          >
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the indo.
+                          </div>
+                        )}
                       </div>
-                    ))}
+                    </h2>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Areal beregnet</p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon
+                            ?.basisInformasjon?.areal_beregnet ? (
+                            <>
+                              {
+                                lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.areal_beregnet
+                              }{" "}
+                              m<sup>2</sup>
+                            </>
+                          ) : (
+                            "-"
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Etableringsårs dato
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon
+                            ?.basisInformasjon?.etableringsdato
+                            ? formatDateToDDMMYYYY(
+                                lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.etableringsdato
+                              )
+                            : "-"}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Sist oppdatert</p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon
+                            ?.basisInformasjon?.sist_oppdatert
+                            ? formatDateToDDMMYYYY(
+                                lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon?.sist_oppdatert.split(
+                                  "T"
+                                )[0]
+                              )
+                            : "-"}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Tomtens totale BYA
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {askData?.bya_calculations?.results
+                            ?.total_allowed_bya ? (
+                            <>
+                              {
+                                askData?.bya_calculations?.results
+                                  ?.total_allowed_bya
+                              }{" "}
+                              m<sup>2</sup>
+                            </>
+                          ) : (
+                            "-"
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Er registrert land
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .isRegisteredLand === "Ja" ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .isRegisteredLand === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Festenummer</p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon
+                            ?.basisInformasjon?.festenummer
+                            ? lamdaDataFromApi?.eiendomsInformasjon
+                                ?.basisInformasjon?.festenummer
+                            : "-"}
+                        </h5>
+                      </div>
+                    </div>
                   </div>
-                  {images.length > 4 && (
-                    <div
-                      className="absolute top-0 left-0 h-[90px] w-full"
-                      style={{
-                        zIndex: 9999,
-                        background:
-                          "linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 90.63%)",
-                      }}
-                    ></div>
-                  )}
-                  {images.length > 4 && (
-                    <div
-                      className="absolute bottom-0 left-0 h-[90px] w-full"
-                      style={{
-                        zIndex: 9999,
-                        background:
-                          "linear-gradient(0deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 90.63%)",
-                      }}
-                    ></div>
-                  )}
-                  {images.length > 4 && (
-                    <div
-                      className="absolute top-0 left-0 flex items-center justify-center w-full"
-                      style={{
-                        zIndex: 99999,
-                      }}
-                    >
-                      <Image
-                        src={Ic_chevron_up}
-                        alt="arrow"
-                        className={`${selectedImage?.id !== images[0]?.id ? "cursor-pointer opacity-100" : "opacity-50"}`}
-                        onClick={() => {
-                          if (selectedImage?.id !== images[0]?.id) {
-                            const currentIndex = images.findIndex(
-                              (img) => img.id === selectedImage.id
-                            );
-                            setLoading(true);
-
-                            const nextIndex = currentIndex - 1;
-                            if (nextIndex >= 0) {
-                              setSelectedImage(images[nextIndex]);
-                              handleScrollUp();
-                            }
-                          }
-                        }}
-                      />
+                  <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
+                    <h2 className="text-black text-lg font-semibold flex items-center gap-2">
+                      Kommunale data
+                      <div className="relative">
+                        <Image
+                          src={Ic_info_circle}
+                          alt="info"
+                          className="notShow cursor-pointer"
+                          onClick={() => toggleDropdown("KommunaleData")}
+                        />
+                        {dropdownState.KommunaleData && (
+                          <div
+                            className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                            style={{
+                              boxShadow:
+                                "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
+                              zIndex: 999999999,
+                              transform: "translateX(-50%)",
+                              left: "50%",
+                            }}
+                            ref={dropdownRef}
+                          >
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the indo.
+                          </div>
+                        )}
+                      </div>
+                    </h2>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Kommune</p>
+                        <h5 className="text-base text-black font-medium">
+                          {/* {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.kommune} */}
+                          {getAddress?.kommunenavn}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Kommunenummer</p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                            ?.kommunenr
+                            ? lamdaDataFromApi?.eiendomsInformasjon
+                                ?.kommune_info?.kommunenr
+                            : "-"}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Gårdsnummer</p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                            ?.gaardsnummer
+                            ? lamdaDataFromApi?.eiendomsInformasjon
+                                ?.kommune_info?.gaardsnummer
+                            : "-"}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Bruksnummer</p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                            ?.bruksnummer
+                            ? lamdaDataFromApi?.eiendomsInformasjon
+                                ?.kommune_info?.bruksnummer
+                            : "-"}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Seksjonsnummer</p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                            ?.seksjonsnr
+                            ? lamdaDataFromApi?.eiendomsInformasjon
+                                ?.kommune_info?.seksjonsnr
+                            : "-"}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Fylke</p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .municipality?.regionName
+                            ? CadastreDataFromApi?.cadastreApi?.response?.item
+                                .municipality?.regionName
+                            : "-"}
+                        </h5>
+                      </div>
                     </div>
-                  )}
-                  {images.length > 4 && (
-                    <div
-                      className="absolute bottom-0 left-0 flex items-center justify-center w-full"
-                      style={{
-                        zIndex: 99999,
-                      }}
-                    >
-                      <Image
-                        src={Ic_chevron_up}
-                        alt="arrow"
-                        className={`${selectedImage?.id !== images[images.length - 1]?.id ? "cursor-pointer opacity-100" : "opacity-50"} rotate-180`}
-                        onClick={() => {
-                          if (
-                            selectedImage?.id !== images[images.length - 1]?.id
-                          ) {
-                            const currentIndex = images.findIndex(
-                              (img) => img.id === selectedImage.id
-                            );
-                            setLoading(true);
-
-                            const nextIndex = currentIndex + 1;
-                            if (nextIndex < images.length) {
-                              setSelectedImage(images[nextIndex]);
-                            }
-                            handleScrollDown();
-                          }
-                        }}
-                      />
+                  </div>
+                  <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
+                    <h2 className="text-black text-lg font-semibold flex items-center gap-2">
+                      Eiendomsstatus
+                      <div className="relative">
+                        <Image
+                          src={Ic_info_circle}
+                          alt="info"
+                          className="notShow cursor-pointer"
+                          onClick={() => toggleDropdown("Eiendomsstatus")}
+                        />
+                        {dropdownState.Eiendomsstatus && (
+                          <div
+                            className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                            style={{
+                              boxShadow:
+                                "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
+                              zIndex: 999999999,
+                              transform: "translateX(-50%)",
+                              left: "50%",
+                            }}
+                            ref={dropdownRef}
+                          >
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the indo.
+                          </div>
+                        )}
+                      </div>
+                    </h2>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Kan selges</p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .canBeSold === true ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .canBeSold === "Ja" ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Kan belånes</p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .canBeMortgaged === true ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .canBeMortgaged === "Ja" ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Har bygning</p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasBuilding === true ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasBuilding === "Ja" ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Har fritidsbolig
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasHolidayHome === true ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasHolidayHome === "Ja" ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Har bolig</p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasHousing === true ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasHousing === "Ja" ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
                     </div>
-                  )}
+                  </div>
+                  <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
+                    <h2 className="text-black text-lg font-semibold flex items-center gap-2">
+                      Parkeringsinformasjon
+                      <div className="relative">
+                        <Image
+                          src={Ic_info_circle}
+                          alt="info"
+                          className="notShow cursor-pointer"
+                          onClick={() =>
+                            toggleDropdown("Parkeringsinformasjon")
+                          }
+                        />
+                        {dropdownState.Parkeringsinformasjon && (
+                          <div
+                            className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                            style={{
+                              boxShadow:
+                                "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
+                              zIndex: 999999999,
+                              transform: "translateX(-50%)",
+                              left: "50%",
+                            }}
+                            ref={dropdownRef}
+                          >
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the indo.
+                          </div>
+                        )}
+                      </div>
+                    </h2>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Parkering reservert plass
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {askData?.bya_calculations?.results?.parking
+                            ?.required_spaces ? (
+                            <>
+                              {
+                                askData?.bya_calculations?.results?.parking
+                                  ?.required_spaces
+                              }{" "}
+                              {/* m<sup>2</sup> */}
+                              stk
+                            </>
+                          ) : (
+                            "-"
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Parkering område per plass
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {askData?.bya_calculations?.results?.parking
+                            ?.area_per_space ? (
+                            <>
+                              {
+                                askData?.bya_calculations?.results?.parking
+                                  ?.area_per_space
+                              }{" "}
+                              m<sup>2</sup>
+                            </>
+                          ) : (
+                            "-"
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Totalt parkeringsområde
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {askData?.bya_calculations?.results?.parking
+                            ?.total_parking_area ? (
+                            <>
+                              {
+                                askData?.bya_calculations?.results?.parking
+                                  ?.total_parking_area
+                              }{" "}
+                              m<sup>2</sup>
+                            </>
+                          ) : (
+                            "-"
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Parkering er usikker
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {askData?.bya_calculations?.results?.parking
+                            ?.is_uncertain === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
+                    <h2 className="text-black text-lg font-semibold flex items-center gap-2">
+                      Ytterligere eiendomsforhold
+                      <div className="relative">
+                        <Image
+                          src={Ic_info_circle}
+                          alt="info"
+                          className="notShow cursor-pointer"
+                          onClick={() =>
+                            toggleDropdown("YtterligereEiendomsforhold")
+                          }
+                        />
+                        {dropdownState.YtterligereEiendomsforhold && (
+                          <div
+                            className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                            style={{
+                              boxShadow:
+                                "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
+                              zIndex: 999999999,
+                              transform: "translateX(-50%)",
+                              left: "50%",
+                            }}
+                            ref={dropdownRef}
+                          >
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the indo.
+                          </div>
+                        )}
+                      </div>
+                    </h2>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Har forurensning
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasSoilContamination === "Ja" ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasSoilContamination === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Har aktive festegrunner
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasActiveLeasedLand === "Ja" ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .hasActiveLeasedLand === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Inngår i samlet eiendom
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .includedInTotalRealEstate === "Ja" ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .includedInTotalRealEstate === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Kulturminner registrert
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.kulturminner_registrert === "Ja" ||
+                          lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.kulturminner_registrert === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Grunnforurensning
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.grunnforurensning === "Ja" ||
+                          lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.grunnforurensning === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
+                    <h2 className="text-black text-lg font-semibold flex items-center gap-2">
+                      Spesielle registreringer
+                      <div className="relative">
+                        <Image
+                          src={Ic_info_circle}
+                          alt="info"
+                          className="notShow cursor-pointer"
+                          onClick={() =>
+                            toggleDropdown("SpesielleRegistreringer")
+                          }
+                        />
+                        {dropdownState.SpesielleRegistreringer && (
+                          <div
+                            className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                            style={{
+                              boxShadow:
+                                "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
+                              zIndex: 999999999,
+                              transform: "translateX(-50%)",
+                              left: "50%",
+                            }}
+                            ref={dropdownRef}
+                          >
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the indo.
+                          </div>
+                        )}
+                      </div>
+                    </h2>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Sammenslåtte tomter
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {CadastreDataFromApi?.cadastreApi?.response?.item
+                            .numberOfPlots === "Ja" ||
+                          CadastreDataFromApi?.cadastreApi?.response?.item
+                            .numberOfPlots === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Tinglyst</p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon
+                            ?.basisInformasjon?.tinglyst === "Ja" ||
+                          lamdaDataFromApi?.eiendomsInformasjon
+                            ?.basisInformasjon?.tinglyst === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">Ugyldig</p>
+                        <h5 className="text-base text-black font-medium">
+                          <Image src={Ic_check} alt="check" />
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Oppmåling ikke fullført
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.oppmaling_ikke_fullfort === "Ja" ||
+                          lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.oppmaling_ikke_fullfort === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Mangler grenseoppmerking
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.mangler_grensepunktmerking === "Ja" ||
+                          lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.mangler_grensepunktmerking === true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-sm text-grayText">
+                          Under sammenslåing
+                        </p>
+                        <h5 className="text-base text-black font-medium">
+                          {lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.under_sammenslaing === "Ja" ||
+                          (lamdaDataFromApi?.eiendomsInformasjon?.status
+                            ?.under_sammenslaing ===
+                            "Ja") ===
+                            true ? (
+                            <Image src={Ic_check} alt="check" />
+                          ) : (
+                            <Image src={Ic_x_close} alt="check" />
+                          )}
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="rounded-[12px] overflow-hidden w-[407px]">
+                  <GoogleMapComponent
+                    coordinates={
+                      lamdaDataFromApi?.coordinates?.convertedCoordinates
+                    }
+                  />
                 </div>
               </div>
             </div>
-            <div className="w-[40%]">
-              <div className="h-[500px] rounded-[12px] overflow-hidden w-full">
-                <GoogleMapComponent
-                  coordinates={
-                    lamdaDataFromApi?.coordinates?.convertedCoordinates
-                  }
-                />
-              </div>
-            </div>
           </div>
-          {loadingLamdaData ? (
-            <Loader />
-          ) : (
-            <>
-              <div className="relative">
-                {loadingAdditionalData ? (
-                  <Loading />
-                ) : (
-                  <div className="flex gap-[60px] mt-[60px]">
-                    <div className="relative w-1/2">
-                      <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-black text-2xl font-semibold">
-                          Reguleringsbestemmelser
-                        </h2>
-                        <Image src={Ic_generelt} alt="image" />
+
+          <div className="w-full mt-[44px]">
+            <div className="flex border-b border-[#DDDDDD]">
+              {tabs.map((tab: any) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-4 py-2 text-[#111322] border-b-[3px] text-lg transition-colors duration-300 ${
+                    activeTab === tab.id
+                      ? "border-[#6941C6] font-semibold"
+                      : "border-transparent"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+            <div className="pt-8">
+              {activeTab === "Regulering" && (
+                <>
+                  {loadingLamdaData ? (
+                    <Loader />
+                  ) : (
+                    <>
+                      <div className="relative">
+                        {loadingAdditionalData ? (
+                          <Loading />
+                        ) : (
+                          <div className="flex gap-[60px]">
+                            <div className="relative w-1/2">
+                              <div>
+                                <div className="flex justify-between items-center mb-6">
+                                  <h2 className="text-black text-2xl font-semibold">
+                                    Reguleringsplan
+                                  </h2>
+                                  <Image src={Ic_generelt} alt="image" />
+                                </div>
+                                <div className="flex flex-col gap-3">
+                                  <>
+                                    {askData &&
+                                      askData?.conclusion?.map(
+                                        (a: any, index: number) => (
+                                          <div
+                                            className="flex items-start gap-3 text-secondary text-base"
+                                            key={index}
+                                          >
+                                            <Image
+                                              src={Ic_check_true}
+                                              alt="image"
+                                            />
+                                            <span>{a}</span>
+                                          </div>
+                                        )
+                                      )}
+                                  </>
+                                </div>
+                              </div>
+                              <div className="w-full flex flex-col gap-8 items-center mt-[55px]">
+                                <div className="rounded-[12px] overflow-hidden w-full relative border border-[#7D89B0] h-[590px]">
+                                  {loading && (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-10">
+                                      <div className="spinner-border animate-spin border-t-4 border-b-4 border-blue-500 w-12 h-12 border-solid rounded-full"></div>
+                                    </div>
+                                  )}
+                                  <img
+                                    src={selectedImage?.src}
+                                    alt={selectedImage?.alt}
+                                    className="h-full w-full"
+                                    onLoad={() => setLoading(false)}
+                                    onError={() => setLoading(false)}
+                                  />
+                                  <div
+                                    className="absolute top-0 left-[4px] flex items-center justify-center h-full"
+                                    style={{
+                                      zIndex: 99999,
+                                    }}
+                                  >
+                                    <div
+                                      className={`bg-white h-[44px] w-[44px] rounded-full flex items-center justify-center ${selectedImage?.id === images[0]?.id ? "opacity-50" : "opacity-100"}`}
+                                      style={{
+                                        boxShadow:
+                                          "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
+                                      }}
+                                      onClick={() => {
+                                        if (
+                                          selectedImage?.id !== images[0]?.id
+                                        ) {
+                                          const currentIndex = images.findIndex(
+                                            (img) => img.id === selectedImage.id
+                                          );
+                                          setLoading(true);
+
+                                          const nextIndex = currentIndex - 1;
+                                          if (nextIndex >= 0) {
+                                            setSelectedImage(images[nextIndex]);
+                                            handleScrollUp();
+                                          }
+                                        }
+                                      }}
+                                    >
+                                      <Image
+                                        src={Ic_chevron_right}
+                                        alt="arrow"
+                                        className={`${selectedImage?.id !== images[0]?.id && "cursor-pointer"} rotate-180`}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    className={`absolute bottom-0 right-[4px] flex items-center justify-center h-full`}
+                                    style={{
+                                      zIndex: 99999,
+                                    }}
+                                  >
+                                    <div
+                                      className={`bg-white h-[44px] w-[44px] rounded-full flex items-center justify-center ${selectedImage?.id === images[images.length - 1]?.id ? "opacity-50" : "opacity-100"}`}
+                                      style={{
+                                        boxShadow:
+                                          "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
+                                      }}
+                                      onClick={() => {
+                                        if (
+                                          selectedImage?.id !==
+                                          images[images.length - 1]?.id
+                                        ) {
+                                          const currentIndex = images.findIndex(
+                                            (img) => img.id === selectedImage.id
+                                          );
+                                          setLoading(true);
+
+                                          const nextIndex = currentIndex + 1;
+                                          if (nextIndex < images.length) {
+                                            setSelectedImage(images[nextIndex]);
+                                          }
+                                          handleScrollDown();
+                                        }
+                                      }}
+                                    >
+                                      <Image
+                                        src={Ic_chevron_right}
+                                        alt="arrow"
+                                        className={`${selectedImage?.id !== images[images.length - 1]?.id && "cursor-pointer"}`}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="relative w-full flex justify-center">
+                                  <div
+                                    className="gap-8 flex overflow-x-auto overFlowScrollHidden"
+                                    ref={scrollContainerRef}
+                                  >
+                                    {images.map((image, index) => (
+                                      <div
+                                        className="relative min-w-[90px] max-w-[90px]"
+                                        key={index}
+                                      >
+                                        <img
+                                          src={image.src}
+                                          alt={image.alt}
+                                          className={`h-[90px] w-full rounded-[12px] cursor-pointer ${selectedImage?.id === image?.id ? "border-2 border-primary" : "border border-[#7D89B033]"}`}
+                                          style={{
+                                            zIndex: 999,
+                                          }}
+                                          onClick={() =>
+                                            handleImageClick(image)
+                                          }
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                  {images.length > 5 && (
+                                    <div
+                                      className="absolute top-0 right-0 h-[90px] w-[90px]"
+                                      style={{
+                                        zIndex: 9999,
+                                        background:
+                                          "linear-gradient(-90deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 90.63%)",
+                                      }}
+                                    ></div>
+                                  )}
+                                  {images.length > 5 && (
+                                    <div
+                                      className="absolute top-0 left-0 h-[90px] w-[90px]"
+                                      style={{
+                                        zIndex: 9999,
+                                        background:
+                                          "linear-gradient(90deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 90.63%)",
+                                      }}
+                                    ></div>
+                                  )}
+                                  {images.length > 5 && (
+                                    <div
+                                      className="absolute top-0 left-0 flex items-center justify-center h-full"
+                                      style={{
+                                        zIndex: 99999,
+                                      }}
+                                    >
+                                      <Image
+                                        src={Ic_chevron_right}
+                                        alt="arrow"
+                                        className={`${selectedImage?.id !== images[0]?.id ? "cursor-pointer opacity-100" : "opacity-50"} rotate-180`}
+                                        onClick={() => {
+                                          if (
+                                            selectedImage?.id !== images[0]?.id
+                                          ) {
+                                            const currentIndex =
+                                              images.findIndex(
+                                                (img) =>
+                                                  img.id === selectedImage.id
+                                              );
+                                            setLoading(true);
+
+                                            const nextIndex = currentIndex - 1;
+                                            if (nextIndex >= 0) {
+                                              setSelectedImage(
+                                                images[nextIndex]
+                                              );
+                                              handleScrollUp();
+                                            }
+                                          }
+                                        }}
+                                      />
+                                    </div>
+                                  )}
+                                  {images.length > 5 && (
+                                    <div
+                                      className="absolute top-0 right-0 flex items-center justify-center h-full"
+                                      style={{
+                                        zIndex: 99999,
+                                      }}
+                                    >
+                                      <Image
+                                        src={Ic_chevron_right}
+                                        alt="arrow"
+                                        className={`${selectedImage?.id !== images[images.length - 1]?.id ? "cursor-pointer opacity-100" : "opacity-50"}`}
+                                        onClick={() => {
+                                          if (
+                                            selectedImage?.id !==
+                                            images[images.length - 1]?.id
+                                          ) {
+                                            const currentIndex =
+                                              images.findIndex(
+                                                (img) =>
+                                                  img.id === selectedImage.id
+                                              );
+                                            setLoading(true);
+
+                                            const nextIndex = currentIndex + 1;
+                                            if (nextIndex < images.length) {
+                                              setSelectedImage(
+                                                images[nextIndex]
+                                              );
+                                            }
+                                            handleScrollDown();
+                                          }
+                                        }}
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="relative w-1/2">
+                              <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-black text-2xl font-semibold">
+                                  Kommuneplan for Asker
+                                </h2>
+                                <Image src={Ic_generelt} alt="image" />
+                              </div>
+                              <div className="flex flex-col gap-3">
+                                {askData &&
+                                  askData?.applicable_rules?.map(
+                                    (a: any, index: number) => (
+                                      <div
+                                        className="flex items-start gap-3 text-secondary text-base"
+                                        key={index}
+                                      >
+                                        <Image
+                                          src={Ic_check_true}
+                                          alt="image"
+                                        />
+                                        <div>
+                                          {a.rule}{" "}
+                                          <span className="text-primary font-bold">
+                                            {a.section}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    )
+                                  )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex flex-col gap-3">
+                    </>
+                  )}
+                </>
+              )}
+              {activeTab === "Eierinformasjon" && (
+                <Eierinformasjon
+                  data={CadastreDataFromApi?.ownersApi?.response?.items}
+                />
+              )}
+              {activeTab === "Bygninger" && (
+                <>
+                  {loadingLamdaData ? (
+                    <div className="relative">
+                      <Loading />
+                    </div>
+                  ) : (
+                    <>
+                      {CadastreDataFromApi?.buildingsApi?.response?.items
+                        .length > 0 ? (
                         <>
-                          {askData &&
-                            askData?.conclusion?.map(
-                              (a: any, index: number) => (
+                          <div className="flex items-center justify-between">
+                            <h2 className="text-black text-2xl font-semibold mb-6">
+                              Eksisterende bebyggelse
+                            </h2>
+                            {!loadingAdditionalData && (
+                              <div
+                                className="flex gap-2 items-center cursor-pointer notShow"
+                                onClick={captureScreenshotAndDownloadPDF}
+                              >
+                                <Image src={Ic_download} alt="download" />
+                                <h4 className="text-primary text-base font-semibold">
+                                  Download Regulation Document
+                                </h4>
+                              </div>
+                            )}
+                          </div>
+                          <div className="grid grid-cols-4 gap-6 mb-16">
+                            {CadastreDataFromApi?.buildingsApi?.response?.items.map(
+                              (item: any, index: number) => (
                                 <div
-                                  className="flex items-start gap-3 text-secondary text-base"
+                                  className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4"
                                   key={index}
                                 >
-                                  <Image src={Ic_check_true} alt="image" />
-                                  <span>{a}</span>
+                                  <div className="flex flex-col gap-4">
+                                    <div className="w-full h-[177px] rounded-[8px]">
+                                      <GoogleMapNearByComponent
+                                        coordinates={
+                                          item?.position?.geometry?.coordinates
+                                        }
+                                      />
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                      <h3 className="text-black font-semibold text-lg one_line_elipse">
+                                        {item?.typeOfBuilding?.text}
+                                      </h3>
+                                      <p className="text-sm text-grayText">
+                                        {item?.buildingStatus?.text}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-col gap-[2px]">
+                                    <div className="text-grayText text-sm">
+                                      Antall etasjer:{" "}
+                                      <span className="text-black font-medium text-base">
+                                        {item?.numberOfFloors}
+                                      </span>
+                                    </div>
+                                    <div className="text-grayText text-sm">
+                                      Bruksareal:{" "}
+                                      <span className="text-black font-medium text-base">
+                                        {item?.totalFloorSpace} m<sup>2</sup>
+                                      </span>
+                                    </div>
+                                    <div className="text-grayText text-sm">
+                                      Rammetillatelse:{" "}
+                                      <span className="text-black font-medium text-base">
+                                        {formatDateToDDMMYYYY(
+                                          item?.registeredApprovedDate
+                                            ?.timestamp
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div className="text-grayText text-sm">
+                                      Igangsettelse:{" "}
+                                      <span className="text-black font-medium text-base">
+                                        {formatDateToDDMMYYYY(
+                                          item?.approvedDate?.timestamp
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div className="text-grayText text-sm">
+                                      Midleritidg bruk:{" "}
+                                      <span className="text-black font-medium text-base">
+                                        {formatDateToDDMMYYYY(
+                                          item?.usedDate?.timestamp
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div className="text-grayText text-sm">
+                                      Ferdigattest:{" "}
+                                      <span className="text-black font-medium text-base">
+                                        {formatDateToDDMMYYYY(
+                                          item?.buildingStatusHistory[0]
+                                            ?.buildingStatusRegisteredDate
+                                            ?.timestamp
+                                        )}
+                                      </span>
+                                    </div>
+                                    <div className="text-grayText text-sm">
+                                      Bebygd areal (BYA):{" "}
+                                      <span className="text-black font-medium text-base">
+                                        {item?.builtUpArea} m<sup>2</sup>
+                                      </span>
+                                    </div>
+                                    <div className="text-grayText font-bold text-sm">
+                                      Bygningen utgjør{" "}
+                                      {(() => {
+                                        const builtUpArea = item?.builtUpArea;
+                                        const totalAllowedBya =
+                                          askData?.bya_calculations?.results
+                                            ?.total_allowed_bya;
+
+                                        if (
+                                          builtUpArea &&
+                                          totalAllowedBya > 0
+                                        ) {
+                                          return `${(
+                                            (builtUpArea / totalAllowedBya) *
+                                            100
+                                          ).toFixed(2)} %`;
+                                        }
+
+                                        return "0";
+                                      })()}{" "}
+                                      av BYA
+                                    </div>
+                                  </div>
                                 </div>
                               )
                             )}
+                          </div>
                         </>
-                      </div>
-                    </div>
-                    <div className="relative w-1/2">
-                      <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-black text-2xl font-semibold">
-                          Kommuneplan for Asker
-                        </h2>
-                        <Image src={Ic_generelt} alt="image" />
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        {askData &&
-                          askData?.applicable_rules?.map(
-                            (a: any, index: number) => (
-                              <div
-                                className="flex items-start gap-3 text-secondary text-base"
-                                key={index}
-                              >
-                                <Image src={Ic_check_true} alt="image" />
-                                <div>
-                                  {a.rule}{" "}
-                                  <span className="text-primary font-bold">
-                                    {a.section}
-                                  </span>
-                                </div>
-                              </div>
-                            )
-                          )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
+                      ) : (
+                        <p>Ingen bygningsdata funnet.</p>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
           <div
             id="not_show"
             className="mt-[60px] flex w-full gap-6 items-start"
           >
-            <div className="flex items-center gap-[36px] mb-6 bg-[#F9F9FB] rounded-[8px] py-5 px-6 w-1/2">
+            <div className="flex flex-col gap-[15px] bg-[#F9F9FB] rounded-[8px] py-5 px-6 w-[30%]">
               <Image src={Ic_steddy} alt="logo" />
               <p className="text-secondary text-sm">
-                Vi hjelper deg med{" "}
-                <span className="text-black font-semibold">
-                  reguleringer, søknader
-                </span>{" "}
-                og{" "}
-                <span className="text-black font-semibold">
-                  innheter tilbud.
-                </span>
+                Vi hjelper deg med regelverk, søknader og anbudstilbud.
               </p>
             </div>
-            <div className="w-1/2">
+            <div className="w-[70%]">
               <ContactForm />
             </div>
           </div>
@@ -1272,138 +1496,6 @@ const Tomt: React.FC<{
                   "linear-gradient(180deg, rgba(255, 255, 255, 0.7) 100%, rgba(255, 255, 255, 0.7) 100%)",
               }}
             ></div>
-          )}
-        </SideSpaceContainer>
-
-        <SideSpaceContainer>
-          {loadingLamdaData ? (
-            <div className="relative">
-              <Loading />
-            </div>
-          ) : (
-            <>
-              {CadastreDataFromApi?.buildingsApi?.response?.items.length >
-                0 && (
-                <>
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-black text-2xl font-semibold">
-                      Eksisterende bebyggelse
-                    </h2>
-                    {!loadingAdditionalData && (
-                      <div
-                        className="flex gap-2 items-center cursor-pointer notShow"
-                        onClick={captureScreenshotAndDownloadPDF}
-                      >
-                        <Image src={Ic_download} alt="download" />
-                        <h4 className="text-primary text-base font-semibold">
-                          Download Regulation Document
-                        </h4>
-                      </div>
-                    )}
-                  </div>
-                  <div className="grid grid-cols-4 gap-6 mb-16">
-                    {CadastreDataFromApi?.buildingsApi?.response?.items.map(
-                      (item: any, index: number) => (
-                        <div
-                          className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4"
-                          key={index}
-                        >
-                          <div className="flex flex-col gap-4">
-                            <div className="w-full h-[177px] rounded-[8px]">
-                              <GoogleMapNearByComponent
-                                coordinates={
-                                  item?.position?.geometry?.coordinates
-                                }
-                              />
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <h3 className="text-black font-semibold text-lg one_line_elipse">
-                                {item?.typeOfBuilding?.text}
-                              </h3>
-                              <p className="text-sm text-grayText">
-                                {item?.buildingStatus?.text}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex flex-col gap-[2px]">
-                            <div className="text-grayText text-sm">
-                              Antall etasjer:{" "}
-                              <span className="text-black font-medium text-base">
-                                {item?.numberOfFloors}
-                              </span>
-                            </div>
-                            <div className="text-grayText text-sm">
-                              Bruksareal:{" "}
-                              <span className="text-black font-medium text-base">
-                                {item?.totalFloorSpace} m<sup>2</sup>
-                              </span>
-                            </div>
-                            <div className="text-grayText text-sm">
-                              Rammetillatelse:{" "}
-                              <span className="text-black font-medium text-base">
-                                {formatDateToDDMMYYYY(
-                                  item?.registeredApprovedDate?.timestamp
-                                )}
-                              </span>
-                            </div>
-                            <div className="text-grayText text-sm">
-                              Igangsettelse:{" "}
-                              <span className="text-black font-medium text-base">
-                                {formatDateToDDMMYYYY(
-                                  item?.approvedDate?.timestamp
-                                )}
-                              </span>
-                            </div>
-                            <div className="text-grayText text-sm">
-                              Midleritidg bruk:{" "}
-                              <span className="text-black font-medium text-base">
-                                {formatDateToDDMMYYYY(
-                                  item?.usedDate?.timestamp
-                                )}
-                              </span>
-                            </div>
-                            <div className="text-grayText text-sm">
-                              Ferdigattest:{" "}
-                              <span className="text-black font-medium text-base">
-                                {formatDateToDDMMYYYY(
-                                  item?.buildingStatusHistory[0]
-                                    ?.buildingStatusRegisteredDate?.timestamp
-                                )}
-                              </span>
-                            </div>
-                            <div className="text-grayText text-sm">
-                              Bebygd areal (BYA):{" "}
-                              <span className="text-black font-medium text-base">
-                                {item?.builtUpArea} m<sup>2</sup>
-                              </span>
-                            </div>
-                            <div className="text-grayText font-bold text-sm">
-                              Bygningen utgjør{" "}
-                              {(() => {
-                                const builtUpArea = item?.builtUpArea;
-                                const totalAllowedBya =
-                                  askData?.bya_calculations?.results
-                                    ?.total_allowed_bya;
-
-                                if (builtUpArea && totalAllowedBya > 0) {
-                                  return `${(
-                                    (builtUpArea / totalAllowedBya) *
-                                    100
-                                  ).toFixed(2)} %`;
-                                }
-
-                                return "0";
-                              })()}{" "}
-                              av BYA
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </>
-              )}
-            </>
           )}
         </SideSpaceContainer>
       </div>

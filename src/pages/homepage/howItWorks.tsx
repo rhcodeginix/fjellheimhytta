@@ -77,44 +77,94 @@ const HowItWorks = () => {
     });
   };
 
+  const scrollSec = (index: number) => {
+    if (window.innerWidth < 767) {
+      setActiveSection(index);
+    }
+  };
+
   return (
-    <div className="py-[120px] bg-lightGreen">
+    <div className="py-[44px] md:py-[58px] desktop:py-[120px] bg-lightGreen">
       <SideSpaceContainer>
-        <h2 className="text-black font-semibold text-[48px] leading-[56px] mb-[60px] text-center">
+        <h2 className="text-black font-semibold text-[24px] md:text-[28px] lg:text-[32px] desktop:text-[48px] desktop:leading-[56px] mb-[36px] desktop:mb-[50px] text-center">
           Hvordan det fungerer
         </h2>
-        <div className="h-screen flex relative gap-[58px]">
-          <div className="w-1/2 sticky left-0 top-0 h-full flex flex-col gap-4 justify-center">
-            {tabData.map((tab: any, index: any) => (
-              <div
-                key={index}
-                className={`flex w-full gap-4 items-start border-l-[4px] pl-7 py-5 ${activeSection === index ? "border-primary" : "border-transparent"}`}
-                onClick={() => scrollToSection(index)}
-              >
-                <Image src={tab.icon} alt={tab.label} />
-                <div className="flex flex-col gap-2 items-start">
-                  <h4 className="font-medium text-black text-xl leading-[30px] normal-case">
-                    {tab.label}
-                  </h4>
-                  <span className="text-base text-secondary font-normal leading-[24px] text-start normal-case">
-                    {tab.description}
-                  </span>
+        <div className="hidden md:block">
+          <div className="h-screen desktop:h-screen flex relative gap-8 desktop:gap-[58px]">
+            <div className="w-1/2 sticky left-0 top-0 h-full flex flex-col gap-4 justify-center">
+              {tabData.map((tab: any, index: any) => (
+                <div
+                  key={index}
+                  className={`flex w-full gap-4 items-start border-l-[4px] pl-4 desktop:pl-7 py-4 desktop:py-5 ${activeSection === index ? "border-primary" : "border-transparent"}`}
+                  onClick={() => scrollToSection(index)}
+                >
+                  <Image
+                    src={tab.icon}
+                    alt={tab.label}
+                    className="w-[28px] desktop:w-auto"
+                  />
+                  <div className="flex flex-col gap-2 items-start">
+                    <h4 className="font-medium text-black text-xl leading-[30px] normal-case">
+                      {tab.label}
+                    </h4>
+                    <span className="text-base text-secondary font-normal leading-[24px] text-start normal-case">
+                      {tab.description}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <div
+              ref={containerRef}
+              className="overflow-y-auto scroll-smooth overFlowScrollHidden w-1/2"
+              style={{ scrollSnapType: "y mandatory" }}
+            >
+              {tabData.map((tab: any, index: any) => (
+                <div
+                  key={index}
+                  ref={(el: any) => (sectionRefs.current[index] = el)}
+                  className={`h-screen scroll-snap-start flex items-center`}
+                  style={{ scrollSnapAlign: "start" }}
+                >
+                  <Image
+                    src={tab.image}
+                    alt="image"
+                    className="w-full rounded-[20px]"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="md:hidden">
+          <div className="overflow-x-auto overFlowScrollHidden">
+            <div className="left-0 w-[1000px] sm:w-[1400px] top-0 h-full flex gap-3 md:justify-center mb-4">
+              {tabData.map((tab: any, index: any) => (
+                <div
+                  key={index}
+                  className={`flex w-[240px] sm:w-[270px] gap-2.5 items-start border-b-[4px] py-3 ${activeSection === index ? "border-primary" : "border-transparent"}`}
+                  onClick={() => scrollSec(index)}
+                >
+                  <Image src={tab.icon} alt={tab.label} className="w-[24px]" />
+                  <div className="flex flex-col gap-2 items-start">
+                    <h4 className="font-medium text-black text-base normal-case one_line_elipse">
+                      {tab.label}
+                    </h4>
+                    <span className="text-sm text-secondary font-normal leading-[24px] text-start normal-case">
+                      {tab.description}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div
-            ref={containerRef}
-            className="overflow-y-auto scroll-smooth overFlowScrollHidden w-1/2"
-            style={{ scrollSnapType: "y mandatory" }}
-          >
+          <div>
             {tabData.map((tab: any, index: any) => (
               <div
                 key={index}
-                ref={(el: any) => (sectionRefs.current[index] = el)}
-                className={`h-screen scroll-snap-start flex items-center`}
-                style={{ scrollSnapAlign: "start" }}
+                style={{ display: activeSection === index ? "block" : "none" }}
               >
                 <Image
                   src={tab.image}

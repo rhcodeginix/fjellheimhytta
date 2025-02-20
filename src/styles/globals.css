@@ -54,8 +54,8 @@ input::placeholder {
 /* ----slick---- */
 .slick-dots {
   width: max-content !important;
-  bottom: 23% !important;
-  left: 64px !important;
+  top: 36% !important;
+  left: 16px !important;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -79,9 +79,48 @@ input::placeholder {
   color: white !important;
 }
 
-@media only screen and (min-width: 1440px) and (max-width: 1919px) {
+@media only screen and (min-width: 1280px) {
   .slick-dots {
     bottom: 13% !important;
+    top: auto !important;
+    left: 64px !important;
+  }
+}
+@media only screen and (min-width: 378px) and (max-width: 420px) {
+  .slick-dots {
+    top: 33% !important;
+    left: 16px !important;
+  }
+}
+@media only screen and (min-width: 421px) and (max-width: 500px) {
+  .slick-dots {
+    top: 30% !important;
+    left: 16px !important;
+  }
+}
+@media only screen and (min-width: 501px) and (max-width: 640px) {
+  .slick-dots {
+    top: 25% !important;
+    left: 16px !important;
+  }
+}
+@media only screen and (min-width: 641px) and (max-width: 690px) {
+  .slick-dots {
+    top: 22% !important;
+    left: 16px !important;
+  }
+}
+@media only screen and (min-width: 691px) and (max-width: 767px) {
+  .slick-dots {
+    top: 17% !important;
+    left: 16px !important;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 1279px) {
+  .slick-dots {
+    top: auto !important;
+    bottom: 13% !important;
+    left: 32px !important;
   }
 }
 
@@ -154,6 +193,50 @@ input::placeholder {
 }
 .screen-indicator.completed {
   background-color: #277252;
+}
+@media only screen and (max-width: 575px) {
+  .stepper_main {
+    overflow-x: auto;
+  }
+  .stepper-wrapper {
+    width: 1050px;
+  }
+  .screen-indicator-span span {
+    font-size: 12px;
+  }
+  .screen-index {
+    width: 20px;
+    height: 20px;
+  }
+}
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .stepper_main {
+    overflow-x: auto;
+  }
+  .stepper-wrapper {
+    width: 1150px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .stepper_main {
+    overflow-x: auto;
+  }
+  .stepper-wrapper {
+    width: 1200px;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1279px) {
+  .stepper_main {
+    overflow-x: auto;
+  }
+  .stepper-wrapper {
+    width: 1250px;
+  }
+}
+@media only screen and (min-width: 1280px) and (max-width: 1430px) {
+  .stepper_main {
+    overflow-x: auto;
+  }
 }
 /* ----- */
 .property_detail_tbl tr:last-child td {

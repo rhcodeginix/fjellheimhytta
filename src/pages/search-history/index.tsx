@@ -51,13 +51,12 @@ const index = () => {
             <Loader />
           </div>
         ) : (
-          <div className="grid grid-cols-4 gap-x-8 gap-y-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 desktop:grid-cols-4 gap-x-4 lg:gap-x-6 desktop:gap-x-8 gap-y-7 lg:gap-y-9 desktop:gap-y-12">
             {userProperties.length > 0 ? (
               userProperties.map((property: any, index) => (
                 <Link
                   key={index}
                   href={`/regulations?propertyId=${property?.propertyId}`}
-                  // href={`/regulations?kommunenummer=${property?.getAddress?.kommunenummer}&gardsnummer=${property?.getAddress?.gardsnummer}&bruksnummer=${property?.getAddress?.bruksnummer}&kommunenavn=${property?.getAddress?.kommunenavn}`}
                   className="relative"
                   onClick={() => {
                     localStorage.setItem(
@@ -68,7 +67,7 @@ const index = () => {
                   }}
                 >
                   <div className="flex flex-col gap-3 cursor-pointer relative z-40">
-                    <div className="h-[350px] cursor-pointer">
+                    <div className="h-[300px] md:h-[350px] cursor-pointer">
                       <GoogleMapComponent
                         coordinates={
                           property?.lamdaDataFromApi?.coordinates
@@ -76,7 +75,7 @@ const index = () => {
                         }
                       />
                     </div>
-                    <h4 className="text-black font-medium text-lg">
+                    <h4 className="text-black font-medium text-base lg:text-lg">
                       {property?.getAddress?.adressetekst}
                     </h4>
                   </div>

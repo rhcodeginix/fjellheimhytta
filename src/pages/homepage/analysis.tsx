@@ -4,14 +4,15 @@ import SideSpaceContainer from "@/components/common/sideSpace";
 const Analysis = () => {
   return (
     <>
-      <div className="bg-lightGreen pt-[120px]">
+      <div className="bg-lightGreen pt-[44px] md:pt-[58px] desktop:pt-[120px]">
         <SideSpaceContainer>
-          <h2 className="text-black font-semibold text-[48px] leading-[56px] mb-[20px] text-center tracking-[-1px]">
+          <h2 className="text-black font-semibold text-[24px] md:text-[28px] lg:text-[32px] desktop:text-[48px] desktop:leading-[56px]  mb-3 lg:mb-[20px] text-center tracking-[-1px]">
             Nærhet og nabolagsanalyse
           </h2>
-          <p className="text-center text-secondary text-lg leading-[30px] mb-[60px]">
+          <p className="text-center text-secondary text-sm md:text-base lg:text-lg lg:leading-[30px] mb-6 lg:mb-[48px] desktop:mb-[60px]">
             Med MinTomt får du mer enn bare tomteanalyse – vi gir deg en
-            detaljert oversikt over nabolaget. Se nærhet til skoler, <br />
+            detaljert oversikt over nabolaget. Se nærhet til skoler,{" "}
+            <br className="hidden lg:block" />
             kollektivtilbud, butikker og barnehager, og få et klart bilde av
             hvordan det er å bo der, allerede fra første klikk.
           </p>
@@ -22,7 +23,7 @@ const Analysis = () => {
           style={{ border: "0" }}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          className="h-[690px]"
+          className="h-[500px] lg:h-[690px]"
         ></iframe>
       </div>
     </>
