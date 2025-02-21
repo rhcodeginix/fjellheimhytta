@@ -457,6 +457,7 @@ const Husmodell = () => {
                           );
                           setStoreAddress(property?.getAddress);
                         }}
+                        className="relative"
                       >
                         <div className="flex flex-col justify-between relative z-40">
                           <div>
