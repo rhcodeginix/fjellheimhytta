@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PropertyHusmodellDetail from "@/components/Ui/stepperUi/propertyHusmodellDetail";
+// import PropertyHusmodellDetail from "@/components/Ui/stepperUi/propertyHusmodellDetail";
 import PropertyDetailPage from "@/components/Ui/Husmodell/propertyDetailPage";
 
 const Husmodell: React.FC<any> = ({ handleNext, handlePrevious }) => {
@@ -13,7 +13,7 @@ const Husmodell: React.FC<any> = ({ handleNext, handlePrevious }) => {
 
   return (
     <div className="relative">
-      <PropertyHusmodellDetail isShow={false} />
+      {/* <PropertyHusmodellDetail isShow={false} /> */}
       <PropertyDetailPage
         handleNext={handleNext}
         handlePrevious={handlePrevious}

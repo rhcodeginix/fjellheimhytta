@@ -9,7 +9,6 @@ import Tilbud from "./Tilbud";
 import Okonomi from "./Okonomi";
 import Finansiering from "./Finansiering";
 import Oppsummering from "./Oppsummering";
-import ApiUtils from "@/api";
 import ErrorPopup from "@/components/Ui/error";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/config/firebaseConfig";
@@ -25,74 +24,31 @@ import { useAddress } from "@/context/addressContext";
 
 const HusmodellDetail = () => {
   const [currIndex, setCurrIndex] = useState(0);
-  const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
-
   const router = useRouter();
-  const { kommunenummer, gardsnummer, bruksnummer, kommunenavn } = router.query;
+  const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
+  const { propertyId } = router.query;
   const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [additionalData, setAdditionalData] = useState<any | undefined>(null);
+  const [CadastreDataFromApi, setCadastreDataFromApi] = useState<any | null>(
+    null
+  );
+  const [loadingLamdaData, setLoadingLamdaData] = useState(false);
   const { getAddress } = useAddress();
-
-  const hasFetchedData = useRef(false);
+  const [askData, setAskData] = useState<any | null>(null);
   useEffect(() => {
-    const fetchData = async () => {
-      setLoadingAdditionalData(true);
+    if (additionalData?.answer) {
+      try {
+        const cleanAnswer = additionalData.answer;
 
-      if (kommunenummer && gardsnummer && bruksnummer) {
-        const lamdaApiData: any = {
-          kommunenummer,
-          gardsnummer,
-          bruksnummer,
-        };
-
-        try {
-          const response = await ApiUtils.LamdaApi(lamdaApiData);
-          const cleanAnswer = response.body.replace(/```json|```/g, "").trim();
-
-          const data = JSON.parse(cleanAnswer);
-
-          setLamdaDataFromApi(data);
-
-          if (cleanAnswer) {
-            if (data.message === "Request failed with status code 503") {
-              setLoadingAdditionalData(false);
-              setShowErrorPopup(true);
-            }
-            const areaDetails =
-              data?.eiendomsInformasjon?.basisInformasjon?.areal_beregnet || "";
-
-            const promt = {
-              question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
-            };
-
-            setLoadingAdditionalData(true);
-            let timeoutId: any;
-
-            try {
-              const response = await ApiUtils.askApi(promt);
-              clearTimeout(timeoutId);
-              setAdditionalData(response);
-            } catch (error: any) {
-              console.error(
-                "Error fetching additional data from askApi:",
-                error?.message
-              );
-              setShowErrorPopup(true);
-              // setLamdaDataFromApi(null);
-              clearTimeout(timeoutId);
-            } finally {
-              setLoadingAdditionalData(false);
-            }
-          }
-        } catch (error: any) {
-          console.error("Error fetching additional data:", error?.message);
-        }
+        setAskData(cleanAnswer);
+      } catch (error) {
+        console.error("Error parsing additionalData.answer:", error);
+        setAskData(null);
       }
-    };
-
-    fetchData();
-  }, [kommunenummer, gardsnummer, bruksnummer]);
+    }
+  }, [additionalData]);
+  const hasFetchedData = useRef(false);
 
   const [userUID, setUserUID] = useState(null);
 
@@ -107,6 +63,7 @@ const HusmodellDetail = () => {
 
     return () => unsubscribe();
   }, []);
+  console.log(loadingLamdaData);
 
   const addSearchAddress = async (property: any) => {
     try {
@@ -126,14 +83,10 @@ const HusmodellDetail = () => {
           property.lamdaDataFromApi.propertyId
         )
       );
-
       const querySnapshot = await getDocs(existingAddressQuery);
-
-      if (!querySnapshot.empty) {
-        return;
+      if (querySnapshot.empty) {
+        await addDoc(profileSubcollectionRef, property);
       }
-
-      await addDoc(profileSubcollectionRef, property);
     } catch (error) {
       console.error("Error adding address: ", error);
     }
@@ -172,6 +125,47 @@ const HusmodellDetail = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currIndex]);
+  useEffect(() => {
+    if (propertyId && userUID) {
+      setLoadingLamdaData(true);
+
+      const fetchProperty = async () => {
+        const propertiesCollectionRef = collection(
+          db,
+          "users",
+          userUID,
+          "property"
+        );
+        try {
+          const propertiesSnapshot = await getDocs(propertiesCollectionRef);
+          const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
+            propertyId: doc.id,
+            ...doc.data(),
+          }));
+          const foundProperty = fetchedProperties.find(
+            (property: any) =>
+              property?.lamdaDataFromApi.propertyId === propertyId
+          );
+
+          if (foundProperty) {
+            setAdditionalData(foundProperty?.additionalData);
+            setLamdaDataFromApi(foundProperty?.lamdaDataFromApi);
+            setCadastreDataFromApi(foundProperty?.CadastreDataFromApi);
+          } else {
+            console.log("No property found with the given ID.");
+          }
+        } catch (error) {
+          console.error("Error fetching user's properties:", error);
+          setShowErrorPopup(true);
+        } finally {
+          setLoadingLamdaData(false);
+          setLoadingAdditionalData(false);
+        }
+      };
+
+      fetchProperty();
+    }
+  }, [propertyId, db, userUID]);
 
   const steps = [
     {
@@ -226,6 +220,10 @@ const HusmodellDetail = () => {
         steps={steps}
         currIndex={currIndex}
         setCurrIndex={setCurrIndex}
+        lamdaDataFromApi={lamdaDataFromApi}
+        loadingAdditionalData={loadingAdditionalData}
+        CadastreDataFromApi={CadastreDataFromApi}
+        askData={askData}
       />
       {showErrorPopup && <ErrorPopup />}
     </>

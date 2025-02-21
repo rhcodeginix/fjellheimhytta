@@ -12,12 +12,15 @@ import React from "react";
 import Loader from "@/components/Loader";
 import Link from "next/link";
 import GoogleMapComponent from "../map";
+import { useAddress } from "@/context/addressContext";
 
 const HouseModelAllProperty: React.FC<{
   HouseModelProperty: any;
   isLoading: any;
   loginUser: any;
 }> = ({ HouseModelProperty, isLoading, loginUser }) => {
+  const { setStoreAddress } = useAddress();
+
   // const propertyList = [
   //   {
   //     id: 1,
@@ -131,10 +134,15 @@ const HouseModelAllProperty: React.FC<{
                 return (
                   <Link
                     key={index}
-                    href={`/husmodell/husmodell-details?product=${property?.lamdaDataFromApi?.propertyId}`}
+                    href={`/husmodell/husmodell-details?propertyId=${property?.lamdaDataFromApi?.propertyId}`}
                     onClick={() => {
                       const currIndex = 0;
                       localStorage.setItem("currIndex", currIndex.toString());
+                      localStorage.setItem(
+                        "IPlot_Address",
+                        JSON.stringify(property?.getAddress)
+                      );
+                      setStoreAddress(property?.getAddress);
                     }}
                   >
                     <div className="flex flex-col justify-between relative z-40">
