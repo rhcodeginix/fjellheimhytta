@@ -127,69 +127,72 @@ const HouseModelAllProperty: React.FC<{
         <>
           {HouseModelProperty && HouseModelProperty.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 desktop:grid-cols-4 gap-x-4 lg:gap-x-6 desktop:gap-x-8 gap-y-7 lg:gap-y-9 desktop:gap-y-12">
-              {/* <Property
-                propertyList={propertyList}
-                LinkHref={"/husmodell/husmodell-details?product"}
-              /> */}
               {HouseModelProperty.map((property: any, index: any) => {
                 return (
                   <Link
                     key={index}
-                    href={`/husmodell/husmodell-details?product=${property.id}`}
-                    className="flex flex-col justify-between"
+                    href={`/husmodell/husmodell-details?product=${property?.lamdaDataFromApi?.propertyId}`}
+                    onClick={() => {
+                      const currIndex = 0;
+                      localStorage.setItem("currIndex", currIndex.toString());
+                    }}
                   >
-                    <div>
-                      <div className="rounded-[12px] overflow-hidden h-[370px] mb-4">
-                        <GoogleMapComponent
-                          coordinates={
-                            property?.lamdaDataFromApi?.coordinates
-                              ?.convertedCoordinates
-                          }
-                        />
+                    <div className="flex flex-col justify-between relative z-40">
+                      <div>
+                        <div className="rounded-[12px] overflow-hidden h-[370px] mb-4">
+                          <GoogleMapComponent
+                            coordinates={
+                              property?.lamdaDataFromApi?.coordinates
+                                ?.convertedCoordinates
+                            }
+                          />
+                        </div>
+                        <h3 className="text-black text-lg font-medium mb-4">
+                          {property?.getAddress?.adressetekst}
+                        </h3>
                       </div>
-                      <h3 className="text-black text-lg font-medium mb-4">
-                        {property?.getAddress?.adressetekst}
-                      </h3>
+                      <div className="flex items-center gap-3">
+                        <div className="text-secondary text-sm">
+                          <span className="text-black font-semibold">
+                            {property?.lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.areal_beregnet ? (
+                              <>
+                                {
+                                  property?.lamdaDataFromApi
+                                    ?.eiendomsInformasjon?.basisInformasjon
+                                    ?.areal_beregnet
+                                }{" "}
+                                m<sup>2</sup>
+                              </>
+                            ) : (
+                              "-"
+                            )}
+                          </span>
+                        </div>
+                        <div className="h-[12px] w-[1px] border-l border-gray"></div>
+                        <div className="text-secondary text-sm">
+                          Gnr:{" "}
+                          <span className="text-black font-semibold">
+                            {property?.getAddress?.gardsnummer}
+                          </span>
+                        </div>
+                        <div className="h-[12px] w-[1px] border-l border-gray"></div>
+                        <div className="text-secondary text-sm">
+                          Bnr:{" "}
+                          <span className="text-black font-semibold">
+                            {property?.getAddress?.bruksnummer}
+                          </span>
+                        </div>
+                        <div className="h-[12px] w-[1px] border-l border-gray"></div>
+                        <div className="text-secondary text-sm">
+                          Snr:{" "}
+                          <span className="text-black font-semibold">
+                            {property?.getAddress?.bokstav}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="text-secondary text-sm">
-                        <span className="text-black font-semibold">
-                          {property?.lamdaDataFromApi?.eiendomsInformasjon
-                            ?.basisInformasjon?.areal_beregnet ? (
-                            <>
-                              {
-                                property?.lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.basisInformasjon?.areal_beregnet
-                              }{" "}
-                              m<sup>2</sup>
-                            </>
-                          ) : (
-                            "-"
-                          )}
-                        </span>
-                      </div>
-                      <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                      <div className="text-secondary text-sm">
-                        Gnr:{" "}
-                        <span className="text-black font-semibold">
-                          {property?.getAddress?.gardsnummer}
-                        </span>
-                      </div>
-                      <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                      <div className="text-secondary text-sm">
-                        Bnr:{" "}
-                        <span className="text-black font-semibold">
-                          {property?.getAddress?.bruksnummer}
-                        </span>
-                      </div>
-                      <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                      <div className="text-secondary text-sm">
-                        Snr:{" "}
-                        <span className="text-black font-semibold">
-                          {property?.getAddress?.bokstav}
-                        </span>
-                      </div>
-                    </div>
+                    <div className="absolute z-50 top-0 left-0 h-full w-full"></div>
                   </Link>
                 );
               })}
