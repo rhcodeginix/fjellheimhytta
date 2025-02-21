@@ -18,7 +18,6 @@ const WMSMap = () => {
       return;
     }
 
-    console.log("Creating map...");
     const map: any = new Map({
       target: mapRef.current,
       layers: [

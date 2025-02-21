@@ -16,7 +16,8 @@ import GoogleMapComponent from "../map";
 const HouseModelAllProperty: React.FC<{
   HouseModelProperty: any;
   isLoading: any;
-}> = ({ HouseModelProperty, isLoading }) => {
+  loginUser: any;
+}> = ({ HouseModelProperty, isLoading, loginUser }) => {
   // const propertyList = [
   //   {
   //     id: 1,
@@ -120,7 +121,7 @@ const HouseModelAllProperty: React.FC<{
       <h3 className="text-black text-2xl font-semibold mb-[36px]">
         Følgende husmodeller kan bygges på denne tomten
       </h3>
-      {!HouseModelProperty || isLoading ? (
+      {(!HouseModelProperty && loginUser) || (isLoading && loginUser) ? (
         <Loader />
       ) : (
         <>

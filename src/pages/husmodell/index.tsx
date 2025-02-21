@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/config/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
+import LoginForm from "../login/loginForm";
 
 const bedroomOptions = [
   "1+ soverom",
@@ -130,10 +131,17 @@ const Husmodell = () => {
   const validationLoginSchema = Yup.object().shape({
     terms_condition: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
+  const [loginPopup, setLoginPopup] = useState(false);
 
   const [isLoginChecked, setIsLoginChecked] = useState(false);
   const handleLoginCheckboxChange = () => {
     setIsLoginChecked(!isLoginChecked);
+  };
+
+  const handleLoginSubmit = async () => {
+    setIsPopupOpen(false);
+    setLoginPopup(true);
+    router.push(`${router.asPath}&login_popup=true`);
   };
 
   const { loginUser, setLoginUser } = useUserLayoutContext();
@@ -204,9 +212,12 @@ const Husmodell = () => {
       document.body.style.overflow = "auto";
     };
   }, [isPopupOpen]);
-  const handleLoginSubmit = async () => {
-    router.push("/login");
-  };
+
+  const router_query: any = { ...router.query };
+
+  delete router_query.login_popup;
+
+  const queryString = new URLSearchParams(router_query).toString();
   return (
     <>
       <SideSpaceContainer>
@@ -422,6 +433,7 @@ const Husmodell = () => {
           <HouseModelAllProperty
             HouseModelProperty={HouseModelProperty}
             isLoading={isLoading}
+            loginUser={loginUser}
           />
         </div>
         {!loginUser && (
@@ -496,7 +508,7 @@ const Husmodell = () => {
                     <div className="flex justify-end mt-6">
                       <button
                         className="
-                            text-sm md:text-base whitespace-nowrap lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                       >
                         Fortsett med <Image src={Ic_vapp} alt="logo" />
                       </button>
@@ -506,6 +518,18 @@ const Husmodell = () => {
               )}
             </Formik>
           </div>
+        </div>
+      )}
+
+      {loginPopup && !loginUser && (
+        <div
+          className="fixed top-0 left-0 flex justify-center items-center h-full w-full"
+          style={{ zIndex: 9999999 }}
+        >
+          <LoginForm
+            path={`${router.pathname}?${queryString}`}
+            setLoginPopup={setLoginPopup}
+          />
         </div>
       )}
     </>

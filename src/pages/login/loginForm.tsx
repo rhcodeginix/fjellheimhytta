@@ -52,7 +52,9 @@ const LoginForm: React.FC<{
       if (path) {
         setLoginPopup(false);
         router.push(path);
-        setIsCall(true);
+        if (setIsCall) {
+          setIsCall(true);
+        }
       } else {
         router.push("/");
       }
@@ -87,7 +89,9 @@ const LoginForm: React.FC<{
         if (path) {
           setLoginPopup(false);
           router.push(path);
-          setIsCall(true);
+          if (setIsCall) {
+            setIsCall(true);
+          }
         } else {
           router.push("/");
         }
