@@ -23,16 +23,6 @@ import {
 import { useAddress } from "@/context/addressContext";
 
 const HusmodellDetail = () => {
-  useEffect(() => {
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
-
-    if (!hasReloaded) {
-      window.location.reload();
-      sessionStorage.setItem("hasReloaded", "true");
-    } else {
-      sessionStorage.removeItem("hasReloaded");
-    }
-  }, []);
   const [currIndex, setCurrIndex] = useState(0);
   const router = useRouter();
   const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);

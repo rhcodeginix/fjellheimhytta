@@ -4,19 +4,12 @@ import Image from "next/image";
 import Ic_chevron_down_gray from "@/public/images/Ic_chevron_down_gray.svg";
 import Ic_sort_of from "@/public/images/Ic_sort_of.svg";
 import { Slider, styled } from "@mui/material";
+import HouseModelAllProperty from "@/components/Ui/Husmodell/allProperty";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import Ic_vapp from "@/public/images/Ic_vapp.svg";
 import { useRouter } from "next/router";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "@/config/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
-import LoginForm from "../login/loginForm";
-import GoogleMapComponent from "@/components/Ui/map";
-import Loader from "@/components/Loader";
-import { useAddress } from "@/context/addressContext";
-import Link from "next/link";
 
 const bedroomOptions = [
   "1+ soverom",
@@ -64,7 +57,17 @@ const CustomSlider = styled(Slider)({
   },
 });
 
-const Husmodell = () => {
+const AllPlot = () => {
+  useEffect(() => {
+    const hasReloaded = sessionStorage.getItem("hasReloaded");
+
+    if (!hasReloaded) {
+      window.location.reload();
+      sessionStorage.setItem("hasReloaded", "true");
+    } else {
+      sessionStorage.removeItem("hasReloaded");
+    }
+  }, []);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [bedroomFilters, setBedroomFilters] = useState<string[]>([]);
   const [facilityFilters, setFacilityFilters] = useState<string[]>([]);
@@ -72,7 +75,6 @@ const Husmodell = () => {
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [selectedSortBy, setSelectedSortBy] = useState("Relevans");
   const router = useRouter();
-  const { setStoreAddress } = useAddress();
 
   const toggleDropdown = (dropdownId: string) => {
     setOpenDropdown((prev) => (prev === dropdownId ? null : dropdownId));
@@ -135,17 +137,10 @@ const Husmodell = () => {
   const validationLoginSchema = Yup.object().shape({
     terms_condition: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
-  const [loginPopup, setLoginPopup] = useState(false);
 
   const [isLoginChecked, setIsLoginChecked] = useState(false);
   const handleLoginCheckboxChange = () => {
     setIsLoginChecked(!isLoginChecked);
-  };
-
-  const handleLoginSubmit = async () => {
-    setIsPopupOpen(false);
-    setLoginPopup(true);
-    router.push(`${router.asPath}&login_popup=true`);
   };
 
   const { loginUser, setLoginUser } = useUserLayoutContext();
@@ -156,45 +151,6 @@ const Husmodell = () => {
     if (isLoggedIn) {
       setLoginUser(true);
     }
-  }, []);
-  const [userUID, setUserUID] = useState(null);
-  const [HouseModelProperty, setHouseModelProperty] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (userUID) {
-      const fetchProperty = async () => {
-        setIsLoading(true);
-        const propertiesCollectionRef = collection(db, "empty_plot");
-        try {
-          const propertiesSnapshot = await getDocs(propertiesCollectionRef);
-          const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
-            propertyId: doc.id,
-            ...doc.data(),
-          }));
-          setHouseModelProperty(fetchedProperties);
-        } catch (error) {
-          console.error("Error fetching user's properties:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchProperty();
-    }
-  }, [userUID, db]);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
-      setIsLoading(true);
-      if (user) {
-        setUserUID(user.uid);
-      } else {
-        setUserUID(null);
-      }
-    });
-
-    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -216,26 +172,22 @@ const Husmodell = () => {
       document.body.style.overflow = "auto";
     };
   }, [isPopupOpen]);
-
-  const router_query: any = { ...router.query };
-
-  delete router_query.login_popup;
-
-  const queryString = new URLSearchParams(router_query).toString();
+  const handleLoginSubmit = async () => {
+    router.push("/login");
+  };
   return (
     <>
       <SideSpaceContainer>
         <div className="my-[54px] relative">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-[54px] gap-2">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+          <div className="flex items-center justify-between mb-[54px]">
+            <div className="flex items-center gap-3">
               <div
                 ref={(ref: any) =>
                   (dropdownRefs.current["bedroom_number"] = ref)
                 }
-                className="sm:w-1/3 md:w-auto"
               >
                 <div
-                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer justify-between"
+                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer"
                   onClick={() => toggleDropdown("bedroom_number")}
                 >
                   <div className="text-black text-base flex items-center gap-1">
@@ -249,7 +201,7 @@ const Husmodell = () => {
                   <Image src={Ic_chevron_down_gray} alt="arrow" />
                 </div>
                 {openDropdown === "bedroom_number" && (
-                  <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-full md:w-[250px] z-100">
+                  <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-[250px]">
                     <div>
                       <label className="py-2 px-3 flex items-center gap-2 text-sm text-secondary container container_gray">
                         <input
@@ -282,12 +234,9 @@ const Husmodell = () => {
                 )}
               </div>
 
-              <div
-                ref={(ref: any) => (dropdownRefs.current["facility"] = ref)}
-                className="sm:w-1/3 md:w-auto"
-              >
+              <div ref={(ref: any) => (dropdownRefs.current["facility"] = ref)}>
                 <div
-                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer justify-between"
+                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer"
                   onClick={() => toggleDropdown("facility")}
                 >
                   <div className="text-black text-base flex items-center gap-1">
@@ -301,7 +250,7 @@ const Husmodell = () => {
                   <Image src={Ic_chevron_down_gray} alt="arrow" />
                 </div>
                 {openDropdown === "facility" && (
-                  <div className="absolute left-0 md:left-auto mt-2 bg-white rounded-[8px] shadow-shadow3 w-full md:w-[250px] z-100">
+                  <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-[250px]">
                     <div>
                       {facilityOptions.map((filter) => (
                         <label
@@ -323,12 +272,9 @@ const Husmodell = () => {
                 )}
               </div>
 
-              <div
-                ref={(ref: any) => (dropdownRefs.current["pris"] = ref)}
-                className="sm:w-1/3 md:w-auto"
-              >
+              <div ref={(ref: any) => (dropdownRefs.current["pris"] = ref)}>
                 <div
-                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer justify-between"
+                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer"
                   onClick={() => toggleDropdown("pris")}
                 >
                   <div className="text-black text-base flex items-center gap-1">
@@ -337,7 +283,7 @@ const Husmodell = () => {
                   <Image src={Ic_chevron_down_gray} alt="arrow" />
                 </div>
                 {openDropdown === "pris" && (
-                  <div className="absolute left-0 md:left-auto mt-2 bg-white rounded-[8px] shadow-shadow3 w-full md:w-[270px] z-100">
+                  <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-[270px]">
                     <div className="py-2 px-3">
                       <div className="mb-1 text-black font-medium text-sm">
                         Price{" "}
@@ -398,20 +344,17 @@ const Husmodell = () => {
               className="relative"
             >
               <div
-                className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer justify-between"
+                className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer"
                 onClick={() => toggleDropdown("short_of")}
               >
-                <div className="flex items-center gap-2">
-                  <Image src={Ic_sort_of} alt="sort_of" />
-                  <div className="text-black text-base flex items-center gap-1">
-                    kort av:{" "}
-                    <span className="font-medium">{selectedSortBy}</span>
-                  </div>
+                <Image src={Ic_sort_of} alt="sort_of" />
+                <div className="text-black text-base flex items-center gap-1">
+                  kort av: <span className="font-medium">{selectedSortBy}</span>
                 </div>
                 <Image src={Ic_chevron_down_gray} alt="arrow" />
               </div>
               {openDropdown === "short_of" && (
-                <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-full z-100">
+                <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-full">
                   <div>
                     {shoerOfOptions.map((option) => (
                       <label
@@ -434,95 +377,7 @@ const Husmodell = () => {
               )}
             </div>
           </div>
-          {(!HouseModelProperty && loginUser) || (isLoading && loginUser) ? (
-            <Loader />
-          ) : (
-            <>
-              {HouseModelProperty && HouseModelProperty.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 desktop:grid-cols-4 gap-x-4 lg:gap-x-6 desktop:gap-x-8 gap-y-7 lg:gap-y-9 desktop:gap-y-12">
-                  {HouseModelProperty.map((property: any, index: any) => {
-                    return (
-                      <Link
-                        key={index}
-                        href={`/husmodell/all-plot?propertyId=${property?.lamdaDataFromApi?.propertyId}`}
-                        onClick={() => {
-                          const currIndex = 0;
-                          localStorage.setItem(
-                            "currIndex",
-                            currIndex.toString()
-                          );
-                          localStorage.setItem(
-                            "IPlot_Address",
-                            JSON.stringify(property?.getAddress)
-                          );
-                          setStoreAddress(property?.getAddress);
-                        }}
-                      >
-                        <div className="flex flex-col justify-between relative z-40">
-                          <div>
-                            <div className="rounded-[12px] overflow-hidden h-[370px] mb-4">
-                              <GoogleMapComponent
-                                coordinates={
-                                  property?.lamdaDataFromApi?.coordinates
-                                    ?.convertedCoordinates
-                                }
-                              />
-                            </div>
-                            <h3 className="text-black text-lg font-medium mb-4">
-                              {property?.getAddress?.adressetekst}
-                            </h3>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <div className="text-secondary text-sm">
-                              <span className="text-black font-semibold">
-                                {property?.lamdaDataFromApi?.eiendomsInformasjon
-                                  ?.basisInformasjon?.areal_beregnet ? (
-                                  <>
-                                    {
-                                      property?.lamdaDataFromApi
-                                        ?.eiendomsInformasjon?.basisInformasjon
-                                        ?.areal_beregnet
-                                    }{" "}
-                                    m<sup>2</sup>
-                                  </>
-                                ) : (
-                                  "-"
-                                )}
-                              </span>
-                            </div>
-                            <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                            <div className="text-secondary text-sm">
-                              Gnr:{" "}
-                              <span className="text-black font-semibold">
-                                {property?.getAddress?.gardsnummer}
-                              </span>
-                            </div>
-                            <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                            <div className="text-secondary text-sm">
-                              Bnr:{" "}
-                              <span className="text-black font-semibold">
-                                {property?.getAddress?.bruksnummer}
-                              </span>
-                            </div>
-                            <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                            <div className="text-secondary text-sm">
-                              Snr:{" "}
-                              <span className="text-black font-semibold">
-                                {property?.getAddress?.bokstav}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="absolute z-50 top-0 left-0 h-full w-full"></div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              ) : (
-                "No Property Found"
-              )}
-            </>
-          )}
+          <HouseModelAllProperty />
         </div>
         {!loginUser && (
           <div
@@ -596,7 +451,7 @@ const Husmodell = () => {
                     <div className="flex justify-end mt-6">
                       <button
                         className="
-                            text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            text-sm md:text-base whitespace-nowrap lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                       >
                         Fortsett med <Image src={Ic_vapp} alt="logo" />
                       </button>
@@ -608,20 +463,8 @@ const Husmodell = () => {
           </div>
         </div>
       )}
-
-      {loginPopup && !loginUser && (
-        <div
-          className="fixed top-0 left-0 flex justify-center items-center h-full w-full"
-          style={{ zIndex: 9999999 }}
-        >
-          <LoginForm
-            path={`${router.pathname}?${queryString}`}
-            setLoginPopup={setLoginPopup}
-          />
-        </div>
-      )}
     </>
   );
 };
 
-export default Husmodell;
+export default AllPlot;
