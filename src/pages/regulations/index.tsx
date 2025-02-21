@@ -190,6 +190,7 @@ const Regulations = () => {
 
   const addSearchAddress = async (property: any) => {
     const propertyId = property?.lamdaDataFromApi?.propertyId;
+
     if (!propertyId) {
       console.error("Property ID is missing or undefined.");
       toast.error("Property not found!", {
@@ -212,11 +213,10 @@ const Regulations = () => {
       );
       const querySnapshot = await getDocs(existingAddressQuery);
 
-      if (!querySnapshot.empty) {
-        return;
+      if (querySnapshot.empty) {
+        await addDoc(propertyDb, property);
       }
 
-      await addDoc(propertyDb, property);
       if (
         property?.CadastreDataFromApi?.buildingsApi?.response?.items &&
         property?.CadastreDataFromApi?.buildingsApi?.response?.items.length ===
@@ -230,10 +230,9 @@ const Regulations = () => {
         );
         const EmptyPlotShot = await getDocs(existingEmptyPlot);
 
-        if (!EmptyPlotShot.empty) {
-          return;
+        if (EmptyPlotShot.empty) {
+          await addDoc(EmptyPlotDb, property);
         }
-        await addDoc(EmptyPlotDb, property);
       }
     } catch (error) {
       console.error("Error adding address: ", error);

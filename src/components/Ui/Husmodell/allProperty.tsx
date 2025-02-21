@@ -131,8 +131,6 @@ const HouseModelAllProperty: React.FC<{
                 LinkHref={"/husmodell/husmodell-details?product"}
               /> */}
               {HouseModelProperty.map((property: any, index: any) => {
-                console.log(property);
-
                 return (
                   <Link
                     key={index}
