@@ -152,7 +152,7 @@ const PlotAllProperty: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
             <h3 className="text-black text-2xl font-semibold mb-[36px]">
               På følgende tomter kan du bytte Almgaard
             </h3>
-            <div className="grid grid-cols-4 gap-x-8 gap-y-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 desktop:grid-cols-4 gap-x-4 lg:gap-x-6 desktop:gap-x-8 gap-y-7 lg:gap-y-9 desktop:gap-y-12">
               {propertyList.map((property: any, index: any) => (
                 <div
                   key={index}

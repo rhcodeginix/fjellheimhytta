@@ -10,6 +10,9 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import Ic_vapp from "@/public/images/Ic_vapp.svg";
 import { useRouter } from "next/router";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "@/config/firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
 
 const bedroomOptions = [
   "1+ soverom",
@@ -142,6 +145,50 @@ const Husmodell = () => {
       setLoginUser(true);
     }
   }, []);
+  const [userUID, setUserUID] = useState(null);
+  const [HouseModelProperty, setHouseModelProperty] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (userUID) {
+      const fetchProperty = async () => {
+        setIsLoading(true);
+        const propertiesCollectionRef = collection(
+          db,
+          "users",
+          userUID,
+          "empty_plot"
+        );
+        try {
+          const propertiesSnapshot = await getDocs(propertiesCollectionRef);
+          const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
+            propertyId: doc.id,
+            ...doc.data(),
+          }));
+          setHouseModelProperty(fetchedProperties);
+        } catch (error) {
+          console.error("Error fetching user's properties:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchProperty();
+    }
+  }, [userUID, db]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
+      setIsLoading(true);
+      if (user) {
+        setUserUID(user.uid);
+      } else {
+        setUserUID(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (!loginUser) {
@@ -169,15 +216,16 @@ const Husmodell = () => {
     <>
       <SideSpaceContainer>
         <div className="my-[54px] relative">
-          <div className="flex items-center justify-between mb-[54px]">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-[54px] gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
               <div
                 ref={(ref: any) =>
                   (dropdownRefs.current["bedroom_number"] = ref)
                 }
+                className="sm:w-1/3 md:w-auto"
               >
                 <div
-                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer"
+                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer justify-between"
                   onClick={() => toggleDropdown("bedroom_number")}
                 >
                   <div className="text-black text-base flex items-center gap-1">
@@ -191,7 +239,7 @@ const Husmodell = () => {
                   <Image src={Ic_chevron_down_gray} alt="arrow" />
                 </div>
                 {openDropdown === "bedroom_number" && (
-                  <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-[250px]">
+                  <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-full md:w-[250px] z-100">
                     <div>
                       <label className="py-2 px-3 flex items-center gap-2 text-sm text-secondary container container_gray">
                         <input
@@ -224,9 +272,12 @@ const Husmodell = () => {
                 )}
               </div>
 
-              <div ref={(ref: any) => (dropdownRefs.current["facility"] = ref)}>
+              <div
+                ref={(ref: any) => (dropdownRefs.current["facility"] = ref)}
+                className="sm:w-1/3 md:w-auto"
+              >
                 <div
-                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer"
+                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer justify-between"
                   onClick={() => toggleDropdown("facility")}
                 >
                   <div className="text-black text-base flex items-center gap-1">
@@ -240,7 +291,7 @@ const Husmodell = () => {
                   <Image src={Ic_chevron_down_gray} alt="arrow" />
                 </div>
                 {openDropdown === "facility" && (
-                  <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-[250px]">
+                  <div className="absolute left-0 md:left-auto mt-2 bg-white rounded-[8px] shadow-shadow3 w-full md:w-[250px] z-100">
                     <div>
                       {facilityOptions.map((filter) => (
                         <label
@@ -262,9 +313,12 @@ const Husmodell = () => {
                 )}
               </div>
 
-              <div ref={(ref: any) => (dropdownRefs.current["pris"] = ref)}>
+              <div
+                ref={(ref: any) => (dropdownRefs.current["pris"] = ref)}
+                className="sm:w-1/3 md:w-auto"
+              >
                 <div
-                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer"
+                  className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer justify-between"
                   onClick={() => toggleDropdown("pris")}
                 >
                   <div className="text-black text-base flex items-center gap-1">
@@ -273,7 +327,7 @@ const Husmodell = () => {
                   <Image src={Ic_chevron_down_gray} alt="arrow" />
                 </div>
                 {openDropdown === "pris" && (
-                  <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-[270px]">
+                  <div className="absolute left-0 md:left-auto mt-2 bg-white rounded-[8px] shadow-shadow3 w-full md:w-[270px] z-100">
                     <div className="py-2 px-3">
                       <div className="mb-1 text-black font-medium text-sm">
                         Price{" "}
@@ -334,17 +388,20 @@ const Husmodell = () => {
               className="relative"
             >
               <div
-                className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer"
+                className="border-gray2 border rounded-[8px] py-2 px-3 flex items-center gap-2 cursor-pointer justify-between"
                 onClick={() => toggleDropdown("short_of")}
               >
-                <Image src={Ic_sort_of} alt="sort_of" />
-                <div className="text-black text-base flex items-center gap-1">
-                  kort av: <span className="font-medium">{selectedSortBy}</span>
+                <div className="flex items-center gap-2">
+                  <Image src={Ic_sort_of} alt="sort_of" />
+                  <div className="text-black text-base flex items-center gap-1">
+                    kort av:{" "}
+                    <span className="font-medium">{selectedSortBy}</span>
+                  </div>
                 </div>
                 <Image src={Ic_chevron_down_gray} alt="arrow" />
               </div>
               {openDropdown === "short_of" && (
-                <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-full">
+                <div className="absolute mt-2 bg-white rounded-[8px] shadow-shadow3 w-full z-100">
                   <div>
                     {shoerOfOptions.map((option) => (
                       <label
@@ -367,7 +424,10 @@ const Husmodell = () => {
               )}
             </div>
           </div>
-          <HouseModelAllProperty />
+          <HouseModelAllProperty
+            HouseModelProperty={HouseModelProperty}
+            isLoading={isLoading}
+          />
         </div>
         {!loginUser && (
           <div

@@ -122,7 +122,7 @@ const AllProperty: React.FC<any> = () => {
         <h3 className="text-black text-2xl font-semibold mb-[36px]">
           Følgende husmodeller kan bygges på denne tomten
         </h3>
-        <div className="grid grid-cols-4 gap-x-8 gap-y-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 desktop:grid-cols-4 gap-x-4 lg:gap-x-6 desktop:gap-x-8 gap-y-7 lg:gap-y-9 desktop:gap-y-12">
           <Property
             propertyList={propertyList}
             LinkHref={"/regulations?regulation-details"}

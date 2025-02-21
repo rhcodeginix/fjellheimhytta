@@ -306,6 +306,52 @@ const Tomt: React.FC<{
     BBOXData[2] + 30,
     BBOXData[3] + 30,
   ];
+  const [featureInfo, setFeatureInfo] = useState<string | null>(null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchFeatureInfo = async () => {
+      const url = `https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&QUERY_LAYERS=Planomrade_02,Arealformal_02&LAYERS=Planomrade_02,Arealformal_02&INFO_FORMAT=text/html&CRS=EPSG:25833&BBOX=${BBOXData[0]},${BBOXData[1]},${BBOXData[2]},${BBOXData[3]}&WIDTH=800&HEIGHT=600&I=400&J=300`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.text();
+        setFeatureInfo(data);
+      } catch (error) {
+        console.error("Error fetching feature info:", error);
+        setFeatureInfo("<p>Error loading data</p>");
+      }
+    };
+    if (isValidBBOX) {
+      fetchFeatureInfo();
+    }
+  }, [isValidBBOX, BBOXData]);
+
+  useEffect(() => {
+    const convertToImage = async () => {
+      const hiddenDiv = document.createElement("div");
+      hiddenDiv.style.position = "absolute";
+      hiddenDiv.style.left = "-9999px";
+      hiddenDiv.style.width = "360px";
+      hiddenDiv.style.fontSize = "14px";
+      hiddenDiv.style.padding = "10px";
+      hiddenDiv.style.backgroundColor = "white";
+      hiddenDiv.innerHTML = featureInfo || "";
+
+      document.body.appendChild(hiddenDiv);
+
+      const canvas = await html2canvas(hiddenDiv);
+
+      setImageSrc(canvas.toDataURL("image/png"));
+
+      document.body.removeChild(hiddenDiv);
+    };
+
+    if (featureInfo) {
+      convertToImage();
+    }
+  }, [featureInfo]);
+
   const images = isValidBBOX
     ? [
         {
@@ -318,6 +364,15 @@ const Tomt: React.FC<{
           src: `https://wms.geonorge.no/skwms1/wms.matrikkelkart?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=MatrikkelKart&STYLES=default&CRS=EPSG:25833&BBOX=${adjustedBBOX[0]},${adjustedBBOX[1]},${adjustedBBOX[2]},${adjustedBBOX[3]}&WIDTH=1024&HEIGHT=768&FORMAT=image/png`,
           alt: "Matrikkelkart image",
         },
+        ...(imageSrc
+          ? [
+              {
+                id: 3,
+                src: imageSrc,
+                alt: "Feature Info Image",
+              },
+            ]
+          : []),
       ]
     : [];
 
@@ -363,6 +418,7 @@ const Tomt: React.FC<{
             <Image src={Ic_logo} alt="logo" className="w-[100px] lg:w-auto" />
           </SideSpaceContainer>
         </div>
+
         <SideSpaceContainer className="relative pt-[60px] pb-[46px]">
           <div
             className="p-6 rounded-lg"
@@ -385,7 +441,7 @@ const Tomt: React.FC<{
               )}
             </div>
             <div className={`mt-6 ${isOpen ? "block" : "hidden"}`}>
-              <div className="flex gap-6">
+              <div className="flex gap-6 justify-between">
                 <div className="grid grid-cols-3 gap-6">
                   <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
                     <h2 className="text-black text-lg font-semibold flex items-center gap-2">

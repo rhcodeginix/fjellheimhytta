@@ -22,6 +22,7 @@ import {
 } from "firebase/firestore";
 import { useAddress } from "@/context/addressContext";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
+import toast from "react-hot-toast";
 
 const Regulations = () => {
   const [currIndex, setCurrIndex] = useState<number | null>(null);
@@ -188,6 +189,15 @@ const Regulations = () => {
   }, []);
 
   const addSearchAddress = async (property: any) => {
+    const propertyId = property?.lamdaDataFromApi?.propertyId;
+    if (!propertyId) {
+      console.error("Property ID is missing or undefined.");
+      toast.error("Property not found!", {
+        position: "top-right",
+      });
+      return;
+    }
+
     try {
       if (!userUID) {
         console.error("User ID is not available");
@@ -195,24 +205,36 @@ const Regulations = () => {
       }
 
       const userDocRef = doc(db, "users", userUID);
-      const profileSubcollectionRef = collection(userDocRef, "property");
-
+      const propertyDb = collection(userDocRef, "property");
       const existingAddressQuery = query(
-        profileSubcollectionRef,
-        where(
-          "lamdaDataFromApi.propertyId",
-          "==",
-          property.lamdaDataFromApi.propertyId
-        )
+        propertyDb,
+        where("lamdaDataFromApi.propertyId", "==", propertyId)
       );
-
       const querySnapshot = await getDocs(existingAddressQuery);
 
       if (!querySnapshot.empty) {
         return;
       }
 
-      await addDoc(profileSubcollectionRef, property);
+      await addDoc(propertyDb, property);
+      if (
+        property?.CadastreDataFromApi?.buildingsApi?.response?.items &&
+        property?.CadastreDataFromApi?.buildingsApi?.response?.items.length ===
+          0
+      ) {
+        const EmptyPlotDb = collection(userDocRef, "empty_plot");
+
+        const existingEmptyPlot = query(
+          EmptyPlotDb,
+          where("lamdaDataFromApi.propertyId", "==", propertyId)
+        );
+        const EmptyPlotShot = await getDocs(existingEmptyPlot);
+
+        if (!EmptyPlotShot.empty) {
+          return;
+        }
+        await addDoc(EmptyPlotDb, property);
+      }
     } catch (error) {
       console.error("Error adding address: ", error);
     }
