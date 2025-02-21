@@ -222,7 +222,7 @@ const Regulations = () => {
         property?.CadastreDataFromApi?.buildingsApi?.response?.items.length ===
           0
       ) {
-        const EmptyPlotDb = collection(userDocRef, "empty_plot");
+        const EmptyPlotDb = collection(db, "empty_plot");
 
         const existingEmptyPlot = query(
           EmptyPlotDb,

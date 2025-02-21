@@ -153,12 +153,7 @@ const Husmodell = () => {
     if (userUID) {
       const fetchProperty = async () => {
         setIsLoading(true);
-        const propertiesCollectionRef = collection(
-          db,
-          "users",
-          userUID,
-          "empty_plot"
-        );
+        const propertiesCollectionRef = collection(db, "empty_plot");
         try {
           const propertiesSnapshot = await getDocs(propertiesCollectionRef);
           const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
