@@ -36,6 +36,7 @@ const HusmodellDetail = () => {
   const [loadingLamdaData, setLoadingLamdaData] = useState(false);
   const { getAddress } = useAddress();
   const [askData, setAskData] = useState<any | null>(null);
+
   useEffect(() => {
     if (additionalData?.answer) {
       try {
@@ -166,6 +167,16 @@ const HusmodellDetail = () => {
       fetchProperty();
     }
   }, [propertyId, db, userUID]);
+  useEffect(() => {
+    const hasReloaded = sessionStorage.getItem("hasReloaded");
+
+    if (!hasReloaded) {
+      window.location.reload();
+      sessionStorage.setItem("hasReloaded", "true");
+    } else {
+      sessionStorage.removeItem("hasReloaded");
+    }
+  }, []);
 
   const steps = [
     {
