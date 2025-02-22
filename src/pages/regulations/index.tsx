@@ -237,16 +237,14 @@ const Regulations = () => {
         const buildings =
           property?.CadastreDataFromApi?.buildingsApi?.response?.items;
 
-        const allBuildingsHaveStatus = buildings.every((building: any) => {
+        const anyBuildingHasStatus = buildings.some((building: any) => {
           const hasRequiredStatus =
             building.buildingStatus?.text === "IGANGSETTINGSTILLATELSE" ||
             building.buildingStatus?.text === "RAMMETILLATELSE";
-          console.log(hasRequiredStatus + " enterd");
-
           return hasRequiredStatus;
         });
 
-        if (allBuildingsHaveStatus) {
+        if (anyBuildingHasStatus) {
           const EmptyPlotDb = collection(db, "empty_plot");
           const existingEmptyPlot = query(
             EmptyPlotDb,
