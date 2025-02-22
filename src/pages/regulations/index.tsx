@@ -233,6 +233,31 @@ const Regulations = () => {
         if (EmptyPlotShot.empty) {
           await addDoc(EmptyPlotDb, property);
         }
+      } else {
+        const buildings =
+          property?.CadastreDataFromApi?.buildingsApi?.response?.items;
+
+        const allBuildingsHaveStatus = buildings.every((building: any) => {
+          const hasRequiredStatus = building.buildingStatusHistory?.some(
+            (status: any) =>
+              status.buildingStatus.text === "IGANGSETTINGSTILLATELSE" ||
+              status.buildingStatus.text === "RAMMETILLATELSE"
+          );
+          return hasRequiredStatus;
+        });
+
+        if (allBuildingsHaveStatus) {
+          const EmptyPlotDb = collection(userDocRef, "empty_plot");
+          const existingEmptyPlot = query(
+            EmptyPlotDb,
+            where("lamdaDataFromApi.propertyId", "==", propertyId)
+          );
+          const EmptyPlotShot = await getDocs(existingEmptyPlot);
+
+          if (EmptyPlotShot.empty) {
+            await addDoc(EmptyPlotDb, property);
+          }
+        }
       }
     } catch (error) {
       console.error("Error adding address: ", error);
