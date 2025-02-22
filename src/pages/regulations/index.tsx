@@ -238,16 +238,16 @@ const Regulations = () => {
           property?.CadastreDataFromApi?.buildingsApi?.response?.items;
 
         const allBuildingsHaveStatus = buildings.every((building: any) => {
-          const hasRequiredStatus = building.buildingStatusHistory?.some(
-            (status: any) =>
-              status.buildingStatus.text === "IGANGSETTINGSTILLATELSE" ||
-              status.buildingStatus.text === "RAMMETILLATELSE"
-          );
+          const hasRequiredStatus =
+            building.buildingStatus?.text === "IGANGSETTINGSTILLATELSE" ||
+            building.buildingStatus?.text === "RAMMETILLATELSE";
+          console.log(hasRequiredStatus + " enterd");
+
           return hasRequiredStatus;
         });
 
         if (allBuildingsHaveStatus) {
-          const EmptyPlotDb = collection(userDocRef, "empty_plot");
+          const EmptyPlotDb = collection(db, "empty_plot");
           const existingEmptyPlot = query(
             EmptyPlotDb,
             where("lamdaDataFromApi.propertyId", "==", propertyId)
