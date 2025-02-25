@@ -11,7 +11,7 @@ import Ic_vapp from "@/public/images/Ic_vapp.svg";
 import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/config/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, limit, query } from "firebase/firestore";
 import LoginForm from "../login/loginForm";
 import GoogleMapComponent from "@/components/Ui/map";
 import Loader from "@/components/Loader";
@@ -166,8 +166,10 @@ const Husmodell = () => {
       const fetchProperty = async () => {
         setIsLoading(true);
         const propertiesCollectionRef = collection(db, "empty_plot");
+        const propertiesQuery = query(propertiesCollectionRef, limit(12));
+
         try {
-          const propertiesSnapshot = await getDocs(propertiesCollectionRef);
+          const propertiesSnapshot = await getDocs(propertiesQuery);
           const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
             propertyId: doc.id,
             ...doc.data(),
@@ -441,6 +443,13 @@ const Husmodell = () => {
               {HouseModelProperty && HouseModelProperty.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 desktop:grid-cols-4 gap-x-4 lg:gap-x-6 desktop:gap-x-8 gap-y-7 lg:gap-y-9 desktop:gap-y-12">
                   {HouseModelProperty.map((property: any, index: any) => {
+                    console.log(property);
+
+                    console.log(
+                      property?.CadastreDataFromApi?.presentationAddressApi
+                        ?.response?.item
+                    );
+
                     return (
                       <Link
                         key={index}
@@ -470,7 +479,16 @@ const Husmodell = () => {
                               />
                             </div>
                             <h3 className="text-black text-lg font-medium mb-4">
-                              {property?.getAddress?.adressetekst}
+                              {
+                                property?.CadastreDataFromApi
+                                  ?.presentationAddressApi?.response?.item
+                                  ?.formatted?.line1
+                              }{" "}
+                              {/* {
+                                property?.CadastreDataFromApi
+                                  ?.presentationAddressApi?.response?.item
+                                  ?.formatted?.line2
+                              } */}
                             </h3>
                           </div>
                           <div className="flex items-center gap-3">
@@ -495,14 +513,20 @@ const Husmodell = () => {
                             <div className="text-secondary text-sm">
                               Gnr:{" "}
                               <span className="text-black font-semibold">
-                                {property?.getAddress?.gardsnummer}
+                                {
+                                  property?.lamdaDataFromApi?.searchParameters
+                                    ?.gardsnummer
+                                }
                               </span>
                             </div>
                             <div className="h-[12px] w-[1px] border-l border-gray"></div>
                             <div className="text-secondary text-sm">
                               Bnr:{" "}
                               <span className="text-black font-semibold">
-                                {property?.getAddress?.bruksnummer}
+                                {
+                                  property?.lamdaDataFromApi?.searchParameters
+                                    ?.bruksnummer
+                                }
                               </span>
                             </div>
                             <div className="h-[12px] w-[1px] border-l border-gray"></div>

@@ -20,9 +20,9 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useAddress } from "@/context/addressContext";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import toast from "react-hot-toast";
+import * as XLSX from "xlsx";
 
 const Regulations = () => {
   const [currIndex, setCurrIndex] = useState<number | null>(null);
@@ -50,12 +50,146 @@ const Regulations = () => {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [additionalData, setAdditionalData] = useState<any | undefined>(null);
   const hasFetchedData = useRef(false);
-  const { getAddress } = useAddress();
   const [userUID, setUserUID] = useState(null);
   const [isCall, setIsCall] = useState(false);
 
   const { loginUser, setLoginUser } = useUserLayoutContext();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  useEffect(() => {
+    const findMatchingData = async (data: Record<string, any[]>) => {
+      const matches: any[] = [];
+
+      if (data) {
+        const sheetData: any = data["Østfold"];
+        const rowsToProcess = sheetData.slice(1);
+        for (const row of rowsToProcess) {
+          const lamdaApiData: any = {
+            kommunenummer: row["Matrikkel to be imported"],
+            gardsnummer: row["__EMPTY"],
+            bruksnummer: row["__EMPTY_1"],
+          };
+
+          try {
+            const response = await ApiUtils.LamdaApi(lamdaApiData);
+            const cleanAnswer = response.body
+              .replace(/```json|```/g, "")
+              .trim();
+
+            const data = JSON.parse(cleanAnswer);
+
+            if (
+              data.message === "Request failed with status code 503" ||
+              data.message === "Request failed with status code 500" ||
+              !data.propertyId
+            ) {
+              continue;
+            }
+            const CadastreDataResponse =
+              await ApiUtils.fetchCadastreData(lamdaApiData);
+
+            if (cleanAnswer) {
+              const areaDetails =
+                data?.eiendomsInformasjon?.basisInformasjon?.areal_beregnet ||
+                "";
+
+              const promt = {
+                question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+              };
+
+              try {
+                const response = await ApiUtils.askApi(promt);
+                const property = {
+                  lamdaDataFromApi: data,
+                  additionalData: response,
+                  CadastreDataFromApi: CadastreDataResponse.apis,
+                  pris: row["__EMPTY_3"] || null,
+                };
+                const propertyId = property?.lamdaDataFromApi?.propertyId;
+
+                if (
+                  property?.CadastreDataFromApi?.buildingsApi?.response
+                    ?.items &&
+                  property?.CadastreDataFromApi?.buildingsApi?.response?.items
+                    .length === 0
+                ) {
+                  const EmptyPlotDb = collection(db, "empty_plot");
+
+                  const existingEmptyPlot = query(
+                    EmptyPlotDb,
+                    where("lamdaDataFromApi.propertyId", "==", propertyId)
+                  );
+                  const EmptyPlotShot = await getDocs(existingEmptyPlot);
+
+                  if (EmptyPlotShot.empty) {
+                    await addDoc(EmptyPlotDb, property);
+                  }
+                } else {
+                  const buildings =
+                    property?.CadastreDataFromApi?.buildingsApi?.response
+                      ?.items;
+
+                  const anyBuildingHasStatus = buildings.some(
+                    (building: any) => {
+                      const hasRequiredStatus =
+                        building.buildingStatus?.text ===
+                          "IGANGSETTINGSTILLATELSE" ||
+                        building.buildingStatus?.text === "RAMMETILLATELSE";
+                      return hasRequiredStatus;
+                    }
+                  );
+
+                  if (anyBuildingHasStatus) {
+                    const EmptyPlotDb = collection(db, "empty_plot");
+                    const existingEmptyPlot = query(
+                      EmptyPlotDb,
+                      where("lamdaDataFromApi.propertyId", "==", propertyId)
+                    );
+                    const EmptyPlotShot = await getDocs(existingEmptyPlot);
+
+                    if (EmptyPlotShot.empty) {
+                      await addDoc(EmptyPlotDb, property);
+                    }
+                  }
+                }
+              } catch (error: any) {
+                console.error(
+                  "Error fetching additional data from askApi:",
+                  error?.message
+                );
+              }
+            }
+          } catch (error: any) {
+            console.error("Error fetching additional data:", error?.message);
+          }
+        }
+      }
+
+      if (matches.length > 0) {
+        return { region: Object.keys(data)[0], results: matches };
+      }
+      return null;
+    };
+
+    const executeFetchAndFind = async () => {
+      const response = await fetch("/Matrikkel.xlsx");
+      const arrayBuffer = await response?.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: "array" });
+
+      const allData: Record<string, any[]> = {};
+
+      workbook.SheetNames.forEach((sheetName) => {
+        const sheet: any = workbook.Sheets[sheetName];
+        allData[sheetName] = XLSX.utils.sheet_to_json(sheet);
+      });
+
+      if (allData && kommunenummer && gardsnummer && bruksnummer) {
+        findMatchingData(allData);
+      }
+    };
+
+    executeFetchAndFind();
+  }, [kommunenummer, gardsnummer, bruksnummer]);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
@@ -95,7 +229,10 @@ const Regulations = () => {
           setLoadingLamdaData(false);
 
           if (cleanAnswer) {
-            if (data.message === "Request failed with status code 503") {
+            if (
+              data.message === "Request failed with status code 503" ||
+              !data.propertyId
+            ) {
               setLoadingAdditionalData(false);
               setLoadingLamdaData(false);
               setShowErrorPopup(true);
@@ -268,15 +405,14 @@ const Regulations = () => {
       !loadingAdditionalData &&
       lamdaDataFromApi &&
       additionalData &&
-      getAddress &&
       CadastreDataFromApi
     ) {
       hasFetchedData.current = true;
       const property = {
         lamdaDataFromApi,
         additionalData,
-        getAddress,
         CadastreDataFromApi,
+        pris: null,
       };
       addSearchAddress(property);
     }
@@ -284,7 +420,6 @@ const Regulations = () => {
     loadingAdditionalData,
     lamdaDataFromApi,
     additionalData,
-    getAddress,
     CadastreDataFromApi,
   ]);
 

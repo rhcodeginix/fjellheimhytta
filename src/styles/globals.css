@@ -42,6 +42,26 @@ input::placeholder {
   background-color: transparent !important;
 }
 /* ---- */
+.overFlowYAuto::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 24px;
+}
+.overFlowYAuto::-webkit-scrollbar-track {
+  border-radius: 24px;
+  background: white;
+}
+.overFlowYAuto::-webkit-scrollbar-thumb {
+  border-radius: 24px;
+  background: #7d89b0;
+  margin: 10px 2px;
+}
+.overFlowYAuto.ql-editor::-webkit-scrollbar-thumb:hover {
+  border-radius: 24px;
+  background: white;
+}
+/* ---- */
+
+/* ---- */
 .mobile-class {
   height: calc(100vh - 68px);
 }

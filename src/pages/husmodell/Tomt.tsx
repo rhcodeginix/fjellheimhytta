@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropertyHusmodellDetail from "@/components/Ui/stepperUi/propertyHusmodellDetail";
-import TomtTab from "@/components/Ui/homePageSearch/tomt";
-import SideSpaceContainer from "@/components/common/sideSpace";
+// import SideSpaceContainer from "@/components/common/sideSpace";
 import PlotAllProperty from "@/components/Ui/Husmodell/plotAllProperty";
 
 const Tomt: React.FC<any> = ({
@@ -25,11 +24,11 @@ const Tomt: React.FC<any> = ({
         loadingAdditionalData={loadingAdditionalData}
         additionalData={additionalData}
       />
-      <div className="py-4">
+      {/* <div className="py-4">
         <SideSpaceContainer>
           <TomtTab />
         </SideSpaceContainer>
-      </div>
+      </div> */}
       <PlotAllProperty
         handleNext={handleNext}
         lamdaDataFromApi={lamdaDataFromApi}
