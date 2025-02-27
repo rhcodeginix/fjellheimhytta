@@ -61,7 +61,7 @@ const Regulations = () => {
       const matches: any[] = [];
 
       if (data) {
-        const sheetData: any = data["Østfold"];
+        const sheetData: any = data["Innlandet"];
         const rowsToProcess = sheetData.slice(1);
         for (const row of rowsToProcess) {
           const lamdaApiData: any = {
@@ -95,10 +95,13 @@ const Regulations = () => {
               const regionName =
                 CadastreDataResponse?.presentationAddressApi?.response?.item
                   ?.municipality?.municipalityName;
+
+              if (CadastreDataResponse.error || !CadastreDataResponse) {
+                continue;
+              }
               const promt = {
                 question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn || regionName} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn || regionName}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
               };
-
               try {
                 const response = await ApiUtils.askApi(promt);
                 const property = {
