@@ -92,9 +92,11 @@ const Regulations = () => {
               const areaDetails =
                 data?.eiendomsInformasjon?.basisInformasjon?.areal_beregnet ||
                 "";
-
+              const regionName =
+                CadastreDataResponse?.presentationAddressApi?.response?.item
+                  ?.municipality?.municipalityName;
               const promt = {
-                question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+                question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn || regionName} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn || regionName}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
               };
 
               try {
@@ -237,11 +239,14 @@ const Regulations = () => {
               setLoadingLamdaData(false);
               setShowErrorPopup(true);
             }
+
             const areaDetails =
               data?.eiendomsInformasjon?.basisInformasjon?.areal_beregnet || "";
-
+            const regionName =
+              CadastreDataResponse?.presentationAddressApi?.response?.item
+                ?.municipality?.municipalityName;
             const promt = {
-              question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+              question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn || regionName} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn || regionName}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
             };
 
             setLoadingAdditionalData(true);

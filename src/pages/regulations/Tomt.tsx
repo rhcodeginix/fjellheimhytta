@@ -22,7 +22,6 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Loader from "@/components/Loader";
-import { useAddress } from "@/context/addressContext";
 import LoginForm from "../login/loginForm";
 import { useRouter } from "next/router";
 import Loading from "@/components/Loading";
@@ -79,7 +78,6 @@ const Tomt: React.FC<{
   CadastreDataFromApi,
 }) => {
   const router = useRouter();
-  const { getAddress } = useAddress();
   const popup = useRef<HTMLDivElement>(null);
 
   const [loginPopup, setLoginPopup] = useState(false);
@@ -594,8 +592,10 @@ const Tomt: React.FC<{
                       <div className="flex items-center justify-between gap-1">
                         <p className="text-sm text-grayText">Kommune</p>
                         <h5 className="text-base text-black font-medium">
-                          {/* {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.kommune} */}
-                          {getAddress?.kommunenavn}
+                          {
+                            CadastreDataFromApi?.presentationAddressApi
+                              ?.response?.item?.municipality?.municipalityName
+                          }
                         </h5>
                       </div>
                       <div className="flex items-center justify-between gap-1">

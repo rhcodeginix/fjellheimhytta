@@ -30,10 +30,16 @@ const PropertyDetail: React.FC<any> = ({
           >
             <div>
               <h2 className="text-black text-[32px] font-semibold mb-2">
-                {getAddress?.adressetekst}
+                {
+                  CadastreDataFromApi?.presentationAddressApi?.response?.item
+                    ?.formatted?.line1
+                }
               </h2>
               <p className="text-secondary text-xl">
-                {getAddress?.postnummer} {getAddress?.poststed}
+                {
+                  CadastreDataFromApi?.presentationAddressApi?.response?.item
+                    ?.formatted?.line2
+                }
               </p>
             </div>
             <div className="flex items-center gap-[24px]">
@@ -41,13 +47,13 @@ const PropertyDetail: React.FC<any> = ({
                 <div className="text-secondary text-base">
                   Gnr:{" "}
                   <span className="text-black font-semibold">
-                    {getAddress?.gardsnummer}
+                    {lamdaDataFromApi?.searchParameters?.gardsnummer}
                   </span>
                 </div>
                 <div className="text-secondary text-base">
                   Bnr:{" "}
                   <span className="text-black font-semibold">
-                    {getAddress?.bruksnummer}
+                    {lamdaDataFromApi?.searchParameters?.bruksnummer}
                   </span>
                 </div>
                 <div className="text-secondary text-base">

@@ -3,6 +3,9 @@ import Image from "next/image";
 import Ic_search from "@/public/images/Ic_search.svg";
 import Ic_close from "@/public/images/Ic_close.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
+import Loading from "@/components/Loading";
 
 const HusmodellTab = () => {
   const [formData, setFormData] = useState({
@@ -19,23 +22,35 @@ const HusmodellTab = () => {
     amount: false,
   });
 
-  const options = [
-    { name: "Agder", count: 180 },
-    { name: "Akershus", count: 320 },
-    { name: "Buskerud", count: 106 },
-    { name: "Finnmark", count: 31 },
-    { name: "Innlandet", count: 153 },
-    { name: "Møre og Romsdal", count: 153 },
-    { name: "Nordland", count: 71 },
-    { name: "Oslo", count: 18 },
-    { name: "Rogaland", count: 159 },
-    { name: "Telemark", count: 75 },
-    { name: "Troms", count: 79 },
-    { name: "Trøndelag", count: 180 },
-    { name: "Vestfold", count: 94 },
-    { name: "Vestland", count: 300 },
-    { name: "Østfold", count: 144 },
-  ];
+  const [Cities, setCities] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      setIsLoading(true);
+      const citiesCollectionRef = collection(db, "cities");
+
+      try {
+        const citiesSnapshot = await getDocs(citiesCollectionRef);
+        const fetchedProperties: any = citiesSnapshot.docs.map((doc) => ({
+          propertyId: doc.id,
+          ...doc.data(),
+        }));
+        setCities(fetchedProperties);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProperty();
+  }, [db]);
+
+  const options = Cities.map((city: any) => ({
+    name: city?.name,
+    count: city?.total_entries,
+  }));
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const kartInputRef = useRef<HTMLInputElement | null>(null);
@@ -61,9 +76,23 @@ const HusmodellTab = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // const handleKartInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value;
+  //   setFormData((prev) => ({ ...prev, amount: value }));
+  //   setErrors((prev) => ({ ...prev, amount: false }));
+  // };
   const handleKartInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setFormData((prev) => ({ ...prev, amount: value }));
+    let rawValue = e.target.value.replace(/\D/g, "");
+
+    if (rawValue) {
+      const formattedValue = new Intl.NumberFormat("no-NO").format(
+        Number(rawValue)
+      );
+      setFormData((prev) => ({ ...prev, amount: formattedValue }));
+    } else {
+      setFormData((prev) => ({ ...prev, amount: "" }));
+    }
+
     setErrors((prev) => ({ ...prev, amount: false }));
   };
 
@@ -125,23 +154,29 @@ const HusmodellTab = () => {
                   zIndex: 99999,
                 }}
               >
-                {options.map((option, index) => (
-                  <li
-                    key={index}
-                    onClick={() =>
-                      handleSelect(`${option.name} (${option.count})`)
-                    }
-                    className={`text-sm text-[#111322] px-4 py-[14px] cursor-pointer 
+                {isLoading ? (
+                  <Loading />
+                ) : (
+                  <>
+                    {options.map((option, index) => (
+                      <li
+                        key={index}
+                        onClick={() =>
+                          handleSelect(`${option.name} (${option.count})`)
+                        }
+                        className={`text-sm text-[#111322] px-4 py-[14px] cursor-pointer 
                       ${
                         formData.Kommue === `${option.name} (${option.count})`
                           ? "bg-[#F9F5FF] font-semibold"
                           : "bg-white"
                       }`}
-                  >
-                    <span>{option.name}</span>
-                    <span className="text-[#4A5578]"> ({option.count})</span>
-                  </li>
-                ))}
+                      >
+                        <span>{option.name}</span>
+                        <span className="text-[#4A5578]">({option.count})</span>
+                      </li>
+                    ))}
+                  </>
+                )}
               </ul>
             )}
           </div>
@@ -149,11 +184,13 @@ const HusmodellTab = () => {
           <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
             <div className="w-[92%] lg:w-auto">
               <div className="text-[#111322] mb-1 text-sm">
-                Søk opp kommunen der du ønsker å bygge din nye bolig
+                Se hvilke husmodeller som tilbys i kommunen der du ønsker å
+                bygge:
               </div>
               <input
                 ref={kartInputRef}
-                type="number"
+                type="text"
+                inputMode="numeric"
                 className={`focus:outline-none text-black text-base desktop:text-xl font-medium bg-transparent w-full
                   ${errors.amount ? "border border-red-500" : ""}`}
                 placeholder="Fyll inn beløp i NOK"

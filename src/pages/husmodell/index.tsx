@@ -9,8 +9,7 @@ import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import Ic_vapp from "@/public/images/Ic_vapp.svg";
 import { useRouter } from "next/router";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "@/config/firebaseConfig";
+import { db } from "@/config/firebaseConfig";
 import { collection, getDocs, limit, query } from "firebase/firestore";
 import LoginForm from "../login/loginForm";
 import GoogleMapComponent from "@/components/Ui/map";
@@ -157,47 +156,31 @@ const Husmodell = () => {
       setLoginUser(true);
     }
   }, []);
-  const [userUID, setUserUID] = useState(null);
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (userUID) {
-      const fetchProperty = async () => {
-        setIsLoading(true);
-        const propertiesCollectionRef = collection(db, "empty_plot");
-        const propertiesQuery = query(propertiesCollectionRef, limit(12));
-
-        try {
-          const propertiesSnapshot = await getDocs(propertiesQuery);
-          const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
-            propertyId: doc.id,
-            ...doc.data(),
-          }));
-          setHouseModelProperty(fetchedProperties);
-        } catch (error) {
-          console.error("Error fetching user's properties:", error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchProperty();
-    }
-  }, [userUID, db]);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
+    const fetchProperty = async () => {
       setIsLoading(true);
-      if (user) {
-        setUserUID(user.uid);
-      } else {
-        setUserUID(null);
-      }
-    });
+      const propertiesCollectionRef = collection(db, "empty_plot");
+      const propertiesQuery = query(propertiesCollectionRef, limit(12));
 
-    return () => unsubscribe();
-  }, []);
+      try {
+        const propertiesSnapshot = await getDocs(propertiesQuery);
+        const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
+          propertyId: doc.id,
+          ...doc.data(),
+        }));
+        setHouseModelProperty(fetchedProperties);
+      } catch (error) {
+        console.error("Error fetching user's properties:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProperty();
+  }, [db]);
 
   useEffect(() => {
     if (!loginUser) {
@@ -443,13 +426,6 @@ const Husmodell = () => {
               {HouseModelProperty && HouseModelProperty.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 desktop:grid-cols-4 gap-x-4 lg:gap-x-6 desktop:gap-x-8 gap-y-7 lg:gap-y-9 desktop:gap-y-12">
                   {HouseModelProperty.map((property: any, index: any) => {
-                    console.log(property);
-
-                    console.log(
-                      property?.CadastreDataFromApi?.presentationAddressApi
-                        ?.response?.item
-                    );
-
                     return (
                       <Link
                         key={index}

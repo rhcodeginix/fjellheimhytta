@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Ic_search from "@/public/images/Ic_search.svg";
 import Ic_close from "@/public/images/Ic_close.svg";
+import { useRouter } from "next/router";
 
 const MatrikkelTab = () => {
   const [formData, setFormData] = useState({
@@ -15,15 +16,14 @@ const MatrikkelTab = () => {
     Gårsnummer: boolean;
     kommune: boolean;
     Bruksnummer: boolean;
-    Seksjonsnummer: boolean;
   }>({
     Gårsnummer: false,
     kommune: false,
     Bruksnummer: false,
-    Seksjonsnummer: false,
   });
 
   const kartInputRef = useRef<HTMLInputElement | null>(null);
+  const router = useRouter();
 
   const handleKartInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -69,7 +69,6 @@ const MatrikkelTab = () => {
   ) => {
     const value = e.target.value;
     setFormData((prev) => ({ ...prev, Seksjonsnummer: value }));
-    setErrors((prev) => ({ ...prev, Seksjonsnummer: false }));
   };
 
   const handleClearSeksjonsnummerInput = () => {
@@ -92,14 +91,14 @@ const MatrikkelTab = () => {
       setErrors((prev) => ({ ...prev, Bruksnummer: true }));
       hasError = true;
     }
-    if (!formData.Seksjonsnummer) {
-      setErrors((prev) => ({ ...prev, Seksjonsnummer: true }));
-      hasError = true;
-    }
 
     if (hasError) return;
 
-    console.log("data-----------", formData);
+    router.push(
+      `/regulations?kommunenummer=${formData.kommune}&gardsnummer=${formData.Gårsnummer}&bruksnummer=${formData.Bruksnummer}${formData.Seksjonsnummer && `&kommunenavn=${formData.Seksjonsnummer}`}`
+    );
+    const currIndex = 0;
+    localStorage.setItem("currIndex", currIndex.toString());
   };
 
   return (
@@ -203,8 +202,7 @@ const MatrikkelTab = () => {
                 <input
                   ref={SeksjonsnummerInputRef}
                   type="number"
-                  className={`focus:outline-none text-black text-base desktop:text-xl font-medium bg-transparent w-full
-                  ${errors.Seksjonsnummer ? "border border-red-500" : ""}`}
+                  className={`focus:outline-none text-black text-base desktop:text-xl font-medium bg-transparent w-full`}
                   placeholder="Velg Seksjonsnummer"
                   onChange={handleSeksjonsnummerInputChange}
                   value={formData.Seksjonsnummer}
@@ -219,29 +217,18 @@ const MatrikkelTab = () => {
                 />
               )}
             </div>
-            {errors.Seksjonsnummer && (
-              <p className="text-red-500 text-xs mt-1">
-                Seksjonsnummer er påkrevd.
-              </p>
-            )}
           </div>
         </div>
 
         <button
           className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2 ${
-            !formData.Gårsnummer ||
-            !formData.kommune ||
-            !formData.Bruksnummer ||
-            !formData.Seksjonsnummer
+            !formData.Gårsnummer || !formData.kommune || !formData.Bruksnummer
               ? "opacity-50 cursor-not-allowed"
               : ""
           }`}
           type="submit"
           disabled={
-            !formData.Gårsnummer ||
-            !formData.kommune ||
-            !formData.Bruksnummer ||
-            !formData.Seksjonsnummer
+            !formData.Gårsnummer || !formData.kommune || !formData.Bruksnummer
           }
         >
           <Image src={Ic_search} alt="search" className="w-6 h-6" />

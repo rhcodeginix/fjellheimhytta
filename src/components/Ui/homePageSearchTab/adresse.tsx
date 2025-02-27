@@ -66,7 +66,9 @@ const AdresseTab = () => {
         <div className="flex flex-col sm:flex-row sm:items-center lg:justify-between w-full sm:w-11/12 lg:h-[80px]">
           <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex sm:justify-between relative">
             <div className="w-[92%] sm:w-auto">
-              <div className="text-[#111322] mb-1 text-sm">Søk på adresse</div>
+              <div className="text-[#111322] mb-1 text-sm">
+                Vet du hvilken adresse du vil bygge på?
+              </div>
               <input
                 ref={kartInputRef}
                 type="text"
