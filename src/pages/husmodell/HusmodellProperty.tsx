@@ -1,6 +1,7 @@
 import Loading from "@/components/Loading";
 import Image from "next/image";
 import Img_plot from "@/public/images/Img_plot.png";
+import Img_plot_image1 from "@/public/images/Img_plot_image1.png";
 import Ic_wishlist_heart from "@/public/images/Ic_wishlist_heart.svg";
 import GoogleMapComponent from "@/components/Ui/map";
 import Button from "@/components/common/button";
@@ -58,9 +59,10 @@ const HusmodellProperty: React.FC<{
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="flex gap-2 w-1/2">
-                      <div className="w-[63%]">
+                      <div className="w-[63%] h-[160px]">
                         <Image
-                          src={Img_plot}
+                          key={index}
+                          src={index % 2 === 0 ? Img_plot : Img_plot_image1}
                           alt="image"
                           className="w-full h-full rounded-[8px]"
                           fetchPriority="auto"
