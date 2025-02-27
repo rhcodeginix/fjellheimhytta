@@ -17,16 +17,19 @@ const Property: React.FC<any> = ({ propertyList, LinkHref }) => {
                 src={property.image}
                 alt="product-image"
                 className="w-full rounded-[12px] overflow-hidden"
+                fetchPriority="auto"
               />
               <Image
                 src={property.logo}
                 alt="product-logo"
                 className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px]"
+                fetchPriority="auto"
               />
               <Image
                 src={property.map}
                 alt="product-map"
                 className="absolute bottom-[12px] right-[12px] rounded-[8px]"
+                fetchPriority="auto"
               />
             </div>
             <h3 className="text-black text-lg font-medium mb-2">

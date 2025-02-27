@@ -20,10 +20,20 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
       content: (
         <div className="w-full gap-6 flex">
           <div className="w-1/2">
-            <Image src={Img_product_3d_img1} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img1}
+              alt="image"
+              className="w-full"
+            />
           </div>
           <div className="w-1/2">
-            <Image src={Img_product_3d_img2} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img2}
+              alt="image"
+              className="w-full"
+            />
           </div>
         </div>
       ),
@@ -42,11 +52,13 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
               </h4>
               <div className="relative">
                 <Image
+                  fetchPriority="auto"
                   src={Img_product1}
                   alt="image"
                   className="w-full h-[262px] object-cover rounded-[12px] overflow-hidden"
                 />
                 <Image
+                  fetchPriority="auto"
                   src={Img_product_logo1}
                   alt="image"
                   className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-auto"
@@ -179,7 +191,12 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
               <h2 className="mb-6 text-black text-2xl font-semibold">
                 Plantegninger og fasader
               </h2>
-              <Image src={Img_product_map} alt="map" className="w-full" />
+              <Image
+                fetchPriority="auto"
+                src={Img_product_map}
+                alt="map"
+                className="w-full"
+              />
             </div>
             <div className="w-[57%]">
               <h2 className="text-black text-2xl font-semibold mb-4">

@@ -395,7 +395,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                 <h2 className="text-black text-2xl font-semibold">
                   Reguleringsbestemmelser
                 </h2>
-                <Image src={Ic_generelt} alt="image" />
+                <Image fetchPriority="auto" src={Ic_generelt} alt="image" />
               </div>
               <div className="flex flex-col gap-3">
                 {loadingAdditionalData ? (
@@ -408,7 +408,11 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                           className="flex items-start gap-3 text-secondary text-base"
                           key={index}
                         >
-                          <Image src={Ic_check_true} alt="image" />
+                          <Image
+                            fetchPriority="auto"
+                            src={Ic_check_true}
+                            alt="image"
+                          />
                           <span>{a}</span>
                         </div>
                       ))}
@@ -421,7 +425,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                 <h2 className="text-black text-2xl font-semibold">
                   Kommuneplan for Asker
                 </h2>
-                <Image src={Ic_generelt} alt="image" />
+                <Image fetchPriority="auto" src={Ic_generelt} alt="image" />
               </div>
               <div className="flex flex-col gap-3">
                 {loadingAdditionalData ? (
@@ -435,7 +439,11 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                             className="flex items-start gap-3 text-secondary text-base"
                             key={index}
                           >
-                            <Image src={Ic_check_true} alt="image" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check_true}
+                              alt="image"
+                            />
                             <div>
                               {a.rule}{" "}
                               <span className="text-primary font-bold">
@@ -465,7 +473,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
             </div>
             <div>
               <div className="flex items-center gap-[36px] mb-6">
-                <Image src={Ic_logo} alt="logo" />
+                <Image fetchPriority="auto" src={Ic_logo} alt="logo" />
                 <p className="text-secondary text-sm">
                   Vi hjelper deg med{" "}
                   <span className="text-black font-semibold">
@@ -481,6 +489,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                 {items.map((item, index) => (
                   <div key={index}>
                     <Image
+                      fetchPriority="auto"
                       src={item.imageSrc}
                       alt={item.title}
                       className="rounded-full overflow-hidden w-[80px] h-[80px] mb-3"

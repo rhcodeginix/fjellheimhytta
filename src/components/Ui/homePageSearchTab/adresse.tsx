@@ -62,7 +62,7 @@ const AdresseTab = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="lg:h-[80px] bg-[#F9F9FB] shadow-shadow1 border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col sm:flex-row sm:items-center relative justify-between">
+      <div className="lg:h-[80px] bg-[#F9F9FB] border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col sm:flex-row sm:items-center relative justify-between">
         <div className="flex flex-col sm:flex-row sm:items-center lg:justify-between w-full sm:w-11/12 lg:h-[80px]">
           <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex sm:justify-between relative">
             <div className="w-[92%] sm:w-auto">
@@ -85,6 +85,7 @@ const AdresseTab = () => {
                 alt="close"
                 className="cursor-pointer"
                 onClick={handleClearKartInput}
+                fetchPriority="auto"
               />
             )}
           </div>
@@ -117,7 +118,11 @@ const AdresseTab = () => {
                     setStoreAddress(address);
                   }}
                 >
-                  <Image src={Ic_search_location} alt="location" />
+                  <Image
+                    src={Ic_search_location}
+                    alt="location"
+                    fetchPriority="auto"
+                  />
                   <div>
                     <span className="text-secondary text-sm desktop:text-base font-medium">
                       Adresse:
@@ -139,7 +144,12 @@ const AdresseTab = () => {
           type="submit"
           disabled={!formData.address}
         >
-          <Image src={Ic_search} alt="search" className="w-6 h-6" />
+          <Image
+            src={Ic_search}
+            alt="search"
+            className="w-6 h-6"
+            fetchPriority="auto"
+          />
         </button>
       </div>
     </form>

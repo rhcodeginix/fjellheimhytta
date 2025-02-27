@@ -6,6 +6,7 @@ import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import Loading from "@/components/Loading";
+import { useRouter } from "next/router";
 
 const BeløpTab = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +25,7 @@ const BeløpTab = () => {
 
   const [Cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -110,12 +112,14 @@ const BeløpTab = () => {
 
     if (hasError) return;
 
-    console.log("data-----------", formData);
+    router.push(
+      `belop?city=${formData.selectedCountry}&pris=${formData.amount.replace(/\s+/g, "")}`
+    );
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="lg:h-[80px] bg-[#F9F9FB] shadow-shadow1 border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col lg:flex-row lg:items-center relative justify-between">
+      <div className="lg:h-[80px] bg-[#F9F9FB] border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col lg:flex-row lg:items-center relative justify-between">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[80px]">
           <div className="relative min-w-[30%] w-auto h-full" ref={dropdownRef}>
             <div
@@ -132,7 +136,7 @@ const BeløpTab = () => {
                 className="text-[#111322] text-base font-medium flex items-center justify-between w-full"
               >
                 {formData.selectedCountry || "Velg et alternativ"}
-                <Image src={Ic_chevron_down} alt="arrow" />
+                <Image src={Ic_chevron_down} alt="arrow" fetchPriority="auto" />
               </button>
             </div>
             {errors.selectedCountry && (
@@ -150,7 +154,9 @@ const BeløpTab = () => {
                 }}
               >
                 {isLoading ? (
-                  <Loading />
+                  <div className="relative h-[100px]">
+                    <Loading />
+                  </div>
                 ) : (
                   <>
                     {options.map((option, index) => (
@@ -202,6 +208,7 @@ const BeløpTab = () => {
                 alt="close"
                 className="cursor-pointer"
                 onClick={handleClearKartInput}
+                fetchPriority="auto"
               />
             )}
           </div>
@@ -219,7 +226,12 @@ const BeløpTab = () => {
           type="submit"
           disabled={!formData.selectedCountry || !formData.amount}
         >
-          <Image src={Ic_search} alt="search" className="w-6 h-6" />
+          <Image
+            src={Ic_search}
+            alt="search"
+            className="w-6 h-6"
+            fetchPriority="auto"
+          />
         </button>
       </div>
     </form>

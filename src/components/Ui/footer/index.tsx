@@ -15,6 +15,7 @@ const Footer = () => {
                 src={Ic_logo}
                 alt="logo"
                 className="mb-[20px] lg:mb-[36px] w-[90px] lg:w-auto"
+                fetchPriority="auto"
               />
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 sm:items-end">
                 <span className="text-white font-medium text-sm md:text-base">

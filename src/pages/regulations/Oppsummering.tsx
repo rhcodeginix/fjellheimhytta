@@ -23,10 +23,20 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
       content: (
         <div className="w-full gap-6 flex">
           <div className="w-1/2">
-            <Image src={Img_product_3d_img1} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img1}
+              alt="image"
+              className="w-full"
+            />
           </div>
           <div className="w-1/2">
-            <Image src={Img_product_3d_img2} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img2}
+              alt="image"
+              className="w-full"
+            />
           </div>
         </div>
       ),
@@ -93,6 +103,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                         <div className="flex gap-3 w-full">
                           <div className="w-[13%]">
                             <Image
+                              fetchPriority="auto"
                               src={Ic_product_detail_avatar}
                               alt="avatar"
                               className="w-full"
@@ -109,6 +120,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                                 </p>
                               </div>
                               <Image
+                                fetchPriority="auto"
                                 src={Ic_product_detail_position}
                                 alt="logo"
                                 className="w-[108px]"
@@ -116,12 +128,20 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                             </div>
                             <div className="flex flex-col gap-1">
                               <div className="flex items-center gap-[6px] text-sm font-medium text-secondary">
-                                <Image src={Ic_mail} alt="mail" />{" "}
+                                <Image
+                                  fetchPriority="auto"
+                                  src={Ic_mail}
+                                  alt="mail"
+                                />{" "}
                                 simen.wolmer@boligpartner.no
                               </div>
                               <div className="flex items-center gap-[6px] text-sm font-medium text-secondary">
-                                <Image src={Ic_phone} alt="phone" /> +47 958 01
-                                043
+                                <Image
+                                  fetchPriority="auto"
+                                  src={Ic_phone}
+                                  alt="phone"
+                                />{" "}
+                                +47 958 01 043
                               </div>
                             </div>
                           </div>
@@ -201,7 +221,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                     Søk byggelån{" "}
                     <span className="font-semibold">(10.608.690 NOK)</span> hos:
                   </h3>
-                  <Image src={Ic_spareBank} alt="icon" />
+                  <Image fetchPriority="auto" src={Ic_spareBank} alt="icon" />
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
@@ -239,7 +259,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                   />
                 </div>
                 <div className="flex items-start gap-4">
-                  <Image src={Ic_info_circle} alt="icon" />
+                  <Image fetchPriority="auto" src={Ic_info_circle} alt="icon" />
                   <p className="text-secondary text-base font-medium">
                     Låneramme til oppføring av bolig/fritidsbolig. Blir gjort om
                     til nedbetalingslån ved ferdigstilling av
@@ -269,7 +289,11 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                   <Form className="flex flex-col h-full gap-6">
                     <div className="flex gap-6">
                       <div className="flex items-start gap-3 w-1/2">
-                        <Image src={Ic_info_circle} alt="icon" />
+                        <Image
+                          fetchPriority="auto"
+                          src={Ic_info_circle}
+                          alt="icon"
+                        />
                         <p className="text-secondary text-base font-medium">
                           Et byggelån krever en forhåndsktakst på prosjektet,
                           ved en høyere{" "}
@@ -320,7 +344,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                           </div>
                         )}
                       </div>
-                      <Image src={Ic_contact} alt="icon" />
+                      <Image fetchPriority="auto" src={Ic_contact} alt="icon" />
                     </div>
 
                     <div className="flex justify-end">

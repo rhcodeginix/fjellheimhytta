@@ -16,16 +16,19 @@ const OurPartners = () => {
             </h3>
             <div className="flex items-center justify-between sm:justify-center w-full gap-5 md:gap-12 desktop:gap-[96px] overflow-x-auto overFlowScrollHidden">
               <Image
+                fetchPriority="auto"
                 src={Img_pms_SB1_Halling_Valdr_verti_pos}
                 alt="logo"
                 className="w-[136px] md:w-[170px] desktop:w-auto"
               />
               <Image
+                fetchPriority="auto"
                 src={Img_steddy}
                 alt="logo"
                 className="w-[136px] md:w-[170px] desktop:w-auto"
               />
               <Image
+                fetchPriority="auto"
                 src={Img_NexonTechWhite}
                 alt="logo"
                 className="w-[136px] md:w-[170px] desktop:w-auto"

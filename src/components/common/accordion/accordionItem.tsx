@@ -27,9 +27,14 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, children }) => {
       >
         <h3 className="text-black text-2xl font-semibold">{title}</h3>
         {isOpen ? (
-          <Image src={Ic_chevron_up} alt="arrow" />
+          <Image src={Ic_chevron_up} alt="arrow" fetchPriority="auto" />
         ) : (
-          <Image src={Ic_chevron_up} alt="arrow" className="rotate-180" />
+          <Image
+            src={Ic_chevron_up}
+            alt="arrow"
+            className="rotate-180"
+            fetchPriority="auto"
+          />
         )}
       </div>
       {isOpen && <div className="mt-6">{children}</div>}

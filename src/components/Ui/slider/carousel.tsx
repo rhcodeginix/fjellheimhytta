@@ -25,7 +25,12 @@ const CarouselSlider: React.FC<any> = ({ slides }) => {
             <div className="flex flex-col w-full md:w-6/12 lg:w-[61%] md:mb-[56px] lg:mb-[76px] desktop:mb-0 p-4 md:p-8 desktop:p-16">
               <div className="flex items-center gap-1 mb-3.5 md:mb-5 desktop:mb-[24px]">
                 {[...Array(slide.star)].map((_, i) => (
-                  <Image key={i} src={Ic_Star} alt="star" />
+                  <Image
+                    fetchPriority="auto"
+                    key={i}
+                    src={Ic_Star}
+                    alt="star"
+                  />
                 ))}
               </div>
               <h1 className="text-white font-medium text-xl md:text-2xl desktop:text-[36px] mb-5 lg:mb-8 desktop:leading-[44px] tracking-[-1px] lg:w-5/6">
@@ -42,6 +47,7 @@ const CarouselSlider: React.FC<any> = ({ slides }) => {
             </div>
             <div className="w-full md:w-6/12 desktop:w-[39%]">
               <Image
+                fetchPriority="auto"
                 src={slide.imageSrc}
                 alt="course-img"
                 style={{ width: "100%", height: "100%" }}

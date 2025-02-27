@@ -103,7 +103,7 @@ const MatrikkelTab = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="lg:h-[80px] bg-[#F9F9FB] shadow-shadow1 border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col lg:flex-row lg:items-center relative justify-between">
+      <div className="lg:h-[80px] bg-[#F9F9FB] border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col lg:flex-row lg:items-center relative justify-between">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[80px]">
           <div className="lg:w-1/4">
             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
@@ -125,6 +125,7 @@ const MatrikkelTab = () => {
                   alt="close"
                   className="cursor-pointer"
                   onClick={handleClearKartInput}
+                  fetchPriority="auto"
                 />
               )}
             </div>
@@ -153,6 +154,7 @@ const MatrikkelTab = () => {
                   alt="close"
                   className="cursor-pointer"
                   onClick={handleClearGårsnummerInput}
+                  fetchPriority="auto"
                 />
               )}
             </div>
@@ -183,6 +185,7 @@ const MatrikkelTab = () => {
                   alt="close"
                   className="cursor-pointer"
                   onClick={handleClearBruksnummerInput}
+                  fetchPriority="auto"
                 />
               )}
             </div>
@@ -214,6 +217,7 @@ const MatrikkelTab = () => {
                   alt="close"
                   className="cursor-pointer"
                   onClick={handleClearSeksjonsnummerInput}
+                  fetchPriority="auto"
                 />
               )}
             </div>
@@ -231,7 +235,12 @@ const MatrikkelTab = () => {
             !formData.Gårsnummer || !formData.kommune || !formData.Bruksnummer
           }
         >
-          <Image src={Ic_search} alt="search" className="w-6 h-6" />
+          <Image
+            src={Ic_search}
+            alt="search"
+            className="w-6 h-6"
+            fetchPriority="auto"
+          />
         </button>
       </div>
     </form>

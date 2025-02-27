@@ -15,7 +15,7 @@ import Img_product_map1 from "@/public/images/Img_product_map1.png";
 import Button from "@/components/common/button";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import PlotDetail from "@/pages/husmodell/plotDetail";
+import PlotDetail from "@/pages/husmodells/plotDetail";
 import SideSpaceContainer from "@/components/common/sideSpace";
 
 const PlotAllProperty: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
@@ -173,16 +173,19 @@ const PlotAllProperty: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         src={property.image}
                         alt="product-image"
                         className="w-full rounded-[12px] overflow-hidden"
+                        fetchPriority="auto"
                       />
                       <Image
                         src={property.logo}
                         alt="product-logo"
                         className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px]"
+                        fetchPriority="auto"
                       />
                       <Image
                         src={property.map}
                         alt="product-map"
                         className="absolute bottom-[12px] right-[12px] rounded-[8px]"
+                        fetchPriority="auto"
                       />
                     </div>
                     <h3 className="text-black text-lg font-medium mb-2">

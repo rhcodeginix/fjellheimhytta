@@ -160,7 +160,12 @@ const HomePageSearchTab: React.FC = () => {
             className="absolute lg:-bottom-9 desktop:-bottom-14 big:bottom-[-100px] left-0 w-full hidden lg:block"
             style={{ zIndex: 9 }}
           >
-            <Image src={Img_main_bg} alt="image" className="w-full " />
+            <Image
+              src={Img_main_bg}
+              alt="image"
+              className="w-full"
+              fetchPriority="auto"
+            />
           </div>
         </SideSpaceContainer>
       </div>
@@ -214,6 +219,7 @@ const HomePageSearchTab: React.FC = () => {
                         src={Img_plot}
                         alt="image"
                         className="w-full h-full rounded-[8px]"
+                        fetchPriority="auto"
                       />
                     </div>
                     <div className="w-[37%] rounded-[8px] overflow-hidden">
@@ -255,7 +261,10 @@ const HomePageSearchTab: React.FC = () => {
                         Pris for <span className="font-semibold">Almgård</span>
                       </p>
                       <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
-                        2.800.00 NOK
+                        {/* 2.800.00 NOK */}
+                        {property.pris
+                          ? `${Math.round(property.pris * 0.2)} NOK`
+                          : "0 NOK"}
                       </h6>
                     </div>
                     <div className="w-1/2">
@@ -263,7 +272,11 @@ const HomePageSearchTab: React.FC = () => {
                         Pris for <span className="font-semibold">tomten</span>
                       </p>
                       <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
-                        {property.pris ? `${property.pris} NOK` : 0}
+                        {/* {property.pris ? `${property.pris} NOK` : 0} */}
+
+                        {property.pris
+                          ? `${Math.round(property.pris * 0.8)} NOK`
+                          : "0 NOK"}
                       </h6>
                     </div>
                   </div>
@@ -273,9 +286,10 @@ const HomePageSearchTab: React.FC = () => {
                         Totalpris med tomt
                       </p>
                       <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                        {property.pris
-                          ? `${(280000 + parseInt(property.pris)).toLocaleString()} NOK`
-                          : "2.800.00 NOK"}
+                        {/* {property.pris
+                              ? `${(280000 + parseInt(property.pris)).toLocaleString()} NOK`
+                              : "2.800.00 NOK"} */}
+                        {property.pris ? `${property.pris} NOK` : 0}
                       </h6>
                     </div>
                     <Button
@@ -316,6 +330,7 @@ const HomePageSearchTab: React.FC = () => {
                     src={property.imgMap}
                     alt="image"
                     className="w-full h-[234px] rounded-[8px]"
+                    fetchPriority="auto"
                   />
                   <span className="text-xs bg-[#FFFFFFB2] rounded-[32px] py-1 px-2 font-medium absolute top-3 left-3">
                     {property.imageText}
@@ -379,6 +394,7 @@ const HomePageSearchTab: React.FC = () => {
                   src={property.imagePath}
                   alt="image"
                   className="w-full h-[374px] rounded-[8px] mb-2 md:mb-3 desktop:mb-4"
+                  fetchPriority="auto"
                 />
                 <h5 className="text-[#111322] font-medium text-sm md:text-base mb-2">
                   {property.description}
@@ -446,6 +462,7 @@ const HomePageSearchTab: React.FC = () => {
                     src={property.imgMap}
                     alt="image"
                     className="w-full h-[234px] rounded-[8px]"
+                    fetchPriority="auto"
                   />
                   <span className="text-xs bg-[#FFFFFFB2] rounded-[32px] py-1 px-2 font-medium absolute top-3 left-3">
                     {property.imageText}

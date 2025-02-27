@@ -23,6 +23,7 @@ const LatestFromMedia = () => {
           <div className="w-full flex flex-col md:flex-row gap-8 items-center">
             <Link href={""} className="md:w-1/2 group">
               <Image
+                fetchPriority="auto"
                 src={Img_latest_media1}
                 alt="image"
                 className="w-full mb-5 lg:mb-8"
@@ -35,6 +36,7 @@ const LatestFromMedia = () => {
                   MinTomt revolusjonerer tomteanalyse
                 </h3>
                 <Image
+                  fetchPriority="auto"
                   src={Ic_cross_right_arrow}
                   alt="arrow"
                   className="md:opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -62,6 +64,7 @@ const LatestFromMedia = () => {
                 <div className="h-1/2 flex flex-col sm:flex-row md:flex-col lg:flex-row gap-[16px] lg:gap-[24px]">
                   <div className="sm:w-[55%] md:w-full lg:w-[55%]">
                     <Image
+                      fetchPriority="auto"
                       src={Img_latest_media2}
                       alt="image"
                       className="w-full"
@@ -90,6 +93,7 @@ const LatestFromMedia = () => {
                 <div className="h-1/2 flex flex-col sm:flex-row md:flex-col lg:flex-row gap-[16px] lg:gap-[24px]">
                   <div className="sm:w-[55%] md:w-full lg:w-[55%]">
                     <Image
+                      fetchPriority="auto"
                       src={Img_latest_media3}
                       alt="image"
                       className="w-full"

@@ -35,6 +35,7 @@ const PropertyHusmodellDetail: React.FC<any> = ({
     <>
       <div className="bg-lightPurple py-[20px] relative">
         <Image
+          fetchPriority="auto"
           src={Img_product_detail1}
           alt="image"
           className="absolute top-0 left-0"
@@ -68,7 +69,11 @@ const PropertyHusmodellDetail: React.FC<any> = ({
               {isShow && (
                 <div className="flex flex-col gap-[16px]">
                   <div className="flex items-center gap-[16px]">
-                    <Image src={Ic_Check_icon} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_Check_icon}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-sm font-semibold">
                       Denne eiendommen er{" "}
                       <span className="text-black">
@@ -78,7 +83,11 @@ const PropertyHusmodellDetail: React.FC<any> = ({
                   </div>
                   {!loadingAdditionalData && askData && (
                     <div className="flex items-center gap-[16px]">
-                      <Image src={Ic_percentage_icon} alt="icon" />
+                      <Image
+                        fetchPriority="auto"
+                        src={Ic_percentage_icon}
+                        alt="icon"
+                      />
                       <p className="text-secondary text-sm font-semibold">
                         Eiendommen har en{" "}
                         <span className="text-black">
@@ -90,7 +99,11 @@ const PropertyHusmodellDetail: React.FC<any> = ({
                   )}
                   {!loadingAdditionalData && askData && (
                     <div className="flex items-center gap-[16px]">
-                      <Image src={Ic_square_mtr_icon} alt="icon" />
+                      <Image
+                        fetchPriority="auto"
+                        src={Ic_square_mtr_icon}
+                        alt="icon"
+                      />
                       <p className="text-secondary text-sm font-semibold">
                         Boligen kan ha en{" "}
                         <span className="text-black">
@@ -114,6 +127,7 @@ const PropertyHusmodellDetail: React.FC<any> = ({
                 <p className="text-black text-sm mb-3">Din boligkonsulent</p>
                 <div className="flex items-center gap-[8px]">
                   <Image
+                    fetchPriority="auto"
                     src={Ic_product_detail_avatar}
                     alt="image"
                     className="h-[48px] w-[48px] rounded-full"
@@ -122,15 +136,24 @@ const PropertyHusmodellDetail: React.FC<any> = ({
                     <h4 className="text-base text-black font-semibold">
                       Simen Wolmer
                     </h4>
-                    <Image src={Ic_product_detail_position} alt="image" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_product_detail_position}
+                      alt="image"
+                    />
                   </div>
-                  <Image src={Ic_chevron_right} alt="icon" />
+                  <Image
+                    fetchPriority="auto"
+                    src={Ic_chevron_right}
+                    alt="icon"
+                  />
                 </div>
               </div>
             </div>
           </div>
         </SideSpaceContainer>
         <Image
+          fetchPriority="auto"
           src={Img_product_detail2}
           alt="image"
           className="absolute top-0 right-0"

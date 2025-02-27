@@ -97,6 +97,7 @@ const PropertyOptionDrawer: React.FC<any> = ({
             alt="close"
             onClick={handleMenuClose}
             className="cursor-pointer"
+            fetchPriority="auto"
           />
         </div>
         <div className="p-6 flex items-center gap-5 w-full">
@@ -104,6 +105,7 @@ const PropertyOptionDrawer: React.FC<any> = ({
             src={Img_product1}
             alt="image"
             className="rounded-[8px] w-[30%] object-cover h-[124px]"
+            fetchPriority="auto"
           />
           <div className="w-[70%]">
             <h4 className="text-black text-lg font-semibold mb-2">
@@ -139,6 +141,7 @@ const PropertyOptionDrawer: React.FC<any> = ({
             src={Ic_inside_Parkett}
             alt="image"
             className="rounded-full w-[80px] h-[80px] object-cover"
+            fetchPriority="auto"
           />
           <div className="w-full">
             <h5 className="text-black text-lg font-medium mb-2">Parkett</h5>
@@ -182,6 +185,7 @@ const PropertyOptionDrawer: React.FC<any> = ({
                         src={product.image}
                         alt={product.name}
                         className="w-full rounded-[12px] overflow-hidden mb-4"
+                        fetchPriority="auto"
                       />
                       <h6 className="text-black text-lg font-medium mb-2">
                         {product.name}

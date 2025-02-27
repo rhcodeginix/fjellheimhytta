@@ -18,10 +18,20 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
       content: (
         <div className="w-full gap-6 flex">
           <div className="w-1/2">
-            <Image src={Img_product_3d_img1} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img1}
+              alt="image"
+              className="w-full"
+            />
           </div>
           <div className="w-1/2">
-            <Image src={Img_product_3d_img2} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img2}
+              alt="image"
+              className="w-full"
+            />
           </div>
         </div>
       ),
@@ -58,7 +68,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
               <div className="w-1/2 flex flex-col gap-4">
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Utgraving av byggegrube og tilbakefylling
                     </p>
@@ -69,7 +83,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Grunnmur/fundamentering, plate på mark/sokkel
                     </p>
@@ -80,7 +98,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Støpte gulv på våtrom
                     </p>
@@ -91,7 +113,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Utvendig forblending pipe/vegg
                     </p>
@@ -102,7 +128,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Stålpipe sort inkl beslag og sort peisovn
                     </p>
@@ -113,7 +143,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">Utvendig trapper</p>
                   </div>
                   <h4 className="text-black font-medium text-base">
@@ -122,7 +156,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Sanitærutsyr og "rør i rør" opplegg
                     </p>
@@ -133,7 +171,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Bunnledninger (oppstikk i betongplate VA)
                     </p>
@@ -144,7 +186,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Evt. rørlegger arbeid/materiell
                     </p>
@@ -155,7 +201,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Elektriker NEK400 (utstyr og arbeid)
                     </p>
@@ -166,7 +216,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Evt. ekstra elektriske punkter, belysning/downlights* 50
                       stk. DL
@@ -178,7 +232,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">Varmekabler</p>
                   </div>
                   <h4 className="text-black font-medium text-base">
@@ -187,7 +245,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Vannboren varme (prosjekt anbud)
                     </p>
@@ -198,7 +260,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">Flislegger</p>
                   </div>
                   <h4 className="text-black font-medium text-base">
@@ -207,7 +273,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Maling, tapet, gulvbelegg utvendig beis/maling
                     </p>
@@ -218,14 +288,22 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">Byggestrøm</p>
                   </div>
                   <h4 className="text-black font-medium text-base">30.000</h4>
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">Renovasjon</p>
                   </div>
                   <h4 className="text-black font-medium text-base">
@@ -234,7 +312,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">Byggevask</p>
                   </div>
                   <h4 className="text-black font-medium text-base">
@@ -243,7 +325,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">Byggesaksgebyr</p>
                   </div>
                   <h4 className="text-black font-medium text-base">
@@ -252,7 +338,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">Byggelånsrenter</p>
                   </div>
                   <h4 className="text-black font-medium text-base">
@@ -261,7 +351,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Uforutsette kostnader
                     </p>
@@ -272,7 +366,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Uavhengig kontroll
                     </p>
@@ -283,7 +381,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Oppgradering kjøkken - evt. annen innredning
                     </p>
@@ -294,7 +396,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Leveranse fra Bolig Partner AS
                     </p>
@@ -305,7 +411,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Antatt prisstigning til den 15.i den måned tømrerne
                       starter
@@ -315,7 +425,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base font-bold">
                       Sum byggkostnader
                     </p>
@@ -328,16 +442,25 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
               <div className="w-1/2 flex flex-col gap-4">
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">Tomtekjøp</p>
                   </div>
                   <h4 className="text-black font-medium text-base flex items-center gap-3">
-                    <Image src={Ic_plus} alt="image" /> Legg til
+                    <Image fetchPriority="auto" src={Ic_plus} alt="image" />{" "}
+                    Legg til
                   </h4>
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Oppmåling, tinglysning, målebrev, dokumentavgift
                     </p>
@@ -348,7 +471,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Tilknytningsavgift vann og kloakk
                     </p>
@@ -359,7 +486,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Tilknytningsavgift for strøm og fiber/bredbånd
                     </p>
@@ -370,7 +501,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Inntakskabel strøm og jordelektrode
                     </p>
@@ -381,7 +516,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Stikkgrøft med ledninger og kummer
                     </p>
@@ -392,7 +531,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Utstikking og kontrollmåling av plassering
                     </p>
@@ -403,7 +546,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Stikkveier på tomta
                     </p>
@@ -414,7 +561,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base">
                       Planering og andre tomtearbeider utenom utgraving
                     </p>
@@ -425,7 +576,11 @@ const Okonomi: React.FC<any> = ({ handleNext, handlePrevious }) => {
                 </div>
                 <div className="flex items-center gap-2 justify-between">
                   <div className="flex items-center gap-2">
-                    <Image src={Ic_info_circle} alt="icon" />
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_info_circle}
+                      alt="icon"
+                    />
                     <p className="text-secondary text-base font-bold">
                       Sum tomtekostnader
                     </p>

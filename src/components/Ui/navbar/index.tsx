@@ -96,6 +96,7 @@ const Header = () => {
                 alt="menu"
                 className="lg:hidden"
                 onClick={toggleDrawer}
+                fetchPriority="auto"
               />
               <Link href={"/"}>
                 <Image
@@ -103,6 +104,7 @@ const Header = () => {
                   alt="logo"
                   className="w-[90px] lg:w-auto"
                   id="logo"
+                  fetchPriority="auto"
                 />
               </Link>
             </div>
@@ -153,6 +155,7 @@ const Header = () => {
                         src={Ic_chevron_down}
                         alt="arrow"
                         className="w-[20px] h-[20px] md:w-auto md:h-auto"
+                        fetchPriority="auto"
                       />
                     </div>
                   )}
@@ -211,11 +214,12 @@ const Header = () => {
                   src={Ic_logo}
                   alt="logo"
                   className="w-[100px] lg:w-auto"
+                  fetchPriority="auto"
                 />
               </Link>
             </div>
             <button onClick={toggleDrawer} className="text-3xl">
-              <Image src={Ic_close} alt="close" />
+              <Image src={Ic_close} alt="close" fetchPriority="auto" />
             </button>
           </div>
           <div className="flex flex-col items-start font-medium gap-4">

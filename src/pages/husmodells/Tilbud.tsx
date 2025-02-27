@@ -26,10 +26,20 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
       content: (
         <div className="w-full gap-6 flex">
           <div className="w-1/2">
-            <Image src={Img_product_3d_img1} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img1}
+              alt="image"
+              className="w-full"
+            />
           </div>
           <div className="w-1/2">
-            <Image src={Img_product_3d_img2} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img2}
+              alt="image"
+              className="w-full"
+            />
           </div>
         </div>
       ),
@@ -109,11 +119,13 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
               >
                 <div className="relative">
                   <Image
+                    fetchPriority="auto"
                     src={Img_product1}
                     alt="image"
                     className="w-full h-[262px] object-cover rounded-[12px] overflow-hidden"
                   />
                   <Image
+                    fetchPriority="auto"
                     src={Img_product_logo1}
                     alt="image"
                     className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-auto"
@@ -150,6 +162,7 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
                   </div>
                   <div className="w-full">
                     <Image
+                      fetchPriority="auto"
                       src={Ic_Tilbud_line}
                       alt="image"
                       className="w-full"
@@ -192,6 +205,7 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
                       className={`rounded-[8px] p-4 flex items-center gap-3`}
                     >
                       <Image
+                        fetchPriority="auto"
                         src={item.imageSrc}
                         alt={item.title}
                         className="rounded-full overflow-hidden w-[80px] h-[80px]"
@@ -220,6 +234,7 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
                       className={`rounded-[8px] p-4 flex items-center gap-3`}
                     >
                       <Image
+                        fetchPriority="auto"
                         src={item.imageSrc}
                         alt={item.title}
                         className="rounded-full overflow-hidden w-[80px] h-[80px]"

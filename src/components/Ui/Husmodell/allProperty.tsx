@@ -117,7 +117,7 @@ const HouseModelAllProperty: React.FC<any> = () => {
       <div className="grid grid-cols-4 gap-x-8 gap-y-12">
         <Property
           propertyList={propertyList}
-          LinkHref={"/husmodell/husmodell-details?product"}
+          LinkHref={"/husmodells/husmodell-details?product"}
         />
       </div>
     </>

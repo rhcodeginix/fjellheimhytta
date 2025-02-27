@@ -413,7 +413,12 @@ const Tomt: React.FC<{
           style={{ display: "none" }}
         >
           <SideSpaceContainer>
-            <Image src={Ic_logo} alt="logo" className="w-[100px] lg:w-auto" />
+            <Image
+              fetchPriority="auto"
+              src={Ic_logo}
+              alt="logo"
+              className="w-[100px] lg:w-auto"
+            />
           </SideSpaceContainer>
         </div>
 
@@ -433,9 +438,14 @@ const Tomt: React.FC<{
                 Eiendomsinformasjon
               </h3>
               {isOpen ? (
-                <Image src={Ic_chevron_up} alt="arrow" />
+                <Image fetchPriority="auto" src={Ic_chevron_up} alt="arrow" />
               ) : (
-                <Image src={Ic_chevron_up} alt="arrow" className="rotate-180" />
+                <Image
+                  fetchPriority="auto"
+                  src={Ic_chevron_up}
+                  alt="arrow"
+                  className="rotate-180"
+                />
               )}
             </div>
             <div className={`mt-6 ${isOpen ? "block" : "hidden"}`}>
@@ -446,6 +456,7 @@ const Tomt: React.FC<{
                       Tomteopplysninger
                       <div className="relative">
                         <Image
+                          fetchPriority="auto"
                           src={Ic_info_circle}
                           alt="info"
                           className="notShow cursor-pointer"
@@ -542,9 +553,17 @@ const Tomt: React.FC<{
                             .isRegisteredLand === "Ja" ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .isRegisteredLand === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -565,6 +584,7 @@ const Tomt: React.FC<{
                       Kommunale data
                       <div className="relative">
                         <Image
+                          fetchPriority="auto"
                           src={Ic_info_circle}
                           alt="info"
                           className="notShow cursor-pointer"
@@ -655,6 +675,7 @@ const Tomt: React.FC<{
                       Eiendomsstatus
                       <div className="relative">
                         <Image
+                          fetchPriority="auto"
                           src={Ic_info_circle}
                           alt="info"
                           className="notShow cursor-pointer"
@@ -686,9 +707,17 @@ const Tomt: React.FC<{
                             .canBeSold === true ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .canBeSold === "Ja" ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -699,9 +728,17 @@ const Tomt: React.FC<{
                             .canBeMortgaged === true ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .canBeMortgaged === "Ja" ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -712,9 +749,17 @@ const Tomt: React.FC<{
                             .hasBuilding === true ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .hasBuilding === "Ja" ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -727,9 +772,17 @@ const Tomt: React.FC<{
                             .hasHolidayHome === true ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .hasHolidayHome === "Ja" ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -740,9 +793,17 @@ const Tomt: React.FC<{
                             .hasHousing === true ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .hasHousing === "Ja" ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -753,6 +814,7 @@ const Tomt: React.FC<{
                       Parkeringsinformasjon
                       <div className="relative">
                         <Image
+                          fetchPriority="auto"
                           src={Ic_info_circle}
                           alt="info"
                           className="notShow cursor-pointer"
@@ -844,9 +906,17 @@ const Tomt: React.FC<{
                         <h5 className="text-base text-black font-medium">
                           {askData?.bya_calculations?.results?.parking
                             ?.is_uncertain === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -857,6 +927,7 @@ const Tomt: React.FC<{
                       Ytterligere eiendomsforhold
                       <div className="relative">
                         <Image
+                          fetchPriority="auto"
                           src={Ic_info_circle}
                           alt="info"
                           className="notShow cursor-pointer"
@@ -892,9 +963,17 @@ const Tomt: React.FC<{
                             .hasSoilContamination === "Ja" ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .hasSoilContamination === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -907,9 +986,17 @@ const Tomt: React.FC<{
                             .hasActiveLeasedLand === "Ja" ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .hasActiveLeasedLand === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -922,9 +1009,17 @@ const Tomt: React.FC<{
                             .includedInTotalRealEstate === "Ja" ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .includedInTotalRealEstate === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -937,9 +1032,17 @@ const Tomt: React.FC<{
                             ?.kulturminner_registrert === "Ja" ||
                           lamdaDataFromApi?.eiendomsInformasjon?.status
                             ?.kulturminner_registrert === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -952,9 +1055,17 @@ const Tomt: React.FC<{
                             ?.grunnforurensning === "Ja" ||
                           lamdaDataFromApi?.eiendomsInformasjon?.status
                             ?.grunnforurensning === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -965,6 +1076,7 @@ const Tomt: React.FC<{
                       Spesielle registreringer
                       <div className="relative">
                         <Image
+                          fetchPriority="auto"
                           src={Ic_info_circle}
                           alt="info"
                           className="notShow cursor-pointer"
@@ -1000,9 +1112,17 @@ const Tomt: React.FC<{
                             .numberOfPlots === "Ja" ||
                           CadastreDataFromApi?.cadastreApi?.response?.item
                             .numberOfPlots === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -1013,16 +1133,28 @@ const Tomt: React.FC<{
                             ?.basisInformasjon?.tinglyst === "Ja" ||
                           lamdaDataFromApi?.eiendomsInformasjon
                             ?.basisInformasjon?.tinglyst === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
                       <div className="flex items-center justify-between gap-1">
                         <p className="text-sm text-grayText">Ugyldig</p>
                         <h5 className="text-base text-black font-medium">
-                          <Image src={Ic_check} alt="check" />
+                          <Image
+                            fetchPriority="auto"
+                            src={Ic_check}
+                            alt="check"
+                          />
                         </h5>
                       </div>
                       <div className="flex items-center justify-between gap-1">
@@ -1034,9 +1166,17 @@ const Tomt: React.FC<{
                             ?.oppmaling_ikke_fullfort === "Ja" ||
                           lamdaDataFromApi?.eiendomsInformasjon?.status
                             ?.oppmaling_ikke_fullfort === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -1049,9 +1189,17 @@ const Tomt: React.FC<{
                             ?.mangler_grensepunktmerking === "Ja" ||
                           lamdaDataFromApi?.eiendomsInformasjon?.status
                             ?.mangler_grensepunktmerking === true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -1066,9 +1214,17 @@ const Tomt: React.FC<{
                             ?.under_sammenslaing ===
                             "Ja") ===
                             true ? (
-                            <Image src={Ic_check} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_check}
+                              alt="check"
+                            />
                           ) : (
-                            <Image src={Ic_x_close} alt="check" />
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_x_close}
+                              alt="check"
+                            />
                           )}
                         </h5>
                       </div>
@@ -1120,7 +1276,11 @@ const Tomt: React.FC<{
                                   <h2 className="text-black text-2xl font-semibold">
                                     Reguleringsplan
                                   </h2>
-                                  <Image src={Ic_generelt} alt="image" />
+                                  <Image
+                                    fetchPriority="auto"
+                                    src={Ic_generelt}
+                                    alt="image"
+                                  />
                                 </div>
                                 <div className="flex flex-col gap-3">
                                   <>
@@ -1132,6 +1292,7 @@ const Tomt: React.FC<{
                                             key={index}
                                           >
                                             <Image
+                                              fetchPriority="auto"
                                               src={Ic_check_true}
                                               alt="image"
                                             />
@@ -1186,6 +1347,7 @@ const Tomt: React.FC<{
                                       }}
                                     >
                                       <Image
+                                        fetchPriority="auto"
                                         src={Ic_chevron_right}
                                         alt="arrow"
                                         className={`${selectedImage?.id !== images[0]?.id && "cursor-pointer"} rotate-180`}
@@ -1223,6 +1385,7 @@ const Tomt: React.FC<{
                                       }}
                                     >
                                       <Image
+                                        fetchPriority="auto"
                                         src={Ic_chevron_right}
                                         alt="arrow"
                                         className={`${selectedImage?.id !== images[images.length - 1]?.id && "cursor-pointer"}`}
@@ -1282,6 +1445,7 @@ const Tomt: React.FC<{
                                       }}
                                     >
                                       <Image
+                                        fetchPriority="auto"
                                         src={Ic_chevron_right}
                                         alt="arrow"
                                         className={`${selectedImage?.id !== images[0]?.id ? "cursor-pointer opacity-100" : "opacity-50"} rotate-180`}
@@ -1316,6 +1480,7 @@ const Tomt: React.FC<{
                                       }}
                                     >
                                       <Image
+                                        fetchPriority="auto"
                                         src={Ic_chevron_right}
                                         alt="arrow"
                                         className={`${selectedImage?.id !== images[images.length - 1]?.id ? "cursor-pointer opacity-100" : "opacity-50"}`}
@@ -1351,7 +1516,11 @@ const Tomt: React.FC<{
                                 <h2 className="text-black text-2xl font-semibold">
                                   Kommuneplan for Asker
                                 </h2>
-                                <Image src={Ic_generelt} alt="image" />
+                                <Image
+                                  fetchPriority="auto"
+                                  src={Ic_generelt}
+                                  alt="image"
+                                />
                               </div>
                               <div className="flex flex-col gap-3">
                                 {askData &&
@@ -1362,6 +1531,7 @@ const Tomt: React.FC<{
                                         key={index}
                                       >
                                         <Image
+                                          fetchPriority="auto"
                                           src={Ic_check_true}
                                           alt="image"
                                         />
@@ -1408,7 +1578,11 @@ const Tomt: React.FC<{
                                 className="flex gap-2 items-center cursor-pointer notShow"
                                 onClick={captureScreenshotAndDownloadPDF}
                               >
-                                <Image src={Ic_download} alt="download" />
+                                <Image
+                                  fetchPriority="auto"
+                                  src={Ic_download}
+                                  alt="download"
+                                />
                                 <h4 className="text-primary text-base font-semibold">
                                   Download Regulation Document
                                 </h4>
@@ -1535,7 +1709,7 @@ const Tomt: React.FC<{
             className="mt-[60px] flex w-full gap-6 items-start"
           >
             <div className="flex flex-col gap-[15px] bg-[#F9F9FB] rounded-[8px] py-5 px-6 w-[30%]">
-              <Image src={Ic_steddy} alt="logo" />
+              <Image fetchPriority="auto" src={Ic_steddy} alt="logo" />
               <p className="text-secondary text-sm">
                 Vi hjelper deg med regelverk, søknader og anbudstilbud.
               </p>
@@ -1651,7 +1825,8 @@ const Tomt: React.FC<{
                         className="
                             text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                       >
-                        Fortsett med <Image src={Ic_vapp} alt="logo" />
+                        Fortsett med{" "}
+                        <Image fetchPriority="auto" src={Ic_vapp} alt="logo" />
                       </button>
                     </div>
                   </div>
@@ -1702,7 +1877,11 @@ const Tomt: React.FC<{
                   >
                     <div className="flex items-center gap-4">
                       <div className="w-[60px] h-[60px] rounded-full bg-lightPurple customShadow flex items-center justify-center">
-                        <Image src={build.icon} alt="garaje" />
+                        <Image
+                          fetchPriority="auto"
+                          src={build.icon}
+                          alt="garaje"
+                        />
                       </div>
                       <h5 className="text-black text-lg font-semibold">
                         {build.name}

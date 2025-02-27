@@ -24,9 +24,9 @@ const Accordion: React.FC<AccordionProps> = ({
       >
         <span className="text-black text-lg font-semibold">{title}</span>
         {isActive ? (
-          <Image src={Ic_chevron_up} alt="arrow" />
+          <Image src={Ic_chevron_up} alt="arrow" fetchPriority="auto" />
         ) : (
-          <Image src={Ic_chevron_down} alt="arrow" />
+          <Image src={Ic_chevron_down} alt="arrow" fetchPriority="auto" />
         )}
       </button>
       <div

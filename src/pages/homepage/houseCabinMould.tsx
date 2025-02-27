@@ -22,31 +22,37 @@ const HouseCabinMould = () => {
             </h3>
             <div className="flex items-center justify-between w-full overFlowScrollHidden overflow-x-auto gap-4">
               <Image
+                fetchPriority="auto"
                 src={Ic_BP_logo}
                 alt="logo"
                 className="w-[110px] md:w-[130px] lg:w-auto"
               />
               <Image
+                fetchPriority="auto"
                 src={Ic_saltdalshytta_logo}
                 alt="logo"
                 className="w-[110px] md:w-[130px] lg:w-auto"
               />
               <Image
+                fetchPriority="auto"
                 src={Ic_blink_hus_logo}
                 alt="logo"
                 className="w-[110px] md:w-[130px] lg:w-auto"
               />
               <Image
+                fetchPriority="auto"
                 src={Ic_mesterhus_logo}
                 alt="logo"
                 className="w-[110px] md:w-[130px] lg:w-auto"
               />
               <Image
+                fetchPriority="auto"
                 src={Ic_systemhus_logo}
                 alt="logo"
                 className="w-[110px] md:w-[130px] lg:w-auto"
               />
               <Image
+                fetchPriority="auto"
                 src={Ic_nordbohus_logo}
                 alt="logo"
                 className="w-[110px] md:w-[130px] lg:w-auto"

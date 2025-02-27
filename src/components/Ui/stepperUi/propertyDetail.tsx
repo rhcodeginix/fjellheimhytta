@@ -18,6 +18,7 @@ const PropertyDetail: React.FC<any> = ({
     <>
       <div className="bg-lightPurple py-[20px] relative">
         <Image
+          fetchPriority="auto"
           src={Img_line_bg}
           alt="image"
           className="absolute top-0 left-0 w-full h-full"
@@ -86,7 +87,11 @@ const PropertyDetail: React.FC<any> = ({
           ) : (
             <div className="flex gap-[70px] justify-between">
               <div className="w-1/4 flex items-start gap-3">
-                <Image src={Ic_check_green_icon} alt="check" />
+                <Image
+                  fetchPriority="auto"
+                  src={Ic_check_green_icon}
+                  alt="check"
+                />
                 <div className="flex flex-col gap-1">
                   <p className="text-white text-sm">Eiendommen er</p>
                   <p className="text-white text-base font-semibold">
@@ -95,7 +100,11 @@ const PropertyDetail: React.FC<any> = ({
                 </div>
               </div>
               <div className="w-1/4 flex items-start gap-3">
-                <Image src={Ic_check_green_icon} alt="check" />
+                <Image
+                  fetchPriority="auto"
+                  src={Ic_check_green_icon}
+                  alt="check"
+                />
                 <div className="flex flex-col gap-1">
                   <p className="text-white text-sm">Eiendommen har en</p>
                   <p className="text-white text-base font-semibold">
@@ -105,7 +114,11 @@ const PropertyDetail: React.FC<any> = ({
                 </div>
               </div>
               <div className="w-1/4 flex items-start gap-3">
-                <Image src={Ic_check_green_icon} alt="check" />
+                <Image
+                  fetchPriority="auto"
+                  src={Ic_check_green_icon}
+                  alt="check"
+                />
                 <div className="flex flex-col gap-1">
                   <p className="text-white text-sm">Ekisterende BYA</p>
                   <p className="text-white text-base font-semibold">
@@ -181,7 +194,11 @@ const PropertyDetail: React.FC<any> = ({
                 </div>
               </div>
               <div className="w-1/4 flex items-start gap-3">
-                <Image src={Ic_check_green_icon} alt="check" />
+                <Image
+                  fetchPriority="auto"
+                  src={Ic_check_green_icon}
+                  alt="check"
+                />
                 <div className="flex flex-col gap-1">
                   <p className="text-white text-sm">Boligen kan ha en</p>
                   <p className="text-white text-base font-semibold">

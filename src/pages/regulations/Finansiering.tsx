@@ -19,10 +19,20 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
       content: (
         <div className="w-full gap-6 flex">
           <div className="w-1/2">
-            <Image src={Img_product_3d_img1} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img1}
+              alt="image"
+              className="w-full"
+            />
           </div>
           <div className="w-1/2">
-            <Image src={Img_product_3d_img2} alt="image" className="w-full" />
+            <Image
+              fetchPriority="auto"
+              src={Img_product_3d_img2}
+              alt="image"
+              className="w-full"
+            />
           </div>
         </div>
       ),
@@ -320,7 +330,11 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
                           </span>{" "}
                           hos:
                         </h3>
-                        <Image src={Ic_spareBank} alt="icon" />
+                        <Image
+                          fetchPriority="auto"
+                          src={Ic_spareBank}
+                          alt="icon"
+                        />
                       </div>
                       <div className="flex flex-col gap-4">
                         <div className="flex items-center justify-between">
@@ -391,7 +405,11 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
                         />
                       </div>
                       <div className="flex items-start gap-4">
-                        <Image src={Ic_info_circle} alt="icon" />
+                        <Image
+                          fetchPriority="auto"
+                          src={Ic_info_circle}
+                          alt="icon"
+                        />
                         <p className="text-secondary text-base font-medium">
                           Låneramme til oppføring av bolig/fritidsbolig. Blir
                           gjort om til nedbetalingslån ved ferdigstilling av

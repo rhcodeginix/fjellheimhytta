@@ -137,6 +137,7 @@ const AllProperty: React.FC<any> = () => {
                   src={Img_plot_analysis}
                   alt="product-image"
                   className="w-full rounded-[12px] overflow-hidden"
+                  fetchPriority="auto"
                 />
               </div>
               <h3 className="text-black text-lg font-bold mb-2">
@@ -162,6 +163,7 @@ const AllProperty: React.FC<any> = () => {
                   src={Img_architect_design_house}
                   alt="product-image"
                   className="w-full rounded-[12px] overflow-hidden"
+                  fetchPriority="auto"
                 />
               </div>
               <h3 className="text-black text-lg font-bold mb-2">

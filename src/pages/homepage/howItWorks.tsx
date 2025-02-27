@@ -99,6 +99,7 @@ const HowItWorks = () => {
                   onClick={() => scrollToSection(index)}
                 >
                   <Image
+                    fetchPriority="auto"
                     src={tab.icon}
                     alt={tab.label}
                     className="w-[28px] desktop:w-auto"
@@ -128,6 +129,7 @@ const HowItWorks = () => {
                   style={{ scrollSnapAlign: "start" }}
                 >
                   <Image
+                    fetchPriority="auto"
                     src={tab.image}
                     alt="image"
                     className="w-full rounded-[20px]"
@@ -146,7 +148,12 @@ const HowItWorks = () => {
                   className={`flex w-[240px] sm:w-[270px] gap-2.5 items-start border-b-[4px] py-3 ${activeSection === index ? "border-primary" : "border-transparent"}`}
                   onClick={() => scrollSec(index)}
                 >
-                  <Image src={tab.icon} alt={tab.label} className="w-[24px]" />
+                  <Image
+                    fetchPriority="auto"
+                    src={tab.icon}
+                    alt={tab.label}
+                    className="w-[24px]"
+                  />
                   <div className="flex flex-col gap-2 items-start">
                     <h4 className="font-medium text-black text-base normal-case one_line_elipse">
                       {tab.label}
@@ -167,6 +174,7 @@ const HowItWorks = () => {
                 style={{ display: activeSection === index ? "block" : "none" }}
               >
                 <Image
+                  fetchPriority="auto"
                   src={tab.image}
                   alt="image"
                   className="w-full rounded-[20px]"

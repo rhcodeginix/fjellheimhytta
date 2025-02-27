@@ -20,10 +20,20 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
       content: (
         <div className="w-full gap-6 flex">
           <div className="w-1/2">
-            <Image src={Img_product_3d_img1} alt="image" className="w-full" />
+            <Image
+              src={Img_product_3d_img1}
+              alt="image"
+              className="w-full"
+              fetchPriority="auto"
+            />
           </div>
           <div className="w-1/2">
-            <Image src={Img_product_3d_img2} alt="image" className="w-full" />
+            <Image
+              src={Img_product_3d_img2}
+              alt="image"
+              className="w-full"
+              fetchPriority="auto"
+            />
           </div>
         </div>
       ),
@@ -50,6 +60,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
                   src={Img_product_logo1}
                   alt="image"
                   className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-auto"
+                  fetchPriority="auto"
                 />
               </div>
               <div className="my-[20px] flex items-center justify-between">
@@ -179,7 +190,12 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
               <h2 className="mb-6 text-black text-2xl font-semibold">
                 Plantegninger og fasader
               </h2>
-              <Image src={Img_product_map} alt="map" className="w-full" />
+              <Image
+                src={Img_product_map}
+                alt="map"
+                className="w-full"
+                fetchPriority="auto"
+              />
             </div>
             <div className="w-[57%]">
               <h2 className="text-black text-2xl font-semibold mb-4">
@@ -259,7 +275,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
               className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
-                router.push("/husmodell");
+                router.push("/husmodells");
               }}
             />
             <Button

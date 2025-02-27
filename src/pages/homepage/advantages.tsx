@@ -50,7 +50,7 @@ const Advantages = () => {
               key={id}
               className="sm:w-[33%] flex flex-col items-center justify-center"
             >
-              <Image src={image} alt={title} />
+              <Image src={image} alt={title} fetchPriority="auto" />
               <h4 className="text-black text-base desktop:text-xl font-medium text-center mt-3 md:mt-[20px] mb-2">
                 {title}
               </h4>

@@ -13,11 +13,13 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
       >
         <div className="relative w-[42%]">
           <Image
+            fetchPriority="auto"
             src={Img_product1}
             alt="image"
             className="w-full h-[262px] object-cover rounded-[12px] overflow-hidden"
           />
           <Image
+            fetchPriority="auto"
             src={Img_product_logo1}
             alt="image"
             className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-auto"
@@ -53,6 +55,7 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
             </div>
             <div className="w-full">
               <Image
+                fetchPriority="auto"
                 src={Ic_productDetailWithPrice}
                 alt="image"
                 className="w-full"

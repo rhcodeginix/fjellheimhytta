@@ -75,7 +75,7 @@ const Register = () => {
           }}
         >
           <Link href={"/"}>
-            <Image src={Ic_logo} alt="logo" fetchPriority="high" />
+            <Image src={Ic_logo} alt="logo" fetchPriority="auto" />
           </Link>
           <Formik
             initialValues={{ email: "", password: "", name: "" }}
