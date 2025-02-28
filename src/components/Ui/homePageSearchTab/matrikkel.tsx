@@ -108,7 +108,7 @@ const MatrikkelTab = () => {
           <div className="lg:w-1/4">
             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
               <div className="w-[92%] lg:w-auto">
-                <div className="text-[#111322] mb-1 text-sm">Kommune</div>
+                <div className="text-[#111322] mb-1 text-sm">Kommunenummer</div>
                 <input
                   ref={kartInputRef}
                   type="number"

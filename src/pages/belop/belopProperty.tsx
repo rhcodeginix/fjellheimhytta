@@ -10,6 +10,10 @@ const BelopProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;
 }> = ({ HouseModelProperty, isLoading }) => {
+  function formatPrice(price: any) {
+    const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return formatted + " NOK";
+  }
   return (
     <>
       <div>
@@ -43,8 +47,9 @@ const BelopProperty: React.FC<{
                         <span className="text-[#10182899]">
                           (
                           {
-                            property?.lamdaDataFromApi?.eiendomsInformasjon
-                              ?.kommune_info?.kommune
+                            property?.CadastreDataFromApi
+                              ?.presentationAddressApi?.response?.item?.street
+                              ?.municipality?.municipalityName
                           }
                           )
                         </span>
@@ -70,7 +75,7 @@ const BelopProperty: React.FC<{
                           key={index}
                           src={index % 2 === 0 ? Img_plot : Img_plot_image1}
                           alt="image"
-                          className="w-full h-full rounded-[8px]"
+                          className="w-full h-full rounded-[8px] object-cover"
                           fetchPriority="auto"
                         />
                       </div>
@@ -87,8 +92,8 @@ const BelopProperty: React.FC<{
                       <div className="flex gap-3 items-center">
                         <div className="text-[#111322] text-xs md:text-sm font-semibold">
                           {
-                            property?.lamdaDataFromApi?.eiendomsInformasjon
-                              ?.basisInformasjon?.areal_beregnet
+                            property?.additionalData?.answer?.bya_calculations
+                              ?.results?.available_building_area
                           }{" "}
                           <span className="text-[#4A5578] font-normal">m²</span>
                         </div>
@@ -108,7 +113,10 @@ const BelopProperty: React.FC<{
                         </div>
                         <div className="border-l-2 border-[#7F56D9] h-[12px] mx-4"></div>
                         <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                          1.082{" "}
+                          {
+                            property?.additionalData?.answer?.bya_calculations
+                              ?.input?.plot_size
+                          }{" "}
                           <span className="text-[#4A5578] font-normal">m²</span>
                         </div>
                       </div>
@@ -122,7 +130,7 @@ const BelopProperty: React.FC<{
                           <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
                             {/* 2.800.00 NOK */}
                             {property.pris
-                              ? `${Math.round(property.pris * 0.2)} NOK`
+                              ? formatPrice(Math.round(property.pris * 0.2))
                               : "0 NOK"}
                           </h6>
                         </div>
@@ -135,7 +143,8 @@ const BelopProperty: React.FC<{
                             {/* {property.pris ? `${property.pris} NOK` : 0} */}
 
                             {property.pris
-                              ? `${Math.round(property.pris * 0.8)} NOK`
+                              ? // ? `${Math.round(property.pris * 0.8)} NOK`
+                                formatPrice(Math.round(property.pris * 0.8))
                               : "0 NOK"}
                           </h6>
                         </div>
@@ -149,7 +158,7 @@ const BelopProperty: React.FC<{
                             {/* {property.pris
                               ? `${(280000 + parseInt(property.pris)).toLocaleString()} NOK`
                               : "2.800.00 NOK"} */}
-                            {property.pris ? `${property.pris} NOK` : 0}
+                            {property.pris ? formatPrice(property.pris) : 0}
                           </h6>
                         </div>
                         <Button

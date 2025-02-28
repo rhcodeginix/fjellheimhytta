@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import Button from "@/components/common/button";
 
 const Belop: React.FC = () => {
-  const router = useRouter();
+  const router: any = useRouter();
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -114,10 +114,16 @@ const Belop: React.FC = () => {
           const querySnapshot = await getDocs(q);
 
           querySnapshot.forEach((doc) => {
-            allPlots.push({
-              id: doc.id,
-              ...doc.data(),
-            });
+            const data = doc.data();
+            if (
+              data.CadastreDataFromApi &&
+              data.CadastreDataFromApi.presentationAddressApi != null
+            ) {
+              allPlots.push({
+                id: doc.id,
+                ...data,
+              });
+            }
           });
         }
 
@@ -145,12 +151,18 @@ const Belop: React.FC = () => {
             <h3 className="text-[#111322] text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
               Kombinasjoner av <span className="font-bold">husmodell</span> og{" "}
               <span className="font-bold">tomt</span> i{" "}
-              <span className="font-bold text-blue">Akershus</span>
+              <span className="font-bold text-blue">
+                {router.query.city
+                  ? router.query.city.replace(/\s*\(\d+\)/, "")
+                  : ""}
+              </span>
             </h3>
-            <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
-              <span className="font-bold">{HouseModelProperty.length}</span>{" "}
-              treff i <span className="font-bold">2 606</span> annonser
-            </p>
+            {!isLoading && (
+              <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
+                <span className="font-bold">{HouseModelProperty.length}</span>{" "}
+                treff i <span className="font-bold">2 606</span> Tomter
+              </p>
+            )}
           </div>
           <div className="flex gap-6 relative pb-[56px]">
             <div className="w-[35%]">

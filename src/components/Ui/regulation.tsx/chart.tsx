@@ -1,12 +1,18 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
-const COLORS = ["#53389E", "#7F56D9", "#D6BBFB"];
+const getRandomColor = (index: number) => {
+  const baseHue = 260;
+  const variation = (index * 20) % 40;
+  return `hsl(${baseHue + variation}, 65%, ${50 + (index % 10)}%)`;
+};
+// const getRandomColor = (index: number) =>
+//   `hsl(${(index * 137) % 360}, 70%, 50%)`;
 
 const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
   const data = chartData.map((item: any) => ({
     name: item.Navn,
-    value: parseFloat(item.Eierandel),
+    value: parseFloat(item.value),
   }));
 
   return (
@@ -24,10 +30,7 @@ const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
               dataKey="value"
             >
               {data.map((_entry: any, index: any) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
+                <Cell key={`cell-${index}`} fill={getRandomColor(index)} />
               ))}
             </Pie>
           </PieChart>
@@ -44,7 +47,7 @@ const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
               <div className="h-[26px] w-3 flex items-center">
                 <div
                   className="w-full h-3 rounded-full"
-                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                  style={{ backgroundColor: getRandomColor(index) }}
                 ></div>
               </div>
               <div>

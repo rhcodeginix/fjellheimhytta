@@ -5,11 +5,18 @@ import HusmodellTab from "./husmodell";
 import MatrikkelTab from "./matrikkel";
 import Image from "next/image";
 import Img_main_bg from "@/public/images/Img_main_bg.png";
-import Img_map from "@/public/images/Img_map.png";
 import Img_plot from "@/public/images/Img_plot.png";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
-import { collection, getDocs, limit, query } from "firebase/firestore";
+import Img_plot_image1 from "@/public/images/Img_plot_image1.png";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  limit,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import Loading from "@/components/Loading";
 import GoogleMapComponent from "../map";
@@ -19,42 +26,6 @@ const tabs = [
   { id: "adresse", label: ["Start med", "adresse"] },
   { id: "husmodell", label: ["Start med", "husmodell"] },
   { id: "matrikkel", label: ["Start med", "matrikkel"] },
-];
-
-const adresseProperties = [
-  {
-    id: 1,
-    title: "Sokkabekkveien 77",
-    address: "3478 Nærsnes",
-    imgMap: Img_map,
-    description: "Herskapelige Almgaard er en drømmebolig for familien",
-    size: 233,
-    BYA: 25,
-    Tilbudpris: "8.300.000 NOK",
-    imageText: "Rammetillatelse",
-  },
-  {
-    id: 2,
-    title: "Sokkabekkveien 77",
-    address: "3478 Nærsnes",
-    imgMap: Img_map,
-    description: "Herskapelige Almgaard er en drømmebolig for familien",
-    size: 233,
-    BYA: 25,
-    Tilbudpris: "8.300.000 NOK",
-    imageText: "Rammetillatelse",
-  },
-  {
-    id: 3,
-    title: "Sokkabekkveien 77",
-    address: "3478 Nærsnes",
-    imgMap: Img_map,
-    description: "Herskapelige Almgaard er en drømmebolig for familien",
-    size: 233,
-    BYA: 25,
-    Tilbudpris: "8.300.000 NOK",
-    imageText: "Rammetillatelse",
-  },
 ];
 const husmodellProperties = [
   {
@@ -77,7 +48,7 @@ const husmodellProperties = [
     bathrooms: 3,
     price: 8300000,
     currency: "NOK",
-    imagePath: Img_plot,
+    imagePath: Img_plot_image1,
   },
   {
     name: "Utsyn",
@@ -95,31 +66,135 @@ const husmodellProperties = [
 const HomePageSearchTab: React.FC = () => {
   const [activeTab, setActiveTab] = useState("beløp");
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
+  const [MatrikelProperty, setMatrikelProperty] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMatrikelPropertyLoading, setIsMatrikelPropertyLoading] =
+    useState(false);
+
+  function formatPrice(price: any) {
+    const formatted = price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return formatted + " NOK";
+  }
 
   useEffect(() => {
     const fetchProperty = async () => {
       setIsLoading(true);
-      const propertiesCollectionRef = collection(db, "empty_plot");
-      const propertiesQuery = query(propertiesCollectionRef, limit(3));
+      setIsMatrikelPropertyLoading(true);
 
       try {
-        const propertiesSnapshot = await getDocs(propertiesQuery);
-        const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
-          propertyId: doc.id,
-          ...doc.data(),
-        }));
-        setHouseModelProperty(fetchedProperties);
+        const db = getFirestore();
+        const citiesSnapshot = await getDocs(collection(db, "cities"));
+
+        const fetchedCities = citiesSnapshot.docs.map((doc) => doc.data());
+
+        const filterProperty = fetchedCities.find(
+          (property) => property.name === "Akershus"
+        );
+
+        if (filterProperty && filterProperty.kommunenummer) {
+          const kommuneNumbers = Object.values(filterProperty.kommunenummer)
+            .map((value: any) =>
+              typeof value === "string"
+                ? value.replace(/"/g, "")
+                : value.toString()
+            )
+            .map((value) => parseInt(value, 10))
+            .filter((num) => !isNaN(num));
+
+          if (kommuneNumbers.length > 0) {
+            const allPlots: any = [];
+            const chunkSize = 10;
+
+            for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
+              const chunk = kommuneNumbers.slice(i, i + chunkSize);
+              const q = query(
+                collection(db, "empty_plot"),
+                where(
+                  "lamdaDataFromApi.searchParameters.kommunenummer",
+                  "in",
+                  chunk
+                )
+              );
+              const querySnapshot = await getDocs(q);
+
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.CadastreDataFromApi?.presentationAddressApi) {
+                  allPlots.push({ id: doc.id, ...data });
+                }
+              });
+            }
+
+            setHouseModelProperty(allPlots.slice(0, 3));
+          }
+        } else {
+          setHouseModelProperty([]);
+        }
+
+        const kommuneNumbersForMatrikel = fetchedCities
+          .filter((property) => property.name && property.kommunenummer)
+          .flatMap((property) =>
+            Object.values(property.kommunenummer)
+              .map((value: any) =>
+                typeof value === "string"
+                  ? value.replace(/"/g, "")
+                  : value.toString()
+              )
+              .map((value) => parseInt(value, 10))
+              .filter((num) => !isNaN(num))
+          );
+
+        if (kommuneNumbersForMatrikel.length > 0) {
+          const allMatrikelPlots: any = [];
+          const chunkSize = 10;
+
+          for (
+            let i = 0;
+            i < kommuneNumbersForMatrikel.length;
+            i += chunkSize
+          ) {
+            const chunk = kommuneNumbersForMatrikel.slice(i, i + chunkSize);
+            const querySnapshot = await getDocs(
+              query(
+                collection(db, "empty_plot"),
+                where(
+                  "CadastreDataFromApi.presentationAddressApi.response.item.municipality.municipalityName",
+                  "==",
+                  "ASKER"
+                ),
+                where(
+                  "lamdaDataFromApi.searchParameters.kommunenummer",
+                  "in",
+                  chunk
+                ),
+                limit(3)
+              )
+            );
+
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              if (data.CadastreDataFromApi?.presentationAddressApi) {
+                allMatrikelPlots.push({ id: doc.id, ...data });
+              }
+            });
+          }
+
+          setMatrikelProperty(allMatrikelPlots);
+        } else {
+          setMatrikelProperty([]);
+        }
       } catch (error) {
-        console.error("Error fetching user's properties:", error);
+        console.error("Error fetching properties:", error);
+        setHouseModelProperty([]);
+        setMatrikelProperty([]);
       } finally {
         setIsLoading(false);
+        setIsMatrikelPropertyLoading(false);
       }
     };
 
     fetchProperty();
   }, [db]);
-
   return (
     <>
       <div className="relative">
@@ -201,8 +276,9 @@ const HomePageSearchTab: React.FC = () => {
                     <span className="text-[#10182899]">
                       (
                       {
-                        property?.lamdaDataFromApi?.eiendomsInformasjon
-                          ?.kommune_info?.kommune
+                        property?.CadastreDataFromApi?.presentationAddressApi
+                          ?.response?.item?.street?.municipality
+                          ?.municipalityName
                       }
                       )
                     </span>
@@ -213,16 +289,17 @@ const HomePageSearchTab: React.FC = () => {
                         ?.response?.item?.formatted?.line2
                     }
                   </p>
-                  <div className="flex gap-2 mb-2 md:mb-3 desktop:mb-4">
+                  <div className="flex gap-2 mb-2 md:mb-3 desktop:mb-4 h-[185px]">
                     <div className="w-[63%]">
                       <Image
-                        src={Img_plot}
+                        key={index}
+                        src={index % 2 === 0 ? Img_plot : Img_plot_image1}
                         alt="image"
-                        className="w-full h-full rounded-[8px]"
+                        className="w-full h-full rounded-[8px] object-cover"
                         fetchPriority="auto"
                       />
                     </div>
-                    <div className="w-[37%] rounded-[8px] overflow-hidden">
+                    <div className="w-[37%] rounded-[8px] overflow-hidden h-full">
                       <GoogleMapComponent
                         coordinates={
                           property?.lamdaDataFromApi?.coordinates
@@ -263,7 +340,7 @@ const HomePageSearchTab: React.FC = () => {
                       <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
                         {/* 2.800.00 NOK */}
                         {property.pris
-                          ? `${Math.round(property.pris * 0.2)} NOK`
+                          ? formatPrice(Math.round(property.pris * 0.2))
                           : "0 NOK"}
                       </h6>
                     </div>
@@ -275,7 +352,8 @@ const HomePageSearchTab: React.FC = () => {
                         {/* {property.pris ? `${property.pris} NOK` : 0} */}
 
                         {property.pris
-                          ? `${Math.round(property.pris * 0.8)} NOK`
+                          ? // ? `${Math.round(property.pris * 0.8)} NOK`
+                            formatPrice(Math.round(property.pris * 0.8))
                           : "0 NOK"}
                       </h6>
                     </div>
@@ -289,7 +367,7 @@ const HomePageSearchTab: React.FC = () => {
                         {/* {property.pris
                               ? `${(280000 + parseInt(property.pris)).toLocaleString()} NOK`
                               : "2.800.00 NOK"} */}
-                        {property.pris ? `${property.pris} NOK` : 0}
+                        {property.pris ? formatPrice(property.pris) : 0}
                       </h6>
                     </div>
                     <Button
@@ -309,65 +387,79 @@ const HomePageSearchTab: React.FC = () => {
             Populære tomter i{" "}
             <span className="font-bold text-blue">Akershus</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {adresseProperties.map((property, index) => (
-              <div
-                key={index}
-                className="border border-[#EFF1F5] rounded-[8px] p-5"
-                style={{
-                  boxShadow:
-                    "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
-                }}
-              >
-                <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 font-bold">
-                  {property.title}
-                </h4>
-                <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
-                  {property.address}
-                </p>
-                <div className="relative mb-2 md:mb-3 desktop:mb-4">
-                  <Image
-                    src={property.imgMap}
-                    alt="image"
-                    className="w-full h-[234px] rounded-[8px]"
-                    fetchPriority="auto"
-                  />
-                  <span className="text-xs bg-[#FFFFFFB2] rounded-[32px] py-1 px-2 font-medium absolute top-3 left-3">
-                    {property.imageText}
-                  </span>
-                </div>
-                <h5 className="text-[#111322] font-medium text-sm md:text-base mb-2">
-                  {property.description}
-                </h5>
-                <div className="flex gap-3 items-center">
-                  <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                    {property.size}{" "}
-                    <span className="text-[#4A5578] font-normal">m²</span>
+          {isLoading ? (
+            <div className="relative">
+              <Loading />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+              {HouseModelProperty.map((property: any, index) => (
+                <div
+                  key={index}
+                  className="border border-[#EFF1F5] rounded-[8px] p-5"
+                  style={{
+                    boxShadow:
+                      "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+                  }}
+                >
+                  <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 font-bold">
+                    {
+                      property?.CadastreDataFromApi?.presentationAddressApi
+                        ?.response?.item?.formatted?.line1
+                    }
+                  </h4>
+                  <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
+                    {
+                      property?.CadastreDataFromApi?.presentationAddressApi
+                        ?.response?.item?.formatted?.line2
+                    }
+                  </p>
+                  <div className="relative mb-2 md:mb-3 desktop:mb-4">
+                    <div className="w-full h-[234px] rounded-[8px] overflow-hidden">
+                      <GoogleMapComponent
+                        coordinates={
+                          property?.lamdaDataFromApi?.coordinates
+                            ?.convertedCoordinates
+                        }
+                      />
+                    </div>
                   </div>
-                  <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                  <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                    {property.BYA}{" "}
-                    <span className="text-[#4A5578] font-normal">BYA</span>
+                  <div className="flex gap-3 items-center">
+                    <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                      {
+                        property?.lamdaDataFromApi?.eiendomsInformasjon
+                          ?.basisInformasjon?.areal_beregnet
+                      }{" "}
+                      <span className="text-[#4A5578] font-normal">m²</span>
+                    </div>
+                    <div className="border-l border-[#EAECF0] h-[12px]"></div>
+                    <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                      {
+                        property?.additionalData?.answer?.bya_calculations
+                          ?.input?.bya_percentage
+                      }
+                      % <span className="text-[#4A5578] font-normal">BYA</span>
+                    </div>
+                  </div>
+                  <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
+                  <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
+                    <div>
+                      <p className="text-[#4A5578] text-xs md:text-sm mb-1">
+                        Tilbudpris
+                      </p>
+                      <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
+                        {formatPrice(property.pris)}
+                      </h6>
+                    </div>
+                    <Button
+                      text="Utforsk"
+                      className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                    />
                   </div>
                 </div>
-                <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
-                <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-[#4A5578] text-xs md:text-sm mb-1">
-                      Tilbudpris
-                    </p>
-                    <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                      {property.Tilbudpris}
-                    </h6>
-                  </div>
-                  <Button
-                    text="Utforsk"
-                    className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </SideSpaceContainer>
       </div>
       <div className={`${activeTab === "husmodell" ? "block" : "hidden"}`}>
@@ -423,7 +515,7 @@ const HomePageSearchTab: React.FC = () => {
                       <span className="font-semibold">{property.name}</span>
                     </p>
                     <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                      {property.price}
+                      {formatPrice(property.price)}
                     </h6>
                   </div>
                   <Button
@@ -441,65 +533,79 @@ const HomePageSearchTab: React.FC = () => {
           <h2 className="text-black text-[24px] md:text-[28px] lg:text-[32px] desktop:text-[48px] desktop:leading-[56px] mb-5 lg:mb-[20px] text-center desktop:tracking-[-1px] md:mb-[32px] desktop:mb-[40px]">
             Populære tomter i <span className="font-bold text-blue">Asker</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {adresseProperties.map((property, index) => (
-              <div
-                key={index}
-                className="border border-[#EFF1F5] rounded-[8px] p-5"
-                style={{
-                  boxShadow:
-                    "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
-                }}
-              >
-                <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 font-bold">
-                  {property.title}
-                </h4>
-                <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
-                  {property.address}
-                </p>
-                <div className="relative mb-2 md:mb-3 desktop:mb-4">
-                  <Image
-                    src={property.imgMap}
-                    alt="image"
-                    className="w-full h-[234px] rounded-[8px]"
-                    fetchPriority="auto"
-                  />
-                  <span className="text-xs bg-[#FFFFFFB2] rounded-[32px] py-1 px-2 font-medium absolute top-3 left-3">
-                    {property.imageText}
-                  </span>
-                </div>
-                <h5 className="text-[#111322] font-medium text-sm md:text-base mb-2">
-                  {property.description}
-                </h5>
-                <div className="flex gap-3 items-center">
-                  <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                    {property.size}{" "}
-                    <span className="text-[#4A5578] font-normal">m²</span>
+          {isMatrikelPropertyLoading ? (
+            <div className="relative">
+              <Loading />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+              {MatrikelProperty.map((property: any, index) => (
+                <div
+                  key={index}
+                  className="border border-[#EFF1F5] rounded-[8px] p-5"
+                  style={{
+                    boxShadow:
+                      "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+                  }}
+                >
+                  <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 font-bold">
+                    {
+                      property?.CadastreDataFromApi?.presentationAddressApi
+                        ?.response?.item?.formatted?.line1
+                    }
+                  </h4>
+                  <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
+                    {
+                      property?.CadastreDataFromApi?.presentationAddressApi
+                        ?.response?.item?.formatted?.line2
+                    }
+                  </p>
+                  <div className="relative mb-2 md:mb-3 desktop:mb-4">
+                    <div className="w-full h-[234px] rounded-[8px] overflow-hidden">
+                      <GoogleMapComponent
+                        coordinates={
+                          property?.lamdaDataFromApi?.coordinates
+                            ?.convertedCoordinates
+                        }
+                      />
+                    </div>
                   </div>
-                  <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                  <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                    {property.BYA}{" "}
-                    <span className="text-[#4A5578] font-normal">BYA</span>
+                  <div className="flex gap-3 items-center">
+                    <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                      {
+                        property?.lamdaDataFromApi?.eiendomsInformasjon
+                          ?.basisInformasjon?.areal_beregnet
+                      }{" "}
+                      <span className="text-[#4A5578] font-normal">m²</span>
+                    </div>
+                    <div className="border-l border-[#EAECF0] h-[12px]"></div>
+                    <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                      {
+                        property?.additionalData?.answer?.bya_calculations
+                          ?.input?.bya_percentage
+                      }
+                      % <span className="text-[#4A5578] font-normal">BYA</span>
+                    </div>
+                  </div>
+                  <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
+                  <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
+                    <div>
+                      <p className="text-[#4A5578] text-xs md:text-sm mb-1">
+                        Tilbudpris
+                      </p>
+                      <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
+                        {formatPrice(property.pris)}
+                      </h6>
+                    </div>
+                    <Button
+                      text="Utforsk"
+                      className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                    />
                   </div>
                 </div>
-                <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
-                <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-[#4A5578] text-xs md:text-sm mb-1">
-                      Tilbudpris
-                    </p>
-                    <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                      {property.Tilbudpris}
-                    </h6>
-                  </div>
-                  <Button
-                    text="Utforsk"
-                    className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </SideSpaceContainer>
       </div>
     </>

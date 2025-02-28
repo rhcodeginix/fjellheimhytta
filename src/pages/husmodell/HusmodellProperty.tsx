@@ -10,6 +10,10 @@ const HusmodellProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;
 }> = ({ HouseModelProperty, isLoading }) => {
+  function formatPrice(price: any) {
+    const formatted = price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return formatted + " NOK";
+  }
   return (
     <>
       <div>
@@ -64,7 +68,7 @@ const HusmodellProperty: React.FC<{
                           key={index}
                           src={index % 2 === 0 ? Img_plot : Img_plot_image1}
                           alt="image"
-                          className="w-full h-full rounded-[8px]"
+                          className="w-full h-full rounded-[8px] object-cover"
                           fetchPriority="auto"
                         />
                       </div>
@@ -111,7 +115,7 @@ const HusmodellProperty: React.FC<{
                             Totalpris med tomt
                           </p>
                           <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                            {property.pris ? `${property.pris} NOK` : 0}
+                            {property.pris ? formatPrice(property.pris) : 0}
                           </h6>
                         </div>
                         <Button

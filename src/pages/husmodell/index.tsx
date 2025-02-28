@@ -61,10 +61,16 @@ const HusmodellPropertyPage: React.FC = () => {
         const querySnapshot = await getDocs(q);
 
         querySnapshot.forEach((doc) => {
-          allPlots.push({
-            id: doc.id,
-            ...doc.data(),
-          });
+          const data = doc.data();
+          if (
+            data.CadastreDataFromApi &&
+            data.CadastreDataFromApi.presentationAddressApi != null
+          ) {
+            allPlots.push({
+              id: doc.id,
+              ...data,
+            });
+          }
         });
 
         setHouseModelProperty(allPlots);
@@ -88,10 +94,12 @@ const HusmodellPropertyPage: React.FC = () => {
               <span className="font-bold">Husmodeller</span> i{" "}
               <span className="font-bold text-blue">Asker</span>
             </h3>
-            <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
-              <span className="font-bold">{HouseModelProperty.length}</span>{" "}
-              treff i <span className="font-bold">2 606</span> annonser
-            </p>
+            {!isLoading && (
+              <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
+                <span className="font-bold">{HouseModelProperty.length}</span>{" "}
+                treff i <span className="font-bold">2 606</span> Tomter
+              </p>
+            )}
           </div>
           <div className="flex gap-6 relative pb-[56px]">
             <div className="w-[35%]">

@@ -305,7 +305,6 @@ const Tomt: React.FC<{
     BBOXData[3] + 30,
   ];
   const [featureInfo, setFeatureInfo] = useState<string | null>(null);
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFeatureInfo = async () => {
@@ -314,7 +313,12 @@ const Tomt: React.FC<{
       try {
         const response = await fetch(url);
         const data = await response.text();
-        setFeatureInfo(data);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, "text/html");
+        const images = doc.querySelectorAll("img");
+        images.forEach((img) => img.remove());
+        const cleanedHTML = doc.body.innerHTML;
+        setFeatureInfo(cleanedHTML);
       } catch (error) {
         console.error("Error fetching feature info:", error);
         setFeatureInfo("<p>Error loading data</p>");
@@ -324,31 +328,6 @@ const Tomt: React.FC<{
       fetchFeatureInfo();
     }
   }, [isValidBBOX, BBOXData]);
-
-  useEffect(() => {
-    const convertToImage = async () => {
-      const hiddenDiv = document.createElement("div");
-      hiddenDiv.style.position = "absolute";
-      hiddenDiv.style.left = "-9999px";
-      hiddenDiv.style.width = "360px";
-      hiddenDiv.style.fontSize = "14px";
-      hiddenDiv.style.padding = "10px";
-      hiddenDiv.style.backgroundColor = "white";
-      hiddenDiv.innerHTML = featureInfo || "";
-
-      document.body.appendChild(hiddenDiv);
-
-      const canvas = await html2canvas(hiddenDiv);
-
-      setImageSrc(canvas.toDataURL("image/png"));
-
-      document.body.removeChild(hiddenDiv);
-    };
-
-    if (featureInfo) {
-      convertToImage();
-    }
-  }, [featureInfo]);
 
   const images = isValidBBOX
     ? [
@@ -362,15 +341,6 @@ const Tomt: React.FC<{
           src: `https://wms.geonorge.no/skwms1/wms.matrikkelkart?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=MatrikkelKart&STYLES=default&CRS=EPSG:25833&BBOX=${adjustedBBOX[0]},${adjustedBBOX[1]},${adjustedBBOX[2]},${adjustedBBOX[3]}&WIDTH=1024&HEIGHT=768&FORMAT=image/png`,
           alt: "Matrikkelkart image",
         },
-        ...(imageSrc
-          ? [
-              {
-                id: 3,
-                src: imageSrc,
-                alt: "Feature Info Image",
-              },
-            ]
-          : []),
       ]
     : [];
 
@@ -389,7 +359,7 @@ const Tomt: React.FC<{
     }
     setSelectedImage(image);
   };
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -398,6 +368,7 @@ const Tomt: React.FC<{
     { id: "Regulering", label: "Regulering" },
     { id: "Eierinformasjon", label: "Eierinformasjon" },
     { id: "Bygninger", label: "Bygninger" },
+    { id: "Dokument", label: "Dokument" },
   ];
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
 
@@ -1554,9 +1525,7 @@ const Tomt: React.FC<{
                 </>
               )}
               {activeTab === "Eierinformasjon" && (
-                <Eierinformasjon
-                  data={CadastreDataFromApi?.ownersApi?.response?.items}
-                />
+                <Eierinformasjon data={lamdaDataFromApi?.latestOwnership} />
               )}
               {activeTab === "Bygninger" && (
                 <>
@@ -1697,6 +1666,29 @@ const Tomt: React.FC<{
                         </>
                       ) : (
                         <p>Ingen bygningsdata funnet.</p>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+              {activeTab === "Dokument" && (
+                <>
+                  {loadingLamdaData ? (
+                    <div className="relative">
+                      <Loading />
+                    </div>
+                  ) : (
+                    <>
+                      {isValidBBOX && featureInfo && (
+                        <div>
+                          <div
+                            dangerouslySetInnerHTML={{ __html: featureInfo }}
+                            style={{
+                              width: "100%",
+                              height: "820px",
+                            }}
+                          />
+                        </div>
                       )}
                     </>
                   )}

@@ -34,15 +34,12 @@ const HusmodellTab = () => {
           propertyId: doc.id,
           ...doc.data(),
         }));
-        const filterProperty = fetchedProperties.flatMap((property: any) =>
-          Array.isArray(property.kommunenummer)
-            ? property.kommunenummer.filter(
-                (num: any) => typeof num === "string"
-              )
-            : []
+
+        const mergedCities = fetchedProperties.flatMap((property: any) =>
+          Array.isArray(property.kommunerList) ? property.kommunerList : []
         );
 
-        setCities(filterProperty);
+        setCities(mergedCities);
       } catch (error) {
         console.error("Error fetching cities:", error);
       } finally {
@@ -54,7 +51,8 @@ const HusmodellTab = () => {
   }, [db]);
 
   const options = Cities.map((city: any) => ({
-    name: city,
+    name: city?.name,
+    number: city?.number,
   }));
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -91,7 +89,9 @@ const HusmodellTab = () => {
 
     if (hasError) return;
 
-    router.push(`husmodell?Kommue=${formData.Kommue}`);
+    const kommuneNumber = formData.Kommue.match(/\((\d+)\)/)?.[1] || "";
+
+    router.push(`husmodell?Kommue=${kommuneNumber}`);
   };
 
   return (
@@ -135,15 +135,22 @@ const HusmodellTab = () => {
                       {options.map((option, index) => (
                         <li
                           key={index}
-                          onClick={() => handleSelect(option.name)}
+                          onClick={() =>
+                            handleSelect(`${option.name} (${option.number})`)
+                          }
                           className={`text-sm text-[#111322] px-4 py-[14px] cursor-pointer 
                       ${
-                        formData.Kommue === option.name
+                        formData.Kommue === `${option.name} (${option.number})`
                           ? "bg-[#F9F5FF] font-semibold"
                           : "bg-white"
                       }`}
                         >
-                          <span>{option.name}</span>
+                          <span>
+                            {option.name}{" "}
+                            <span className="text-grayText font-normal">
+                              ({option.number})
+                            </span>
+                          </span>
                         </li>
                       ))}
                     </>
