@@ -8,6 +8,8 @@ import Ic_search from "@/public/images/Ic_search.svg";
 import Ic_search_location from "@/public/images/Ic_search_location.svg";
 import Ic_close from "@/public/images/Ic_close.svg";
 import ApiUtils from "@/api";
+import SelectDropDown from "@/components/common/form/select";
+import TextInputField from "@/components/common/form/inputAddText";
 
 const AddPlotForm = () => {
   const validationSchema = Yup.object({
@@ -19,6 +21,10 @@ const AddPlotForm = () => {
       Festenummer: Yup.string().notRequired(),
       Seksjonsnummer: Yup.string().notRequired(),
     }),
+    tomt_type: Yup.string().required("Type tomt er påkrevd"),
+    Tomtestørrelse: Yup.number().required("Tomtestørrelse er påkrevd"),
+    Utnyttelsesgrad: Yup.number().required("Utnyttelsesgrad er påkrevd"),
+    Byggeklausul: Yup.string().required("Byggeklausul er påkrevd"),
   });
 
   const handleSubmit = async (values: any) => {
@@ -67,6 +73,10 @@ const AddPlotForm = () => {
           Seksjonsnummer: "",
           Festenummer: "",
         },
+        tomt_type: "",
+        Tomtestørrelse: null,
+        Utnyttelsesgrad: null,
+        Byggeklausul: "",
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -81,7 +91,7 @@ const AddPlotForm = () => {
       }) => (
         <Form>
           <SideSpaceContainer>
-            <div className="pt-[50px] pb-[98px]">
+            <div className="pt-[50px] pb-[98px] flex flex-col gap-6">
               <div
                 className="rounded-[8px]"
                 style={{
@@ -411,6 +421,110 @@ const AddPlotForm = () => {
                       </p>
                     )}
                   </div>
+                </div>
+              </div>
+              <div
+                className="rounded-[8px]"
+                style={{
+                  boxShadow:
+                    "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
+                }}
+              >
+                <h4 className="p-6 font-medium text-base lg:text-lg border-b border-[#B9C0D4]">
+                  Grunniformasjon
+                </h4>
+                <div className="p-6 flex gap-[74px]">
+                  <div className="w-[36%] flex flex-col gap-6">
+                    <SelectDropDown
+                      label="Type tomt"
+                      name="tomt_type"
+                      id="tomt_type"
+                      placeholder="Enter Type tomt"
+                      errors={errors.tomt_type}
+                      touched={touched.tomt_type}
+                      onChange={(newValue) => {
+                        handleChange({
+                          target: {
+                            name: "tomt_type",
+                            value: newValue,
+                          },
+                        });
+                      }}
+                      options={[
+                        {
+                          value:
+                            "Boligtomt, Hyttetomt, Utviklingstomt, Tomtefelt",
+                          label:
+                            "Boligtomt, Hyttetomt, Utviklingstomt, Tomtefelt",
+                        },
+                        {
+                          value: "Boligtomt, Hyttetomt, Utviklingstomt",
+                          label: "Boligtomt, Hyttetomt, Utviklingstomt",
+                        },
+                        {
+                          value: "Boligtomt, Hyttetomt, Tomtefelt",
+                          label: "Boligtomt, Hyttetomt, Tomtefelt",
+                        },
+                        {
+                          value: "Boligtomt,  Utviklingstomt, Tomtefelt",
+                          label: "Boligtomt,  Utviklingstomt, Tomtefelt",
+                        },
+                      ]}
+                      value={values.tomt_type}
+                    />
+                    <TextInputField
+                      label="Tomtestørrelse"
+                      type="number"
+                      name="Tomtestørrelse"
+                      id="Tomtestørrelse"
+                      value={values.Tomtestørrelse}
+                      placeholder="Fyll inn tomtestørrelse"
+                      errors={errors}
+                      touched={touched}
+                      onChange={handleChange}
+                      text="m²"
+                    />
+                    <TextInputField
+                      label="Utnyttelsesgrad"
+                      type="number"
+                      name="Utnyttelsesgrad"
+                      id="Utnyttelsesgrad"
+                      value={values.Utnyttelsesgrad}
+                      placeholder="Fyll inn tomtens utnyttelsesgrad"
+                      errors={errors}
+                      touched={touched}
+                      onChange={handleChange}
+                      text="% BYA"
+                    />
+                    <SelectDropDown
+                      label="Byggeklausul (ja/nei)"
+                      name="Byggeklausul"
+                      id="Byggeklausul"
+                      placeholder="Velg om tomten har byggeklausul eller ikke"
+                      errors={errors.Byggeklausul}
+                      touched={touched.Byggeklausul}
+                      onChange={(newValue) => {
+                        handleChange({
+                          target: {
+                            name: "Byggeklausul",
+                            value: newValue,
+                          },
+                        });
+                      }}
+                      options={[
+                        {
+                          value: "Ja",
+                          label: "Ja",
+                        },
+                        {
+                          value: "Nei",
+                          label: "Nei",
+                        },
+                      ]}
+                      value={values.Byggeklausul}
+                    />
+                  </div>
+                  <div className="w-[64%]"></div>
                 </div>
               </div>
             </div>
