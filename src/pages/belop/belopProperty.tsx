@@ -130,7 +130,7 @@ const BelopProperty: React.FC<{
                           <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
                             {/* 2.800.00 NOK */}
                             {property.pris
-                              ? formatPrice(Math.round(property.pris * 0.2))
+                              ? formatPrice(Math.round(property.pris * 0.4))
                               : "0 NOK"}
                           </h6>
                         </div>
@@ -143,8 +143,8 @@ const BelopProperty: React.FC<{
                             {/* {property.pris ? `${property.pris} NOK` : 0} */}
 
                             {property.pris
-                              ? // ? `${Math.round(property.pris * 0.8)} NOK`
-                                formatPrice(Math.round(property.pris * 0.8))
+                              ? // ? `${Math.round(property.pris * 0.6)} NOK`
+                                formatPrice(Math.round(property.pris * 0.6))
                               : "0 NOK"}
                           </h6>
                         </div>

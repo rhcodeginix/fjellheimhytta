@@ -266,7 +266,10 @@ const HomePageSearchTab: React.FC = () => {
                   }}
                 >
                   <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2">
-                    <span className="font-bold">Almgård</span> bygget i{" "}
+                    <span className="font-bold">
+                      {index == 1 ? "Alta" : "Almgård"}
+                    </span>{" "}
+                    bygget i{" "}
                     <span className="font-bold">
                       {
                         property?.CadastreDataFromApi?.presentationAddressApi
@@ -335,12 +338,15 @@ const HomePageSearchTab: React.FC = () => {
                   <div className="gap-4 md:gap-5 lg:gap-6 flex items-center mb-2 md:mb-3 desktop:mb-4">
                     <div className="w-1/2">
                       <p className="text-[#4A5578] text-xs md:text-sm mb-1">
-                        Pris for <span className="font-semibold">Almgård</span>
+                        Pris for{" "}
+                        <span className="font-semibold">
+                          {index == 1 ? "Alta" : "Almgård"}
+                        </span>
                       </p>
                       <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
                         {/* 2.800.00 NOK */}
                         {property.pris
-                          ? formatPrice(Math.round(property.pris * 0.2))
+                          ? formatPrice(Math.round(property.pris * 0.4))
                           : "0 NOK"}
                       </h6>
                     </div>
@@ -352,8 +358,8 @@ const HomePageSearchTab: React.FC = () => {
                         {/* {property.pris ? `${property.pris} NOK` : 0} */}
 
                         {property.pris
-                          ? // ? `${Math.round(property.pris * 0.8)} NOK`
-                            formatPrice(Math.round(property.pris * 0.8))
+                          ? // ? `${Math.round(property.pris * 0.6)} NOK`
+                            formatPrice(Math.round(property.pris * 0.6))
                           : "0 NOK"}
                       </h6>
                     </div>

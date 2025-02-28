@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import HomePageSearchTab from "@/components/Ui/homePageSearchTab";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
+import Loading from "@/components/Loading";
 
 const MainSection = () => {
+  const [Cities, setCities] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      setIsLoading(true);
+      const citiesCollectionRef = collection(db, "cities");
+
+      try {
+        const citiesSnapshot = await getDocs(citiesCollectionRef);
+        const fetchedProperties: any = citiesSnapshot.docs.map((doc) => ({
+          propertyId: doc.id,
+          ...doc.data(),
+        }));
+
+        setCities(fetchedProperties);
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProperty();
+  }, [db]);
   return (
     <>
       <div
@@ -21,6 +49,34 @@ const MainSection = () => {
           </div>
         </SideSpaceContainer>
         <HomePageSearchTab />
+      </div>
+      <div className="bg-gray3 py-[60px]">
+        <SideSpaceContainer>
+          {isLoading ? (
+            <div className="relative">
+              <Loading />
+            </div>
+          ) : (
+            <div className="flex items-start gap-5">
+              <h5 className="text-[#101828] font-semibold text-sm md:text-base">
+                Tomte<span className="text-[#6941C6]">Banken</span>:
+              </h5>
+              <div className="flex gap-3 flex-wrap">
+                {Cities.map((city: any, index) => (
+                  <div
+                    key={index}
+                    className="border border-[#D6BBFB] rounded-[50px] text-sm py-[6px] px-3"
+                  >
+                    <span className="text-[#101828]">{city?.name}</span>{" "}
+                    <span className="text-[#667085]">
+                      ({city?.total_entries})
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </SideSpaceContainer>
       </div>
     </>
   );

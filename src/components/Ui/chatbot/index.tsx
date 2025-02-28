@@ -1,170 +1,8 @@
-// import React, { useEffect, useRef, useState } from "react";
-// import Ic_chat_with_us from "@/public/images/Ic_chat_with_us.svg";
-// import Ic_close from "@/public/images/Ic_close.svg";
-// import Ic_Send from "@/public/images/Ic_Send.svg";
-// import Ic_logo from "@/public/images/Ic_logo.svg";
-// import Image from "next/image";
-
-// const Chatbot: React.FC = () => {
-//   const [isChatOpen, setChatOpen] = useState(false);
-//   const getCurrentTime = () => {
-//     const currentTime = new Date();
-//     return `${currentTime.getHours().toString().padStart(2, "0")}:${currentTime
-//       .getMinutes()
-//       .toString()
-//       .padStart(2, "0")}`;
-//   };
-
-//   const [messages, setMessages] = useState([
-//     {
-//       sender: "bot",
-//       text: "Hello! How can I assist you today?",
-//       time: getCurrentTime(),
-//     },
-//   ]);
-//   const [inputValue, setInputValue] = useState("");
-
-//   const toggleChat = () => setChatOpen(!isChatOpen);
-
-//   const sendMessage = () => {
-//     if (!inputValue.trim()) return;
-
-//     const userMessage = {
-//       sender: "user",
-//       text: inputValue.trim(),
-//       time: getCurrentTime(),
-//     };
-
-//     setMessages((prevMessages) => [
-//       ...prevMessages,
-//       userMessage,
-//       getBotResponse(inputValue),
-//     ]);
-//     setInputValue("");
-//   };
-
-//   const getBotResponse = (input: string) => {
-//     const responseText = input.toLowerCase().includes("hello")
-//       ? "Hi there! How can I help?"
-//       : "I'm not sure I understand. Could you clarify?";
-//     return { sender: "bot", text: responseText, time: getCurrentTime() };
-//   };
-
-//   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-//     if (event.key === "Enter") {
-//       event.preventDefault();
-//       sendMessage();
-//     }
-//   };
-
-//   const today = new Date();
-//   const days = [
-//     "Sunday",
-//     "Monday",
-//     "Tuesday",
-//     "Wednesday",
-//     "Thursday",
-//     "Friday",
-//     "Saturday",
-//   ];
-//   const months = [
-//     "January",
-//     "February",
-//     "March",
-//     "April",
-//     "May",
-//     "June",
-//     "July",
-//     "August",
-//     "September",
-//     "October",
-//     "November",
-//     "December",
-//   ];
-//   const dayName = days[today.getDay()];
-//   const day = today.getDate().toString().padStart(2, "0");
-//   const monthName = months[today.getMonth()];
-//   const year = today.getFullYear();
-//   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-//   useEffect(() => {
-//     if (messagesEndRef.current) {
-//       messagesEndRef.current.scrollIntoView({ behavior: "instant" });
-//     }
-//   }, [messages]);
-//   return (
-//     <div className="chatbot_wrapper">
-//       <Image
-//         src={Ic_chat_with_us}
-//         alt="Open chat"
-//         className="chat-toggle-icon"
-//         onClick={toggleChat}
-//       />
-//       {isChatOpen && (
-//         <div className="chat-dropdown">
-//           <div className="chat-header shadow-shadow1 flex items-center justify-between">
-//             <Image src={Ic_logo} alt="logo" className="w-[90px]" />
-//             <button
-//               className="close-btn"
-//               onClick={toggleChat}
-//               aria-label="Close chat"
-//             >
-//               <Image src={Ic_close} alt="Close chat" />
-//             </button>
-//           </div>
-//           <div className="chat-body">
-//             <div className="chatbot_time">
-//               {`${dayName}, ${day} ${monthName} ${year}`}
-//             </div>
-//             <div className="chatbot-body-div">
-//               <div className="chatbot-body-div-wrapper">
-//                 {messages.map((msg, index) => (
-//                   <div
-//                     key={index}
-//                     className={`chat-message ${
-//                       msg.sender === "user" ? "user" : "bot"
-//                     }`}
-//                   >
-//                     <div className="chat-message-text">
-//                       <div>{msg.text}</div>
-//                       <span>{msg.time}</span>
-//                     </div>
-//                   </div>
-//                 ))}
-//                 <div ref={messagesEndRef} />
-//               </div>
-//             </div>
-//             <div className="send-chat-text">
-//               <div className="chat_input_div">
-//                 <input
-//                   className="form-control"
-//                   type="text"
-//                   placeholder="Write a message..."
-//                   value={inputValue}
-//                   onChange={(e) => setInputValue(e.target.value)}
-//                   onKeyDown={handleInputKeyDown}
-//                   aria-label="Write a message"
-//                 />
-//                 <button
-//                   className="send-button"
-//                   onClick={sendMessage}
-//                   aria-label="Send message"
-//                 >
-//                   <Image src={Ic_Send} alt="Send message" />
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Chatbot;
-
+import Button from "@/components/common/button";
+import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 const Chatbot: React.FC = () => {
+  const router = useRouter();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -189,7 +27,29 @@ const Chatbot: React.FC = () => {
     }
   }, []);
 
-  return <div className="chatbot_wrapper"></div>;
+  return (
+    <>
+      <div
+        className="fixed bottom-[12px] left-[12px] bg-white w-[240px] sm:w-[284px] border-[#EFF1F5] rounded-[12px] p-4"
+        style={{
+          zIndex: 9999999999,
+          boxShadow:
+            "0px -4px 12px -2px #1018281A, 0px 12px 16px -4px #1018281F",
+        }}
+      >
+        <h4 className="text-[#4A5578] text-sm mb-3">
+          <span className="font-bold">Har du en tomt du vil selge?</span>{" "}
+          Markedsfør den <span className="font-bold underline">gratis</span> på
+          mintomt.no!
+        </h4>
+        <Button
+          text="Markedsfør tomten din nå"
+          className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+          onClick={() => router.push("/add-plot")}
+        />
+      </div>
+    </>
+  );
 };
 
 export default Chatbot;

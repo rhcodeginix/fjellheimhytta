@@ -14,6 +14,7 @@ import HusmodellProperty from "./HusmodellProperty";
 
 const HusmodellPropertyPage: React.FC = () => {
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
+  const [Name, setName] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     address: "",
@@ -42,9 +43,11 @@ const HusmodellPropertyPage: React.FC = () => {
 
       try {
         const db = getFirestore();
-        const queryParams = new URLSearchParams(window.location.search);
+        const queryParams: any = new URLSearchParams(window.location.search);
+        const a = queryParams.get("Kommue").replace(/\s*\(\d+\)/, "");
+        setName(a);
 
-        const KommueQuery = queryParams.get("Kommue");
+        const KommueQuery = queryParams.get("Kommue").match(/\((\d+)\)/)?.[1];
 
         const plotsRef = collection(db, "empty_plot");
         const allPlots: any = [];
@@ -92,7 +95,7 @@ const HusmodellPropertyPage: React.FC = () => {
           <div className="flex items-end justify-between gap-4 mb-[40px]">
             <h3 className="text-[#111322] text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
               <span className="font-bold">Husmodeller</span> i{" "}
-              <span className="font-bold text-blue">Asker</span>
+              <span className="font-bold text-blue">{Name}</span>
             </h3>
             {!isLoading && (
               <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">

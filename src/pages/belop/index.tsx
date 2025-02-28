@@ -34,8 +34,8 @@ const Belop: React.FC = () => {
     const queryPrice = queryParams.get("pris");
     setFormData((prev) => ({
       ...prev,
-      maxRangeForPlot: Number(queryPrice) * 0.8,
-      maxRangeForHusmodell: Number(queryPrice) * 0.2,
+      maxRangeForPlot: Number(queryPrice) * 0.6,
+      maxRangeForHusmodell: Number(queryPrice) * 0.4,
     }));
   }, []);
 

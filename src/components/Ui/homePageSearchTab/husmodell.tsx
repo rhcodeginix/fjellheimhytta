@@ -89,9 +89,7 @@ const HusmodellTab = () => {
 
     if (hasError) return;
 
-    const kommuneNumber = formData.Kommue.match(/\((\d+)\)/)?.[1] || "";
-
-    router.push(`husmodell?Kommue=${kommuneNumber}`);
+    router.push(`husmodell?Kommue=${formData.Kommue}`);
   };
 
   return (
