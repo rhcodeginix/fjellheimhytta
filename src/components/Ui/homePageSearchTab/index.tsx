@@ -448,7 +448,7 @@ const HomePageSearchTab: React.FC = () => {
                         Tilbudpris
                       </p>
                       <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                        {formatPrice(property.pris)}
+                        {property.pris ? formatPrice(property.pris) : 0}
                       </h6>
                     </div>
                     <Button
@@ -515,7 +515,7 @@ const HomePageSearchTab: React.FC = () => {
                       <span className="font-semibold">{property.name}</span>
                     </p>
                     <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                      {formatPrice(property.price)}
+                      {property.price ? formatPrice(property.price) : 0}
                     </h6>
                   </div>
                   <Button
@@ -594,7 +594,7 @@ const HomePageSearchTab: React.FC = () => {
                         Tilbudpris
                       </p>
                       <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                        {formatPrice(property.pris)}
+                        {property.pris ? formatPrice(property.pris) : 0}
                       </h6>
                     </div>
                     <Button
