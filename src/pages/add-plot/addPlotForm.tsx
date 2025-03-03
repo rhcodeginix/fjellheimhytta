@@ -1208,7 +1208,11 @@ const AddPlotForm = () => {
 
             <div className="flex items-center gap-6 justify-end sticky bottom-0 bg-white px-6 py-4 shadow-shadow1">
               <Button
-                text="Tilbake"
+                text="Avbryt"
+                className="border-2 border-primary text-primary sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
+              />
+              <Button
+                text="Fårhåndsvis"
                 className="border-2 border-primary text-primary sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
               />
               <button
