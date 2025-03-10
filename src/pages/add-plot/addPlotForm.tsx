@@ -2,7 +2,7 @@ import Button from "@/components/common/button";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import { Form, Formik } from "formik";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
 import Ic_search from "@/public/images/Ic_search.svg";
 import Ic_search_location from "@/public/images/Ic_search_location.svg";
@@ -18,6 +18,10 @@ import TextInputField from "@/components/common/form/inputAddText";
 import MultiSelectDropDown from "@/components/common/form/multiSelect";
 import toast from "react-hot-toast";
 import InputField from "@/components/common/form/input";
+import GoogleMapComponent from "@/components/Ui/map";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "@/config/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 const FasiliteterArray: any = [
   { name: "Fiskemuligheter" },
@@ -53,7 +57,7 @@ interface FormValues {
   map_image: File | null;
   plot_images: File[];
   Tomtepris: number | null;
-  Kontaktperson: string | null;
+  Kontaktperson: string;
   Telefonnummer: string | null;
   EPostadresse: string;
   Annonsetittel: string;
@@ -80,10 +84,10 @@ const AddPlotForm = () => {
     connectionStatus: Yup.array().required("Velg minst én"),
     map_image: Yup.mixed().required("Map image is required"),
     plot_images: Yup.array()
-      .min(3, "You must upload at least 3 images")
+      .min(2, "You must upload at least 2 images")
       .max(10, "You can upload a maximum of 10 images"),
     Tomtepris: Yup.number().required("Tomtepris er påkrevd"),
-    Kontaktperson: Yup.number().required("Kontaktperson er påkrevd"),
+    Kontaktperson: Yup.string().required("Kontaktperson er påkrevd"),
     Telefonnummer: Yup.number().required("Telefonnummer er påkrevd"),
     EPostadresse: Yup.string()
       .email("Ugyldig e-postadresse")
@@ -93,6 +97,16 @@ const AddPlotForm = () => {
     Fasiliteter: Yup.array().of(Yup.string()).optional(),
     PlotLocation: Yup.string().optional(),
   });
+
+  // const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
+  // const [CadastreDataFromApi, setCadastreDataFromApi] = useState<any | null>(
+  //   null
+  // );
+
+  // const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
+  // const [loadingLamdaData, setLoadingLamdaData] = useState(false);
+  // const [showErrorPopup, setShowErrorPopup] = useState(false);
+  // const [additionalData, setAdditionalData] = useState<any | undefined>(null);
 
   const handleSubmit = async (values: FormValues) => {
     console.log("Form Submitted: ", values);
@@ -152,7 +166,7 @@ const AddPlotForm = () => {
         map_image: null,
         plot_images: [],
         Tomtepris: null,
-        Kontaktperson: null,
+        Kontaktperson: "",
         Telefonnummer: null,
         EPostadresse: "",
         Annonsetittel: "",
@@ -173,20 +187,19 @@ const AddPlotForm = () => {
         isValid,
       }) => {
         const fileInputRef = useRef<HTMLInputElement>(null);
-        const [preview, setPreview] = useState<string | null>(null);
-
+        // const [preview, setPreview] = useState<string | null>(null);
+        const [adresseValue, setAddressValue] = useState("");
         const plotImageInputRef = useRef<HTMLInputElement>(null);
-        const [PlotPreview, setPlotPreview] = useState<string[]>([]);
         const plotLocationInputRef = useRef<HTMLInputElement>(null);
         const [PlotLocationPreview, setPlotLocationPreview] =
           useState<any>(null);
 
         const handleFileChange = (event: any) => {
-          const files: any = event.target.files;
+          const files: FileList | null = event.target.files;
 
           if (files) {
             let newImages: any = [...values.plot_images];
-            let newPreviews = [...PlotPreview];
+            let imageCount = newImages.length;
 
             for (let i = 0; i < files.length; i++) {
               const file: any = files[i];
@@ -201,9 +214,16 @@ const AddPlotForm = () => {
                 continue;
               }
 
-              if (newImages.length < 10) {
-                newImages.push(file);
-                newPreviews.push(URL.createObjectURL(file));
+              if (imageCount < 10) {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+
+                reader.onloadend = () => {
+                  newImages.push(reader.result as string);
+                  setFieldValue("plot_images", newImages);
+                };
+
+                imageCount++;
               } else {
                 toast.error("You can upload a maximum of 10 images.", {
                   position: "top-right",
@@ -211,27 +231,43 @@ const AddPlotForm = () => {
                 break;
               }
             }
-
-            setFieldValue("plot_images", newImages);
-            setPlotPreview(newPreviews);
           }
         };
 
         const handleRemoveImage = (index: number) => {
           let newImages = [...values.plot_images];
-          let newPreviews = [...PlotPreview];
-
           newImages.splice(index, 1);
-          newPreviews.splice(index, 1);
-
           setFieldValue("plot_images", newImages);
-          setPlotPreview(newPreviews);
         };
         const [isOpen, setIsOpen] = useState<boolean>(true);
 
         const toggleAccordion = () => {
           setIsOpen(!isOpen);
         };
+
+        useEffect(() => {
+          const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
+            if (user) {
+              try {
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnapshot = await getDoc(userDocRef);
+
+                if (userDocSnapshot.exists()) {
+                  const userData = userDocSnapshot.data();
+                  setFieldValue("Kontaktperson", userData.name);
+                  setFieldValue("EPostadresse", userData.email);
+                } else {
+                  console.log("No such document in Firestore!");
+                }
+              } catch (error) {
+                console.error("Error fetching user data:", error);
+              }
+            }
+          });
+
+          return () => unsubscribe();
+        }, []);
+
         return (
           <Form>
             <SideSpaceContainer>
@@ -263,21 +299,22 @@ const AddPlotForm = () => {
                               placeholder="Fyll inn ønsket adresse"
                               onChange={(e: any) => {
                                 setShowAddressDropdown(true);
-                                handleChange(e);
                                 handleKartInputChange(e);
+                                setAddressValue(e.target.value);
                               }}
                               onBlur={handleBlur}
-                              value={values.address}
+                              value={adresseValue}
                               autoComplete="off"
                             />
                           </div>
-                          {values.address && (
+                          {adresseValue && (
                             <Image
                               src={Ic_close}
                               alt="close"
                               className="cursor-pointer"
                               onClick={() => {
                                 setFieldValue("address", "");
+                                setAddressValue("");
                                 setAddressData(null);
                               }}
                               fetchPriority="auto"
@@ -291,7 +328,7 @@ const AddPlotForm = () => {
                         )}
                       </div>
 
-                      {(values.address || addressData) &&
+                      {(adresseValue || addressData) &&
                         showAddressDropdown &&
                         addressData?.length > 0 && (
                           <div
@@ -311,8 +348,156 @@ const AddPlotForm = () => {
                                     "address",
                                     `${address.adressetekst} ${address.postnummer} ${address.poststed}`
                                   );
+                                  setFieldValue(
+                                    "address2.kommune",
+                                    `${address.kommunenummer}`
+                                  );
+                                  setFieldValue(
+                                    "address2.Gårsnummer",
+                                    `${address.gardsnummer}`
+                                  );
+                                  setFieldValue(
+                                    "address2.Bruksnummer",
+                                    `${address.bruksnummer}`
+                                  );
+                                  setFieldValue(
+                                    "address2.Seksjonsnummer",
+                                    `${address.festenummer}`
+                                  );
+                                  setFieldValue(
+                                    "address2.Festenummer",
+                                    `${address.bokstav}`
+                                  );
+                                  setAddressValue(
+                                    `${address.adressetekst} ${address.postnummer} ${address.poststed}`
+                                  );
                                   setShowAddressDropdown(false);
                                   setAddressData(null);
+                                  // -----
+                                  const fetchData = async () => {
+                                    if (
+                                      address.kommunenummer &&
+                                      address.gardsnummer &&
+                                      address.bruksnummer
+                                    ) {
+                                      const lamdaApiData: any = {
+                                        kommunenummer: address.kommunenummer,
+                                        gardsnummer: address.gardsnummer,
+                                        bruksnummer: address.bruksnummer,
+                                      };
+                                      try {
+                                        const response =
+                                          await ApiUtils.LamdaApi(lamdaApiData);
+                                        const cleanAnswer = response.body
+                                          .replace(/```json|```/g, "")
+                                          .trim();
+
+                                        const data = JSON.parse(cleanAnswer);
+
+                                        const CadastreDataResponse =
+                                          await ApiUtils.fetchCadastreData(
+                                            lamdaApiData
+                                          );
+                                        // console.log(
+                                        //   "CadastreDataResponse--------------",
+                                        //   CadastreDataResponse.apis
+                                        // );
+                                        // console.log(
+                                        //   "Lamdadata-----------",
+                                        //   data
+                                        // );
+                                        setFieldValue(
+                                          "map_image",
+                                          data?.coordinates
+                                            ?.convertedCoordinates
+                                        );
+                                        const building =
+                                          CadastreDataResponse?.apis
+                                            ?.buildingsApi?.response?.items &&
+                                          CadastreDataResponse?.apis
+                                            ?.buildingsApi?.response?.items
+                                            .length > 0
+                                            ? "Ja"
+                                            : "Nei";
+
+                                        setFieldValue("Byggeklausul", building);
+
+                                        const BBOXData =
+                                          CadastreDataResponse?.apis
+                                            ?.cadastreApi?.response?.item
+                                            ?.geojson?.bbox;
+
+                                        const isValidBBOX =
+                                          Array.isArray(BBOXData) &&
+                                          BBOXData.length === 4;
+
+                                        const adjustedBBOX: any =
+                                          isValidBBOX && [
+                                            BBOXData[0] - 30,
+                                            BBOXData[1] - 30,
+                                            BBOXData[2] + 30,
+                                            BBOXData[3] + 30,
+                                          ];
+
+                                        const images = isValidBBOX
+                                          ? [
+                                              `https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=Planomrade_02,Arealformal_02,Grenser_og_juridiske_linjer_02&STYLES=default,default,default&CRS=EPSG:25833&BBOX=${adjustedBBOX[0]},${adjustedBBOX[1]},${adjustedBBOX[2]},${adjustedBBOX[3]}&WIDTH=800&HEIGHT=600&FORMAT=image/png`,
+                                              `https://wms.geonorge.no/skwms1/wms.matrikkelkart?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=MatrikkelKart&STYLES=default&CRS=EPSG:25833&BBOX=${adjustedBBOX[0]},${adjustedBBOX[1]},${adjustedBBOX[2]},${adjustedBBOX[3]}&WIDTH=1024&HEIGHT=768&FORMAT=image/png`,
+                                            ]
+                                          : [];
+
+                                        setFieldValue("plot_images", images);
+
+                                        if (cleanAnswer) {
+                                          if (
+                                            data.message ===
+                                              "Request failed with status code 503" ||
+                                            !data.propertyId
+                                          ) {
+                                            console.log(data);
+                                          }
+
+                                          const areaDetails =
+                                            data?.eiendomsInformasjon
+                                              ?.basisInformasjon
+                                              ?.areal_beregnet || "";
+                                          setFieldValue(
+                                            "Tomtestørrelse",
+                                            areaDetails
+                                          );
+                                          const promt = {
+                                            question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${address.kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${address.kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+                                          };
+
+                                          let timeoutId: any;
+
+                                          try {
+                                            const response =
+                                              await ApiUtils.askApi(promt);
+                                            clearTimeout(timeoutId);
+                                            // console.log("Additional", response);
+                                            setFieldValue(
+                                              "Utnyttelsesgrad",
+                                              response?.answer?.bya_calculations
+                                                ?.input?.bya_percentage
+                                            );
+                                          } catch (error: any) {
+                                            console.error(
+                                              "Error fetching additional data from askApi:",
+                                              error?.message
+                                            );
+                                            clearTimeout(timeoutId);
+                                          }
+                                        }
+                                      } catch (error: any) {
+                                        console.error(
+                                          "Error fetching additional data:",
+                                          error?.message
+                                        );
+                                      }
+                                    }
+                                  };
+                                  fetchData();
                                 }}
                               >
                                 <Image
@@ -752,34 +937,39 @@ const AddPlotForm = () => {
                       <label className={`text-[#111322] text-sm font-semibold`}>
                         Kartutsnitt
                       </label>
-                      <div
-                        className="bg-[#EFF1F5] w-full h-[340px] rounded-[8px] flex justify-center items-center flex-col gap-4 mt-2 relative"
-                        onClick={() => {
-                          if (fileInputRef.current) {
-                            fileInputRef.current.click();
-                          }
-                        }}
-                      >
-                        {preview ? (
-                          <>
-                            <Image
+
+                      {values.map_image ? (
+                        <>
+                          <div className="bg-[#EFF1F5] w-full h-[340px] rounded-[8px] overflow-hidden mt-2 relative">
+                            {/* <Image
                               src={preview}
                               alt="Preview"
                               width={200}
                               height={200}
                               className="rounded-md"
+                            /> */}
+                            <GoogleMapComponent
+                              coordinates={values.map_image}
                             />
-                            <Image
-                              src={Ic_delete}
-                              alt="delete"
-                              className="absolute top-3 right-3 cursor-pointer"
+                            {/* <div
+                              className="absolute top-3 right-3 cursor-pointer bg-white p-2 rounded-full"
                               onClick={() => {
                                 setFieldValue("map_image", null);
-                                setPreview(null);
                               }}
-                            />
-                          </>
-                        ) : (
+                            >
+                              <Image src={Ic_delete} alt="delete" />
+                            </div> */}
+                          </div>
+                        </>
+                      ) : (
+                        <div
+                          className="bg-[#EFF1F5] w-full h-[340px] rounded-[8px] flex justify-center items-center flex-col gap-4 mt-2 relative"
+                          onClick={() => {
+                            if (fileInputRef.current) {
+                              fileInputRef.current.click();
+                            }
+                          }}
+                        >
                           <div className="cursor-pointer flex flex-col justify-center items-center">
                             <Image src={Ic_image_icon} alt="icon" />
                             <p className="text-[#4A5578] text-sm lg:text-base text-center">
@@ -794,14 +984,14 @@ const AddPlotForm = () => {
                                 const file = event.target.files?.[0];
                                 if (file) {
                                   setFieldValue("map_image", file);
-                                  setPreview(URL.createObjectURL(file));
+                                  // setPreview(URL.createObjectURL(file));
                                 }
                               }}
                               name="map_image"
                             />
                           </div>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -855,30 +1045,30 @@ const AddPlotForm = () => {
                       </div>
                     </div>
                     <div className="w-[64%]">
-                      {PlotPreview.length > 0 && (
+                      {values?.plot_images?.length > 0 && (
                         <div className="flex gap-6 flex-wrap">
-                          {PlotPreview.map((preview: any, index: number) => (
-                            <div key={index} className="relative">
-                              <Image
-                                src={preview}
-                                alt={`Preview ${index + 1}`}
-                                width={134}
-                                height={142}
-                                className="rounded-[12px]"
-                              />
-                              <div className="absolute top-1 right-1 cursor-pointer bg-white p-1 rounded-full">
-                                <Image
-                                  src={Ic_delete}
-                                  alt="delete"
-                                  className=""
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleRemoveImage(index);
-                                  }}
+                          {values?.plot_images?.map(
+                            (preview: any, index: number) => (
+                              <div key={index} className="relative">
+                                <img
+                                  src={preview}
+                                  alt={`preview image ${index + 1}`}
+                                  className="rounded-[12px] w-[134px] h-[142px]"
                                 />
+                                <div className="absolute top-1 right-1 cursor-pointer bg-white p-1 rounded-full">
+                                  <Image
+                                    src={Ic_delete}
+                                    alt="delete"
+                                    className=""
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleRemoveImage(index);
+                                    }}
+                                  />
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            )
+                          )}
                         </div>
                       )}
                     </div>
@@ -909,7 +1099,7 @@ const AddPlotForm = () => {
                     />
                     <InputField
                       label="Kontaktperson"
-                      type="number"
+                      type="text"
                       name="Kontaktperson"
                       id="Kontaktperson"
                       value={values.Kontaktperson}

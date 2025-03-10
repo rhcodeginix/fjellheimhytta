@@ -33,6 +33,11 @@ const SelectDropDown: React.FC<SelectDropDownProps> = ({
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    if (value) {
+      setSelectedLabel(value);
+    }
+  }, [value]);
   const handleSelect = (option: { value: string; label: string }) => {
     setSelectedLabel(option.label);
     onChange(option.value);
