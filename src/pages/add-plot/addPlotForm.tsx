@@ -97,6 +97,11 @@ const AddPlotForm = () => {
     Fasiliteter: Yup.array().of(Yup.string()).optional(),
     PlotLocation: Yup.string().optional(),
   });
+  const [data, setData] = useState<any>({
+    kommune: null,
+    Gårsnummer: null,
+    Bruksnummer: null,
+  });
 
   // const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
   // const [CadastreDataFromApi, setCadastreDataFromApi] = useState<any | null>(
@@ -268,6 +273,118 @@ const AddPlotForm = () => {
           return () => unsubscribe();
         }, []);
 
+        useEffect(() => {
+          const fetchData = async () => {
+            if (data.kommune && data.Gårsnummer && data.Bruksnummer) {
+              const lamdaApiData: any = {
+                kommunenummer: data.kommune,
+                gardsnummer: data.Gårsnummer,
+                bruksnummer: data.Bruksnummer,
+              };
+              try {
+                const response = await ApiUtils.LamdaApi(lamdaApiData);
+                const cleanAnswer = response.body
+                  .replace(/```json|```/g, "")
+                  .trim();
+
+                const data = JSON.parse(cleanAnswer);
+
+                const CadastreDataResponse =
+                  await ApiUtils.fetchCadastreData(lamdaApiData);
+
+                setFieldValue(
+                  "map_image",
+                  data?.coordinates?.convertedCoordinates
+                );
+                const building =
+                  CadastreDataResponse?.apis?.buildingsApi?.response?.items &&
+                  CadastreDataResponse?.apis?.buildingsApi?.response?.items
+                    .length > 0
+                    ? "Ja"
+                    : "Nei";
+
+                setFieldValue("Byggeklausul", building);
+                setFieldValue(
+                  "address",
+                  `${
+                    CadastreDataResponse?.apis?.presentationAddressApi?.response
+                      ?.item?.formatted?.line1
+                  } ${
+                    CadastreDataResponse?.apis?.presentationAddressApi?.response
+                      ?.item?.formatted?.line2
+                  }`
+                );
+
+                const BBOXData =
+                  CadastreDataResponse?.apis?.cadastreApi?.response?.item
+                    ?.geojson?.bbox;
+
+                const isValidBBOX =
+                  Array.isArray(BBOXData) && BBOXData.length === 4;
+
+                const adjustedBBOX: any = isValidBBOX && [
+                  BBOXData[0] - 30,
+                  BBOXData[1] - 30,
+                  BBOXData[2] + 30,
+                  BBOXData[3] + 30,
+                ];
+
+                const images = isValidBBOX
+                  ? [
+                      `https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=Planomrade_02,Arealformal_02,Grenser_og_juridiske_linjer_02&STYLES=default,default,default&CRS=EPSG:25833&BBOX=${adjustedBBOX[0]},${adjustedBBOX[1]},${adjustedBBOX[2]},${adjustedBBOX[3]}&WIDTH=800&HEIGHT=600&FORMAT=image/png`,
+                      `https://wms.geonorge.no/skwms1/wms.matrikkelkart?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=MatrikkelKart&STYLES=default&CRS=EPSG:25833&BBOX=${adjustedBBOX[0]},${adjustedBBOX[1]},${adjustedBBOX[2]},${adjustedBBOX[3]}&WIDTH=1024&HEIGHT=768&FORMAT=image/png`,
+                    ]
+                  : [];
+
+                setFieldValue("plot_images", images);
+
+                if (cleanAnswer) {
+                  if (
+                    data.message === "Request failed with status code 503" ||
+                    !data.propertyId
+                  ) {
+                    console.log(data);
+                  }
+
+                  const areaDetails =
+                    data?.eiendomsInformasjon?.basisInformasjon
+                      ?.areal_beregnet || "";
+                  const regionName =
+                    CadastreDataResponse?.presentationAddressApi?.response?.item
+                      ?.municipality?.municipalityName;
+                  setFieldValue("Tomtestørrelse", areaDetails);
+                  const promt = {
+                    question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${regionName} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${regionName}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+                  };
+
+                  let timeoutId: any;
+
+                  try {
+                    const response = await ApiUtils.askApi(promt);
+                    clearTimeout(timeoutId);
+                    // console.log("Additional", response);
+                    setFieldValue(
+                      "Utnyttelsesgrad",
+                      response?.answer?.bya_calculations?.input?.bya_percentage
+                    );
+                  } catch (error: any) {
+                    console.error(
+                      "Error fetching additional data from askApi:",
+                      error?.message
+                    );
+                    clearTimeout(timeoutId);
+                  }
+                }
+              } catch (error: any) {
+                console.error(
+                  "Error fetching additional data:",
+                  error?.message
+                );
+              }
+            }
+          };
+          fetchData();
+        }, [data]);
         return (
           <Form>
             <SideSpaceContainer>
@@ -303,7 +420,7 @@ const AddPlotForm = () => {
                                 setAddressValue(e.target.value);
                               }}
                               onBlur={handleBlur}
-                              value={adresseValue}
+                              value={adresseValue || values.address}
                               autoComplete="off"
                             />
                           </div>
@@ -373,131 +490,12 @@ const AddPlotForm = () => {
                                   );
                                   setShowAddressDropdown(false);
                                   setAddressData(null);
-                                  // -----
-                                  const fetchData = async () => {
-                                    if (
-                                      address.kommunenummer &&
-                                      address.gardsnummer &&
-                                      address.bruksnummer
-                                    ) {
-                                      const lamdaApiData: any = {
-                                        kommunenummer: address.kommunenummer,
-                                        gardsnummer: address.gardsnummer,
-                                        bruksnummer: address.bruksnummer,
-                                      };
-                                      try {
-                                        const response =
-                                          await ApiUtils.LamdaApi(lamdaApiData);
-                                        const cleanAnswer = response.body
-                                          .replace(/```json|```/g, "")
-                                          .trim();
 
-                                        const data = JSON.parse(cleanAnswer);
-
-                                        const CadastreDataResponse =
-                                          await ApiUtils.fetchCadastreData(
-                                            lamdaApiData
-                                          );
-                                        // console.log(
-                                        //   "CadastreDataResponse--------------",
-                                        //   CadastreDataResponse.apis
-                                        // );
-                                        // console.log(
-                                        //   "Lamdadata-----------",
-                                        //   data
-                                        // );
-                                        setFieldValue(
-                                          "map_image",
-                                          data?.coordinates
-                                            ?.convertedCoordinates
-                                        );
-                                        const building =
-                                          CadastreDataResponse?.apis
-                                            ?.buildingsApi?.response?.items &&
-                                          CadastreDataResponse?.apis
-                                            ?.buildingsApi?.response?.items
-                                            .length > 0
-                                            ? "Ja"
-                                            : "Nei";
-
-                                        setFieldValue("Byggeklausul", building);
-
-                                        const BBOXData =
-                                          CadastreDataResponse?.apis
-                                            ?.cadastreApi?.response?.item
-                                            ?.geojson?.bbox;
-
-                                        const isValidBBOX =
-                                          Array.isArray(BBOXData) &&
-                                          BBOXData.length === 4;
-
-                                        const adjustedBBOX: any =
-                                          isValidBBOX && [
-                                            BBOXData[0] - 30,
-                                            BBOXData[1] - 30,
-                                            BBOXData[2] + 30,
-                                            BBOXData[3] + 30,
-                                          ];
-
-                                        const images = isValidBBOX
-                                          ? [
-                                              `https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=Planomrade_02,Arealformal_02,Grenser_og_juridiske_linjer_02&STYLES=default,default,default&CRS=EPSG:25833&BBOX=${adjustedBBOX[0]},${adjustedBBOX[1]},${adjustedBBOX[2]},${adjustedBBOX[3]}&WIDTH=800&HEIGHT=600&FORMAT=image/png`,
-                                              `https://wms.geonorge.no/skwms1/wms.matrikkelkart?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=MatrikkelKart&STYLES=default&CRS=EPSG:25833&BBOX=${adjustedBBOX[0]},${adjustedBBOX[1]},${adjustedBBOX[2]},${adjustedBBOX[3]}&WIDTH=1024&HEIGHT=768&FORMAT=image/png`,
-                                            ]
-                                          : [];
-
-                                        setFieldValue("plot_images", images);
-
-                                        if (cleanAnswer) {
-                                          if (
-                                            data.message ===
-                                              "Request failed with status code 503" ||
-                                            !data.propertyId
-                                          ) {
-                                            console.log(data);
-                                          }
-
-                                          const areaDetails =
-                                            data?.eiendomsInformasjon
-                                              ?.basisInformasjon
-                                              ?.areal_beregnet || "";
-                                          setFieldValue(
-                                            "Tomtestørrelse",
-                                            areaDetails
-                                          );
-                                          const promt = {
-                                            question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${address.kommunenavn} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${address.kommunenavn}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
-                                          };
-
-                                          let timeoutId: any;
-
-                                          try {
-                                            const response =
-                                              await ApiUtils.askApi(promt);
-                                            clearTimeout(timeoutId);
-                                            // console.log("Additional", response);
-                                            setFieldValue(
-                                              "Utnyttelsesgrad",
-                                              response?.answer?.bya_calculations
-                                                ?.input?.bya_percentage
-                                            );
-                                          } catch (error: any) {
-                                            console.error(
-                                              "Error fetching additional data from askApi:",
-                                              error?.message
-                                            );
-                                            clearTimeout(timeoutId);
-                                          }
-                                        }
-                                      } catch (error: any) {
-                                        console.error(
-                                          "Error fetching additional data:",
-                                          error?.message
-                                        );
-                                      }
-                                    }
-                                  };
-                                  fetchData();
+                                  setData({
+                                    kommune: address.kommunenummer,
+                                    Gårsnummer: address.gardsnummer,
+                                    Bruksnummer: address.bruksnummer,
+                                  });
                                 }}
                               >
                                 <Image
@@ -736,6 +734,13 @@ const AddPlotForm = () => {
                             !values.address2.kommune ||
                             !values.address2.Bruksnummer
                           }
+                          onClick={() => {
+                            setData({
+                              kommune: values.address2.kommune,
+                              Gårsnummer: values.address2.Gårsnummer,
+                              Bruksnummer: values.address2.Bruksnummer,
+                            });
+                          }}
                         >
                           <Image
                             src={Ic_search}
