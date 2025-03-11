@@ -122,19 +122,6 @@ const AddPlotForm = () => {
   const router = useRouter();
   const { plotId } = router.query;
 
-  // const handleSubmit = async (values: FormValues) => {
-  //   if (userUID) {
-  //     try {
-  //       const userDocRef = doc(db, "users", userUID);
-  //       const propertyDb = collection(userDocRef, "add_plot");
-
-  //       await addDoc(propertyDb, values);
-  //       toast.success("Plot add successfully.", { position: "top-right" });
-  //     } catch (error) {
-  //       console.error("Error adding plot: ", error);
-  //     }
-  //   }
-  // };
   const handleSubmit = async (values: any) => {
     if (userUID) {
       try {
