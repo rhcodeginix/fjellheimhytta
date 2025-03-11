@@ -12,6 +12,7 @@ interface SelectDropDownProps {
   onChange: (value: string) => void;
   options: { value: string; label: string }[];
   value?: string;
+  disabled?: boolean;
 }
 
 const SelectDropDown: React.FC<SelectDropDownProps> = ({
@@ -24,6 +25,7 @@ const SelectDropDown: React.FC<SelectDropDownProps> = ({
   onChange,
   options,
   value,
+  disabled,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState(placeholder);
@@ -64,11 +66,17 @@ const SelectDropDown: React.FC<SelectDropDownProps> = ({
       </label>
       <div
         id={id}
-        className={`border mt-2 rounded-[8px] py-[13px] px-[16px] h-[48px] relative flex items-center justify-between ${isOpen ? "open" : ""} ${errors && touched && errors[name] && touched[name] ? "border-red" : "border-[#B9C0D4]"}`}
-        onClick={handleToggle}
+        className={`border mt-2 rounded-[8px] py-[13px] px-[16px] h-[48px] relative flex items-center justify-between ${isOpen ? "open" : ""} ${errors && touched && errors[name] && touched[name] ? "border-red" : "border-[#B9C0D4]"} ${
+          disabled
+            ? "cursor-not-allowed bg-[#EFF1F5] text-grayText"
+            : "cursor-pointer"
+        }`}
+        onClick={disabled ? undefined : handleToggle}
       >
         <div
-          className={`truncate ${selectedLabel == placeholder ? "text-[#4A5578]" : "text-[#111322]"}`}
+          className={`truncate ${selectedLabel == placeholder ? "text-[#4A5578]" : "text-[#111322]"} ${
+            disabled ? "text-grayText" : ""
+          }`}
         >
           {selectedLabel}
         </div>

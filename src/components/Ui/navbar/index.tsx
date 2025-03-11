@@ -174,6 +174,15 @@ const Header = () => {
                         Search History
                       </Link>
                       <Link
+                        href={"/add-plot-list"}
+                        className="block px-4 py-2 text-sm hover:bg-lightPurple text-black w-full text-left cursor-pointer"
+                        onClick={() => {
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        Added Plot List
+                      </Link>
+                      <Link
                         href={"/login"}
                         className="block px-4 py-2 text-sm hover:bg-lightPurple text-black w-full text-left cursor-pointer"
                         onClick={handleLogout}

@@ -20,8 +20,17 @@ import toast from "react-hot-toast";
 import InputField from "@/components/common/form/input";
 import GoogleMapComponent from "@/components/Ui/map";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "@/config/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { auth, db, storage } from "@/config/firebaseConfig";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useRouter } from "next/router";
 
 const FasiliteterArray: any = [
   { name: "Fiskemuligheter" },
@@ -64,6 +73,9 @@ interface FormValues {
   restriksjoner: string;
   Fasiliteter: string[];
   PlotLocation: string | null;
+  lamdaData: any;
+  cadastreData: any;
+  additionalData: any;
 }
 
 const AddPlotForm = () => {
@@ -96,25 +108,53 @@ const AddPlotForm = () => {
     restriksjoner: Yup.string().optional(),
     Fasiliteter: Yup.array().of(Yup.string()).optional(),
     PlotLocation: Yup.string().optional(),
+    lamdaData: Yup.mixed().required(),
+    cadastreData: Yup.mixed().required(),
+    additionalData: Yup.mixed().required(),
   });
+  const [userUID, setUserUID] = useState(null);
+
   const [data, setData] = useState<any>({
     kommune: null,
     Gårsnummer: null,
     Bruksnummer: null,
   });
+  const router = useRouter();
+  const { plotId } = router.query;
 
-  // const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
-  // const [CadastreDataFromApi, setCadastreDataFromApi] = useState<any | null>(
-  //   null
-  // );
+  // const handleSubmit = async (values: FormValues) => {
+  //   if (userUID) {
+  //     try {
+  //       const userDocRef = doc(db, "users", userUID);
+  //       const propertyDb = collection(userDocRef, "add_plot");
 
-  // const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
-  // const [loadingLamdaData, setLoadingLamdaData] = useState(false);
-  // const [showErrorPopup, setShowErrorPopup] = useState(false);
-  // const [additionalData, setAdditionalData] = useState<any | undefined>(null);
+  //       await addDoc(propertyDb, values);
+  //       toast.success("Plot add successfully.", { position: "top-right" });
+  //     } catch (error) {
+  //       console.error("Error adding plot: ", error);
+  //     }
+  //   }
+  // };
+  const handleSubmit = async (values: any) => {
+    if (userUID) {
+      try {
+        const userDocRef: any = doc(db, "users", userUID);
 
-  const handleSubmit = async (values: FormValues) => {
-    console.log("Form Submitted: ", values);
+        if (plotId) {
+          const plotDocRef = doc(userDocRef, "add_plot", String(plotId));
+          await updateDoc(plotDocRef, values);
+          toast.success("Plot updated successfully.", {
+            position: "top-right",
+          });
+        } else {
+          const propertyDb = collection(userDocRef, "add_plot");
+          await addDoc(propertyDb, values);
+          toast.success("Plot added successfully.", { position: "top-right" });
+        }
+      } catch (error) {
+        console.error("Error handling plot submission:", error);
+      }
+    }
   };
 
   const kartInputRef = useRef<HTMLInputElement | null>(null);
@@ -178,6 +218,9 @@ const AddPlotForm = () => {
         restriksjoner: "",
         Fasiliteter: [],
         PlotLocation: null,
+        lamdaData: null,
+        cadastreData: null,
+        additionalData: null,
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -190,6 +233,8 @@ const AddPlotForm = () => {
         values,
         setFieldValue,
         isValid,
+        resetForm,
+        validateForm,
       }) => {
         const fileInputRef = useRef<HTMLInputElement>(null);
         // const [preview, setPreview] = useState<string | null>(null);
@@ -199,7 +244,57 @@ const AddPlotForm = () => {
         const [PlotLocationPreview, setPlotLocationPreview] =
           useState<any>(null);
 
-        const handleFileChange = (event: any) => {
+        useEffect(() => {
+          if (plotId && userUID) {
+            const fetchProperty = async () => {
+              const plotsCollectionRef = collection(
+                db,
+                "users",
+                userUID,
+                "add_plot"
+              );
+              try {
+                const plotsSnapshot = await getDocs(plotsCollectionRef);
+                const fetchedPlots = plotsSnapshot.docs.map((doc) => ({
+                  id: doc.id,
+                  ...doc.data(),
+                }));
+                const foundPlot: any = fetchedPlots.find(
+                  (property) => property.id === plotId
+                );
+
+                if (foundPlot) {
+                  Object.keys(foundPlot).forEach((key) => {
+                    if (key === "address2") {
+                      Object.keys(foundPlot[key]).forEach((subKey) => {
+                        setFieldValue(
+                          `address2.${subKey}`,
+                          foundPlot[key][subKey]
+                        );
+                      });
+                    } else {
+                      setFieldValue(key, foundPlot[key]);
+                    }
+                  });
+                } else {
+                  console.log("No property found with the given ID.");
+                }
+              } catch (error) {
+                console.error("Error fetching user's properties:", error);
+              }
+            };
+
+            fetchProperty();
+          }
+        }, [plotId, userUID, db]);
+        useEffect(() => {
+          if (
+            !Object.values(values).every((val) => val !== "" && val !== null)
+          ) {
+            validateForm();
+          }
+        }, [values, validateForm]);
+        const handleFileChange = async (event: any) => {
           const files: FileList | null = event.target.files;
 
           if (files) {
@@ -209,7 +304,7 @@ const AddPlotForm = () => {
             for (let i = 0; i < files.length; i++) {
               const file: any = files[i];
 
-              if (!["image/jpeg", "image/png"].includes(file.type)) {
+              if (!["image/jpeg", "image/png"].includes(file?.type)) {
                 alert("Only JPG and PNG images are allowed.");
                 continue;
               }
@@ -220,13 +315,18 @@ const AddPlotForm = () => {
               }
 
               if (imageCount < 10) {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
+                const fileType = "images";
+                const timestamp = new Date().getTime();
+                const fileName = `${timestamp}_${file.name}`;
+                const storageRef = ref(storage, `${fileType}/${fileName}`);
 
-                reader.onloadend = () => {
-                  newImages.push(reader.result as string);
-                  setFieldValue("plot_images", newImages);
-                };
+                const snapshot = await uploadBytes(storageRef, file);
+
+                const url = await getDownloadURL(snapshot.ref);
+
+                newImages.push(url);
+
+                setFieldValue("plot_images", newImages);
 
                 imageCount++;
               } else {
@@ -261,6 +361,7 @@ const AddPlotForm = () => {
                   const userData = userDocSnapshot.data();
                   setFieldValue("Kontaktperson", userData.name);
                   setFieldValue("EPostadresse", userData.email);
+                  setUserUID(user.uid);
                 } else {
                   console.log("No such document in Firestore!");
                 }
@@ -296,6 +397,8 @@ const AddPlotForm = () => {
                   "map_image",
                   data?.coordinates?.convertedCoordinates
                 );
+                setFieldValue("cadastreData", CadastreDataResponse?.apis);
+                setFieldValue("lamdaData", data);
                 const building =
                   CadastreDataResponse?.apis?.buildingsApi?.response?.items &&
                   CadastreDataResponse?.apis?.buildingsApi?.response?.items
@@ -306,6 +409,15 @@ const AddPlotForm = () => {
                 setFieldValue("Byggeklausul", building);
                 setFieldValue(
                   "address",
+                  `${
+                    CadastreDataResponse?.apis?.presentationAddressApi?.response
+                      ?.item?.formatted?.line1
+                  } ${
+                    CadastreDataResponse?.apis?.presentationAddressApi?.response
+                      ?.item?.formatted?.line2
+                  }`
+                );
+                setAddressValue(
                   `${
                     CadastreDataResponse?.apis?.presentationAddressApi?.response
                       ?.item?.formatted?.line1
@@ -362,7 +474,7 @@ const AddPlotForm = () => {
                   try {
                     const response = await ApiUtils.askApi(promt);
                     clearTimeout(timeoutId);
-                    // console.log("Additional", response);
+                    setFieldValue("additionalData", response);
                     setFieldValue(
                       "Utnyttelsesgrad",
                       response?.answer?.bya_calculations?.input?.bya_percentage
@@ -517,7 +629,7 @@ const AddPlotForm = () => {
                           </div>
                         )}
 
-                      <button
+                      <div
                         className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2`}
                       >
                         <Image
@@ -526,7 +638,7 @@ const AddPlotForm = () => {
                           className="w-6 h-6"
                           fetchPriority="auto"
                         />
-                      </button>
+                      </div>
                     </div>
                     <div className="text-center font-medium text-sm">eller</div>
                     <div>
@@ -534,7 +646,7 @@ const AddPlotForm = () => {
                         <div className="flex flex-col desktop:flex-row desktop:items-center desktop:justify-between w-full desktop:w-11/12 desktop:h-[80px]">
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
-                              <div className="w-[92%] lg:w-auto">
+                              <div className="w-[92%] lg:w-auto truncate">
                                 <div className="text-[#111322] mb-1 text-sm truncate">
                                   Kommunenummer
                                 </div>
@@ -571,7 +683,7 @@ const AddPlotForm = () => {
                           <div className="border-b desktop:border-b-0 desktop:border-l border-[#7D89B0] w-full desktop:w-[1px] desktop:h-[37px] border-opacity-30"></div>
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
-                              <div className="w-[92%] lg:w-auto">
+                              <div className="w-[92%] lg:w-auto truncate">
                                 <div className="text-[#111322] mb-1 text-sm truncate">
                                   Gårdsnummer
                                 </div>
@@ -609,7 +721,7 @@ const AddPlotForm = () => {
                           <div className="border-b desktop:border-b-0 desktop:border-l border-[#7D89B0] w-full desktop:w-[1px] desktop:h-[37px] border-opacity-30"></div>
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
-                              <div className="w-[92%] lg:w-auto">
+                              <div className="w-[92%] lg:w-auto truncate">
                                 <div className="text-[#111322] mb-1 text-sm truncate">
                                   Bruksnummer (valgfritt)
                                 </div>
@@ -647,7 +759,7 @@ const AddPlotForm = () => {
                           <div className="border-b desktop:border-b-0 desktop:border-l border-[#7D89B0] w-full desktop:w-[1px] desktop:h-[37px] border-opacity-30"></div>
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
-                              <div className="w-[92%] lg:w-auto">
+                              <div className="w-[92%] lg:w-auto truncate">
                                 <div className="text-[#111322] mb-1 text-sm truncate">
                                   Seksjonsnummer (valgfritt)
                                 </div>
@@ -685,7 +797,7 @@ const AddPlotForm = () => {
                           <div className="border-b desktop:border-b-0 desktop:border-l border-[#7D89B0] w-full desktop:w-[1px] desktop:h-[37px] border-opacity-30"></div>
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
-                              <div className="w-[92%] lg:w-auto">
+                              <div className="w-[92%] lg:w-auto truncate">
                                 <div className="text-[#111322] mb-1 text-sm truncate">
                                   Festenummer (valgfritt)
                                 </div>
@@ -721,7 +833,7 @@ const AddPlotForm = () => {
                             </div>
                           </div>
                         </div>
-                        <button
+                        <div
                           className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2 ${
                             !values.address2.Gårsnummer ||
                             !values.address2.kommune ||
@@ -729,11 +841,6 @@ const AddPlotForm = () => {
                               ? "opacity-50 cursor-not-allowed"
                               : ""
                           }`}
-                          disabled={
-                            !values.address2.Gårsnummer ||
-                            !values.address2.kommune ||
-                            !values.address2.Bruksnummer
-                          }
                           onClick={() => {
                             setData({
                               kommune: values.address2.kommune,
@@ -748,7 +855,7 @@ const AddPlotForm = () => {
                             className="w-6 h-6"
                             fetchPriority="auto"
                           />
-                        </button>
+                        </div>
                       </div>
                       {errors.address2?.Gårsnummer &&
                         touched.address2?.Gårsnummer && (
@@ -779,7 +886,7 @@ const AddPlotForm = () => {
                   }}
                 >
                   <h4 className="p-6 font-medium text-base lg:text-lg border-b border-[#B9C0D4]">
-                    Grunniformasjon
+                    Grunninformasjon
                   </h4>
                   <div className="p-6 flex gap-[74px]">
                     <div className="w-[36%] flex flex-col gap-6">
@@ -800,22 +907,20 @@ const AddPlotForm = () => {
                         }}
                         options={[
                           {
-                            value:
-                              "Boligtomt, Hyttetomt, Utviklingstomt, Tomtefelt",
-                            label:
-                              "Boligtomt, Hyttetomt, Utviklingstomt, Tomtefelt",
+                            value: "Boligtomt",
+                            label: "Boligtomt",
                           },
                           {
-                            value: "Boligtomt, Hyttetomt, Utviklingstomt",
-                            label: "Boligtomt, Hyttetomt, Utviklingstomt",
+                            value: "Hyttetomt",
+                            label: "Hyttetomt",
                           },
                           {
-                            value: "Boligtomt, Hyttetomt, Tomtefelt",
-                            label: "Boligtomt, Hyttetomt, Tomtefelt",
+                            value: "Utviklingstomt",
+                            label: "Utviklingstomt",
                           },
                           {
-                            value: "Boligtomt,  Utviklingstomt, Tomtefelt",
-                            label: "Boligtomt,  Utviklingstomt, Tomtefelt",
+                            value: "Tomtefelt",
+                            label: "Tomtefelt",
                           },
                         ]}
                         value={values.tomt_type}
@@ -831,6 +936,7 @@ const AddPlotForm = () => {
                         touched={touched}
                         onChange={handleChange}
                         text="m²"
+                        disabled={values.Tomtestørrelse ? true : false}
                       />
                       <TextInputField
                         label="Utnyttelsesgrad"
@@ -843,6 +949,7 @@ const AddPlotForm = () => {
                         touched={touched}
                         onChange={handleChange}
                         text="% BYA"
+                        disabled={values.Utnyttelsesgrad ? true : false}
                       />
                       <MultiSelectDropDown
                         label="Status i dag på tilkoblinger (vann, avløp, strøm)"
@@ -901,6 +1008,7 @@ const AddPlotForm = () => {
                           },
                         ]}
                         value={values.Byggeklausul}
+                        disabled={values.Byggeklausul ? true : false}
                       />
                       <SelectDropDown
                         label="Reguleringsstatus"
@@ -945,7 +1053,7 @@ const AddPlotForm = () => {
 
                       {values.map_image ? (
                         <>
-                          <div className="bg-[#EFF1F5] w-full h-[340px] rounded-[8px] overflow-hidden mt-2 relative">
+                          <div className="bg-[#EFF1F5] w-full h-[350px] rounded-[8px] overflow-hidden mt-2 relative">
                             {/* <Image
                               src={preview}
                               alt="Preview"
@@ -1033,7 +1141,7 @@ const AddPlotForm = () => {
                               Dra & slipp for å laste opp
                             </span>
                           </div>
-                          <p className="text-[#4A5578] text-sm">
+                          <p className="text-[#4A5578] text-sm text-center">
                             (Godkjente filformat: JPG eller PNG, max 2 MB)
                           </p>
                         </div>
@@ -1092,14 +1200,26 @@ const AddPlotForm = () => {
                   <div className="grid grid-cols-3 gap-6 p-6">
                     <TextInputField
                       label="Tomtepris"
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       name="Tomtepris"
                       id="Tomtepris"
                       value={values.Tomtepris}
                       placeholder="Fyll inn tomtepris"
                       errors={errors}
                       touched={touched}
-                      onChange={handleChange}
+                      onChange={({ target: { value } }: any) =>
+                        handleChange({
+                          target: {
+                            name: "Tomtepris",
+                            value: value.replace(/\D/g, "")
+                              ? new Intl.NumberFormat("no-NO").format(
+                                  Number(value.replace(/\D/g, ""))
+                                )
+                              : "",
+                          },
+                        })
+                      }
                       text="NOK"
                     />
                     <InputField
@@ -1112,6 +1232,7 @@ const AddPlotForm = () => {
                       errors={errors}
                       touched={touched}
                       onChange={handleChange}
+                      disabled={true}
                     />
                     <InputField
                       label="Telefonnummer"
@@ -1134,6 +1255,7 @@ const AddPlotForm = () => {
                       errors={errors}
                       touched={touched}
                       onChange={handleChange}
+                      disabled={true}
                     />
                   </div>
                 </div>
@@ -1162,7 +1284,7 @@ const AddPlotForm = () => {
                     <div className="flex gap-6 items-start">
                       <div className="w-[64%]">
                         <label
-                          className={`text-[#111322] text-sm font-semibold flex justify-between items-center gap-3`}
+                          className={`text-[#111322] text-sm font-semibold flex justify-between items-center gap-3 cursor-pointer`}
                           onClick={toggleAccordion}
                         >
                           Fasiliteter
@@ -1336,7 +1458,7 @@ const AddPlotForm = () => {
                                 Dra & slipp for å laste opp
                               </span>
                             </div>
-                            <p className="text-[#4A5578] text-sm">
+                            <p className="text-[#4A5578] text-sm text-center">
                               (Godkjente filformat: JPG eller PNG, max 2 MB)
                             </p>
                           </div>
@@ -1345,22 +1467,40 @@ const AddPlotForm = () => {
                             type="file"
                             ref={plotLocationInputRef}
                             className="hidden"
-                            onChange={(event: any) => {
+                            onChange={async (event: any) => {
                               if (event.target.files) {
                                 const file = event.target.files[0];
+                                if (file) {
+                                  if (file.type !== "application/pdf") {
+                                    alert("Only PDF files are allowed.");
+                                    return;
+                                  }
 
-                                if (file.type !== "application/pdf") {
-                                  alert("Only PDF files are allowed.");
-                                  return;
+                                  if (file.size > 2 * 1024 * 1024) {
+                                    alert("File size must be 2MB or smaller.");
+                                    return;
+                                  }
+
+                                  const fileType = "documents";
+                                  const timestamp = new Date().getTime();
+                                  const fileName = `${timestamp}_${file.name}`;
+                                  const storageRef = ref(
+                                    storage,
+                                    `${fileType}/${fileName}`
+                                  );
+
+                                  const snapshot = await uploadBytes(
+                                    storageRef,
+                                    file
+                                  );
+
+                                  const url = await getDownloadURL(
+                                    snapshot.ref
+                                  );
+
+                                  setFieldValue("PlotLocation", url);
+                                  setPlotLocationPreview(file);
                                 }
-
-                                if (file.size > 2 * 1024 * 1024) {
-                                  alert("File size must be 2MB or smaller.");
-                                  return;
-                                }
-
-                                setFieldValue("PlotLocation", file);
-                                setPlotLocationPreview(file);
                               }
                             }}
                             name="PlotLocation"
@@ -1405,6 +1545,10 @@ const AddPlotForm = () => {
               <Button
                 text="Avbryt"
                 className="border-2 border-primary text-primary sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
+                onClick={() => {
+                  resetForm();
+                  window.location.reload();
+                }}
               />
               <Button
                 text="Fårhåndsvis"

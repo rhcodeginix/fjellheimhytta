@@ -11,6 +11,7 @@ interface InputProps {
   touched?: any;
   onChange: (value: string) => void;
   value?: any;
+  disabled?: boolean;
 }
 
 const InputField: React.FC<InputProps> = ({
@@ -23,6 +24,7 @@ const InputField: React.FC<InputProps> = ({
   touched,
   onChange,
   value,
+  disabled,
 }) => {
   return (
     <div>
@@ -39,8 +41,9 @@ const InputField: React.FC<InputProps> = ({
           errors && touched && errors[name] && touched[name]
             ? "border-red"
             : "border-[#B9C0D4]"
-        }`}
+        } ${disabled && "cursor-not-allowed bg-[#EFF1F5] text-grayText"}`}
         placeholder={placeholder}
+        disabled={disabled}
       />
       {errors && touched && errors[name] && touched[name] && (
         <div className="text-xs mt-1" style={{ color: "red" }}>

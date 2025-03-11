@@ -52,8 +52,14 @@ const Regulations = () => {
     null
   );
   const router = useRouter();
-  const { kommunenummer, gardsnummer, bruksnummer, kommunenavn, propertyId } =
-    router.query;
+  const {
+    kommunenummer,
+    gardsnummer,
+    bruksnummer,
+    kommunenavn,
+    propertyId,
+    plotId,
+  } = router.query;
   const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
   const [loadingLamdaData, setLoadingLamdaData] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
@@ -329,6 +335,45 @@ const Regulations = () => {
       fetchProperty();
     }
   }, [propertyId, userUID, db]);
+
+  useEffect(() => {
+    if (plotId && userUID) {
+      setLoadingLamdaData(true);
+
+      const fetchProperty = async () => {
+        const propertiesCollectionRef = collection(
+          db,
+          "users",
+          userUID,
+          "add_plot"
+        );
+        try {
+          const propertiesSnapshot = await getDocs(propertiesCollectionRef);
+          const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
+            plotId: doc.id,
+            ...doc.data(),
+          }));
+          const foundProperty = fetchedProperties.find(
+            (property: any) => property.plotId === plotId
+          );
+
+          if (foundProperty) {
+            setAdditionalData(foundProperty?.additionalData);
+            setLamdaDataFromApi(foundProperty?.lamdaData);
+            setCadastreDataFromApi(foundProperty?.cadastreData);
+          } else {
+            console.log("No property found with the given ID.");
+          }
+        } catch (error) {
+          console.error("Error fetching user's properties:", error);
+        } finally {
+          setLoadingLamdaData(false);
+        }
+      };
+
+      fetchProperty();
+    }
+  }, [plotId, userUID, db]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user: any) => {

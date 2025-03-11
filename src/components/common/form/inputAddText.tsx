@@ -12,6 +12,8 @@ interface InputProps {
   onChange: (value: string) => void;
   value?: any;
   text?: string;
+  disabled?: boolean;
+  inputMode?: string;
 }
 
 const TextInputField: React.FC<InputProps> = ({
@@ -25,6 +27,8 @@ const TextInputField: React.FC<InputProps> = ({
   onChange,
   value,
   text,
+  disabled,
+  inputMode,
 }) => {
   return (
     <div>
@@ -36,7 +40,7 @@ const TextInputField: React.FC<InputProps> = ({
           errors && touched && errors[name] && touched[name]
             ? "border-red"
             : "border-[#B9C0D4]"
-        }`}
+        } ${disabled && "cursor-not-allowed bg-[#EFF1F5] text-grayText"}`}
       >
         <Field
           onChange={onChange}
@@ -44,8 +48,10 @@ const TextInputField: React.FC<InputProps> = ({
           type={type}
           id={id}
           value={value}
-          className={`font-base placeholder:font-base focus:outline-none truncate w-full placeholder:text-[#4A5578]`}
+          className={`font-base placeholder:font-base focus:outline-none truncate w-full placeholder:text-[#4A5578] ${disabled && "cursor-not-allowed bg-[#EFF1F5] text-grayText"}`}
           placeholder={placeholder}
+          disabled={disabled}
+          inputMode={inputMode}
         />
         <span className="text-[#111322] font-semibold text-base whitespace-nowrap">
           {text}
