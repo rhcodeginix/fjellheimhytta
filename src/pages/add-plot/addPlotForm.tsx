@@ -122,11 +122,32 @@ const AddPlotForm = () => {
   const router = useRouter();
   const { plotId } = router.query;
 
+  // const handleSubmit = async (values: any) => {
+  //   if (userUID) {
+  //     try {
+  //       const userDocRef: any = doc(db, "users", userUID);
+
+  //       if (plotId) {
+  //         const plotDocRef = doc(userDocRef, "add_plot", String(plotId));
+  //         await updateDoc(plotDocRef, values);
+  //         toast.success("Plot updated successfully.", {
+  //           position: "top-right",
+  //         });
+  //       } else {
+  //         const propertyDb = collection(userDocRef, "add_plot");
+  //         await addDoc(propertyDb, values);
+  //         toast.success("Plot added successfully.", { position: "top-right" });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error handling plot submission:", error);
+  //     }
+  //   }
+  // };
+
   const handleSubmit = async (values: any) => {
     if (userUID) {
+      const userDocRef: any = doc(db, "users", userUID);
       try {
-        const userDocRef: any = doc(db, "users", userUID);
-
         if (plotId) {
           const plotDocRef = doc(userDocRef, "add_plot", String(plotId));
           await updateDoc(plotDocRef, values);
@@ -135,8 +156,29 @@ const AddPlotForm = () => {
           });
         } else {
           const propertyDb = collection(userDocRef, "add_plot");
-          await addDoc(propertyDb, values);
-          toast.success("Plot added successfully.", { position: "top-right" });
+
+          const querySnapshot = await getDocs(propertyDb);
+
+          const fetchedPlots =
+            querySnapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            })) || [];
+
+          const isDuplicate = fetchedPlots.some(
+            (plot: any) => plot.address === values.address
+          );
+
+          if (!isDuplicate) {
+            await addDoc(propertyDb, values);
+            toast.success("Plot added successfully.", {
+              position: "top-right",
+            });
+          } else {
+            toast.error("Already used this address!", {
+              position: "top-right",
+            });
+          }
         }
       } catch (error) {
         console.error("Error handling plot submission:", error);
