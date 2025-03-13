@@ -11,6 +11,20 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
+    if (!sessionStorage.getItem("min_tomt_welcome")) {
+      sessionStorage.removeItem("min_tomt_welcome");
+    }
+
+    const hasAccess = sessionStorage.getItem("min_tomt_welcome") === "true";
+
+    if (!hasAccess) {
+      router.push("/welcome");
+    } else {
+      router.push("/");
+    }
+  }, []);
+
+  useEffect(() => {
     const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
 
     if (isLoggedIn && publicRoutes.includes(router.pathname)) {
@@ -35,16 +49,31 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     // <ProtectedRoute>
-    <UserLayout>
-      <Component {...pageProps} />
-      <Toaster
-        toastOptions={{
-          style: {
-            zIndex: 9999999999,
-          },
-        }}
-      />
-    </UserLayout>
+    <>
+      {router.pathname === "/welcome" ? (
+        <>
+          <Component {...pageProps} />
+          <Toaster
+            toastOptions={{
+              style: {
+                zIndex: 9999999999,
+              },
+            }}
+          />
+        </>
+      ) : (
+        <UserLayout>
+          <Component {...pageProps} />
+          <Toaster
+            toastOptions={{
+              style: {
+                zIndex: 9999999999,
+              },
+            }}
+          />
+        </UserLayout>
+      )}
+    </>
     // </ProtectedRoute>
   );
 }
