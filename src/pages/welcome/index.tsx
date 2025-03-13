@@ -39,7 +39,7 @@ const Welcome = () => {
             {/* <Link href={"/"}> */}
             <Image src={Ic_logo} alt="logo" fetchPriority="auto" />
             {/* </Link> */}
-            <h2 className="text-2xl font-semibold">Welcome Min Tomt.</h2>
+            <h2 className="text-2xl font-semibold">Welcome MinTomt</h2>
           </div>
 
           <Formik
