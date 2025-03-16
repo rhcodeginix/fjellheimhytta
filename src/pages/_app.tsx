@@ -19,8 +19,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     if (!hasAccess) {
       router.push("/welcome");
-    } else {
-      router.push("/");
     }
   }, []);
 
