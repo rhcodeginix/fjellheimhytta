@@ -20,6 +20,7 @@ import {
 import { db } from "@/config/firebaseConfig";
 import Loading from "@/components/Loading";
 import GoogleMapComponent from "../map";
+import { useRouter } from "next/router";
 
 const tabs = [
   { id: "beløp", label: ["Start med", "beløp"] },
@@ -64,8 +65,10 @@ const husmodellProperties = [
 ];
 
 const HomePageSearchTab: React.FC = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("beløp");
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
+  const [BelopProperty, setBelopProperty] = useState([]);
   const [MatrikelProperty, setMatrikelProperty] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isMatrikelPropertyLoading, setIsMatrikelPropertyLoading] =
@@ -195,6 +198,95 @@ const HomePageSearchTab: React.FC = () => {
 
     fetchProperty();
   }, [db]);
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      setIsLoading(true);
+
+      try {
+        const db = getFirestore();
+        const citiesSnapshot = await getDocs(collection(db, "cities"));
+
+        const fetchedCities = citiesSnapshot.docs.map((doc) => doc.data());
+
+        const filterProperty = fetchedCities.find(
+          (property) => property.name === "Akershus"
+        );
+
+        if (filterProperty && filterProperty.kommunenummer) {
+          const kommuneNumbers = Object.values(filterProperty.kommunenummer)
+            .map((value: any) =>
+              typeof value === "string"
+                ? value.replace(/"/g, "")
+                : value.toString()
+            )
+            .map((value) => parseInt(value, 10))
+            .filter((num) => !isNaN(num));
+
+          const husmodellRef = collection(db, "house_model");
+          const q2 = query(husmodellRef);
+          const querySnapshot2 = await getDocs(q2);
+          const allHusmodell: any[] = [];
+
+          querySnapshot2.forEach((doc) => {
+            const data = doc.data();
+            allHusmodell.push({ id: doc.id, ...data });
+          });
+
+          const filteredHusmodell = allHusmodell.filter((plot: any) =>
+            parseInt(plot?.Husdetaljer?.pris.replace(/\s/g, ""), 10)
+          );
+
+          if (kommuneNumbers.length > 0) {
+            const allPlots: any = [];
+            const chunkSize = 10;
+
+            for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
+              const chunk = kommuneNumbers.slice(i, i + chunkSize);
+              const q = query(
+                collection(db, "empty_plot"),
+                where(
+                  "lamdaDataFromApi.searchParameters.kommunenummer",
+                  "in",
+                  chunk
+                )
+              );
+              const querySnapshot = await getDocs(q);
+
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.CadastreDataFromApi?.presentationAddressApi) {
+                  allPlots.push({ id: doc.id, ...data });
+                }
+              });
+            }
+
+            const combinedData: any = [];
+            allPlots.forEach((plot: any) => {
+              filteredHusmodell.forEach((house) => {
+                combinedData.push({
+                  plot,
+                  house,
+                });
+              });
+            });
+
+            setBelopProperty(combinedData.slice(0, 3));
+          }
+        } else {
+          setBelopProperty([]);
+        }
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+        setBelopProperty([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProperty();
+  }, [db]);
+
   return (
     <>
       <div className="relative">
@@ -256,7 +348,7 @@ const HomePageSearchTab: React.FC = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-              {HouseModelProperty.map((property: any, index) => (
+              {BelopProperty.map((property: any, index) => (
                 <div
                   key={index}
                   className="border border-[#EFF1F5] rounded-[8px] p-5"
@@ -265,47 +357,47 @@ const HomePageSearchTab: React.FC = () => {
                       "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
                   }}
                 >
-                  <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2">
+                  <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 two_line_elipse">
                     <span className="font-bold">
-                      {index == 1 ? "Alta" : "Almgård"}
+                      {property?.house?.Husdetaljer?.husmodell_name}
                     </span>{" "}
                     bygget i{" "}
                     <span className="font-bold">
                       {
-                        property?.CadastreDataFromApi?.presentationAddressApi
-                          ?.response?.item?.formatted?.line1
+                        property?.plot?.CadastreDataFromApi
+                          ?.presentationAddressApi?.response?.item?.formatted
+                          ?.line1
                       }
                     </span>{" "}
                     <span className="text-[#10182899]">
                       (
                       {
-                        property?.CadastreDataFromApi?.presentationAddressApi
-                          ?.response?.item?.street?.municipality
-                          ?.municipalityName
+                        property?.plot?.CadastreDataFromApi
+                          ?.presentationAddressApi?.response?.item?.street
+                          ?.municipality?.municipalityName
                       }
                       )
                     </span>
                   </h4>
                   <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
                     {
-                      property?.CadastreDataFromApi?.presentationAddressApi
-                        ?.response?.item?.formatted?.line2
+                      property?.plot?.CadastreDataFromApi
+                        ?.presentationAddressApi?.response?.item?.formatted
+                        ?.line2
                     }
                   </p>
                   <div className="flex gap-2 mb-2 md:mb-3 desktop:mb-4 h-[185px]">
                     <div className="w-[63%]">
-                      <Image
-                        key={index}
-                        src={index % 2 === 0 ? Img_plot : Img_plot_image1}
-                        alt="image"
+                      <img
+                        src={property?.house?.Husdetaljer?.photo}
+                        alt="husmodell"
                         className="w-full h-full rounded-[8px] object-cover"
-                        fetchPriority="auto"
                       />
                     </div>
                     <div className="w-[37%] rounded-[8px] overflow-hidden h-full">
                       <GoogleMapComponent
                         coordinates={
-                          property?.lamdaDataFromApi?.coordinates
+                          property?.plot?.lamdaDataFromApi?.coordinates
                             ?.convertedCoordinates
                         }
                       />
@@ -317,36 +409,43 @@ const HomePageSearchTab: React.FC = () => {
                   <div className="flex gap-3 items-center">
                     <div className="text-[#111322] text-xs md:text-sm font-semibold">
                       {
-                        property?.lamdaDataFromApi?.eiendomsInformasjon
+                        property?.plot?.lamdaDataFromApi?.eiendomsInformasjon
                           ?.basisInformasjon?.areal_beregnet
                       }{" "}
                       <span className="text-[#4A5578] font-normal">m²</span>
                     </div>
                     <div className="border-l border-[#EAECF0] h-[12px]"></div>
                     <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                      5{" "}
+                      {property?.house?.Husdetaljer?.Soverom}{" "}
                       <span className="text-[#4A5578] font-normal">
                         soverom
                       </span>
                     </div>
                     <div className="border-l border-[#EAECF0] h-[12px]"></div>
                     <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                      3 <span className="text-[#4A5578] font-normal">bad</span>
+                      {property?.house?.Husdetaljer?.Bad}{" "}
+                      <span className="text-[#4A5578] font-normal">bad</span>
                     </div>
                   </div>
                   <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
                   <div className="gap-4 md:gap-5 lg:gap-6 flex items-center mb-2 md:mb-3 desktop:mb-4">
                     <div className="w-1/2">
-                      <p className="text-[#4A5578] text-xs md:text-sm mb-1">
+                      <p className="text-[#4A5578] text-xs md:text-sm mb-1 truncate">
                         Pris for{" "}
                         <span className="font-semibold">
-                          {index == 1 ? "Alta" : "Almgård"}
+                          {property?.house?.Husdetaljer?.husmodell_name}
                         </span>
                       </p>
                       <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
-                        {/* 2.800.00 NOK */}
-                        {property.pris
-                          ? formatPrice(Math.round(property.pris * 0.4))
+                        {property?.house?.Husdetaljer?.pris
+                          ? formatPrice(
+                              Math.round(
+                                property?.house?.Husdetaljer?.pris.replace(
+                                  /\s/g,
+                                  ""
+                                ) * 0.4
+                              )
+                            )
                           : "0 NOK"}
                       </h6>
                     </div>
@@ -355,11 +454,8 @@ const HomePageSearchTab: React.FC = () => {
                         Pris for <span className="font-semibold">tomten</span>
                       </p>
                       <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
-                        {/* {property.pris ? `${property.pris} NOK` : 0} */}
-
-                        {property.pris
-                          ? // ? `${Math.round(property.pris * 0.6)} NOK`
-                            formatPrice(Math.round(property.pris * 0.6))
+                        {property?.plot?.pris
+                          ? formatPrice(Math.round(property?.plot?.pris * 0.6))
                           : "0 NOK"}
                       </h6>
                     </div>
@@ -370,15 +466,29 @@ const HomePageSearchTab: React.FC = () => {
                         Totalpris med tomt
                       </p>
                       <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                        {/* {property.pris
-                              ? `${(280000 + parseInt(property.pris)).toLocaleString()} NOK`
-                              : "2.800.00 NOK"} */}
-                        {property.pris ? formatPrice(property.pris) : 0}
+                        {formatPrice(
+                          (property?.house?.Husdetaljer?.pris
+                            ? Math.round(
+                                property?.house?.Husdetaljer?.pris.replace(
+                                  /\s/g,
+                                  ""
+                                ) * 0.4
+                              )
+                            : 0) +
+                            (property?.plot?.pris
+                              ? Math.round(property?.plot?.pris * 0.6)
+                              : 0)
+                        )}
                       </h6>
                     </div>
                     <Button
                       text="Utforsk"
                       className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                      onClick={() => {
+                        router.push(
+                          `husmodell-plot-view?plot=${property?.plot?.id}&&husmodell=${property?.house?.id}`
+                        );
+                      }}
                     />
                   </div>
                 </div>

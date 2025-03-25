@@ -323,7 +323,7 @@ const Regulations = () => {
             setLamdaDataFromApi(foundProperty?.lamdaDataFromApi);
             setCadastreDataFromApi(foundProperty?.CadastreDataFromApi);
           } else {
-            console.log("No property found with the given ID.");
+            console.error("No property found with the given ID.");
           }
         } catch (error) {
           console.error("Error fetching user's properties:", error);
@@ -362,7 +362,7 @@ const Regulations = () => {
             setLamdaDataFromApi(foundProperty?.lamdaData);
             setCadastreDataFromApi(foundProperty?.cadastreData);
           } else {
-            console.log("No property found with the given ID.");
+            console.error("No property found with the given ID.");
           }
         } catch (error) {
           console.error("Error fetching user's properties:", error);

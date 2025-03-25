@@ -153,7 +153,7 @@ const HusmodellDetail = () => {
             setLamdaDataFromApi(foundProperty?.lamdaDataFromApi);
             setCadastreDataFromApi(foundProperty?.CadastreDataFromApi);
           } else {
-            console.log("No property found with the given ID.");
+            console.error("No property found with the given ID.");
           }
         } catch (error) {
           console.error("Error fetching user's properties:", error);

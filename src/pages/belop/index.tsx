@@ -22,9 +22,9 @@ const Belop: React.FC = () => {
     Eiendomstype: [] as string[],
     TypeHusmodell: [] as string[],
     AntallSoverom: [] as string[],
-    minRangeForPlot: 100000,
+    minRangeForPlot: 0,
     maxRangeForPlot: 5000000,
-    minRangeForHusmodell: 1000,
+    minRangeForHusmodell: 0,
     maxRangeForHusmodell: 5000000,
   });
 
@@ -34,8 +34,8 @@ const Belop: React.FC = () => {
     const queryPrice = queryParams.get("pris");
     setFormData((prev) => ({
       ...prev,
-      maxRangeForPlot: Number(queryPrice) * 0.6,
-      maxRangeForHusmodell: Number(queryPrice) * 0.4,
+      maxRangeForPlot: Number(queryPrice) * 0.4,
+      maxRangeForHusmodell: Number(queryPrice) * 0.6,
     }));
   }, []);
 
@@ -53,20 +53,28 @@ const Belop: React.FC = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       setIsLoading(true);
-
       try {
+        const soveromFormLocalStorage = JSON.parse(
+          localStorage.getItem("soverom") || "[]"
+        );
+        setFormData((prev) => ({
+          ...prev,
+          AntallSoverom: soveromFormLocalStorage,
+        }));
+        const soveromValues = soveromFormLocalStorage.map((item: any) =>
+          parseInt(item.replace(" Soverom", ""), 10)
+        );
+
         const db = getFirestore();
         const citiesCollectionRef = collection(db, "cities");
         const queryParams = new URLSearchParams(window.location.search);
-        const queryPrice = String(formData.maxRangeForPlot);
+        const queryPrice = queryParams.get("pris");
         const cityQuery = queryParams.get("city");
-
         const citiesSnapshot = await getDocs(citiesCollectionRef);
         const fetchedCities = citiesSnapshot.docs.map((doc) => ({
           propertyId: doc.id,
           ...doc.data(),
         }));
-
         const filterProperty: any = cityQuery
           ? fetchedCities.find(
               (property: any) =>
@@ -74,34 +82,46 @@ const Belop: React.FC = () => {
             )
           : null;
 
-        if (!filterProperty || !filterProperty.kommunenummer) {
-          console.log("No valid city found or missing kommune numbers.");
-          setHouseModelProperty([]);
-          return;
-        }
+        if (!filterProperty || !filterProperty.kommunenummer)
+          return setHouseModelProperty([]);
 
         const kommuneNumbers = Object.values(filterProperty.kommunenummer)
           .map((value: any) =>
-            typeof value === "string"
-              ? value.replace(/"/g, "")
-              : value.toString()
+            parseInt(
+              (typeof value === "string"
+                ? value.replace(/"/g, "")
+                : value
+              ).toString(),
+              10
+            )
           )
-          .map((value) => parseInt(value, 10))
           .filter((num) => !isNaN(num));
 
-        if (kommuneNumbers.length === 0) {
-          console.log("No kommune numbers found for this city.");
-          setHouseModelProperty([]);
-          return;
-        }
+        if (kommuneNumbers.length === 0) return setHouseModelProperty([]);
 
-        const plotsRef = collection(db, "empty_plot");
-        const allPlots: any[] = [];
+        const [plotsRef, husmodellRef] = [
+          collection(db, "empty_plot"),
+          collection(db, "house_model"),
+        ];
+        const allHusmodell = (await getDocs(husmodellRef)).docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const filteredHusmodell = queryPrice
+          ? allHusmodell.filter(
+              (plot: any) =>
+                parseInt(plot?.Husdetaljer?.pris.replace(/\s/g, ""), 10) <=
+                  parseInt(queryPrice.replace(/\s/g, ""), 10) * 0.4 &&
+                (soveromValues.length > 0
+                  ? soveromValues.includes(plot?.Husdetaljer?.Soverom)
+                  : true)
+            )
+          : allHusmodell;
+
+        const allPlots: any = [];
         const chunkSize = 10;
-
         for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
           const chunk = kommuneNumbers.slice(i, i + chunkSize);
-
           const q = query(
             plotsRef,
             where(
@@ -110,28 +130,24 @@ const Belop: React.FC = () => {
               chunk
             )
           );
-
           const querySnapshot = await getDocs(q);
-
           querySnapshot.forEach((doc) => {
             const data = doc.data();
-            if (
-              data.CadastreDataFromApi &&
-              data.CadastreDataFromApi.presentationAddressApi != null
-            ) {
-              allPlots.push({
-                id: doc.id,
-                ...data,
-              });
-            }
+            if (data.CadastreDataFromApi?.presentationAddressApi)
+              allPlots.push({ id: doc.id, ...data });
           });
         }
 
-        const filteredPlots: any = queryPrice
-          ? allPlots.filter((plot) => plot.pris <= parseInt(queryPrice, 10))
+        const filteredPlots = queryPrice
+          ? allPlots.filter(
+              (plot: any) => plot.pris <= parseInt(queryPrice, 10) * 0.6
+            )
           : allPlots;
+        const combinedData = filteredPlots.flatMap((plot: any) =>
+          filteredHusmodell.map((house) => ({ plot, house }))
+        );
 
-        setHouseModelProperty(filteredPlots);
+        setHouseModelProperty(combinedData);
       } catch (error) {
         console.error("Error fetching properties:", error);
         setHouseModelProperty([]);
@@ -141,7 +157,7 @@ const Belop: React.FC = () => {
     };
 
     fetchProperty();
-  }, [db, formData, router.asPath]);
+  }, [db, router.asPath]);
 
   return (
     <>

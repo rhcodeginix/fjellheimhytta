@@ -306,7 +306,7 @@ const AddPlotForm = () => {
                     }
                   });
                 } else {
-                  console.log("No property found with the given ID.");
+                  console.error("No property found with the given ID.");
                 }
               } catch (error) {
                 console.error("Error fetching user's properties:", error);
@@ -392,7 +392,7 @@ const AddPlotForm = () => {
                   setFieldValue("EPostadresse", userData.email);
                   setUserUID(user.uid);
                 } else {
-                  console.log("No such document in Firestore!");
+                  console.error("No such document in Firestore!");
                 }
               } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -484,7 +484,7 @@ const AddPlotForm = () => {
                     data.message === "Request failed with status code 503" ||
                     !data.propertyId
                   ) {
-                    console.log(data);
+                    console.error(data);
                   }
 
                   const areaDetails =

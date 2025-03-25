@@ -42,7 +42,7 @@ const Header = () => {
             const userData = userDocSnapshot.data();
             setUserName(userData.name);
           } else {
-            console.log("No such document in Firestore!");
+            console.error("No such document in Firestore!");
           }
         } catch (error) {
           console.error("Error fetching user data:", error);

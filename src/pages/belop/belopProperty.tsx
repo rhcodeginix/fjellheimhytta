@@ -1,19 +1,20 @@
 import Loading from "@/components/Loading";
 import Image from "next/image";
-import Img_plot from "@/public/images/Img_plot.png";
 import Ic_wishlist_heart from "@/public/images/Ic_wishlist_heart.svg";
 import GoogleMapComponent from "@/components/Ui/map";
-import Img_plot_image1 from "@/public/images/Img_plot_image1.png";
 import Button from "@/components/common/button";
+import { useRouter } from "next/router";
+
+export function formatPrice(price: any) {
+  const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return formatted + " NOK";
+}
 
 const BelopProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;
 }> = ({ HouseModelProperty, isLoading }) => {
-  function formatPrice(price: any) {
-    const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return formatted + " NOK";
-  }
+  const router = useRouter();
   return (
     <>
       <div>
@@ -35,11 +36,14 @@ const BelopProperty: React.FC<{
                 >
                   <div className="mb-2 md:mb-3 desktop:mb-4 flex items-start justify-between gap-3">
                     <div>
-                      <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2">
-                        <span className="font-bold">Almgård</span> bygget i{" "}
+                      <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 one_line_elipse">
+                        <span className="font-bold">
+                          {property?.house?.Husdetaljer?.husmodell_name}
+                        </span>{" "}
+                        bygget i{" "}
                         <span className="font-bold">
                           {
-                            property?.CadastreDataFromApi
+                            property?.plot?.CadastreDataFromApi
                               ?.presentationAddressApi?.response?.item
                               ?.formatted?.line1
                           }
@@ -47,7 +51,7 @@ const BelopProperty: React.FC<{
                         <span className="text-[#10182899]">
                           (
                           {
-                            property?.CadastreDataFromApi
+                            property?.plot?.CadastreDataFromApi
                               ?.presentationAddressApi?.response?.item?.street
                               ?.municipality?.municipalityName
                           }
@@ -56,8 +60,9 @@ const BelopProperty: React.FC<{
                       </h4>
                       <p className="text-grayText text-xs md:text-sm">
                         {
-                          property?.CadastreDataFromApi?.presentationAddressApi
-                            ?.response?.item?.formatted?.line2
+                          property?.plot?.CadastreDataFromApi
+                            ?.presentationAddressApi?.response?.item?.formatted
+                            ?.line2
                         }
                       </p>
                     </div>
@@ -71,18 +76,16 @@ const BelopProperty: React.FC<{
                   <div className="flex items-center gap-4">
                     <div className="flex gap-2 w-1/2">
                       <div className="w-[63%] h-[160px]">
-                        <Image
-                          key={index}
-                          src={index % 2 === 0 ? Img_plot : Img_plot_image1}
-                          alt="image"
+                        <img
+                          src={property?.house?.Husdetaljer?.photo}
+                          alt="husmodell"
                           className="w-full h-full rounded-[8px] object-cover"
-                          fetchPriority="auto"
                         />
                       </div>
                       <div className="w-[37%] rounded-[8px] overflow-hidden">
                         <GoogleMapComponent
                           coordinates={
-                            property?.lamdaDataFromApi?.coordinates
+                            property?.plot?.lamdaDataFromApi?.coordinates
                               ?.convertedCoordinates
                           }
                         />
@@ -92,21 +95,22 @@ const BelopProperty: React.FC<{
                       <div className="flex gap-3 items-center">
                         <div className="text-[#111322] text-xs md:text-sm font-semibold">
                           {
-                            property?.additionalData?.answer?.bya_calculations
-                              ?.results?.available_building_area
+                            property?.plot?.additionalData?.answer
+                              ?.bya_calculations?.results
+                              ?.available_building_area
                           }{" "}
                           <span className="text-[#4A5578] font-normal">m²</span>
                         </div>
                         <div className="border-l border-[#EAECF0] h-[12px]"></div>
                         <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                          5{" "}
+                          {property?.house?.Husdetaljer?.Soverom}{" "}
                           <span className="text-[#4A5578] font-normal">
                             soverom
                           </span>
                         </div>
                         <div className="border-l border-[#EAECF0] h-[12px]"></div>
                         <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                          3{" "}
+                          {property?.house?.Husdetaljer?.Bad}{" "}
                           <span className="text-[#4A5578] font-normal">
                             bad
                           </span>
@@ -114,8 +118,8 @@ const BelopProperty: React.FC<{
                         <div className="border-l-2 border-[#7F56D9] h-[12px] mx-4"></div>
                         <div className="text-[#111322] text-xs md:text-sm font-semibold">
                           {
-                            property?.additionalData?.answer?.bya_calculations
-                              ?.input?.plot_size
+                            property?.plot?.additionalData?.answer
+                              ?.bya_calculations?.input?.plot_size
                           }{" "}
                           <span className="text-[#4A5578] font-normal">m²</span>
                         </div>
@@ -123,14 +127,22 @@ const BelopProperty: React.FC<{
                       <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
                       <div className="gap-4 md:gap-5 lg:gap-6 flex items-center mb-2 md:mb-3 desktop:mb-4">
                         <div className="w-1/2">
-                          <p className="text-[#4A5578] text-xs md:text-sm mb-1">
+                          <p className="text-[#4A5578] text-xs md:text-sm mb-1 truncate">
                             Pris for{" "}
-                            <span className="font-semibold">Almgård</span>
+                            <span className="font-semibold">
+                              {property?.house?.Husdetaljer?.husmodell_name}
+                            </span>
                           </p>
                           <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
-                            {/* 2.800.00 NOK */}
-                            {property.pris
-                              ? formatPrice(Math.round(property.pris * 0.4))
+                            {property?.house?.Husdetaljer?.pris
+                              ? formatPrice(
+                                  Math.round(
+                                    property?.house?.Husdetaljer?.pris.replace(
+                                      /\s/g,
+                                      ""
+                                    ) * 0.4
+                                  )
+                                )
                               : "0 NOK"}
                           </h6>
                         </div>
@@ -140,11 +152,10 @@ const BelopProperty: React.FC<{
                             <span className="font-semibold">tomten</span>
                           </p>
                           <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
-                            {/* {property.pris ? `${property.pris} NOK` : 0} */}
-
-                            {property.pris
-                              ? // ? `${Math.round(property.pris * 0.6)} NOK`
-                                formatPrice(Math.round(property.pris * 0.6))
+                            {property?.plot?.pris
+                              ? formatPrice(
+                                  Math.round(property?.plot?.pris * 0.6)
+                                )
                               : "0 NOK"}
                           </h6>
                         </div>
@@ -155,15 +166,29 @@ const BelopProperty: React.FC<{
                             Totalpris med tomt
                           </p>
                           <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                            {/* {property.pris
-                              ? `${(280000 + parseInt(property.pris)).toLocaleString()} NOK`
-                              : "2.800.00 NOK"} */}
-                            {property.pris ? formatPrice(property.pris) : 0}
+                            {formatPrice(
+                              (property?.house?.Husdetaljer?.pris
+                                ? Math.round(
+                                    property?.house?.Husdetaljer?.pris.replace(
+                                      /\s/g,
+                                      ""
+                                    ) * 0.4
+                                  )
+                                : 0) +
+                                (property?.plot?.pris
+                                  ? Math.round(property?.plot?.pris * 0.6)
+                                  : 0)
+                            )}
                           </h6>
                         </div>
                         <Button
                           text="Utforsk"
                           className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                          onClick={() => {
+                            router.push(
+                              `husmodell-plot-view?plot=${property?.plot?.id}&&husmodell=${property?.house?.id}`
+                            );
+                          }}
                         />
                       </div>
                     </div>

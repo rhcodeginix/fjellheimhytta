@@ -14,7 +14,7 @@ const WMSMap = () => {
 
   useEffect(() => {
     if (!mapRef.current) {
-      console.log("Map container not found.");
+      console.error("Map container not found.");
       return;
     }
 

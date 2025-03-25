@@ -56,8 +56,6 @@ const AdresseTab = () => {
     }
 
     if (hasError) return;
-
-    console.log("data-----------", formData);
   };
 
   return (

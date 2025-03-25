@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Ic_search from "@/public/images/Ic_search.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Slider, styled } from "@mui/material";
 import { useRouter } from "next/router";
 
@@ -55,6 +55,14 @@ const BelopFilterSection: React.FC<{
   formData: FormDataType;
 }> = ({ setFormData, formData }) => {
   const router = useRouter();
+  const [maxPrice, setMaxPrice] = useState(null);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+
+    const queryPrice: any = queryParams.get("pris");
+    setMaxPrice(queryPrice);
+  }, []);
 
   const [openIndex, setOpenIndex] = useState<string | null>(null);
 
@@ -129,7 +137,7 @@ const BelopFilterSection: React.FC<{
           <div className="flex flex-col gap-6">
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-red font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Eiendomstype")}
               >
                 Eiendomstype
@@ -181,7 +189,7 @@ const BelopFilterSection: React.FC<{
             <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-red font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Type husmodell")}
               >
                 Type husmodell
@@ -267,6 +275,24 @@ const BelopFilterSection: React.FC<{
                             updatedSet.has(data.name)
                               ? updatedSet.delete(data.name)
                               : updatedSet.add(data.name);
+
+                            localStorage.setItem(
+                              "soverom",
+                              JSON.stringify(Array.from(updatedSet))
+                            );
+                            setTimeout(() => {
+                              router.push(
+                                {
+                                  pathname: router.pathname,
+                                  query: {
+                                    ...router.query,
+                                    soverom: new Date().toISOString(),
+                                  },
+                                },
+                                undefined,
+                                { shallow: true }
+                              );
+                            }, 2000);
                             return {
                               ...prev,
                               AntallSoverom: Array.from(updatedSet),
@@ -311,22 +337,26 @@ const BelopFilterSection: React.FC<{
                           minRangeForPlot: newValue[0],
                           maxRangeForPlot: newValue[1],
                         }));
-                        router.push(
-                          {
-                            pathname: router.pathname,
-                            query: {
-                              ...router.query,
-                              pris: newValue[1],
+                        const intPart = newValue[1];
+                        const updatedValue = newValue[1] + intPart * 0.004;
+                        setTimeout(() => {
+                          router.push(
+                            {
+                              pathname: router.pathname,
+                              query: {
+                                ...router.query,
+                                pris: Math.floor(updatedValue),
+                              },
                             },
-                          },
-                          undefined,
-                          { shallow: true }
-                        );
+                            undefined,
+                            { shallow: true }
+                          );
+                        }, 2000);
                       }}
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
-                      min={100000}
-                      max={5000000}
+                      min={formData.minRangeForPlot}
+                      max={Number(maxPrice)}
                     />
                   </div>
                   <div className="flex items-center justify-between h-[30px] mt-2">
@@ -334,7 +364,7 @@ const BelopFilterSection: React.FC<{
                       {formData.minRangeForPlot.toFixed(2)} NOK
                     </div>
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData.maxRangeForPlot.toFixed(2)} NOK
+                      {maxPrice} NOK
                     </div>
                   </div>
                 </div>
@@ -371,20 +401,35 @@ const BelopFilterSection: React.FC<{
                           minRangeForHusmodell: newValue[0],
                           maxRangeForHusmodell: newValue[1],
                         }));
+                        const intPart = newValue[1];
+                        const updatedValue = newValue[1] + intPart * 0.006;
+                        setTimeout(() => {
+                          router.push(
+                            {
+                              pathname: router.pathname,
+                              query: {
+                                ...router.query,
+                                pris: Math.floor(updatedValue),
+                              },
+                            },
+                            undefined,
+                            { shallow: true }
+                          );
+                        }, 2000);
                       }}
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
-                      min={1000}
-                      max={5000000}
+                      min={formData.minRangeForHusmodell}
+                      max={Number(maxPrice)}
                       step={100}
                     />
                   </div>
                   <div className="flex items-center justify-between h-[30px] mt-2">
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData.minRangeForHusmodell} NOK
+                      {formData.minRangeForHusmodell.toFixed(2)} NOK
                     </div>
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData.maxRangeForHusmodell} NOK
+                      {maxPrice} NOK
                     </div>
                   </div>
                 </div>
