@@ -1,6 +1,14 @@
 import SideSpaceContainer from "@/components/common/sideSpace";
-import { db } from "@/config/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "@/config/firebaseConfig";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,14 +23,50 @@ import Ic_chevron_up from "@/public/images/Ic_chevron_up.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import Img_product_3d_img1 from "@/public/images/Img_product_3d_img1.png";
 import Modal from "@/components/common/modal";
-import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import GoogleMapComponent from "@/components/Ui/map";
 import { formatPrice } from "../belop/belopProperty";
+import ContactFormHusmodellPlotView from "@/components/Ui/husmodellPlotView/husmodellPlotContactForm";
+import { onAuthStateChanged } from "firebase/auth";
 
 const HusmodellPlotView: React.FC = () => {
   const router = useRouter();
   const [finalData, setFinalData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<any>(null);
+  const [plotId, setPlotId] = useState<string | null>(null);
+  const [husmodellId, setHusmodellId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const queryParams = new URLSearchParams(window.location.search);
+      setPlotId(queryParams.get("plot"));
+      setHusmodellId(queryParams.get("husmodell"));
+    }
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
+      if (user) {
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnapshot = await getDoc(userDocRef);
+
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            setUser(userData);
+          } else {
+            console.error("No such document in Firestore!");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const hasReloaded = sessionStorage.getItem("hasReloaded");
@@ -36,12 +80,9 @@ const HusmodellPlotView: React.FC = () => {
   }, [router.asPath]);
   useEffect(() => {
     const fetchData = async () => {
-      const queryParams: any = new URLSearchParams(window.location.search);
-      const plotId = queryParams.get("plot");
-      const husmodellId = queryParams.get("husmodell");
+      if (!user) return;
 
       if (!plotId || !husmodellId) {
-        console.error("Missing plotId or husmodellId in query params.");
         setLoading(false);
         return;
       }
@@ -55,8 +96,8 @@ const HusmodellPlotView: React.FC = () => {
 
         if (plotDocSnap.exists() && husmodellDocSnap.exists()) {
           setFinalData({
-            plot: plotDocSnap.data(),
-            husmodell: husmodellDocSnap.data(),
+            plot: { id: plotId, ...plotDocSnap.data() },
+            husmodell: { id: husmodellId, ...husmodellDocSnap.data() },
           });
         } else {
           console.error("No document found for plot or husmodell ID.");
@@ -69,7 +110,7 @@ const HusmodellPlotView: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [user]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -117,6 +158,40 @@ const HusmodellPlotView: React.FC = () => {
   const formattedNumber = totalPrisOfTomtekost.toLocaleString("nb-NO");
 
   const total = totalPrisOfByggekostnader + totalPrisOfTomtekost;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user || !plotId || !husmodellId) {
+        return;
+      }
+
+      try {
+        const leadsCollectionRef = collection(db, "leads");
+        const querySnapshot = await getDocs(
+          query(
+            leadsCollectionRef,
+            where("finalData.plot.id", "==", plotId),
+            where("finalData.husmodell.id", "==", husmodellId)
+          )
+        );
+        if (!querySnapshot.empty) {
+          return;
+        }
+
+        await addDoc(leadsCollectionRef, {
+          finalData,
+          user,
+          Isopt: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      } catch (error) {
+        console.error("Firestore operation failed:", error);
+      }
+    };
+
+    fetchData();
+  }, [finalData]);
 
   if (loading) {
     return <Loader />;
@@ -641,7 +716,7 @@ const HusmodellPlotView: React.FC = () => {
           </div>
           <div className="flex justify-between w-full">
             <div className="w-[42%]">
-              <ContactForm />
+              <ContactFormHusmodellPlotView />
             </div>
             <div className="w-[58%]">
               <p className="text-secondary text-lg mb-2 text-right">

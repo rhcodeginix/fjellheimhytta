@@ -7,6 +7,7 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
   path?: string;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -15,6 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   type,
   onClick,
   path,
+  disabled,
 }) => {
   const router = useRouter();
 
@@ -31,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
       className={`${className} text-sm md:text-base whitespace-nowrap lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center justify-center`}
       type={type || "button"}
       onClick={handleClick}
+      disabled={disabled && disabled}
     >
       {text}
     </button>

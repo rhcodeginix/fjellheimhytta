@@ -317,7 +317,7 @@ td {
 
 .container .checkmark:after {
   left: 5px;
-  top: 3px;
+  top: 2px;
   width: 4px;
   height: 8px;
   border: solid white;
