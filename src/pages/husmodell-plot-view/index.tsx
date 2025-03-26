@@ -532,11 +532,11 @@ const HusmodellPlotView: React.FC = () => {
                               finalData?.husmodell?.Husdetaljer?.pris.replace(
                                 /\s/g,
                                 ""
-                              ) * 0.4
+                              )
                             )
                           : 0) +
                           (finalData?.plot?.pris
-                            ? Math.round(finalData?.plot?.pris * 0.6)
+                            ? Math.round(finalData?.plot?.pris)
                             : 0)
                       )}
                     </h3>

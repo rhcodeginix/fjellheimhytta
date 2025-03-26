@@ -92,6 +92,10 @@ const BelopFilterSection: React.FC<{
     { name: "6 Soverom", value: "6 Soverom" },
   ];
 
+  const { pathname, query } = router;
+
+  const updatedQuery = { ...query };
+
   return (
     <>
       <div className="sticky top-[86px] bg-[#F9F5FF] rounded-[12px]">
@@ -99,7 +103,27 @@ const BelopFilterSection: React.FC<{
           <h4 className="text-[#111322] font-medium text-base md:text-lg lg:text-xl desktop:text-2xl">
             Filter
           </h4>
-          <h5 className="text-blue text-sm md:text-base font-medium">
+          <h5
+            className="text-blue text-sm md:text-base font-medium cursor-pointer"
+            onClick={() => {
+              setFormData((prev: any) => ({
+                ...prev,
+                AntallSoverom: [],
+                Eiendomstype: [],
+                TypeHusmodell: [],
+                minRangeForPlot: 0,
+                minRangeForHusmodell: 0,
+                maxRangeForPlot: Number(maxPrice) * 0.4,
+                maxRangeForHusmodell: Number(maxPrice) * 0.6,
+              }));
+              delete updatedQuery.maxRangeHusmodell;
+              delete updatedQuery.maxRangePlot;
+
+              router.replace({ pathname, query: updatedQuery }, undefined, {
+                shallow: true,
+              });
+            }}
+          >
             Tilbakestill
           </h5>
         </div>
@@ -337,15 +361,13 @@ const BelopFilterSection: React.FC<{
                           minRangeForPlot: newValue[0],
                           maxRangeForPlot: newValue[1],
                         }));
-                        const intPart = newValue[1];
-                        const updatedValue = newValue[1] + intPart * 0.004;
                         setTimeout(() => {
                           router.push(
                             {
                               pathname: router.pathname,
                               query: {
                                 ...router.query,
-                                pris: Math.floor(updatedValue),
+                                maxRangePlot: Math.floor(newValue[1]),
                               },
                             },
                             undefined,
@@ -356,6 +378,7 @@ const BelopFilterSection: React.FC<{
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
                       min={formData.minRangeForPlot}
+                      step={100}
                       max={Number(maxPrice)}
                     />
                   </div>
@@ -401,15 +424,13 @@ const BelopFilterSection: React.FC<{
                           minRangeForHusmodell: newValue[0],
                           maxRangeForHusmodell: newValue[1],
                         }));
-                        const intPart = newValue[1];
-                        const updatedValue = newValue[1] + intPart * 0.006;
                         setTimeout(() => {
                           router.push(
                             {
                               pathname: router.pathname,
                               query: {
                                 ...router.query,
-                                pris: Math.floor(updatedValue),
+                                maxRangeHusmodell: Math.floor(newValue[1]),
                               },
                             },
                             undefined,

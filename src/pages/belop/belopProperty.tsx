@@ -140,7 +140,7 @@ const BelopProperty: React.FC<{
                                     property?.house?.Husdetaljer?.pris.replace(
                                       /\s/g,
                                       ""
-                                    ) * 0.4
+                                    )
                                   )
                                 )
                               : "0 NOK"}
@@ -153,9 +153,7 @@ const BelopProperty: React.FC<{
                           </p>
                           <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
                             {property?.plot?.pris
-                              ? formatPrice(
-                                  Math.round(property?.plot?.pris * 0.6)
-                                )
+                              ? formatPrice(Math.round(property?.plot?.pris))
                               : "0 NOK"}
                           </h6>
                         </div>
@@ -172,11 +170,11 @@ const BelopProperty: React.FC<{
                                     property?.house?.Husdetaljer?.pris.replace(
                                       /\s/g,
                                       ""
-                                    ) * 0.4
+                                    )
                                   )
                                 : 0) +
                                 (property?.plot?.pris
-                                  ? Math.round(property?.plot?.pris * 0.6)
+                                  ? Math.round(property?.plot?.pris)
                                   : 0)
                             )}
                           </h6>

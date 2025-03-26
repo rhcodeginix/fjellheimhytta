@@ -32,10 +32,16 @@ const Belop: React.FC = () => {
     const queryParams = new URLSearchParams(window.location.search);
 
     const queryPrice = queryParams.get("pris");
+    const maxRangePlot = queryParams.get("maxRangePlot");
+    const maxRangeHusmodell = queryParams.get("maxRangeHusmodell");
     setFormData((prev) => ({
       ...prev,
-      maxRangeForPlot: Number(queryPrice) * 0.4,
-      maxRangeForHusmodell: Number(queryPrice) * 0.6,
+      maxRangeForPlot: maxRangePlot
+        ? Number(maxRangePlot)
+        : Number(queryPrice) * 0.4,
+      maxRangeForHusmodell: maxRangeHusmodell
+        ? Number(maxRangeHusmodell)
+        : Number(queryPrice) * 0.6,
     }));
   }, []);
 
@@ -54,6 +60,7 @@ const Belop: React.FC = () => {
     const fetchProperty = async () => {
       setIsLoading(true);
       try {
+        const queryParams = new URLSearchParams(window.location.search);
         const soveromFormLocalStorage = JSON.parse(
           localStorage.getItem("soverom") || "[]"
         );
@@ -64,10 +71,15 @@ const Belop: React.FC = () => {
         const soveromValues = soveromFormLocalStorage.map((item: any) =>
           parseInt(item.replace(" Soverom", ""), 10)
         );
+        const maxRangePlot: any = queryParams.get("maxRangePlot");
+        const maxRangeHusmodell = queryParams.get("maxRangeHusmodell");
+        setFormData((prev) => ({
+          ...prev,
+          AntallSoverom: soveromFormLocalStorage,
+        }));
 
         const db = getFirestore();
         const citiesCollectionRef = collection(db, "cities");
-        const queryParams = new URLSearchParams(window.location.search);
         const queryPrice = queryParams.get("pris");
         const cityQuery = queryParams.get("city");
         const citiesSnapshot = await getDocs(citiesCollectionRef);
@@ -110,8 +122,11 @@ const Belop: React.FC = () => {
         const filteredHusmodell = queryPrice
           ? allHusmodell.filter(
               (plot: any) =>
-                parseInt(plot?.Husdetaljer?.pris.replace(/\s/g, ""), 10) <=
-                  parseInt(queryPrice.replace(/\s/g, ""), 10) * 0.4 &&
+                (maxRangeHusmodell
+                  ? (plot?.Husdetaljer?.pris.replace(/\s/g, ""), 10) <=
+                    parseInt(maxRangeHusmodell)
+                  : parseInt(plot?.Husdetaljer?.pris.replace(/\s/g, ""), 10) <=
+                    parseInt(queryPrice.replace(/\s/g, ""), 10) * 0.4) &&
                 (soveromValues.length > 0
                   ? soveromValues.includes(plot?.Husdetaljer?.Soverom)
                   : true)
@@ -140,7 +155,11 @@ const Belop: React.FC = () => {
 
         const filteredPlots = queryPrice
           ? allPlots.filter(
-              (plot: any) => plot.pris <= parseInt(queryPrice, 10) * 0.6
+              (plot: any) =>
+                plot.pris <=
+                (maxRangePlot && parseInt(maxRangePlot, 10)
+                  ? Number(maxRangePlot)
+                  : parseInt(queryPrice, 10) * 0.6)
             )
           : allPlots;
         const combinedData = filteredPlots.flatMap((plot: any) =>
