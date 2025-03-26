@@ -200,10 +200,10 @@ const BelopFilterSection: React.FC<{
                         type="checkbox"
                         id={data.name}
                         value={data.name}
-                        checked={formData.Eiendomstype.includes(data.name)}
+                        checked={formData?.Eiendomstype.includes(data.name)}
                         onChange={() => {
                           setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.Eiendomstype);
+                            const updatedSet: any = new Set(prev?.Eiendomstype);
                             updatedSet.has(data.name)
                               ? updatedSet.delete(data.name)
                               : updatedSet.add(data.name);
@@ -254,10 +254,12 @@ const BelopFilterSection: React.FC<{
                         type="checkbox"
                         id={data.name}
                         value={data.name}
-                        checked={formData.TypeHusmodell.includes(data.name)}
+                        checked={formData?.TypeHusmodell.includes(data.name)}
                         onChange={() => {
                           setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.TypeHusmodell);
+                            const updatedSet: any = new Set(
+                              prev?.TypeHusmodell
+                            );
                             updatedSet.has(data.name)
                               ? updatedSet.delete(data.name)
                               : updatedSet.add(data.name);
@@ -308,10 +310,12 @@ const BelopFilterSection: React.FC<{
                         type="checkbox"
                         id={data.name}
                         value={data.name}
-                        checked={formData.AntallSoverom.includes(data.name)}
+                        checked={formData?.AntallSoverom.includes(data.name)}
                         onChange={() => {
                           setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.AntallSoverom);
+                            const updatedSet: any = new Set(
+                              prev?.AntallSoverom
+                            );
                             updatedSet.has(data.name)
                               ? updatedSet.delete(data.name)
                               : updatedSet.add(data.name);
@@ -370,8 +374,8 @@ const BelopFilterSection: React.FC<{
                   <div className="mx-1">
                     <CustomSlider
                       value={[
-                        formData.minRangeForPlot,
-                        formData.maxRangeForPlot,
+                        formData?.minRangeForPlot,
+                        formData?.maxRangeForPlot,
                       ]}
                       onChange={(_event: any, newValue: any) => {
                         setFormData((prev: any) => ({
@@ -395,14 +399,14 @@ const BelopFilterSection: React.FC<{
                       }}
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
-                      min={formData.minRangeForPlot}
+                      min={formData?.minRangeForPlot}
                       step={100}
                       max={Number(maxPrice)}
                     />
                   </div>
                   <div className="flex items-center justify-between h-[30px] mt-2">
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData.minRangeForPlot.toFixed(2)} NOK
+                      {formData?.minRangeForPlot.toFixed(2)} NOK
                     </div>
                     <div className="text-grayText text-sm lg:text-base">
                       {maxPrice} NOK
@@ -433,8 +437,8 @@ const BelopFilterSection: React.FC<{
                   <div className="mx-1">
                     <CustomSlider
                       value={[
-                        formData.minRangeForHusmodell,
-                        formData.maxRangeForHusmodell,
+                        formData?.minRangeForHusmodell,
+                        formData?.maxRangeForHusmodell,
                       ]}
                       onChange={(_event: any, newValue: any) => {
                         setFormData((prev: any) => ({
@@ -458,14 +462,14 @@ const BelopFilterSection: React.FC<{
                       }}
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
-                      min={formData.minRangeForHusmodell}
+                      min={formData?.minRangeForHusmodell}
                       max={Number(maxPrice)}
                       step={100}
                     />
                   </div>
                   <div className="flex items-center justify-between h-[30px] mt-2">
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData.minRangeForHusmodell.toFixed(2)} NOK
+                      {formData?.minRangeForHusmodell.toFixed(2)} NOK
                     </div>
                     <div className="text-grayText text-sm lg:text-base">
                       {maxPrice} NOK
