@@ -64,10 +64,20 @@ const BelopFilterSection: React.FC<{
     setMaxPrice(queryPrice);
   }, []);
 
-  const [openIndex, setOpenIndex] = useState<string | null>(null);
+  const [openIndex, setOpenIndex] = useState<string[]>([
+    "Eiendomstype",
+    "Type husmodell",
+    "Antall soverom",
+    "Pris på tomt",
+    "Pris på husmodell",
+  ]);
 
   const handleToggleAccordion = (type: string) => {
-    setOpenIndex(openIndex === type ? null : type);
+    setOpenIndex((prevOpenIndex) =>
+      prevOpenIndex.includes(type)
+        ? prevOpenIndex.filter((section) => section !== type)
+        : [...prevOpenIndex, type]
+    );
   };
   const EiendomstypeArray: any = [
     { name: "Bolig", value: "Bolig" },
@@ -168,12 +178,14 @@ const BelopFilterSection: React.FC<{
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
-                  className={openIndex === "Eiendomstype" ? "rotate-180" : ""}
+                  className={
+                    openIndex.includes("Eiendomstype") ? "rotate-180" : ""
+                  }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Eiendomstype" && (
+              {openIndex.includes("Eiendomstype") && (
                 <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
                   {EiendomstypeArray.map((data: any, index: number) => (
                     <label
@@ -220,12 +232,14 @@ const BelopFilterSection: React.FC<{
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
-                  className={openIndex === "Type husmodell" ? "rotate-180" : ""}
+                  className={
+                    openIndex.includes("Type husmodell") ? "rotate-180" : ""
+                  }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Type husmodell" && (
+              {openIndex.includes("Type husmodell") && (
                 <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
                   {TypeHusmodellArray.map((data: any, index: number) => (
                     <label
@@ -272,12 +286,14 @@ const BelopFilterSection: React.FC<{
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
-                  className={openIndex === "Antall soverom" ? "rotate-180" : ""}
+                  className={
+                    openIndex.includes("Antall soverom") ? "rotate-180" : ""
+                  }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Antall soverom" && (
+              {openIndex.includes("Antall soverom") && (
                 <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
                   {AntallSoveromArray.map((data: any, index: number) => (
                     <label
@@ -342,12 +358,14 @@ const BelopFilterSection: React.FC<{
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
-                  className={openIndex === "Pris på tomt" ? "rotate-180" : ""}
+                  className={
+                    openIndex.includes("Pris på tomt") ? "rotate-180" : ""
+                  }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Pris på tomt" && (
+              {openIndex.includes("Pris på tomt") && (
                 <div className="mt-8">
                   <div className="mx-1">
                     <CustomSlider
@@ -404,13 +422,13 @@ const BelopFilterSection: React.FC<{
                   src={Ic_chevron_down}
                   alt="arrow"
                   className={
-                    openIndex === "Pris på husmodell" ? "rotate-180" : ""
+                    openIndex.includes("Pris på husmodell") ? "rotate-180" : ""
                   }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Pris på husmodell" && (
+              {openIndex.includes("Pris på husmodell") && (
                 <div className="mt-8">
                   <div className="mx-1">
                     <CustomSlider
