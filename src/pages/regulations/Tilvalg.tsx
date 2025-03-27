@@ -112,13 +112,13 @@ const Tilvalg: React.FC<any> = ({ handleNext, handlePrevious }) => {
       setDrawerOpen(true);
     } else {
       setDrawerOpen(false);
-      router.replace(
-        {
-          pathname: router.pathname,
-        },
-        undefined,
-        { shallow: true }
-      );
+      // router.replace(
+      //   {
+      //     pathname: router.pathname,
+      //   },
+      //   undefined,
+      //   { shallow: true }
+      // );
     }
   }, [query.product_option]);
 
@@ -355,6 +355,7 @@ const Tilvalg: React.FC<any> = ({ handleNext, handlePrevious }) => {
               className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
+                router.push(router.asPath);
               }}
             />
             <Button

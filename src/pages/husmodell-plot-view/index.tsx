@@ -136,6 +136,7 @@ const HusmodellPlotView: React.FC = () => {
 
       try {
         const plotDocRef = doc(db, "empty_plot", plotId);
+
         const plotDocSnap = await getDoc(plotDocRef);
 
         const husmodellDocRef = doc(db, "house_model", husmodellId);
@@ -240,6 +241,33 @@ const HusmodellPlotView: React.FC = () => {
 
     fetchData();
   }, [finalData]);
+
+  const [supplierData, setSupplierData] = useState<any>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const supplierDocRef = doc(
+          db,
+          "suppliers",
+          finalData.husmodell.Husdetaljer.Leverandører
+        );
+        const docSnap: any = await getDoc(supplierDocRef);
+
+        if (docSnap.exists()) {
+          setSupplierData(docSnap.data());
+        } else {
+          console.error(
+            "No document found for ID:",
+            finalData.husmodell.Husdetaljer.Leverandører
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching supplier data:", error);
+      }
+    };
+    getData();
+  }, [finalData?.husmodell?.Husdetaljer?.Leverandører]);
 
   return (
     <div className="relative">
@@ -543,11 +571,16 @@ const HusmodellPlotView: React.FC = () => {
                   style={{ boxShadow: "0px 4px 16px 0px #0000001A" }}
                 >
                   <div className="relative w-[50%] h-[262px] flex items-center gap-2">
-                    <div className="w-1/2 h-full">
+                    <div className="w-1/2 h-full relative">
                       <img
                         src={finalData?.husmodell?.Husdetaljer?.photo}
                         alt="husmodell"
                         className="w-full h-full rounded-[8px] object-cover overflow-hidden"
+                      />
+                      <img
+                        src={supplierData?.photo}
+                        alt="product-logo"
+                        className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-[137px]"
                       />
                     </div>
                     <div className="w-1/2 h-full">
@@ -779,9 +812,7 @@ const HusmodellPlotView: React.FC = () => {
               </div>
               <div className="flex justify-between w-full">
                 <div className="w-[42%]">
-                  <ContactFormHusmodellPlotView
-                    supplierId={finalData.husmodell.Husdetaljer.Leverandører}
-                  />
+                  <ContactFormHusmodellPlotView supplierData={supplierData} />
                 </div>
                 <div className="w-[58%]">
                   <p className="text-secondary text-lg mb-2 text-right">

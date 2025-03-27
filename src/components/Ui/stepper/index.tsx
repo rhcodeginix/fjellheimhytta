@@ -1,5 +1,5 @@
 import SideSpaceContainer from "@/components/common/sideSpace";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import PropertyDetail from "../stepperUi/propertyDetail";
 
@@ -27,7 +27,7 @@ const Stepper: React.FC<StepperProps> = ({
   askData,
   lamdaDataFromApi,
 }) => {
-  const router = useRouter();
+  // const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined" && currIndex) {
       localStorage.setItem("currIndex", currIndex.toString());
@@ -38,13 +38,13 @@ const Stepper: React.FC<StepperProps> = ({
     if (index <= currIndex) {
       setCurrIndex(index);
     }
+    localStorage.setItem("currIndex", index.toString());
     if (currIndex > index && (index === 0 || index === 1 || index === 2)) {
-      const { plot, ...restQuery } = router.query as any;
-      const updatedQuery = new URLSearchParams(restQuery).toString();
-      localStorage.setItem("currIndex", index.toString());
-      router.push(
-        `${router.pathname}${updatedQuery ? `?${updatedQuery}` : ""}`
-      );
+      // const { plot, ...restQuery } = router.query as any;
+      // const updatedQuery = new URLSearchParams(restQuery).toString();
+      // router.push(
+      //   `${router.pathname}${updatedQuery ? `?${updatedQuery}` : ""}`
+      // );
     }
   };
 

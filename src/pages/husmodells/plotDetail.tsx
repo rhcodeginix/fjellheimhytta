@@ -12,7 +12,7 @@ import Ic_Superstructure from "@/public/images/Ic_Superstructure.svg";
 import Button from "@/components/common/button";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import { useAddress } from "@/context/addressContext";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import Loader from "@/components/Loader";
 import GoogleMapComponent from "@/components/Ui/map";
 
@@ -45,7 +45,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   ];
   const { getAddress } = useAddress();
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const [askData, setAskData] = useState<any | null>(null);
   const { additionalData, loadingAdditionalData } = useAddress();
@@ -528,14 +528,14 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
             <Button
               text="Tilbake"
               className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
-              onClick={() => {
-                const { plot, ...restQuery } = router.query as any;
-                const updatedQuery = new URLSearchParams(restQuery).toString();
+              // onClick={() => {
+              //   const { plot, ...restQuery } = router.query as any;
+              //   const updatedQuery = new URLSearchParams(restQuery).toString();
 
-                router.push(
-                  `${router.pathname}${updatedQuery ? `?${updatedQuery}` : ""}`
-                );
-              }}
+              //   router.push(
+              //     `${router.pathname}${updatedQuery ? `?${updatedQuery}` : ""}`
+              //   );
+              // }}
             />
             <Button
               text="Se tilbud"

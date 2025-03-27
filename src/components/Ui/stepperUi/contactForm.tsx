@@ -2,8 +2,18 @@ import React, { useState } from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import Button from "@/components/common/button";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
+import toast from "react-hot-toast";
 
-const ContactForm: React.FC<any> = () => {
+const ContactForm: React.FC = () => {
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -14,6 +24,61 @@ const ContactForm: React.FC<any> = () => {
 
   const handleSubmit = async (values: any) => {
     console.log(values);
+    const queryParams = new URLSearchParams(window.location.search);
+    const isEmptyPlot = queryParams.get("empty");
+    const husmodellId = queryParams.get("husodellId");
+
+    try {
+      let plotCollectionRef;
+
+      if (isEmptyPlot === "true") {
+        plotCollectionRef = collection(db, "empty_plot");
+      } else {
+        plotCollectionRef = collection(db, "plot_building");
+      }
+
+      const allLeadsQuery = query(plotCollectionRef);
+      const allLeadsSnapshot = await getDocs(allLeadsQuery);
+
+      if (allLeadsSnapshot.empty) {
+        console.warn("No leads found in the collection.");
+        return;
+      }
+
+      let correctPlotId = null;
+      const allLeads = allLeadsSnapshot.docs.map((doc) => {
+        return { propertyId: doc.id, ...doc.data() };
+      });
+      for (const lead of allLeads) {
+        if (lead?.propertyId) {
+          correctPlotId = lead.propertyId;
+          break;
+        }
+      }
+
+      if (!correctPlotId) {
+        console.error("No valid plotId found in lamdaData.");
+        return;
+      }
+
+      const leadsCollectionRef = collection(db, "leads");
+      const querySnapshot: any = await getDocs(
+        query(
+          leadsCollectionRef,
+          where("finalData.plot.id", "==", correctPlotId),
+          where("finalData.husmodell.id", "==", husmodellId)
+        )
+      );
+
+      await updateDoc(doc(db, "leads", querySnapshot.docs[0].id), {
+        Isopt: true,
+        updatedAt: new Date(),
+      });
+      toast.success("Added successfully.", { position: "top-right" });
+      setIsChecked(true);
+    } catch (error) {
+      console.error("Firestore update operation failed:", error);
+    }
   };
 
   return (
@@ -59,8 +124,9 @@ const ContactForm: React.FC<any> = () => {
                 <div>
                   <Button
                     text="Send inn"
-                    className="border border-primary bg-white text-primary sm:text-base rounded-[50px] w-[176px] h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
+                    className={`border border-primary bg-white text-primary sm:text-base rounded-[50px] w-[176px] h-[48px] font-semibold ${!isChecked ? "opacity-50 cursor-not-allowed" : ""}`}
                     type="submit"
+                    disabled={!isChecked}
                   />
                 </div>
               </div>

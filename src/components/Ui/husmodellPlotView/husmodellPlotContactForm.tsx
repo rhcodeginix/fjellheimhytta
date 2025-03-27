@@ -5,7 +5,6 @@ import Button from "@/components/common/button";
 import {
   collection,
   doc,
-  getDoc,
   getDocs,
   query,
   updateDoc,
@@ -14,14 +13,13 @@ import {
 import { db } from "@/config/firebaseConfig";
 import toast from "react-hot-toast";
 
-const ContactFormHusmodellPlotView: React.FC<{ supplierId: any }> = ({
-  supplierId,
+const ContactFormHusmodellPlotView: React.FC<{ supplierData: any }> = ({
+  supplierData,
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const queryParams = new URLSearchParams(window.location.search);
   const plotId = queryParams.get("plot");
   const husmodellId = queryParams.get("husmodell");
-  const [supplierData, setSupplierData] = useState<any>(null);
 
   useEffect(() => {
     if (!plotId || !husmodellId) return;
@@ -65,24 +63,6 @@ const ContactFormHusmodellPlotView: React.FC<{ supplierId: any }> = ({
       console.error("Firestore update operation failed:", error);
     }
   };
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const supplierDocRef = doc(db, "suppliers", supplierId);
-        const docSnap: any = await getDoc(supplierDocRef);
-
-        if (docSnap.exists()) {
-          setSupplierData(docSnap.data());
-        } else {
-          console.error("No document found for ID:", supplierId);
-        }
-      } catch (error) {
-        console.error("Error fetching supplier data:", error);
-      }
-    };
-    getData();
-  }, [supplierId]);
 
   return (
     <div className="bg-[#42307D] rounded-[12px] p-6">

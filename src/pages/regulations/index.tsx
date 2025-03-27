@@ -76,7 +76,7 @@ const Regulations = () => {
       const matches: any[] = [];
 
       if (data) {
-        const sheetData: any = data["Møre og Romsdal"];
+        const sheetData: any = data["Agder"];
         const rowsToProcess = sheetData.slice(1);
         for (const row of rowsToProcess) {
           const lamdaApiData: any = {
@@ -246,6 +246,7 @@ const Regulations = () => {
           setCadastreDataFromApi(CadastreDataResponse.apis);
 
           setLamdaDataFromApi(data);
+
           setLoadingLamdaData(false);
 
           if (cleanAnswer) {
@@ -274,6 +275,45 @@ const Regulations = () => {
               const response = await ApiUtils.askApi(promt);
               clearTimeout(timeoutId);
               setAdditionalData(response);
+
+              const property = {
+                lamdaDataFromApi: data,
+                additionalData: response,
+                CadastreDataFromApi: CadastreDataResponse.apis,
+                pris: null,
+              };
+              const propertyId = property?.lamdaDataFromApi?.propertyId;
+
+              const queryParams = new URLSearchParams(window.location.search);
+
+              queryParams.delete("plotId");
+              queryParams.delete("empty");
+
+              queryParams.set("plotId", propertyId);
+
+              if (
+                property?.CadastreDataFromApi?.buildingsApi?.response?.items &&
+                property?.CadastreDataFromApi?.buildingsApi?.response?.items
+                  .length === 0
+              ) {
+                queryParams.set("empty", "true");
+              } else {
+                queryParams.set("empty", "false");
+                const EmptyPlotDb = collection(db, "plot_building");
+                const existingEmptyPlot = query(
+                  EmptyPlotDb,
+                  where("lamdaDataFromApi.propertyId", "==", propertyId)
+                );
+                const EmptyPlotShot = await getDocs(existingEmptyPlot);
+
+                if (EmptyPlotShot.empty) {
+                  await addDoc(EmptyPlotDb, property);
+                }
+              }
+              router.replace({
+                pathname: router.pathname,
+                query: Object.fromEntries(queryParams),
+              });
             } catch (error: any) {
               console.error(
                 "Error fetching additional data from askApi:",

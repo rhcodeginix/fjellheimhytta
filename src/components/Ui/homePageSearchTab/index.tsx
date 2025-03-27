@@ -11,6 +11,8 @@ import Button from "@/components/common/button";
 import Img_plot_image1 from "@/public/images/Img_plot_image1.png";
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
   limit,
@@ -287,6 +289,41 @@ const HomePageSearchTab: React.FC = () => {
     fetchProperty();
   }, [db]);
 
+  const [supplierData, setSupplierData] = useState<{ [key: string]: any }>({});
+
+  const getData = async (supplierId: string) => {
+    try {
+      const supplierDocRef = doc(db, "suppliers", supplierId);
+      const docSnap: any = await getDoc(supplierDocRef);
+
+      if (docSnap.exists()) {
+        return docSnap.data();
+      } else {
+        console.error("No document found for ID:", supplierId);
+      }
+    } catch (error) {
+      console.error("Error fetching supplier data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchSupplierDetails = async () => {
+      const supplierMap: { [key: string]: any } = {};
+
+      await Promise.all(
+        BelopProperty.map(async (property: any) => {
+          const supplierId = property?.house?.Husdetaljer?.Leverandører;
+          if (supplierId && !supplierMap[supplierId]) {
+            supplierMap[supplierId] = await getData(supplierId);
+          }
+        })
+      );
+
+      setSupplierData(supplierMap);
+    };
+
+    fetchSupplierDetails();
+  }, [BelopProperty]);
   return (
     <>
       <div className="relative">
@@ -348,151 +385,161 @@ const HomePageSearchTab: React.FC = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-              {BelopProperty.map((property: any, index) => (
-                <div
-                  key={index}
-                  className="border border-[#EFF1F5] rounded-[8px] p-5"
-                  style={{
-                    boxShadow:
-                      "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
-                  }}
-                >
-                  <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] two_line_elipse">
-                    <span className="font-bold">
-                      {property?.house?.Husdetaljer?.husmodell_name}
-                    </span>{" "}
-                    bygget i{" "}
-                    <span className="font-bold">
+              {BelopProperty.map((property: any, index) => {
+                const supplierId = property?.house?.Husdetaljer?.Leverandører;
+                const data = supplierData[supplierId] || null;
+
+                return (
+                  <div
+                    key={index}
+                    className="border border-[#EFF1F5] rounded-[8px] p-5"
+                    style={{
+                      boxShadow:
+                        "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+                    }}
+                  >
+                    <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] two_line_elipse">
+                      <span className="font-bold">
+                        {property?.house?.Husdetaljer?.husmodell_name}
+                      </span>{" "}
+                      bygget i{" "}
+                      <span className="font-bold">
+                        {
+                          property?.plot?.CadastreDataFromApi
+                            ?.presentationAddressApi?.response?.item?.formatted
+                            ?.line1
+                        }
+                      </span>{" "}
+                    </h4>
+                    <div className="text-[#10182899] mb-2 text-sm md:text-base lg:text-lg lg:leading-[30px]">
+                      (
+                      {
+                        property?.plot?.CadastreDataFromApi
+                          ?.presentationAddressApi?.response?.item?.street
+                          ?.municipality?.municipalityName
+                      }
+                      )
+                    </div>
+                    <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
                       {
                         property?.plot?.CadastreDataFromApi
                           ?.presentationAddressApi?.response?.item?.formatted
-                          ?.line1
+                          ?.line2
                       }
-                    </span>{" "}
-                  </h4>
-                  <div className="text-[#10182899] mb-2 text-sm md:text-base lg:text-lg lg:leading-[30px]">
-                    (
-                    {
-                      property?.plot?.CadastreDataFromApi
-                        ?.presentationAddressApi?.response?.item?.street
-                        ?.municipality?.municipalityName
-                    }
-                    )
-                  </div>
-                  <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
-                    {
-                      property?.plot?.CadastreDataFromApi
-                        ?.presentationAddressApi?.response?.item?.formatted
-                        ?.line2
-                    }
-                  </p>
-                  <div className="flex gap-2 mb-2 md:mb-3 desktop:mb-4 h-[185px]">
-                    <div className="w-[63%]">
-                      <img
-                        src={property?.house?.Husdetaljer?.photo}
-                        alt="husmodell"
-                        className="w-full h-full rounded-[8px] object-cover"
-                      />
+                    </p>
+                    <div className="flex gap-2 mb-2 md:mb-3 desktop:mb-4 h-[185px]">
+                      <div className="w-[63%] relative">
+                        <img
+                          src={property?.house?.Husdetaljer?.photo}
+                          alt="husmodell"
+                          className="w-full h-full rounded-[8px] object-cover"
+                        />
+                        <img
+                          src={data?.photo}
+                          alt="product-logo"
+                          className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-[107px]"
+                        />
+                      </div>
+                      <div className="w-[37%] rounded-[8px] overflow-hidden h-full">
+                        <GoogleMapComponent
+                          coordinates={
+                            property?.plot?.lamdaDataFromApi?.coordinates
+                              ?.convertedCoordinates
+                          }
+                        />
+                      </div>
                     </div>
-                    <div className="w-[37%] rounded-[8px] overflow-hidden h-full">
-                      <GoogleMapComponent
-                        coordinates={
-                          property?.plot?.lamdaDataFromApi?.coordinates
-                            ?.convertedCoordinates
-                        }
-                      />
-                    </div>
-                  </div>
-                  <h5 className="text-[#111322] font-medium text-sm md:text-base mb-2">
-                    {property.description}
-                  </h5>
-                  <div className="flex gap-3 items-center">
-                    <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                      {
-                        property?.plot?.lamdaDataFromApi?.eiendomsInformasjon
-                          ?.basisInformasjon?.areal_beregnet
-                      }{" "}
-                      <span className="text-[#4A5578] font-normal">m²</span>
-                    </div>
-                    <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                    <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                      {property?.house?.Husdetaljer?.Soverom}{" "}
-                      <span className="text-[#4A5578] font-normal">
-                        soverom
-                      </span>
-                    </div>
-                    <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                    <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                      {property?.house?.Husdetaljer?.Bad}{" "}
-                      <span className="text-[#4A5578] font-normal">bad</span>
-                    </div>
-                  </div>
-                  <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
-                  <div className="gap-4 md:gap-5 lg:gap-6 flex items-center mb-2 md:mb-3 desktop:mb-4">
-                    <div className="w-1/2">
-                      <p className="text-[#4A5578] text-xs md:text-sm mb-1 truncate">
-                        Pris for{" "}
-                        <span className="font-semibold">
-                          {property?.house?.Husdetaljer?.husmodell_name}
+                    <h5 className="text-[#111322] font-medium text-sm md:text-base mb-2">
+                      {property.description}
+                    </h5>
+                    <div className="flex gap-3 items-center">
+                      <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                        {
+                          property?.plot?.lamdaDataFromApi?.eiendomsInformasjon
+                            ?.basisInformasjon?.areal_beregnet
+                        }{" "}
+                        <span className="text-[#4A5578] font-normal">m²</span>
+                      </div>
+                      <div className="border-l border-[#EAECF0] h-[12px]"></div>
+                      <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                        {property?.house?.Husdetaljer?.Soverom}{" "}
+                        <span className="text-[#4A5578] font-normal">
+                          soverom
                         </span>
-                      </p>
-                      <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
-                        {property?.house?.Husdetaljer?.pris
-                          ? formatPrice(
-                              Math.round(
-                                property?.house?.Husdetaljer?.pris.replace(
-                                  /\s/g,
-                                  ""
+                      </div>
+                      <div className="border-l border-[#EAECF0] h-[12px]"></div>
+                      <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                        {property?.house?.Husdetaljer?.Bad}{" "}
+                        <span className="text-[#4A5578] font-normal">bad</span>
+                      </div>
+                    </div>
+                    <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
+                    <div className="gap-4 md:gap-5 lg:gap-6 flex items-center mb-2 md:mb-3 desktop:mb-4">
+                      <div className="w-1/2">
+                        <p className="text-[#4A5578] text-xs md:text-sm mb-1 truncate">
+                          Pris for{" "}
+                          <span className="font-semibold">
+                            {property?.house?.Husdetaljer?.husmodell_name}
+                          </span>
+                        </p>
+                        <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
+                          {property?.house?.Husdetaljer?.pris
+                            ? formatPrice(
+                                Math.round(
+                                  property?.house?.Husdetaljer?.pris.replace(
+                                    /\s/g,
+                                    ""
+                                  )
                                 )
                               )
-                            )
-                          : "0 NOK"}
-                      </h6>
+                            : "0 NOK"}
+                        </h6>
+                      </div>
+                      <div className="w-1/2">
+                        <p className="text-[#4A5578] text-xs md:text-sm mb-1">
+                          Pris for <span className="font-semibold">tomten</span>
+                        </p>
+                        <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
+                          {property?.plot?.pris
+                            ? formatPrice(Math.round(property?.plot?.pris))
+                            : "0 NOK"}
+                        </h6>
+                      </div>
                     </div>
-                    <div className="w-1/2">
-                      <p className="text-[#4A5578] text-xs md:text-sm mb-1">
-                        Pris for <span className="font-semibold">tomten</span>
-                      </p>
-                      <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
-                        {property?.plot?.pris
-                          ? formatPrice(Math.round(property?.plot?.pris))
-                          : "0 NOK"}
-                      </h6>
-                    </div>
-                  </div>
-                  <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
-                    <div>
-                      <p className="text-[#4A5578] text-xs md:text-sm mb-1">
-                        Totalpris med tomt
-                      </p>
-                      <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                        {formatPrice(
-                          (property?.house?.Husdetaljer?.pris
-                            ? Math.round(
-                                property?.house?.Husdetaljer?.pris.replace(
-                                  /\s/g,
-                                  ""
+                    <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
+                      <div>
+                        <p className="text-[#4A5578] text-xs md:text-sm mb-1">
+                          Totalpris med tomt
+                        </p>
+                        <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
+                          {formatPrice(
+                            (property?.house?.Husdetaljer?.pris
+                              ? Math.round(
+                                  property?.house?.Husdetaljer?.pris.replace(
+                                    /\s/g,
+                                    ""
+                                  )
                                 )
-                              )
-                            : 0) +
-                            (property?.plot?.pris
-                              ? Math.round(property?.plot?.pris)
-                              : 0)
-                        )}
-                      </h6>
+                              : 0) +
+                              (property?.plot?.pris
+                                ? Math.round(property?.plot?.pris)
+                                : 0)
+                          )}
+                        </h6>
+                      </div>
+                      <Button
+                        text="Utforsk"
+                        className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                        onClick={() => {
+                          router.push(
+                            `husmodell-plot-view?plot=${property?.plot?.id}&&husmodell=${property?.house?.id}`
+                          );
+                        }}
+                      />
                     </div>
-                    <Button
-                      text="Utforsk"
-                      className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                      onClick={() => {
-                        router.push(
-                          `husmodell-plot-view?plot=${property?.plot?.id}&&husmodell=${property?.house?.id}`
-                        );
-                      }}
-                    />
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </SideSpaceContainer>

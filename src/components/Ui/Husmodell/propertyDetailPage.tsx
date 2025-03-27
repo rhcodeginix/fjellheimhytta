@@ -8,11 +8,11 @@ import Img_product_map from "@/public/images/Img_product_map.png";
 import ContactForm from "../stepperUi/contactForm";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import AccordionTab from "../accordion/accordionTab";
 
 const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
-  const router = useRouter();
+  // const router = useRouter();
 
   const sections = [
     {
@@ -275,7 +275,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
               className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
-                router.push("/husmodells");
+                // router.push("/husmodells");
               }}
             />
             <Button

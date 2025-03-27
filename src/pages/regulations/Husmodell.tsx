@@ -10,10 +10,11 @@ const Husmodell: React.FC<any> = ({ handleNext, handlePrevious }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query["regulation-details"]) {
+    if (router.query["husodellId"]) {
       setPropertyAllDetail(true);
     }
   }, [router.query]);
+  const id = router.query["husodellId"];
 
   return (
     <div className="relative">
@@ -21,6 +22,7 @@ const Husmodell: React.FC<any> = ({ handleNext, handlePrevious }) => {
         <PropertyDetailPage
           handleNext={handleNext}
           handlePrevious={handlePrevious}
+          id={String(id)}
         />
       ) : (
         <SideSpaceContainer className="relative">
