@@ -716,6 +716,14 @@ const HomePageSearchTab: React.FC = () => {
                     <Button
                       text="Utforsk"
                       className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                      onClick={() => {
+                        const lamdaDataFromApi = property.lamdaDataFromApi;
+                        router.push(
+                          `/regulations?kommunenummer=${lamdaDataFromApi.searchParameters.kommunenummer}&gardsnummer=${lamdaDataFromApi.searchParameters.gardsnummer}&bruksnummer=${lamdaDataFromApi.searchParameters.bruksnummer}`
+                        );
+                        const currIndex = 0;
+                        localStorage.setItem("currIndex", currIndex.toString());
+                      }}
                     />
                   </div>
                 </div>

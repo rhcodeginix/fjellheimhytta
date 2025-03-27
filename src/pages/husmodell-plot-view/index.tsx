@@ -828,7 +828,7 @@ const HusmodellPlotView: React.FC = () => {
           }}
         ></div>
       )}
-      {isPopupOpen && !loginUser && (
+      {isPopupOpen && !finalData && !loginUser && (
         <div className="fixed top-0 left-0 flex justify-center items-center h-full w-full">
           <div
             className="bg-white p-8 rounded-[8px] w-[787px]"

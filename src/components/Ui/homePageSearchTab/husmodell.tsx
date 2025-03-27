@@ -36,8 +36,6 @@ const HusmodellTab = () => {
           ...doc.data(),
         }));
 
-        console.log(fetchedProperties);
-
         const mergedCities = fetchedProperties.flatMap((property: any) =>
           Array.isArray(property.kommunerList) ? property.kommunerList : []
         );
