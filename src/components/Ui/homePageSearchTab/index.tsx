@@ -357,7 +357,7 @@ const HomePageSearchTab: React.FC = () => {
                       "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
                   }}
                 >
-                  <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 two_line_elipse">
+                  <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] two_line_elipse">
                     <span className="font-bold">
                       {property?.house?.Husdetaljer?.husmodell_name}
                     </span>{" "}
@@ -369,16 +369,16 @@ const HomePageSearchTab: React.FC = () => {
                           ?.line1
                       }
                     </span>{" "}
-                    <span className="text-[#10182899]">
-                      (
-                      {
-                        property?.plot?.CadastreDataFromApi
-                          ?.presentationAddressApi?.response?.item?.street
-                          ?.municipality?.municipalityName
-                      }
-                      )
-                    </span>
                   </h4>
+                  <div className="text-[#10182899] mb-2 text-sm md:text-base lg:text-lg lg:leading-[30px]">
+                    (
+                    {
+                      property?.plot?.CadastreDataFromApi
+                        ?.presentationAddressApi?.response?.item?.street
+                        ?.municipality?.municipalityName
+                    }
+                    )
+                  </div>
                   <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
                     {
                       property?.plot?.CadastreDataFromApi

@@ -76,7 +76,7 @@ const Regulations = () => {
       const matches: any[] = [];
 
       if (data) {
-        const sheetData: any = data["Innlandet"];
+        const sheetData: any = data["Møre og Romsdal"];
         const rowsToProcess = sheetData.slice(1);
         for (const row of rowsToProcess) {
           const lamdaApiData: any = {

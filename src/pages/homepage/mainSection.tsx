@@ -4,10 +4,12 @@ import HomePageSearchTab from "@/components/Ui/homePageSearchTab";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import Loading from "@/components/Loading";
+import { useRouter } from "next/router";
 
 const MainSection = () => {
   const [Cities, setCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -65,7 +67,12 @@ const MainSection = () => {
                 {Cities.map((city: any, index) => (
                   <div
                     key={index}
-                    className="border border-[#D6BBFB] rounded-[50px] text-sm py-[6px] px-3"
+                    className="border border-[#D6BBFB] rounded-[50px] text-sm py-[6px] px-3 cursor-pointer"
+                    onClick={() => {
+                      router.push(
+                        `tomtbaken?city=${`${city.name} (${city?.total_entries})`}`
+                      );
+                    }}
                   >
                     <span className="text-[#101828]">{city?.name}</span>{" "}
                     <span className="text-[#667085]">

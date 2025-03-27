@@ -5,6 +5,7 @@ import Button from "@/components/common/button";
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   updateDoc,
@@ -13,11 +14,14 @@ import {
 import { db } from "@/config/firebaseConfig";
 import toast from "react-hot-toast";
 
-const ContactFormHusmodellPlotView: React.FC = () => {
+const ContactFormHusmodellPlotView: React.FC<{ supplierId: any }> = ({
+  supplierId,
+}) => {
   const [isChecked, setIsChecked] = useState(false);
   const queryParams = new URLSearchParams(window.location.search);
   const plotId = queryParams.get("plot");
   const husmodellId = queryParams.get("husmodell");
+  const [supplierData, setSupplierData] = useState<any>(null);
 
   useEffect(() => {
     if (!plotId || !husmodellId) return;
@@ -62,6 +66,24 @@ const ContactFormHusmodellPlotView: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const supplierDocRef = doc(db, "suppliers", supplierId);
+        const docSnap: any = await getDoc(supplierDocRef);
+
+        if (docSnap.exists()) {
+          setSupplierData(docSnap.data());
+        } else {
+          console.error("No document found for ID:", supplierId);
+        }
+      } catch (error) {
+        console.error("Error fetching supplier data:", error);
+      }
+    };
+    getData();
+  }, [supplierId]);
+
   return (
     <div className="bg-[#42307D] rounded-[12px] p-6">
       <Formik
@@ -76,7 +98,10 @@ const ContactFormHusmodellPlotView: React.FC = () => {
             <div>
               <p className="text-white text-lg mb-4">
                 Ønsker du å <span className="font-semibold">bli kontaktet</span>{" "}
-                av <span className="font-semibold">BoligPartner</span>{" "}
+                av{" "}
+                <span className="font-semibold">
+                  {supplierData?.Kontaktperson}
+                </span>{" "}
                 vedrørende denne eiendommen?
               </p>
               <label className="flex items-center gap-[12px] container">
@@ -93,7 +118,9 @@ const ContactFormHusmodellPlotView: React.FC = () => {
                 <span className="text-[#FFFFFFCC] text-base">
                   Jeg aksepterer{" "}
                   <span className="text-white">deling av data</span> med{" "}
-                  <span className="text-white">BoligPartner.</span>
+                  <span className="text-white">
+                    {supplierData?.Kontaktperson}.
+                  </span>
                 </span>
               </label>
               {errors.checkbox && touched.checkbox && (

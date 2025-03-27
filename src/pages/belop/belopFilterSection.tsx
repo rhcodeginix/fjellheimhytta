@@ -137,7 +137,7 @@ const BelopFilterSection: React.FC<{
             Tilbakestill
           </h5>
         </div>
-        <div className="px-6 py-5">
+        <div className="px-6 py-5 h-auto max-h-[600px] overflow-y-auto overFlowYAuto">
           <div
             className="border border-[#EFF1F5] rounded-[48px] p-1 pl-5 flex items-center justify-between gap-3 bg-white mb-5"
             style={{

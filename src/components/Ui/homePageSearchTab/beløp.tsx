@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 const BeløpTab = () => {
   const [formData, setFormData] = useState({
     amount: "",
-    selectedCountry: "",
+    selectedCountry: "Agder (210)",
   });
 
   const [isOpen, setIsOpen] = useState(false);
