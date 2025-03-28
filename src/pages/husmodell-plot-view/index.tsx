@@ -159,13 +159,21 @@ const HusmodellPlotView: React.FC = () => {
 
           const viewerDocRef = doc(collection(plotDocRef, "viewer"), user.uid);
 
+          const viewerDocSnap = await getDoc(viewerDocRef);
+          let viewerViewCount = 1;
+
+          if (viewerDocSnap.exists()) {
+            const viewerData = viewerDocSnap.data();
+            viewerViewCount = (viewerData?.view_count || 0) + 1;
+          }
+
           await setDoc(
             viewerDocRef,
             {
               userId: user.uid,
               name: user.name || "N/A",
               last_updated_date: new Date().toISOString(),
-              view_count: updatedPlotData.view_count,
+              view_count: viewerViewCount,
             },
             { merge: true }
           );
