@@ -7,6 +7,7 @@ import {
   getDoc,
   getDocs,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 import Image from "next/image";
@@ -91,7 +92,10 @@ const HusmodellPlotView: React.FC = () => {
 
           if (userDocSnapshot.exists()) {
             const userData = userDocSnapshot.data();
-            setUser(userData);
+            setUser({
+              id: userDocSnapshot.id,
+              ...userData,
+            });
           } else {
             setIsPopupOpen(true);
             setLoading(false);
@@ -143,9 +147,32 @@ const HusmodellPlotView: React.FC = () => {
         const husmodellDocSnap = await getDoc(husmodellDocRef);
 
         if (plotDocSnap.exists() && husmodellDocSnap.exists()) {
+          let plotData = plotDocSnap.data();
+          let husmodellData = husmodellDocSnap.data();
+
+          const updatedPlotData = {
+            ...plotData,
+            view_count: plotData.view_count ? plotData.view_count + 1 : 1,
+          };
+
+          await setDoc(plotDocRef, updatedPlotData, { merge: true });
+
+          const viewerDocRef = doc(collection(plotDocRef, "viewer"), user.uid);
+
+          await setDoc(
+            viewerDocRef,
+            {
+              userId: user.uid,
+              name: user.name || "N/A",
+              last_updated_date: new Date().toISOString(),
+              view_count: updatedPlotData.view_count,
+            },
+            { merge: true }
+          );
+
           setFinalData({
-            plot: { id: plotId, ...plotDocSnap.data() },
-            husmodell: { id: husmodellId, ...husmodellDocSnap.data() },
+            plot: { id: plotId, ...updatedPlotData },
+            husmodell: { id: husmodellId, ...husmodellData },
           });
         } else {
           console.error("No document found for plot or husmodell ID.");
@@ -266,8 +293,10 @@ const HusmodellPlotView: React.FC = () => {
         console.error("Error fetching supplier data:", error);
       }
     };
-    getData();
-  }, [finalData?.husmodell?.Husdetaljer?.Leverandører]);
+    if (finalData?.husmodell?.Husdetaljer?.Leverandører) {
+      getData();
+    }
+  }, [finalData?.husmodell?.Husdetaljer?.Leverandører, finalData]);
 
   return (
     <div className="relative">

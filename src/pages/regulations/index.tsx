@@ -16,8 +16,10 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
@@ -70,6 +72,7 @@ const Regulations = () => {
 
   const { loginUser, setLoginUser } = useUserLayoutContext();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const findMatchingData = async (data: Record<string, any[]>) => {
@@ -225,117 +228,153 @@ const Regulations = () => {
       setIsPopupOpen(false);
     }
   }, [loginUser]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
+      if (user) {
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnapshot = await getDoc(userDocRef);
+
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            setUser({
+              id: userDocSnapshot.id,
+              ...userData,
+            });
+          } else {
+            console.error("No such document in Firestore!");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [isCall]);
+
   useEffect(() => {
     const fetchData = async () => {
-      if (kommunenummer && gardsnummer && bruksnummer) {
-        setLoadingLamdaData(true);
-        const lamdaApiData: any = {
-          kommunenummer,
-          gardsnummer,
-          bruksnummer,
-        };
-        try {
-          const response = await ApiUtils.LamdaApi(lamdaApiData);
-          const cleanAnswer = response.body.replace(/```json|```/g, "").trim();
+      if (!(kommunenummer && gardsnummer && bruksnummer)) return;
 
-          const data = JSON.parse(cleanAnswer);
+      setLoadingLamdaData(true);
+      const lamdaApiData = { kommunenummer, gardsnummer, bruksnummer };
 
-          const CadastreDataResponse =
-            await ApiUtils.fetchCadastreData(lamdaApiData);
+      try {
+        const response = await ApiUtils.LamdaApi(lamdaApiData);
+        const cleanAnswer = response.body.replace(/```json|```/g, "").trim();
+        const data = JSON.parse(cleanAnswer);
+        const CadastreDataResponse =
+          await ApiUtils.fetchCadastreData(lamdaApiData);
 
-          setCadastreDataFromApi(CadastreDataResponse.apis);
+        setLamdaDataFromApi(data);
+        setCadastreDataFromApi(CadastreDataResponse.apis);
+        setLoadingLamdaData(false);
 
-          setLamdaDataFromApi(data);
-
-          setLoadingLamdaData(false);
-
-          if (cleanAnswer) {
-            if (
-              data.message === "Request failed with status code 503" ||
-              !data.propertyId
-            ) {
-              setLoadingAdditionalData(false);
-              setLoadingLamdaData(false);
-              setShowErrorPopup(true);
-            }
-
-            const areaDetails =
-              data?.eiendomsInformasjon?.basisInformasjon?.areal_beregnet || "";
-            const regionName =
-              CadastreDataResponse?.presentationAddressApi?.response?.item
-                ?.municipality?.municipalityName;
-            const promt = {
-              question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn || regionName} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn || regionName}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
-            };
-
-            setLoadingAdditionalData(true);
-            let timeoutId: any;
-
-            try {
-              const response = await ApiUtils.askApi(promt);
-              clearTimeout(timeoutId);
-              setAdditionalData(response);
-
-              const property = {
-                lamdaDataFromApi: data,
-                additionalData: response,
-                CadastreDataFromApi: CadastreDataResponse.apis,
-                pris: null,
-              };
-              const propertyId = property?.lamdaDataFromApi?.propertyId;
-
-              const queryParams = new URLSearchParams(window.location.search);
-
-              queryParams.delete("plotId");
-              queryParams.delete("empty");
-
-              queryParams.set("plotId", propertyId);
-
-              if (
-                property?.CadastreDataFromApi?.buildingsApi?.response?.items &&
-                property?.CadastreDataFromApi?.buildingsApi?.response?.items
-                  .length === 0
-              ) {
-                queryParams.set("empty", "true");
-              } else {
-                queryParams.set("empty", "false");
-                const EmptyPlotDb = collection(db, "plot_building");
-                const existingEmptyPlot = query(
-                  EmptyPlotDb,
-                  where("lamdaDataFromApi.propertyId", "==", propertyId)
-                );
-                const EmptyPlotShot = await getDocs(existingEmptyPlot);
-
-                if (EmptyPlotShot.empty) {
-                  await addDoc(EmptyPlotDb, property);
-                }
-              }
-              router.replace({
-                pathname: router.pathname,
-                query: Object.fromEntries(queryParams),
-              });
-            } catch (error: any) {
-              console.error(
-                "Error fetching additional data from askApi:",
-                error?.message
-              );
-              setShowErrorPopup(true);
-              // setLamdaDataFromApi(null);
-              clearTimeout(timeoutId);
-            } finally {
-              setLoadingAdditionalData(false);
-            }
-          }
-        } catch (error: any) {
+        if (
+          !cleanAnswer ||
+          data.message === "Request failed with status code 503" ||
+          !data.propertyId
+        ) {
+          setLoadingAdditionalData(false);
           setShowErrorPopup(true);
-          console.error("Error fetching additional data:", error?.message);
+          return;
         }
+
+        const areaDetails =
+          data?.eiendomsInformasjon?.basisInformasjon?.areal_beregnet || "";
+        const regionName =
+          CadastreDataResponse?.presentationAddressApi?.response?.item
+            ?.municipality?.municipalityName;
+        const prompt = {
+          question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn || regionName} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn || regionName}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+        };
+
+        setLoadingAdditionalData(true);
+        try {
+          const additionalResponse = await ApiUtils.askApi(prompt);
+          setAdditionalData(additionalResponse);
+
+          const property = {
+            lamdaDataFromApi: data,
+            additionalData: additionalResponse,
+            CadastreDataFromApi: CadastreDataResponse.apis,
+            pris: null,
+          };
+          const propertyId = data.propertyId;
+          const queryParams = new URLSearchParams(window.location.search);
+          queryParams.set("plotId", propertyId);
+          queryParams.delete("empty");
+
+          const isEmptyPlot =
+            !CadastreDataResponse?.apis?.buildingsApi?.response?.items?.length;
+          const collectionName = isEmptyPlot ? "empty_plot" : "plot_building";
+          queryParams.set("empty", isEmptyPlot ? "true" : "false");
+
+          const collectionRef = collection(db, collectionName);
+          const existingQuery = query(
+            collectionRef,
+            where("lamdaDataFromApi.propertyId", "==", propertyId)
+          );
+          const querySnapshot = await getDocs(existingQuery);
+
+          let docId, plotData;
+          if (!querySnapshot.empty) {
+            const docSnap: any = querySnapshot.docs[0];
+            docId = docSnap.id;
+            plotData = docSnap.data();
+          } else {
+            const docRef = await addDoc(collectionRef, property);
+            docId = docRef.id;
+            plotData =
+              (await getDoc(doc(db, collectionName, docId))).data() || null;
+          }
+
+          const updatedPlotData = {
+            ...plotData,
+            view_count: (plotData?.view_count || 0) + 1,
+          };
+          await setDoc(doc(db, collectionName, docId), updatedPlotData, {
+            merge: true,
+          });
+
+          const viewerDocRef = doc(
+            db,
+            `${collectionName}/${docId}/viewer`,
+            user.uid
+          );
+          await setDoc(
+            viewerDocRef,
+            {
+              userId: user.uid,
+              name: user.name || "N/A",
+              last_updated_date: new Date().toISOString(),
+              view_count: updatedPlotData.view_count,
+            },
+            { merge: true }
+          );
+
+          router.replace({
+            pathname: router.pathname,
+            query: Object.fromEntries(queryParams),
+          });
+        } catch (error) {
+          console.error("Error fetching additional data from askApi:", error);
+          setShowErrorPopup(true);
+        } finally {
+          setLoadingAdditionalData(false);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setShowErrorPopup(true);
       }
     };
-    if (isCall) {
-      fetchData();
-    }
-  }, [kommunenummer, gardsnummer, bruksnummer, isCall]);
+
+    if (isCall && user) fetchData();
+  }, [kommunenummer, gardsnummer, bruksnummer, isCall, user]);
 
   useEffect(() => {
     if (propertyId && userUID) {
