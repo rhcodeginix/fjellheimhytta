@@ -40,7 +40,7 @@ const AllProperty: React.FC<any> = () => {
     <>
       <div className="pt-[16px] pb-[146px]">
         <h3 className="text-black text-2xl font-semibold mb-[36px]">
-          Følgende n bygges på denne tomten
+          Følgende kan bygges på denne tomten:
         </h3>
         {isLoading ? (
           <Loader />

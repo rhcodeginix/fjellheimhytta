@@ -80,7 +80,7 @@ const ContactFormHusmodellPlotView: React.FC<{ supplierData: any }> = ({
                 Ønsker du å <span className="font-semibold">bli kontaktet</span>{" "}
                 av{" "}
                 <span className="font-semibold">
-                  {supplierData?.Kontaktperson}
+                  {supplierData?.company_name}
                 </span>{" "}
                 vedrørende denne eiendommen?
               </p>
@@ -99,7 +99,7 @@ const ContactFormHusmodellPlotView: React.FC<{ supplierData: any }> = ({
                   Jeg aksepterer{" "}
                   <span className="text-white">deling av data</span> med{" "}
                   <span className="text-white">
-                    {supplierData?.Kontaktperson}.
+                    {supplierData?.company_name}.
                   </span>
                 </span>
               </label>

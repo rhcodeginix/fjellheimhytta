@@ -5,10 +5,8 @@ import HusmodellTab from "./husmodell";
 import MatrikkelTab from "./matrikkel";
 import Image from "next/image";
 import Img_main_bg from "@/public/images/Img_main_bg.png";
-import Img_plot from "@/public/images/Img_plot.png";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
-import Img_plot_image1 from "@/public/images/Img_plot_image1.png";
 import {
   collection,
   doc,
@@ -30,46 +28,11 @@ const tabs = [
   { id: "husmodell", label: ["Start med", "husmodell"] },
   { id: "matrikkel", label: ["Start med", "matrikkel"] },
 ];
-const husmodellProperties = [
-  {
-    name: "Dokka",
-    manufacturer: "Systemhus",
-    description: "Arealeffektive Dokka med uteleied",
-    area: 177,
-    bedrooms: 3,
-    bathrooms: 2,
-    price: 5100000,
-    currency: "NOK",
-    imagePath: Img_plot,
-  },
-  {
-    name: "Almgård",
-    manufacturer: "BoligPartner",
-    description: "Herskapelige Almgaard er en drømmebolig for familien",
-    area: 233,
-    bedrooms: 5,
-    bathrooms: 3,
-    price: 8300000,
-    currency: "NOK",
-    imagePath: Img_plot_image1,
-  },
-  {
-    name: "Utsyn",
-    manufacturer: "Mesterhus",
-    description: "Kompakte og moderne Utsyn med utebod",
-    area: 201,
-    bedrooms: 5,
-    bathrooms: 2,
-    price: 7350000,
-    currency: "NOK",
-    imagePath: Img_plot,
-  },
-];
-
 const HomePageSearchTab: React.FC = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("beløp");
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
+  const [HouseModels, setHouseModels] = useState([]);
   const [BelopProperty, setBelopProperty] = useState([]);
   const [MatrikelProperty, setMatrikelProperty] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -278,6 +241,16 @@ const HomePageSearchTab: React.FC = () => {
         } else {
           setBelopProperty([]);
         }
+
+        const q = query(collection(db, "house_model"), limit(3));
+
+        const querySnapshot = await getDocs(q);
+
+        const data: any = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setHouseModels(data);
       } catch (error) {
         console.error("Error fetching properties:", error);
         setBelopProperty([]);
@@ -324,6 +297,7 @@ const HomePageSearchTab: React.FC = () => {
 
     fetchSupplierDetails();
   }, [BelopProperty]);
+
   return (
     <>
       <div className="relative">
@@ -631,64 +605,80 @@ const HomePageSearchTab: React.FC = () => {
             Populære husmodeller i{" "}
             <span className="font-bold text-blue">Asker</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {husmodellProperties.map((property, index) => (
-              <div
-                key={index}
-                className="border border-[#EFF1F5] rounded-[8px] p-5"
-                style={{
-                  boxShadow:
-                    "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
-                }}
-              >
-                <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-3">
-                  <span className="font-bold">{property.name}</span> fra{" "}
-                  <span className="font-bold">{property.manufacturer}</span>
-                </h4>
-                <Image
-                  src={property.imagePath}
-                  alt="image"
-                  className="w-full h-[374px] rounded-[8px] mb-2 md:mb-3 desktop:mb-4"
-                  fetchPriority="auto"
-                />
-                <h5 className="text-[#111322] font-medium text-sm md:text-base mb-2">
-                  {property.description}
-                </h5>
-                <div className="flex gap-3 items-center">
-                  <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                    {property.area}{" "}
-                    <span className="text-[#4A5578] font-normal">m²</span>
+          {isLoading ? (
+            <div className="relative">
+              <Loading />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+              {HouseModels.map((property: any, index) => {
+                const supplierId = property?.Husdetaljer?.Leverandører;
+                const data = supplierData[supplierId] || null;
+                return (
+                  <div
+                    key={index}
+                    className="border border-[#EFF1F5] rounded-[8px] p-5"
+                    style={{
+                      boxShadow:
+                        "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+                    }}
+                  >
+                    <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-3">
+                      <span className="font-bold">
+                        {property?.Husdetaljer?.husmodell_name}
+                      </span>{" "}
+                      fra{" "}
+                      <span className="font-bold">{data?.company_name}</span>
+                    </h4>
+                    <img
+                      src={property?.Husdetaljer?.photo}
+                      alt="image"
+                      className="w-full h-[304px] rounded-[8px] mb-2 md:mb-3 desktop:mb-4 object-cover"
+                    />
+                    <h5 className="text-[#4A5578] font-medium text-sm md:text-base mb-2 two_line_elipse">
+                      {property?.Husdetaljer?.OmHusmodellen}
+                    </h5>
+                    <div className="flex gap-3 items-center">
+                      <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                        {property?.Husdetaljer?.BRATotal}{" "}
+                        <span className="text-[#4A5578] font-normal">m²</span>
+                      </div>
+                      <div className="border-l border-[#EAECF0] h-[12px]"></div>
+                      <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                        {property?.Husdetaljer?.BebygdArealBYA}{" "}
+                        <span className="text-[#4A5578] font-normal">BYA</span>
+                      </div>
+                      <div className="border-l border-[#EAECF0] h-[12px]"></div>
+                      <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                        {property?.Husdetaljer?.Bad}{" "}
+                        <span className="text-[#4A5578] font-normal">bad</span>
+                      </div>
+                    </div>
+                    <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
+                    <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
+                      <div>
+                        <p className="text-[#4A5578] text-xs md:text-sm mb-1">
+                          Pris for{" "}
+                          <span className="font-semibold">
+                            {property?.Husdetaljer?.husmodell_name}
+                          </span>
+                        </p>
+                        <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
+                          {property?.Husdetaljer?.pris
+                            ? formatPrice(property?.Husdetaljer?.pris)
+                            : 0}
+                        </h6>
+                      </div>
+                      <Button
+                        text="Utforsk"
+                        className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                      />
+                    </div>
                   </div>
-                  <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                  <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                    {property.bedrooms}{" "}
-                    <span className="text-[#4A5578] font-normal">BYA</span>
-                  </div>
-                  <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                  <div className="text-[#111322] text-xs md:text-sm font-semibold">
-                    {property.bathrooms}{" "}
-                    <span className="text-[#4A5578] font-normal">bad</span>
-                  </div>
-                </div>
-                <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
-                <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-[#4A5578] text-xs md:text-sm mb-1">
-                      Pris for{" "}
-                      <span className="font-semibold">{property.name}</span>
-                    </p>
-                    <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                      {property.price ? formatPrice(property.price) : 0}
-                    </h6>
-                  </div>
-                  <Button
-                    text="Utforsk"
-                    className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </SideSpaceContainer>
       </div>
       <div className={`${activeTab === "matrikkel" ? "block" : "hidden"}`}>

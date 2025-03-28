@@ -1,12 +1,6 @@
 import SideSpaceContainer from "@/components/common/sideSpace";
 import { useEffect, useState } from "react";
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import Button from "@/components/common/button";
 import HusmodellFilterSection from "./husmodellFilterSection";
@@ -42,41 +36,20 @@ const HusmodellPropertyPage: React.FC = () => {
       setIsLoading(true);
 
       try {
-        const db = getFirestore();
         const queryParams: any = new URLSearchParams(window.location.search);
         const a = queryParams.get("Kommue").replace(/\s*\(\d+\)/, "");
         setName(a);
 
-        const KommueQuery = queryParams.get("Kommue").match(/\((\d+)\)/)?.[1];
-
-        const plotsRef = collection(db, "empty_plot");
-        const allPlots: any = [];
-
-        const q = query(
-          plotsRef,
-          where(
-            "lamdaDataFromApi.searchParameters.kommunenummer",
-            "==",
-            Number(KommueQuery)
-          )
-        );
+        const q = query(collection(db, "house_model"));
 
         const querySnapshot = await getDocs(q);
 
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          if (
-            data.CadastreDataFromApi &&
-            data.CadastreDataFromApi.presentationAddressApi != null
-          ) {
-            allPlots.push({
-              id: doc.id,
-              ...data,
-            });
-          }
-        });
+        const data: any = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-        setHouseModelProperty(allPlots);
+        setHouseModelProperty(data);
       } catch (error) {
         console.error("Error fetching properties:", error);
         setHouseModelProperty([]);
@@ -95,12 +68,12 @@ const HusmodellPropertyPage: React.FC = () => {
           <div className="flex items-end justify-between gap-4 mb-[40px]">
             <h3 className="text-[#111322] text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
               <span className="font-bold">Husmodeller</span> i{" "}
-              <span className="font-bold text-blue">{Name}</span>
+              <span className="font-bold text-blue">{Name} Kommune</span>
             </h3>
             {!isLoading && (
               <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
-                treff i <span className="font-bold">2 606</span> Tomter
+                treff i <span className="font-bold">2 606</span> annonser
               </p>
             )}
           </div>

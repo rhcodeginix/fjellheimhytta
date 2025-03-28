@@ -54,13 +54,8 @@ const HusmodellTab = () => {
 
   useEffect(() => {
     if (searchTerm) {
-      const filtered = Cities.filter(
-        (city: any) =>
-          city.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          city.number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          `${city.name.toLowerCase()} (${city.number.toLowerCase()})`.includes(
-            searchTerm.toLowerCase()
-          )
+      const filtered = Cities.filter((city: any) =>
+        city.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredCities(filtered);
     } else {
@@ -100,6 +95,10 @@ const HusmodellTab = () => {
     }
 
     if (hasError) return;
+    formData.Kommue = formData.Kommue.replace(
+      / Kommune \(Vestfold Fylke\)$/,
+      ""
+    );
 
     router.push(`husmodell?Kommue=${formData.Kommue}`);
   };
@@ -151,11 +150,12 @@ const HusmodellTab = () => {
                       <li
                         key={index}
                         onClick={() =>
-                          handleSelect(`${city.name} (${city.number})`)
+                          handleSelect(`${city.name} Kommune (Vestfold Fylke)`)
                         }
                         className={`text-sm text-[#111322] px-4 py-[14px] cursor-pointer 
                           ${
-                            formData.Kommue === `${city.name} (${city.number})`
+                            formData.Kommue ===
+                            `${city.name} Kommune (Vestfold Fylke)`
                               ? "bg-[#F9F5FF] font-semibold"
                               : "bg-white"
                           }`}
@@ -163,7 +163,7 @@ const HusmodellTab = () => {
                         <span>
                           {city.name}{" "}
                           <span className="text-grayText font-normal">
-                            ({city.number})
+                            Kommune (Vestfold Fylke)
                           </span>
                         </span>
                       </li>
