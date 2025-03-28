@@ -34,6 +34,17 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import LoginForm from "../login/loginForm";
 
+function addDaysToDate(dateString: any, days: any) {
+  let date = new Date(dateString);
+  date.setDate(date.getDate() + days);
+
+  let day = String(date.getDate()).padStart(2, "0");
+  let month = String(date.getMonth() + 1).padStart(2, "0");
+  let year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
+
 const HusmodellPlotView: React.FC = () => {
   const router = useRouter();
   const [finalData, setFinalData] = useState<any>(null);
@@ -43,6 +54,11 @@ const HusmodellPlotView: React.FC = () => {
   const [husmodellId, setHusmodellId] = useState<string | null>(null);
   const { loginUser, setLoginUser } = useUserLayoutContext();
   const [isCall, setIsCall] = useState(false);
+  const Husdetaljer = finalData?.husmodell?.Husdetaljer;
+  const plot = finalData?.plot;
+  const lamdaDataFromApi = plot?.lamdaDataFromApi;
+  const additionalData = plot?.additionalData;
+
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
     if (isLoggedIn) {
@@ -201,7 +217,7 @@ const HusmodellPlotView: React.FC = () => {
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
-  const images = finalData?.husmodell?.Husdetaljer?.photo3D || [];
+  const images = Husdetaljer?.photo3D || [];
 
   const displayedImages = images.slice(0, 4);
   const extraImagesCount = images.length - 4;
@@ -254,7 +270,7 @@ const HusmodellPlotView: React.FC = () => {
         const querySnapshot = await getDocs(
           query(
             leadsCollectionRef,
-            where("finalData.plot.id", "==", plotId),
+            where("finalData.plot?.id", "==", plotId),
             where("finalData.husmodell.id", "==", husmodellId)
           )
         );
@@ -301,10 +317,24 @@ const HusmodellPlotView: React.FC = () => {
         console.error("Error fetching supplier data:", error);
       }
     };
-    if (finalData?.husmodell?.Husdetaljer?.Leverandører) {
+    if (Husdetaljer?.Leverandører) {
       getData();
     }
-  }, [finalData?.husmodell?.Husdetaljer?.Leverandører, finalData]);
+  }, [Husdetaljer?.Leverandører, finalData]);
+
+  const totalDays = [
+    Husdetaljer?.signConractConstructionDrawing +
+      Husdetaljer?.neighborNotification +
+      Husdetaljer?.appSubmitApprove +
+      Husdetaljer?.constuctionDayStart +
+      Husdetaljer?.foundationWork +
+      Husdetaljer?.concreteWork +
+      Husdetaljer?.deliveryconstuctionKit +
+      Husdetaljer?.denseConstuction +
+      Husdetaljer?.completeInside +
+      Husdetaljer?.preliminaryInspection +
+      Husdetaljer?.takeOver,
+  ].reduce((acc, curr) => acc + (curr || 0), 0);
 
   return (
     <div className="relative">
@@ -328,26 +358,26 @@ const HusmodellPlotView: React.FC = () => {
                 style={{ zIndex: 9 }}
               >
                 <h2 className="text-black text-[32px] font-semibold truncate">
-                  {finalData?.husmodell?.Husdetaljer?.husmodell_name}
+                  {Husdetaljer?.husmodell_name}
                 </h2>
                 <div className="flex items-center gap-[24px]">
                   <div className="flex items-center gap-4">
                     <div className="text-secondary text-base">
                       m<sup>2</sup>:{" "}
                       <span className="text-black font-semibold">
-                        {finalData?.husmodell?.Husdetaljer?.BRATotal}
+                        {Husdetaljer?.BRATotal}
                       </span>
                     </div>
                     <div className="text-secondary text-base">
                       soverom:{" "}
                       <span className="text-black font-semibold">
-                        {finalData?.husmodell?.Husdetaljer?.Soverom}
+                        {Husdetaljer?.Soverom}
                       </span>
                     </div>
                     <div className="text-secondary text-base">
                       bad:{" "}
                       <span className="text-black font-semibold">
-                        {finalData?.husmodell?.Husdetaljer?.Bad}
+                        {Husdetaljer?.Bad}
                       </span>
                     </div>
                   </div>
@@ -387,8 +417,8 @@ const HusmodellPlotView: React.FC = () => {
                       <p className="text-white text-base font-semibold">
                         Utnyttelsesgrad på{" "}
                         {
-                          finalData?.plot?.additionalData?.answer
-                            ?.bya_calculations?.input?.bya_percentage
+                          additionalData?.answer?.bya_calculations?.input
+                            ?.bya_percentage
                         }
                         %
                       </p>
@@ -406,14 +436,13 @@ const HusmodellPlotView: React.FC = () => {
                         Utnyttelsesgrad på{" "}
                         {(() => {
                           const data =
-                            finalData?.plot?.CadastreDataFromApi?.buildingsApi?.response?.items?.map(
+                            plot?.CadastreDataFromApi?.buildingsApi?.response?.items?.map(
                               (item: any) => item?.builtUpArea
                             ) ?? [];
 
                           if (
-                            finalData?.plot?.lamdaDataFromApi
-                              ?.eiendomsInformasjon?.basisInformasjon
-                              ?.areal_beregnet
+                            lamdaDataFromApi?.eiendomsInformasjon
+                              ?.basisInformasjon?.areal_beregnet
                           ) {
                             const totalData = data
                               ? data.reduce(
@@ -425,9 +454,8 @@ const HusmodellPlotView: React.FC = () => {
 
                             const result =
                               (totalData /
-                                finalData?.plot?.lamdaDataFromApi
-                                  ?.eiendomsInformasjon?.basisInformasjon
-                                  ?.areal_beregnet) *
+                                lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.areal_beregnet) *
                               100;
                             const formattedResult = result.toFixed(2);
 
@@ -441,13 +469,13 @@ const HusmodellPlotView: React.FC = () => {
                         Tilgjengelig BYA{" "}
                         {(() => {
                           const data =
-                            finalData?.plot?.CadastreDataFromApi?.buildingsApi?.response?.items?.map(
+                            plot?.CadastreDataFromApi?.buildingsApi?.response?.items?.map(
                               (item: any) => item?.builtUpArea
                             ) ?? [];
 
                           if (
-                            finalData?.plot?.additionalData?.answer
-                              ?.bya_calculations?.results?.total_allowed_bya
+                            additionalData?.answer?.bya_calculations?.results
+                              ?.total_allowed_bya
                           ) {
                             const totalData = data
                               ? data.reduce(
@@ -459,16 +487,14 @@ const HusmodellPlotView: React.FC = () => {
 
                             const result =
                               (totalData /
-                                finalData?.plot?.lamdaDataFromApi
-                                  ?.eiendomsInformasjon?.basisInformasjon
-                                  ?.areal_beregnet) *
+                                lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.areal_beregnet) *
                               100;
                             const formattedResult: any = result.toFixed(2);
 
                             return `${(
-                              finalData?.plot?.additionalData?.answer
-                                ?.bya_calculations?.input?.bya_percentage -
-                              formattedResult
+                              additionalData?.answer?.bya_calculations?.input
+                                ?.bya_percentage - formattedResult
                             ).toFixed(2)} %`;
                           } else {
                             return "0";
@@ -488,8 +514,8 @@ const HusmodellPlotView: React.FC = () => {
                       <p className="text-white text-base font-semibold">
                         Grunnflate på{" "}
                         {
-                          finalData?.plot?.additionalData?.answer
-                            ?.bya_calculations?.results?.available_building_area
+                          additionalData?.answer?.bya_calculations?.results
+                            ?.available_building_area
                         }{" "}
                         m<sup>2</sup>
                       </p>
@@ -497,13 +523,13 @@ const HusmodellPlotView: React.FC = () => {
                         Tilgjengelig{" "}
                         {(() => {
                           const data =
-                            finalData?.plot?.CadastreDataFromApi?.buildingsApi?.response?.items?.map(
+                            plot?.CadastreDataFromApi?.buildingsApi?.response?.items?.map(
                               (item: any) => item?.builtUpArea
                             ) ?? [];
 
                           if (
-                            finalData?.plot?.additionalData?.answer
-                              ?.bya_calculations?.results?.total_allowed_bya
+                            additionalData?.answer?.bya_calculations?.results
+                              ?.total_allowed_bya
                           ) {
                             const totalData = data
                               ? data.reduce(
@@ -516,9 +542,8 @@ const HusmodellPlotView: React.FC = () => {
                             return (
                               <>
                                 {(
-                                  finalData?.plot?.additionalData?.answer
-                                    ?.bya_calculations?.results
-                                    ?.total_allowed_bya - totalData
+                                  additionalData?.answer?.bya_calculations
+                                    ?.results?.total_allowed_bya - totalData
                                 ).toFixed(2)}
                                 m<sup>2</sup>
                               </>
@@ -610,22 +635,21 @@ const HusmodellPlotView: React.FC = () => {
                   <div className="relative w-[50%] h-[262px] flex items-center gap-2">
                     <div className="w-1/2 h-full relative">
                       <img
-                        src={finalData?.husmodell?.Husdetaljer?.photo}
+                        src={Husdetaljer?.photo}
                         alt="husmodell"
                         className="w-full h-full rounded-[8px] object-cover overflow-hidden"
                       />
                       <img
                         src={supplierData?.photo}
                         alt="product-logo"
-                        className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-[137px]"
+                        className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-[137px] h-[48px]"
                       />
                     </div>
                     <div className="w-1/2 h-full">
                       <div className="w-full h-full rounded-lg object-cover overflow-hidden">
                         <GoogleMapComponent
                           coordinates={
-                            finalData?.plot?.lamdaDataFromApi?.coordinates
-                              ?.convertedCoordinates
+                            lamdaDataFromApi?.coordinates?.convertedCoordinates
                           }
                         />
                       </div>
@@ -634,59 +658,38 @@ const HusmodellPlotView: React.FC = () => {
                   <div className="w-[50%]">
                     <h5 className="text-black text-lg font-medium mb-2 truncate">
                       {
-                        finalData?.plot?.CadastreDataFromApi
-                          ?.presentationAddressApi?.response?.item?.formatted
-                          ?.line1
+                        plot?.CadastreDataFromApi?.presentationAddressApi
+                          ?.response?.item?.formatted?.line1
                       }{" "}
                       {
-                        finalData?.plot?.CadastreDataFromApi
-                          ?.presentationAddressApi?.response?.item?.formatted
-                          ?.line2
+                        plot?.CadastreDataFromApi?.presentationAddressApi
+                          ?.response?.item?.formatted?.line2
                       }
                     </h5>
                     <div className="flex items-center gap-4">
                       <div className="text-secondary text-base">
                         Gnr:{" "}
                         <span className="text-black font-semibold">
-                          {
-                            finalData?.plot?.lamdaDataFromApi?.searchParameters
-                              ?.gardsnummer
-                          }
+                          {lamdaDataFromApi?.searchParameters?.gardsnummer}
                         </span>
                       </div>
                       <div className="text-secondary text-base">
                         Bnr:{" "}
                         <span className="text-black font-semibold">
-                          {
-                            finalData?.plot?.lamdaDataFromApi?.searchParameters
-                              ?.bruksnummer
-                          }
+                          {lamdaDataFromApi?.searchParameters?.bruksnummer}
                         </span>
                       </div>
-                      {/* <div className="text-secondary text-base">
-                    Snr:{" "}
-                    <span className="text-black font-semibold">
-                      {finalData?.plot?.getAddress?.bokstav}
-                    </span>
-                  </div>
-                  <div className="text-secondary text-base">
-                    moh.{" "}
-                    <span className="text-black font-semibold">
-                      {finalData?.plot?.getAddress?.representasjonspunkt &&
-                        finalData?.plot?.getAddress?.representasjonspunkt.lat
-                          .toFixed(2)
-                          .toString()
-                          .replace(".", ",")}
-                    </span>
-                  </div> */}
                     </div>
                     <div className="flex items-center gap-9 my-5">
                       <div className="flex flex-col gap-1 w-max">
-                        <p className="text-red text-sm whitespace-nowrap">
+                        <p className="text-secondary text-sm whitespace-nowrap">
                           ESTIMERT BYGGESTART
                         </p>
-                        <h5 className="text-red text-xl font-semibold whitespace-nowrap">
-                          03.01.2025
+                        <h5 className="text-black text-xl font-semibold whitespace-nowrap">
+                          {addDaysToDate(
+                            finalData?.husmodell?.createdAt,
+                            Husdetaljer?.appSubmitApprove
+                          )}
                         </h5>
                       </div>
                       <div className="w-full">
@@ -698,13 +701,14 @@ const HusmodellPlotView: React.FC = () => {
                         />
                       </div>
                       <div className="flex flex-col gap-1 w-max">
-                        <p className="text-red text-sm whitespace-nowrap">
-                          {/* <p className="text-secondary text-sm whitespace-nowrap"> */}
+                        <p className="text-secondary text-sm whitespace-nowrap">
                           ESTIMERT INNFLYTTING
                         </p>
-                        <h5 className="text-red text-xl font-semibold text-right whitespace-nowrap">
-                          {/* <h5 className="text-black text-xl font-semibold text-right whitespace-nowrap"> */}
-                          23.11.2025
+                        <h5 className="text-black text-xl font-semibold text-right whitespace-nowrap">
+                          {addDaysToDate(
+                            finalData?.husmodell?.createdAt,
+                            totalDays
+                          )}
                         </h5>
                       </div>
                     </div>
@@ -731,17 +735,9 @@ const HusmodellPlotView: React.FC = () => {
                         </p>
                         <h3 className="text-black font-semibold text-[24px] text-center">
                           {formatPrice(
-                            (finalData?.husmodell?.Husdetaljer?.pris
-                              ? Math.round(
-                                  finalData?.husmodell?.Husdetaljer?.pris.replace(
-                                    /\s/g,
-                                    ""
-                                  )
-                                )
-                              : 0) +
-                              (finalData?.plot?.pris
-                                ? Math.round(finalData?.plot?.pris)
-                                : 0)
+                            (Husdetaljer?.pris
+                              ? Math.round(Husdetaljer?.pris.replace(/\s/g, ""))
+                              : 0) + (plot?.pris ? Math.round(plot?.pris) : 0)
                           )}
                         </h3>
                       </div>
