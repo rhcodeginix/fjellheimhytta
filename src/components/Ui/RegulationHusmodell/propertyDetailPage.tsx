@@ -124,6 +124,7 @@ const PropertyDetailPage: React.FC<{
 
     return () => unsubscribe();
   }, []);
+  const [leadId, setLeadId] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       if (!user || !plotId || !husmodellId) {
@@ -177,7 +178,7 @@ const PropertyDetailPage: React.FC<{
           husmodell: { id: husmodellId, ...husmodellDocSnap.data() },
         };
         const leadsCollectionRef = collection(db, "leads");
-        const querySnapshot = await getDocs(
+        const querySnapshot: any = await getDocs(
           query(
             leadsCollectionRef,
             where("finalData.plot.id", "==", correctPlotId),
@@ -185,17 +186,20 @@ const PropertyDetailPage: React.FC<{
           )
         );
         if (!querySnapshot.empty) {
+          setLeadId(querySnapshot.docs[0].id);
           return;
         }
 
-        await addDoc(leadsCollectionRef, {
+        const docRef: any = await addDoc(leadsCollectionRef, {
           finalData,
           user,
           Isopt: false,
           createdAt: new Date(),
           updatedAt: new Date(),
-          IsEmptyPlot: isEmptyPlot === "true" ? true : false,
+          IsEmptyPlot: isEmptyPlot === "true",
         });
+
+        setLeadId(docRef.id);
       } catch (error) {
         console.error("Firestore operation failed:", error);
       }
@@ -229,6 +233,7 @@ const PropertyDetailPage: React.FC<{
     };
     getData();
   }, [husmodellData?.Leverandører]);
+
   return (
     <div className="relative">
       {loading ? (
@@ -493,7 +498,7 @@ const PropertyDetailPage: React.FC<{
                     ></iframe>
                   </div>
 
-                  <ContactForm />
+                  <ContactForm leadId={leadId} />
                 </div>
               </div>
             </div>

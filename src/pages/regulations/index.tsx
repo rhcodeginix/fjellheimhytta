@@ -257,10 +257,10 @@ const Regulations = () => {
   }, [isCall]);
 
   useEffect(() => {
+    setLoadingLamdaData(true);
     const fetchData = async () => {
       if (!(kommunenummer && gardsnummer && bruksnummer)) return;
 
-      setLoadingLamdaData(true);
       const lamdaApiData = { kommunenummer, gardsnummer, bruksnummer };
 
       try {

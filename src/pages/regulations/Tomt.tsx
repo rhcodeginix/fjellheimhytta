@@ -1740,13 +1740,16 @@ const Tomt: React.FC<{
               text="Velg husmodell"
               className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
-                if (
-                  CadastreDataFromApi?.buildingsApi?.response?.items?.length > 0
-                ) {
-                  setIsBuild(true);
-                } else {
-                  handleNext();
-                  window.location.reload();
+                if (!loadingLamdaData && !loadingAdditionalData) {
+                  if (
+                    CadastreDataFromApi?.buildingsApi?.response?.items?.length >
+                    0
+                  ) {
+                    setIsBuild(true);
+                  } else {
+                    handleNext();
+                    window.location.reload();
+                  }
                 }
               }}
             />
