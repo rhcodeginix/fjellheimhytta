@@ -237,7 +237,7 @@ const PropertyDetailPage: React.FC<{
                     <img
                       src={supplierData?.photo}
                       alt="image"
-                      className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-auto"
+                      className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-[130px]"
                     />
                   </div>
                   <div className="my-[20px] flex items-center justify-between">

@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 
 const ContactForm: React.FC<{ leadId?: any }> = ({ leadId }) => {
   const [isChecked, setIsChecked] = useState(false);
+  const [isShow, setIsShow] = useState(true);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -17,8 +18,11 @@ const ContactForm: React.FC<{ leadId?: any }> = ({ leadId }) => {
   useEffect(() => {
     (async () => {
       try {
-        const docSnap = await getDoc(doc(db, "leads", leadId));
+        const docSnap: any = await getDoc(doc(db, "leads", leadId));
 
+        if (docSnap.data().Isopt === true) {
+          setIsShow(false);
+        }
         if (docSnap.exists()) {
           setIsChecked(docSnap.data().Isopt || false);
         }
@@ -46,57 +50,59 @@ const ContactForm: React.FC<{ leadId?: any }> = ({ leadId }) => {
 
   return (
     <>
-      <div className="bg-[#42307D] rounded-[12px] p-6">
-        <Formik
-          initialValues={{ checkbox: false }}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ values, setFieldValue, errors, touched }) => (
-            <Form>
-              <div className="flex gap-6 justify-between">
-                <div>
-                  <p className="text-white text-lg mb-4">
-                    Ønsker du å{" "}
-                    <span className="font-semibold">bli kontaktet</span> av{" "}
-                    <span className="font-semibold">BoligPartner</span>{" "}
-                    vedrørende denne eiendommen?
-                  </p>
-                  <label className="flex items-center gap-[12px] container">
-                    <Field
-                      type="checkbox"
-                      name="checkbox"
-                      checked={isChecked}
-                      onChange={() => {
-                        setFieldValue("checkbox", !values.checkbox);
-                        handleCheckboxChange();
-                      }}
-                    />
-                    <span className="checkmark"></span>
+      {isShow && (
+        <div className="bg-[#42307D] rounded-[12px] p-6">
+          <Formik
+            initialValues={{ checkbox: false }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ values, setFieldValue, errors, touched }) => (
+              <Form>
+                <div className="flex gap-6 justify-between">
+                  <div>
+                    <p className="text-white text-lg mb-4">
+                      Ønsker du å{" "}
+                      <span className="font-semibold">bli kontaktet</span> av{" "}
+                      <span className="font-semibold">BoligPartner</span>{" "}
+                      vedrørende denne eiendommen?
+                    </p>
+                    <label className="flex items-center gap-[12px] container">
+                      <Field
+                        type="checkbox"
+                        name="checkbox"
+                        checked={isChecked}
+                        onChange={() => {
+                          setFieldValue("checkbox", !values.checkbox);
+                          handleCheckboxChange();
+                        }}
+                      />
+                      <span className="checkmark"></span>
 
-                    <div className="text-[#FFFFFFCC] text-base">
-                      Jeg aksepterer{" "}
-                      <span className="text-white">deling av data</span> med{" "}
-                      <span className="text-white">BoligPartner.</span>
-                    </div>
-                  </label>
-                  {errors.checkbox && touched.checkbox && (
-                    <div className="text-red text-sm">{errors.checkbox}</div>
-                  )}
+                      <div className="text-[#FFFFFFCC] text-base">
+                        Jeg aksepterer{" "}
+                        <span className="text-white">deling av data</span> med{" "}
+                        <span className="text-white">BoligPartner.</span>
+                      </div>
+                    </label>
+                    {errors.checkbox && touched.checkbox && (
+                      <div className="text-red text-sm">{errors.checkbox}</div>
+                    )}
+                  </div>
+                  <div>
+                    <Button
+                      text="Send inn"
+                      className={`border border-primary bg-white text-primary sm:text-base rounded-[50px] w-[176px] h-[48px] font-semibold ${!isChecked ? "opacity-50 cursor-not-allowed" : ""}`}
+                      type="submit"
+                      disabled={!isChecked}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <Button
-                    text="Send inn"
-                    className={`border border-primary bg-white text-primary sm:text-base rounded-[50px] w-[176px] h-[48px] font-semibold ${!isChecked ? "opacity-50 cursor-not-allowed" : ""}`}
-                    type="submit"
-                    disabled={!isChecked}
-                  />
-                </div>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      )}
     </>
   );
 };

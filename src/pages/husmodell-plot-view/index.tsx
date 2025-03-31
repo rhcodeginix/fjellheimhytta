@@ -34,7 +34,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import LoginForm from "../login/loginForm";
 
-function addDaysToDate(dateString: any, days: any) {
+export function addDaysToDate(dateString: any, days: any) {
   let date = new Date(dateString);
   date.setDate(date.getDate() + days);
 

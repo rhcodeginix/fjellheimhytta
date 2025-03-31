@@ -101,19 +101,19 @@ const Regulations = () => {
               data.message === "Request failed with status code 500" ||
               !data.propertyId
             ) {
-              const EmptyPlotErrorDb = collection(db, "empty_plot_error");
-              const finalData = {
-                lamdaApiData: JSON.stringify(lamdaApiData),
-                api1: false,
-                api2: false,
-                api3: false,
-              };
-              // const existingEmptyPlotError = query(EmptyPlotErrorDb);
-              // const EmptyPlotErrorShot = await getDocs(existingEmptyPlotError);
+              // const EmptyPlotErrorDb = collection(db, "empty_plot_error");
+              // const finalData = {
+              //   lamdaApiData: JSON.stringify(lamdaApiData),
+              //   api1: false,
+              //   api2: false,
+              //   api3: false,
+              // };
+              // // const existingEmptyPlotError = query(EmptyPlotErrorDb);
+              // // const EmptyPlotErrorShot = await getDocs(existingEmptyPlotError);
 
-              // if (EmptyPlotErrorShot.empty) {
-              await addDoc(EmptyPlotErrorDb, finalData);
-              // }
+              // // if (EmptyPlotErrorShot.empty) {
+              // await addDoc(EmptyPlotErrorDb, finalData);
+              // // }
               continue;
             }
             const CadastreDataResponse =
@@ -196,42 +196,42 @@ const Regulations = () => {
               }
             }
           } catch (error: any) {
-            const property = {
-              lamdaDataFromApi: data,
-              additionalData: null,
-              CadastreDataFromApi: null,
-              pris: row["__EMPTY_3"] || null,
-            };
+            // const property = {
+            //   lamdaDataFromApi: data,
+            //   additionalData: null,
+            //   CadastreDataFromApi: null,
+            //   pris: row["__EMPTY_3"] || null,
+            // };
 
-            const propertyId = property?.lamdaDataFromApi?.propertyId;
+            // const propertyId = property?.lamdaDataFromApi?.propertyId;
 
-            const EmptyPlotDb = collection(db, "empty_plot");
-            const existingEmptyPlot = query(
-              EmptyPlotDb,
-              where("lamdaDataFromApi.propertyId", "==", propertyId)
-            );
-            const EmptyPlotShot = await getDocs(existingEmptyPlot);
+            // const EmptyPlotDb = collection(db, "empty_plot");
+            // const existingEmptyPlot = query(
+            //   EmptyPlotDb,
+            //   where("lamdaDataFromApi.propertyId", "==", propertyId)
+            // );
+            // const EmptyPlotShot = await getDocs(existingEmptyPlot);
 
-            if (EmptyPlotShot.empty) {
-              await addDoc(EmptyPlotDb, property);
-            }
+            // if (EmptyPlotShot.empty) {
+            //   await addDoc(EmptyPlotDb, property);
+            // }
 
-            const EmptyPlotErrorDb = collection(db, "empty_plot_error");
-            const existingEmptyPlotError = query(
-              EmptyPlotErrorDb,
-              where("lamdaDataFromApi.propertyId", "==", propertyId)
-            );
-            const EmptyPlotErrorShot = await getDocs(existingEmptyPlotError);
-            const finalData = {
-              lamdaApiData,
-              api1: true,
-              api2: false,
-              api3: false,
-            };
+            // const EmptyPlotErrorDb = collection(db, "empty_plot_error");
+            // const existingEmptyPlotError = query(
+            //   EmptyPlotErrorDb,
+            //   where("lamdaDataFromApi.propertyId", "==", propertyId)
+            // );
+            // const EmptyPlotErrorShot = await getDocs(existingEmptyPlotError);
+            // const finalData = {
+            //   lamdaApiData,
+            //   api1: true,
+            //   api2: false,
+            //   api3: false,
+            // };
 
-            if (EmptyPlotErrorShot.empty) {
-              await addDoc(EmptyPlotErrorDb, finalData);
-            }
+            // if (EmptyPlotErrorShot.empty) {
+            //   await addDoc(EmptyPlotErrorDb, finalData);
+            // }
             console.error("Error fetching additional data:", error?.message);
           }
         }
