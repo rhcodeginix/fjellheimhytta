@@ -4,6 +4,34 @@ import React, { useEffect, useRef, useState } from "react";
 import { formatCurrency } from "@/components/Ui/RegulationHusmodell/propertyDetailPage";
 import Image from "next/image";
 import Modal from "@/components/common/modal";
+import FileInfo from "@/components/FileInfo";
+import Ic_download from "@/public/images/Ic_download.svg";
+import Ic_file from "@/public/images/Ic_file.svg";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
+
+const handleDownload = async (filePath: string) => {
+  try {
+    if (!filePath) {
+      console.error("File path is missing!");
+      return;
+    }
+
+    const storage = getStorage();
+    const fileRef = ref(storage, filePath);
+    const url = await getDownloadURL(fileRef);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.download = filePath.split("/").pop() || "download";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch (error) {
+    console.error("Error downloading file:", error);
+  }
+};
 
 const Husdetaljer: React.FC<{ husmodellData: any }> = ({ husmodellData }) => {
   const getEmbedUrl = (url: string) => {
@@ -37,7 +65,7 @@ const Husdetaljer: React.FC<{ husmodellData: any }> = ({ husmodellData }) => {
   return (
     <>
       <div className="flex gap-6 h-[433px] mb-[74px]">
-        <div className="w-full h-full">
+        <div className="w-2/3 h-full">
           <h4 className="mb-4 text-black text-lg font-semibold">
             Illustrasjoner
           </h4>
@@ -69,6 +97,36 @@ const Husdetaljer: React.FC<{ husmodellData: any }> = ({ husmodellData }) => {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+        <div className="w-1/3 border border-gray shadow-shadow2 rounded-lg h-full">
+          <div className="px-4 py-5 border-b border-gray text-black text-base font-semibold">
+            Dokumenter
+          </div>
+          <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-65px)] overFlowYAuto">
+            {husmodellData?.documents.map((doc: any, index: number) => {
+              return (
+                <div
+                  className="border border-gray rounded-lg p-3 bg-[#F9FAFB] flex items-center justify-between"
+                  key={index}
+                >
+                  <div className="flex items-start gap-3 truncate">
+                    <div className="border-[4px] border-lightPurple rounded-full flex items-center justify-center">
+                      <div className="bg-darkPurple w-7 h-7 rounded-full flex justify-center items-center">
+                        <Image src={Ic_file} alt="file" />
+                      </div>
+                    </div>
+                    <FileInfo file={doc} />
+                  </div>
+                  <Image
+                    src={Ic_download}
+                    alt="download"
+                    className="cursor-pointer"
+                    onClick={() => handleDownload(doc)}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
