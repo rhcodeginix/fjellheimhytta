@@ -1,8 +1,5 @@
 import React from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import AccordionTab from "@/components/Ui/accordion/accordionTab";
-import Img_product_3d_img1 from "@/public/images/Img_product_3d_img1.png";
-import Img_product_3d_img2 from "@/public/images/Img_product_3d_img2.png";
 import Image from "next/image";
 import Button from "@/components/common/button";
 import PropertyDetailWithPrice from "@/components/Ui/stepperUi/productDetailWithPrice";
@@ -11,34 +8,9 @@ import { Formik, Form, Field } from "formik";
 import Ic_spareBank from "@/public/images/Ic_spareBank.svg";
 import Ic_info_circle from "@/public/images/Ic_info_circle.svg";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
+import Illustrasjoner from "@/components/Ui/RegulationHusmodell/Illustrasjoner";
 
 const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
-  const sections = [
-    {
-      title: "Illustrasjonsbilder",
-      content: (
-        <div className="w-full gap-6 flex">
-          <div className="w-1/2">
-            <Image
-              fetchPriority="auto"
-              src={Img_product_3d_img1}
-              alt="image"
-              className="w-full"
-            />
-          </div>
-          <div className="w-1/2">
-            <Image
-              fetchPriority="auto"
-              src={Img_product_3d_img2}
-              alt="image"
-              className="w-full"
-            />
-          </div>
-        </div>
-      ),
-    },
-  ];
-
   const validationSchema = Yup.object().shape({
     existingLoan: Yup.string()
       .oneOf(["JA", "NEI"], "Please select an option")
@@ -72,7 +44,7 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
     <div className="relative">
       <SideSpaceContainer>
         <div className="pt-[24px] pb-[147px]">
-          <AccordionTab sections={sections} />
+          <Illustrasjoner />
           <h3 className="text-black text-2xl font-semibold my-6">Detaljer</h3>
           <div className="mb-[40px]">
             <PropertyDetailWithPrice />

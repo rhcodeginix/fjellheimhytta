@@ -1,8 +1,5 @@
 import React from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import AccordionTab from "@/components/Ui/accordion/accordionTab";
-import Img_product_3d_img1 from "@/public/images/Img_product_3d_img1.png";
-import Img_product_3d_img2 from "@/public/images/Img_product_3d_img2.png";
 import Image from "next/image";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Img_product1 from "@/public/images/Img_product1.png";
@@ -17,34 +14,9 @@ import Ic_outside_garasje from "@/public/images/Ic_outside_garasje.svg";
 import Ic_Tilbud_line from "@/public/images/Ic_Tilbud_line.svg";
 import Ic_Graving_og_terrengarbeider from "@/public/images/Ic_Graving_og_terrengarbeider.svg";
 import Ic_Betongarbeider from "@/public/images/Ic_Betongarbeider.svg";
+import Illustrasjoner from "@/components/Ui/RegulationHusmodell/Illustrasjoner";
 
 const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
-  const sections = [
-    {
-      title: "Illustrasjonsbilder",
-      content: (
-        <div className="w-full gap-6 flex">
-          <div className="w-1/2">
-            <Image
-              fetchPriority="auto"
-              src={Img_product_3d_img1}
-              alt="image"
-              className="w-full"
-            />
-          </div>
-          <div className="w-1/2">
-            <Image
-              fetchPriority="auto"
-              src={Img_product_3d_img2}
-              alt="image"
-              className="w-full"
-            />
-          </div>
-        </div>
-      ),
-    },
-  ];
-
   const offerInclude = [
     {
       id: 1,
@@ -101,7 +73,7 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
     <div className="relative">
       <SideSpaceContainer>
         <div className="pt-[24px] pb-[147px]">
-          <AccordionTab sections={sections} />
+          <Illustrasjoner />
           <h4 className="text-black mb-6 mt-8 font-semibold text-2xl">
             Tilbud
           </h4>

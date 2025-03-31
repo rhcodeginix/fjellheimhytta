@@ -1,8 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import AccordionTab from "@/components/Ui/accordion/accordionTab";
-import Img_product_3d_img1 from "@/public/images/Img_product_3d_img1.png";
-import Img_product_3d_img2 from "@/public/images/Img_product_3d_img2.png";
 import Image from "next/image";
 import Button from "@/components/common/button";
 import PropertyDetailWithPrice from "@/components/Ui/stepperUi/productDetailWithPrice";
@@ -15,34 +12,12 @@ import Ic_phone from "@/public/images/Ic_phone.svg";
 import Ic_mail from "@/public/images/Ic_mail.svg";
 import Ic_spareBank from "@/public/images/Ic_spareBank.svg";
 import Ic_contact from "@/public/images/Ic_contact.svg";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
+import toast from "react-hot-toast";
+import Illustrasjoner from "@/components/Ui/RegulationHusmodell/Illustrasjoner";
 
 const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
-  const sections = [
-    {
-      title: "Illustrasjonsbilder",
-      content: (
-        <div className="w-full gap-6 flex">
-          <div className="w-1/2">
-            <Image
-              fetchPriority="auto"
-              src={Img_product_3d_img1}
-              alt="image"
-              className="w-full"
-            />
-          </div>
-          <div className="w-1/2">
-            <Image
-              fetchPriority="auto"
-              src={Img_product_3d_img2}
-              alt="image"
-              className="w-full"
-            />
-          </div>
-        </div>
-      ),
-    },
-  ];
-
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -50,9 +25,43 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
   const validationSchema = Yup.object().shape({
     checkbox: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
+  const [leadId, setLeadId] = useState<any>();
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const queryParams = new URLSearchParams(window.location.search);
+      setLeadId(queryParams.get("leadId"));
+    }
+  }, []);
+  useEffect(() => {
+    (async () => {
+      try {
+        const docSnap = await getDoc(doc(db, "leads", String(leadId)));
+
+        if (docSnap.exists()) {
+          setIsChecked(docSnap.data().IsoptForBank || false);
+        }
+      } catch (error) {
+        console.error("Error fetching IsoptForBank status:", error);
+      }
+    })();
+  }, [leadId]);
   const handleSubmit = async (values: any) => {
     console.log(values);
+    try {
+      if (leadId) {
+        await updateDoc(doc(db, "leads", leadId), {
+          IsoptForBank: true,
+          updatedAt: new Date(),
+        });
+        toast.success("Update Lead successfully.", { position: "top-right" });
+      } else {
+        toast.error("Lead id not found.", { position: "top-right" });
+      }
+      setIsChecked(true);
+    } catch (error) {
+      console.error("Firestore update operation failed:", error);
+    }
   };
 
   const [isContactChecked, setIsContactChecked] = useState(false);
@@ -71,7 +80,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
     <div className="relative">
       <SideSpaceContainer>
         <div className="pt-[24px] pb-[147px]">
-          <AccordionTab sections={sections} />
+          <Illustrasjoner />
           <h3 className="text-black text-2xl font-semibold my-6">
             Oppsummering
           </h3>
@@ -307,7 +316,7 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                           <Field
                             type="checkbox"
                             name="contactCheckbox"
-                            checked={isChecked}
+                            checked={isContactChecked}
                             onChange={() => {
                               setFieldValue(
                                 "contactCheckbox",

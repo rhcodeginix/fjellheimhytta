@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import Img_product_3d_img1 from "@/public/images/Img_product_3d_img1.png";
-import Image from "next/image";
 import ContactForm from "../stepperUi/contactForm";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
 import { useRouter } from "next/router";
-import Ic_close from "@/public/images/Ic_close.svg";
 import {
   addDoc,
   collection,
@@ -16,11 +13,9 @@ import {
   where,
 } from "firebase/firestore";
 import { auth, db } from "@/config/firebaseConfig";
-import Ic_chevron_up from "@/public/images/Ic_chevron_up.svg";
-import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
-import Modal from "@/components/common/modal";
 import Loader from "@/components/Loader";
 import { onAuthStateChanged } from "firebase/auth";
+import Illustrasjoner from "./Illustrasjoner";
 
 export function formatCurrency(nokValue: any) {
   let number = nokValue?.replace(/\s/g, "");
@@ -70,24 +65,6 @@ const PropertyDetailPage: React.FC<{
 
     fetchData();
   }, [id]);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const toggleAccordion = () => {
-    setIsOpen(!isOpen);
-  };
-  const images = finalData?.Husdetaljer?.photo3D || [];
-
-  const displayedImages = images.slice(0, 4);
-  const extraImagesCount = images.length - 4;
-
-  const handlePopup = () => {
-    if (isPopupOpen) {
-      setIsPopupOpen(false);
-    } else {
-      setIsPopupOpen(true);
-    }
-  };
 
   const [plotId, setPlotId] = useState<string | null>(null);
   const [husmodellId, setHusmodellId] = useState<string | null>(null);
@@ -187,6 +164,7 @@ const PropertyDetailPage: React.FC<{
         );
         if (!querySnapshot.empty) {
           setLeadId(querySnapshot.docs[0].id);
+          router.push(`${router.asPath}&&leadId=${querySnapshot.docs[0].id}`);
           return;
         }
 
@@ -194,11 +172,13 @@ const PropertyDetailPage: React.FC<{
           finalData,
           user,
           Isopt: false,
+          IsoptForBank: false,
           createdAt: new Date(),
           updatedAt: new Date(),
           IsEmptyPlot: isEmptyPlot === "true",
         });
 
+        router.push(`${router.asPath}&&leadId=${querySnapshot.docs[0].id}`);
         setLeadId(docRef.id);
       } catch (error) {
         console.error("Firestore operation failed:", error);
@@ -242,69 +222,7 @@ const PropertyDetailPage: React.FC<{
         <>
           <SideSpaceContainer>
             <div className="pt-[24px] pb-[86px]">
-              <div style={{ borderBottom: "1px solid #B9C0D4" }}>
-                <button
-                  className={`bg-white flex justify-between items-center w-full pb-6 duration-1000 ${isOpen ? "active" : ""}`}
-                  onClick={toggleAccordion}
-                >
-                  <span className="text-black text-lg font-semibold">
-                    Illustrasjoner
-                  </span>
-                  {isOpen ? (
-                    <Image
-                      src={Ic_chevron_up}
-                      alt="arrow"
-                      fetchPriority="auto"
-                    />
-                  ) : (
-                    <Image
-                      src={Ic_chevron_down}
-                      alt="arrow"
-                      fetchPriority="auto"
-                    />
-                  )}
-                </button>
-                <div
-                  className={`overflow-hidden max-h-0 ${isOpen ? "pb-6" : ""}`}
-                  style={{
-                    maxHeight: isOpen ? "max-content" : "0",
-                    transition: "max-height 0.2s ease-out",
-                  }}
-                >
-                  <div className="gap-6 flex h-[400px]">
-                    <div className="w-1/2">
-                      <Image
-                        src={Img_product_3d_img1}
-                        alt="product"
-                        className="w-full h-full"
-                      />
-                    </div>
-                    <div className="w-1/2 grid grid-cols-2 gap-6">
-                      {displayedImages.map((image: any, index: number) => (
-                        <div
-                          key={index}
-                          className="relative overflow-hidden h-full"
-                        >
-                          <img
-                            src={image}
-                            alt="product"
-                            className="w-full h-full object-fill rounded-lg"
-                          />
-
-                          {index === 3 && extraImagesCount > 0 && (
-                            <div
-                              className="absolute inset-0 bg-black bg-opacity-35 flex items-center justify-center text-white text-base font-bold cursor-pointer rounded-lg"
-                              onClick={handlePopup}
-                            >
-                              +{extraImagesCount}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Illustrasjoner />
               <div className="w-full flex gap-[60px] mt-8">
                 <div className="w-[43%]">
                   <h4 className="text-black mb-6 font-semibold text-2xl">
@@ -532,29 +450,6 @@ const PropertyDetailPage: React.FC<{
             </SideSpaceContainer>
           </div>
         </>
-      )}
-      {isPopupOpen && (
-        <Modal isOpen={true} onClose={handlePopup}>
-          <div className="bg-white p-6 rounded-lg max-w-4xl w-full relative">
-            <button
-              className="absolute top-3 right-3"
-              onClick={() => setIsOpen(false)}
-            >
-              <Image src={Ic_close} alt="close" />
-            </button>
-
-            <div className="grid grid-cols-3 gap-2 my-4">
-              {images.map((image: any, index: number) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt="product"
-                  className="w-full h-[200px]"
-                />
-              ))}
-            </div>
-          </div>
-        </Modal>
       )}
     </div>
   );

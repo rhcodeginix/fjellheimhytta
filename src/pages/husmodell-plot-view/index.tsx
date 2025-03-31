@@ -282,6 +282,7 @@ const HusmodellPlotView: React.FC = () => {
           finalData,
           user,
           Isopt: false,
+          IsoptForBank: false,
           createdAt: new Date(),
           updatedAt: new Date(),
         });

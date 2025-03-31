@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import AccordionTab from "@/components/Ui/accordion/accordionTab";
-import Img_product_3d_img1 from "@/public/images/Img_product_3d_img1.png";
-import Img_product_3d_img2 from "@/public/images/Img_product_3d_img2.png";
 import Image from "next/image";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Img_product1 from "@/public/images/Img_product1.png";
@@ -24,34 +21,9 @@ import Ic_outside_garasje from "@/public/images/Ic_outside_garasje.svg";
 import Ic_outside_Maling from "@/public/images/Ic_outside_Maling.svg";
 import Ic_outside_terrasse from "@/public/images/Ic_outside_terrasse.svg";
 import Ic_outside_vvs from "@/public/images/Ic_outside_vvs.svg";
+import Illustrasjoner from "@/components/Ui/RegulationHusmodell/Illustrasjoner";
 
 const Tilvalg: React.FC<any> = ({ handleNext, handlePrevious }) => {
-  const sections = [
-    {
-      title: "Illustrasjoner",
-      content: (
-        <div className="w-full gap-6 flex">
-          <div className="w-1/2">
-            <Image
-              fetchPriority="auto"
-              src={Img_product_3d_img1}
-              alt="image"
-              className="w-full"
-            />
-          </div>
-          <div className="w-1/2">
-            <Image
-              fetchPriority="auto"
-              src={Img_product_3d_img2}
-              alt="image"
-              className="w-full"
-            />
-          </div>
-        </div>
-      ),
-    },
-  ];
-
   const insideItems = [
     {
       id: 1,
@@ -169,7 +141,7 @@ const Tilvalg: React.FC<any> = ({ handleNext, handlePrevious }) => {
     <div className="relative">
       <SideSpaceContainer>
         <div className="pt-[24px] pb-[147px]">
-          <AccordionTab sections={sections} />
+          <Illustrasjoner />
           <div className="w-full flex gap-[60px] mt-8">
             <div className="w-[43%]">
               <h4 className="text-black mb-6 font-semibold text-2xl">

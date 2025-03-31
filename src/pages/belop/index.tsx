@@ -16,7 +16,6 @@ import Button from "@/components/common/button";
 const Belop: React.FC = () => {
   const router: any = useRouter();
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
-  const [total, setTotal] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     address: "",
@@ -153,7 +152,6 @@ const Belop: React.FC = () => {
               allPlots.push({ id: doc.id, ...data });
           });
         }
-        setTotal(allPlots);
 
         const filteredPlots = queryPrice
           ? allPlots.filter(
@@ -178,7 +176,7 @@ const Belop: React.FC = () => {
     };
 
     fetchProperty();
-  }, [db, router.asPath, total]);
+  }, [db, router.asPath]);
 
   return (
     <>
@@ -197,7 +195,7 @@ const Belop: React.FC = () => {
             {!isLoading && (
               <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
-                treff i <span className="font-bold">{total}</span> Tomter
+                treff i <span className="font-bold">2 206</span> Tomter
               </p>
             )}
           </div>
