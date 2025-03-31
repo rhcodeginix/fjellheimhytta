@@ -23,7 +23,7 @@ import Loader from "@/components/Loader";
 import { onAuthStateChanged } from "firebase/auth";
 
 export function formatCurrency(nokValue: any) {
-  let number = nokValue.replace(/\s/g, "");
+  let number = nokValue?.replace(/\s/g, "");
   return new Intl.NumberFormat("de-DE").format(Number(number)) + " NOK";
 }
 

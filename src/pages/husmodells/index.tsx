@@ -475,12 +475,7 @@ const Husmodell = () => {
                                 property?.CadastreDataFromApi
                                   ?.presentationAddressApi?.response?.item
                                   ?.formatted?.line1
-                              }{" "}
-                              {/* {
-                                property?.CadastreDataFromApi
-                                  ?.presentationAddressApi?.response?.item
-                                  ?.formatted?.line2
-                              } */}
+                              }
                             </h3>
                           </div>
                           <div className="flex items-center gap-3">

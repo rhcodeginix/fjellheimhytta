@@ -46,16 +46,29 @@ type FormDataType = {
   minRangeForHusmodell: number;
   maxRangeForHusmodell: number;
   TypeHusprodusent: string[];
+  Tomtetype: string[];
 };
 
 const HusmodellFilterSection: React.FC<{
   setFormData: any;
   formData: FormDataType;
-}> = ({ setFormData, formData }) => {
-  const [openIndex, setOpenIndex] = useState<string | null>(null);
+  maxRangeData: number;
+}> = ({ setFormData, formData, maxRangeData }) => {
+  const [openIndex, setOpenIndex] = useState<string[]>([
+    "Eiendomstype",
+    "Type husprodusent",
+    "Type husmodell",
+    "Antall soverom",
+    "Tomtetype",
+    "Pris på husmodell",
+  ]);
 
   const handleToggleAccordion = (type: string) => {
-    setOpenIndex(openIndex === type ? null : type);
+    setOpenIndex((prevOpenIndex) =>
+      prevOpenIndex.includes(type)
+        ? prevOpenIndex.filter((section) => section !== type)
+        : [...prevOpenIndex, type]
+    );
   };
   const EiendomstypeArray: any = [
     { name: "Bolig", value: "Bolig" },
@@ -87,6 +100,10 @@ const HusmodellFilterSection: React.FC<{
     { name: "5 Soverom", value: "5 Soverom" },
     { name: "6 Soverom", value: "6 Soverom" },
   ];
+  const TomtetypeArray: any = [
+    { name: "Flat", value: "Flat" },
+    { name: "Skrånet", value: "Skrånet" },
+  ];
 
   return (
     <>
@@ -95,11 +112,26 @@ const HusmodellFilterSection: React.FC<{
           <h4 className="text-[#111322] font-medium text-base md:text-lg lg:text-xl desktop:text-2xl">
             Filter
           </h4>
-          <h5 className="text-blue text-sm md:text-base font-medium">
+          <h5
+            className="text-blue text-sm md:text-base font-medium cursor-pointer"
+            onClick={() => {
+              setFormData((prev: any) => ({
+                ...prev,
+                address: "",
+                Eiendomstype: [],
+                TypeHusmodell: [],
+                AntallSoverom: [],
+                minRangeForHusmodell: 0,
+                TypeHusprodusent: [],
+                Tomtetype: [],
+                maxRangeForHusmodell: maxRangeData,
+              }));
+            }}
+          >
             Tilbakestill
           </h5>
         </div>
-        <div className="px-6 py-5">
+        <div className="px-6 py-5 h-auto max-h-[600px] overflow-y-auto overFlowYAuto overflow-x-hidden">
           <div
             className="border border-[#EFF1F5] rounded-[48px] p-1 pl-5 flex items-center justify-between gap-3 bg-white mb-5"
             style={{
@@ -140,12 +172,14 @@ const HusmodellFilterSection: React.FC<{
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
-                  className={openIndex === "Eiendomstype" ? "rotate-180" : ""}
+                  className={
+                    openIndex.includes("Eiendomstype") ? "rotate-180" : ""
+                  }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Eiendomstype" && (
+              {openIndex.includes("Eiendomstype") && (
                 <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
                   {EiendomstypeArray.map((data: any, index: number) => (
                     <label
@@ -160,7 +194,7 @@ const HusmodellFilterSection: React.FC<{
                         type="checkbox"
                         id={data.name}
                         value={data.name}
-                        checked={formData.Eiendomstype.includes(data.name)}
+                        checked={formData?.Eiendomstype.includes(data.name)}
                         onChange={() => {
                           setFormData((prev: any) => {
                             const updatedSet: any = new Set(prev.Eiendomstype);
@@ -193,13 +227,13 @@ const HusmodellFilterSection: React.FC<{
                   src={Ic_chevron_down}
                   alt="arrow"
                   className={
-                    openIndex === "Type husprodusent" ? "rotate-180" : ""
+                    openIndex.includes("Type husprodusent") ? "rotate-180" : ""
                   }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Type husprodusent" && (
+              {openIndex.includes("Type husprodusent") && (
                 <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
                   {TypeHusprodusentArray.map((data: any, index: number) => (
                     <label
@@ -214,7 +248,7 @@ const HusmodellFilterSection: React.FC<{
                         type="checkbox"
                         id={data.name}
                         value={data.name}
-                        checked={formData.TypeHusprodusent.includes(data.name)}
+                        checked={formData?.TypeHusprodusent.includes(data.name)}
                         onChange={() => {
                           setFormData((prev: any) => {
                             const updatedSet: any = new Set(
@@ -248,12 +282,14 @@ const HusmodellFilterSection: React.FC<{
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
-                  className={openIndex === "Type husmodell" ? "rotate-180" : ""}
+                  className={
+                    openIndex.includes("Type husmodell") ? "rotate-180" : ""
+                  }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Type husmodell" && (
+              {openIndex.includes("Type husmodell") && (
                 <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
                   {TypeHusmodellArray.map((data: any, index: number) => (
                     <label
@@ -268,7 +304,7 @@ const HusmodellFilterSection: React.FC<{
                         type="checkbox"
                         id={data.name}
                         value={data.name}
-                        checked={formData.TypeHusmodell.includes(data.name)}
+                        checked={formData?.TypeHusmodell.includes(data.name)}
                         onChange={() => {
                           setFormData((prev: any) => {
                             const updatedSet: any = new Set(prev.TypeHusmodell);
@@ -300,12 +336,14 @@ const HusmodellFilterSection: React.FC<{
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
-                  className={openIndex === "Antall soverom" ? "rotate-180" : ""}
+                  className={
+                    openIndex.includes("Antall soverom") ? "rotate-180" : ""
+                  }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Antall soverom" && (
+              {openIndex.includes("Antall soverom") && (
                 <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
                   {AntallSoveromArray.map((data: any, index: number) => (
                     <label
@@ -320,7 +358,7 @@ const HusmodellFilterSection: React.FC<{
                         type="checkbox"
                         id={data.name}
                         value={data.name}
-                        checked={formData.AntallSoverom.includes(data.name)}
+                        checked={formData?.AntallSoverom.includes(data.name)}
                         onChange={() => {
                           setFormData((prev: any) => {
                             const updatedSet: any = new Set(prev.AntallSoverom);
@@ -346,6 +384,60 @@ const HusmodellFilterSection: React.FC<{
             <div className="w-full">
               <p
                 className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                onClick={() => handleToggleAccordion("Tomtetype")}
+              >
+                Tomtetype
+                <Image
+                  src={Ic_chevron_down}
+                  alt="arrow"
+                  className={
+                    openIndex.includes("Tomtetype") ? "rotate-180" : ""
+                  }
+                  fetchPriority="auto"
+                />
+              </p>
+
+              {openIndex.includes("Tomtetype") && (
+                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
+                  {TomtetypeArray.map((data: any, index: number) => (
+                    <label
+                      className="container container_darkgray"
+                      htmlFor={data.name}
+                      key={index}
+                    >
+                      <span className="text-[#111322] text-sm md:text-base">
+                        {data.name}
+                      </span>
+                      <input
+                        type="checkbox"
+                        id={data.name}
+                        value={data.name}
+                        checked={formData?.Tomtetype.includes(data.name)}
+                        onChange={() => {
+                          setFormData((prev: any) => {
+                            const updatedSet: any = new Set(prev.Tomtetype);
+                            updatedSet.has(data.name)
+                              ? updatedSet.delete(data.name)
+                              : updatedSet.add(data.name);
+                            return {
+                              ...prev,
+                              Tomtetype: Array.from(updatedSet),
+                            };
+                          });
+                        }}
+                        className="mr-2"
+                      />
+
+                      <span className="checkmark checkmark_darkgray"></span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
+            <div className="w-full">
+              <p
+                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Pris på husmodell")}
               >
                 Pris på husmodell
@@ -353,19 +445,19 @@ const HusmodellFilterSection: React.FC<{
                   src={Ic_chevron_down}
                   alt="arrow"
                   className={
-                    openIndex === "Pris på husmodell" ? "rotate-180" : ""
+                    openIndex.includes("Pris på husmodell") ? "rotate-180" : ""
                   }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex === "Pris på husmodell" && (
+              {openIndex.includes("Pris på husmodell") && (
                 <div className="mt-8">
                   <div className="mx-1">
                     <CustomSlider
                       value={[
-                        formData.minRangeForHusmodell,
-                        formData.maxRangeForHusmodell,
+                        formData?.minRangeForHusmodell,
+                        formData?.maxRangeForHusmodell,
                       ]}
                       onChange={(_event: any, newValue: any) => {
                         setFormData((prev: any) => ({
@@ -376,17 +468,17 @@ const HusmodellFilterSection: React.FC<{
                       }}
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
-                      min={1000}
-                      max={5000000}
+                      min={0}
+                      max={maxRangeData}
                       step={100}
                     />
                   </div>
                   <div className="flex items-center justify-between h-[30px] mt-2">
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData.minRangeForHusmodell} NOK
+                      {formData?.minRangeForHusmodell} NOK
                     </div>
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData.maxRangeForHusmodell} NOK
+                      {formData?.maxRangeForHusmodell} NOK
                     </div>
                   </div>
                 </div>

@@ -672,6 +672,11 @@ const HomePageSearchTab: React.FC = () => {
                       <Button
                         text="Utforsk"
                         className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                        onClick={() => {
+                          router.push(
+                            `husmodell/husmodell-detail?husmodell=${property?.id}`
+                          );
+                        }}
                       />
                     </div>
                   </div>

@@ -24,11 +24,6 @@ const Tomt: React.FC<any> = ({
         loadingAdditionalData={loadingAdditionalData}
         additionalData={additionalData}
       />
-      {/* <div className="py-4">
-        <SideSpaceContainer>
-          <TomtTab />
-        </SideSpaceContainer>
-      </div> */}
       <PlotAllProperty
         handleNext={handleNext}
         lamdaDataFromApi={lamdaDataFromApi}

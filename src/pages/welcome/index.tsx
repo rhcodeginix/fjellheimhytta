@@ -36,9 +36,7 @@ const Welcome = () => {
           }}
         >
           <div className="flex flex-col items-center justify-center gap-3 mb-5">
-            {/* <Link href={"/"}> */}
             <Image src={Ic_logo} alt="logo" fetchPriority="auto" />
-            {/* </Link> */}
             <h2 className="text-2xl font-semibold">Welcome MinTomt</h2>
           </div>
 

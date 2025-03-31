@@ -8,6 +8,7 @@ import HusmodellProperty from "./HusmodellProperty";
 
 const HusmodellPropertyPage: React.FC = () => {
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
+  const [maxRangeData, setMaxRangeData] = useState<number>(0);
   const [Name, setName] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -15,10 +16,12 @@ const HusmodellPropertyPage: React.FC = () => {
     Eiendomstype: [] as string[],
     TypeHusmodell: [] as string[],
     AntallSoverom: [] as string[],
-    minRangeForHusmodell: 1000,
-    maxRangeForHusmodell: 5000000,
+    minRangeForHusmodell: 0,
+    maxRangeForHusmodell: maxRangeData,
     TypeHusprodusent: [] as string[],
+    Tomtetype: [] as string[],
   });
+  const [total, setTotal] = useState();
 
   useEffect(() => {
     const hasReloaded = sessionStorage.getItem("hasReloaded");
@@ -28,7 +31,42 @@ const HusmodellPropertyPage: React.FC = () => {
       sessionStorage.setItem("hasReloaded", "true");
     } else {
       sessionStorage.removeItem("hasReloaded");
+
+      const storedMaxPrice = sessionStorage.getItem("maxHousePrice");
+      if (storedMaxPrice) {
+        setMaxRangeData(parseInt(storedMaxPrice, 10));
+        setFormData((prev) => ({
+          ...prev,
+          maxRangeForHusmodell: parseInt(storedMaxPrice, 10),
+        }));
+      }
     }
+  }, []);
+  useEffect(() => {
+    const fetchMaxPrice = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          query(collection(db, "house_model"))
+        );
+        const data: any = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const maxHousePrice = Math.max(
+          ...data.map((house: any) =>
+            parseInt(house?.Husdetaljer?.pris.replace(/\s/g, ""), 10)
+          )
+        );
+
+        sessionStorage.setItem("maxHousePrice", maxHousePrice.toString());
+        setMaxRangeData(maxHousePrice);
+      } catch (error) {
+        console.error("Error fetching max price:", error);
+      }
+    };
+
+    fetchMaxPrice();
   }, []);
 
   useEffect(() => {
@@ -48,8 +86,29 @@ const HusmodellPropertyPage: React.FC = () => {
           id: doc.id,
           ...doc.data(),
         }));
+        setTotal(data.length);
+        const soveromValues = formData.AntallSoverom.map((item: any) =>
+          parseInt(item.replace(" Soverom", ""), 10)
+        );
+        const filterData =
+          data.filter((house: any) => {
+            const housePrice = parseInt(
+              house?.Husdetaljer?.pris.replace(/\s/g, ""),
+              10
+            );
 
-        setHouseModelProperty(data);
+            return (
+              (formData.AntallSoverom.length > 0
+                ? soveromValues.includes(house?.Husdetaljer?.Soverom)
+                : true) &&
+              (formData.minRangeForHusmodell !== 0
+                ? housePrice >= formData.minRangeForHusmodell
+                : true) &&
+              housePrice <= Number(formData.maxRangeForHusmodell)
+            );
+          }) || data;
+
+        setHouseModelProperty(filterData);
       } catch (error) {
         console.error("Error fetching properties:", error);
         setHouseModelProperty([]);
@@ -59,7 +118,7 @@ const HusmodellPropertyPage: React.FC = () => {
     };
 
     fetchProperty();
-  }, [db, formData]);
+  }, [db, formData, total]);
 
   return (
     <>
@@ -73,7 +132,7 @@ const HusmodellPropertyPage: React.FC = () => {
             {!isLoading && (
               <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
-                treff i <span className="font-bold">2 606</span> annonser
+                treff i <span className="font-bold">{total}</span> annonser
               </p>
             )}
           </div>
@@ -82,6 +141,7 @@ const HusmodellPropertyPage: React.FC = () => {
               <HusmodellFilterSection
                 formData={formData}
                 setFormData={setFormData}
+                maxRangeData={maxRangeData}
               />
             </div>
             <div className="w-[65%]">

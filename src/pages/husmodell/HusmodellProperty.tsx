@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { formatPrice } from "../belop/belopProperty";
+import { useRouter } from "next/router";
 
 const HusmodellProperty: React.FC<{
   isLoading: any;
@@ -30,6 +31,7 @@ const HusmodellProperty: React.FC<{
     fetchSupplierDetails();
   }, [HouseModelProperty]);
 
+  const router = useRouter();
   const [supplierData, setSupplierData] = useState<{ [key: string]: any }>({});
 
   const getData = async (supplierId: string) => {
@@ -159,6 +161,11 @@ const HusmodellProperty: React.FC<{
                           <Button
                             text="Utforsk"
                             className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            onClick={() => {
+                              router.push(
+                                `husmodell/husmodell-detail?husmodell=${property?.id}`
+                              );
+                            }}
                           />
                         </div>
                       </div>

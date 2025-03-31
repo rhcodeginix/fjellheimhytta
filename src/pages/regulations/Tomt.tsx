@@ -824,7 +824,6 @@ const Tomt: React.FC<{
                                 askData?.bya_calculations?.results?.parking
                                   ?.required_spaces
                               }{" "}
-                              {/* m<sup>2</sup> */}
                               stk
                             </>
                           ) : (
