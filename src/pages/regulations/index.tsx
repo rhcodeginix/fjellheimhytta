@@ -79,7 +79,7 @@ const Regulations = () => {
       const matches: any[] = [];
 
       if (data) {
-        const sheetData: any = data["Østfold"];
+        const sheetData: any = data["Vestland"];
         const rowsToProcess = sheetData.slice(1);
         for (const row of rowsToProcess) {
           const lamdaApiData: any = {
