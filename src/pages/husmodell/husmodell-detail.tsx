@@ -12,7 +12,16 @@ const HusmodellDetail = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   const tabData = [{ label: "Husdetaljer" }, { label: "Prisliste" }];
+  useEffect(() => {
+    const hasReloaded = sessionStorage.getItem("hasReloaded");
 
+    if (!hasReloaded) {
+      window.location.reload();
+      sessionStorage.setItem("hasReloaded", "true");
+    } else {
+      sessionStorage.removeItem("hasReloaded");
+    }
+  }, []);
   const [id, setId] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [husmodellData, setHusmodellData] = useState<any>(null);
