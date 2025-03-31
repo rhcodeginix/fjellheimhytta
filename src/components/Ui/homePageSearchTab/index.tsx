@@ -87,7 +87,7 @@ const HomePageSearchTab: React.FC = () => {
 
               querySnapshot.forEach((doc) => {
                 const data = doc.data();
-                if (data.CadastreDataFromApi?.presentationAddressApi) {
+                if (data?.CadastreDataFromApi?.presentationAddressApi) {
                   allPlots.push({ id: doc.id, ...data });
                 }
               });
@@ -141,7 +141,7 @@ const HomePageSearchTab: React.FC = () => {
 
             querySnapshot.forEach((doc) => {
               const data = doc.data();
-              if (data.CadastreDataFromApi?.presentationAddressApi) {
+              if (data?.CadastreDataFromApi?.presentationAddressApi) {
                 allMatrikelPlots.push({ id: doc.id, ...data });
               }
             });
@@ -220,7 +220,7 @@ const HomePageSearchTab: React.FC = () => {
 
               querySnapshot.forEach((doc) => {
                 const data = doc.data();
-                if (data.CadastreDataFromApi?.presentationAddressApi) {
+                if (data?.CadastreDataFromApi?.presentationAddressApi) {
                   allPlots.push({ id: doc.id, ...data });
                 }
               });
@@ -229,14 +229,14 @@ const HomePageSearchTab: React.FC = () => {
             const combinedData: any = [];
             allPlots.forEach((plot: any) => {
               filteredHusmodell.forEach((house) => {
-                combinedData.push({
+                combinedData?.push({
                   plot,
                   house,
                 });
               });
             });
 
-            setBelopProperty(combinedData.slice(0, 3));
+            setBelopProperty(combinedData?.slice(0, 3));
           }
         } else {
           setBelopProperty([]);

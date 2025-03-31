@@ -80,7 +80,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
   useEffect(() => {
     if (data?.additionalData?.answer) {
       try {
-        const cleanAnswer = data?.additionalData.answer;
+        const cleanAnswer = data?.additionalData?.answer;
 
         setAskData(cleanAnswer);
       } catch (error) {

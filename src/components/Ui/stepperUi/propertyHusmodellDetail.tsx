@@ -22,7 +22,7 @@ const PropertyHusmodellDetail: React.FC<any> = ({
   useEffect(() => {
     if (additionalData?.answer) {
       try {
-        const cleanAnswer = additionalData.answer;
+        const cleanAnswer = additionalData?.answer;
 
         setAskData(cleanAnswer);
       } catch (error) {

@@ -53,7 +53,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
   useEffect(() => {
     if (additionalData?.answer) {
       try {
-        const cleanAnswer = additionalData.answer;
+        const cleanAnswer = additionalData?.answer;
 
         setAskData(cleanAnswer);
       } catch (error) {

@@ -148,7 +148,7 @@ const Belop: React.FC = () => {
           const querySnapshot = await getDocs(q);
           querySnapshot.forEach((doc) => {
             const data = doc.data();
-            if (data.CadastreDataFromApi?.presentationAddressApi)
+            if (data?.CadastreDataFromApi?.presentationAddressApi)
               allPlots.push({ id: doc.id, ...data });
           });
         }
