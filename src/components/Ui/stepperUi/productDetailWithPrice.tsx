@@ -19,47 +19,57 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
       try {
         const queryParams = new URLSearchParams(window.location.search);
         const isEmptyPlot = queryParams.get("empty");
+        const plotId = queryParams.get("plotId");
 
-        let plotCollectionRef;
-
-        if (isEmptyPlot === "true") {
-          plotCollectionRef = collection(db, "empty_plot");
-        } else {
-          plotCollectionRef = collection(db, "plot_building");
-        }
-
-        const allLeadsQuery = query(plotCollectionRef);
-        const allLeadsSnapshot = await getDocs(allLeadsQuery);
-
-        if (allLeadsSnapshot.empty) {
-          console.warn("No leads found in the collection.");
-          return;
-        }
-
+        let plotCollectionRef: any;
         let correctPlotId = null;
-        const allLeads = allLeadsSnapshot.docs.map((doc) => {
-          return { propertyId: doc.id, ...doc.data() };
-        });
-        for (const lead of allLeads) {
-          if (lead?.propertyId) {
-            correctPlotId = lead.propertyId;
-            break;
+
+        if (isEmptyPlot) {
+          if (isEmptyPlot === "true") {
+            plotCollectionRef = collection(db, "empty_plot");
+          } else {
+            plotCollectionRef = collection(db, "plot_building");
           }
+
+          const allLeadsQuery = query(plotCollectionRef);
+          const allLeadsSnapshot = await getDocs(allLeadsQuery);
+
+          if (allLeadsSnapshot.empty) {
+            console.warn("No leads found in the collection.");
+            return;
+          }
+
+          const allLeads = allLeadsSnapshot.docs.map((doc: any) => {
+            return { propertyId: doc.id, ...doc.data() };
+          });
+          for (const lead of allLeads) {
+            if (lead?.propertyId) {
+              correctPlotId = lead.propertyId;
+              break;
+            }
+          }
+
+          if (!correctPlotId) {
+            console.error("No valid plotId found in lamdaData.");
+            return;
+          }
+        } else {
+          plotCollectionRef = doc(db, "empty_plot", String(plotId));
         }
 
-        if (!correctPlotId) {
-          console.error("No valid plotId found in lamdaData.");
-          return;
+        let plotDocSnap;
+        if (isEmptyPlot && !plotId) {
+          const plotDocRef = doc(plotCollectionRef, correctPlotId);
+          plotDocSnap = await getDoc(plotDocRef);
+        } else {
+          plotDocSnap = await getDoc(plotCollectionRef);
         }
-
-        const plotDocRef = doc(plotCollectionRef, correctPlotId);
-        const plotDocSnap = await getDoc(plotDocRef);
 
         const husmodellDocRef = doc(db, "house_model", String(id));
         const husmodellDocSnap = await getDoc(husmodellDocRef);
 
         if (plotDocSnap.exists() && husmodellDocSnap.exists()) {
-          let plotData = plotDocSnap.data();
+          let plotData: any = plotDocSnap.data();
           let husmodellData = husmodellDocSnap.data();
           setFinalData({
             plot: { id: correctPlotId, ...plotData },
@@ -121,7 +131,10 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
       husmodellData?.takeOver,
   ].reduce((acc, curr) => acc + (curr || 0), 0);
 
-  const totalPrisWithPlot = husmodellData?.pris + (plotData?.pris | 0);
+  const total = (
+    Number(husmodellData?.pris?.replace(/\s/g, "")) +
+    Number(plotData?.pris || 0)
+  ).toLocaleString("nb-NO");
 
   return (
     <>
@@ -217,7 +230,7 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
                   Totalpris med tomt
                 </p>
                 <h3 className="text-black font-semibold text-[24px] text-center">
-                  {formatCurrency(totalPrisWithPlot)}
+                  {formatCurrency(total)}
                 </h3>
               </div>
             </div>

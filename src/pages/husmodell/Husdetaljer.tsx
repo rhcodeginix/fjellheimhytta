@@ -64,7 +64,7 @@ const Husdetaljer: React.FC<{ husmodellData: any }> = ({ husmodellData }) => {
   };
   return (
     <>
-      <div className="flex gap-6 h-[433px] mb-[74px]">
+      <div className="flex gap-6 h-[360px] mb-[74px]">
         <div className="w-2/3 h-full">
           <h4 className="mb-4 text-black text-lg font-semibold">
             Illustrasjoner

@@ -61,6 +61,7 @@ const Regulations = () => {
     kommunenavn,
     propertyId,
     plotId,
+    emptyPlot,
   } = router.query;
   const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
   const [loadingLamdaData, setLoadingLamdaData] = useState(false);
@@ -79,7 +80,7 @@ const Regulations = () => {
       const matches: any[] = [];
 
       if (data) {
-        const sheetData: any = data["Møre og Romsdal"];
+        const sheetData: any = data["Vestland"];
         const rowsToProcess = sheetData.slice(1);
         for (const row of rowsToProcess) {
           const lamdaApiData: any = {
@@ -101,19 +102,19 @@ const Regulations = () => {
               data.message === "Request failed with status code 500" ||
               !data.propertyId
             ) {
-              const EmptyPlotErrorDb = collection(db, "empty_plot_error");
-              const finalData = {
-                lamdaApiData: JSON.stringify(lamdaApiData),
-                api1: false,
-                api2: false,
-                api3: false,
-              };
-              // const existingEmptyPlotError = query(EmptyPlotErrorDb);
-              // const EmptyPlotErrorShot = await getDocs(existingEmptyPlotError);
+              // const EmptyPlotErrorDb = collection(db, "empty_plot_error");
+              // const finalData = {
+              //   lamdaApiData: JSON.stringify(lamdaApiData),
+              //   api1: false,
+              //   api2: false,
+              //   api3: false,
+              // };
+              // // const existingEmptyPlotError = query(EmptyPlotErrorDb);
+              // // const EmptyPlotErrorShot = await getDocs(existingEmptyPlotError);
 
-              // if (EmptyPlotErrorShot.empty) {
-              await addDoc(EmptyPlotErrorDb, finalData);
-              // }
+              // // if (EmptyPlotErrorShot.empty) {
+              // await addDoc(EmptyPlotErrorDb, finalData);
+              // // }
               continue;
             }
             const CadastreDataResponse =
@@ -196,42 +197,42 @@ const Regulations = () => {
               }
             }
           } catch (error: any) {
-            const property = {
-              lamdaDataFromApi: data,
-              additionalData: null,
-              CadastreDataFromApi: null,
-              pris: row["__EMPTY_3"] || null,
-            };
+            // const property = {
+            //   lamdaDataFromApi: data,
+            //   additionalData: null,
+            //   CadastreDataFromApi: null,
+            //   pris: row["__EMPTY_3"] || null,
+            // };
 
-            const propertyId = property?.lamdaDataFromApi?.propertyId;
+            // const propertyId = property?.lamdaDataFromApi?.propertyId;
 
-            const EmptyPlotDb = collection(db, "empty_plot");
-            const existingEmptyPlot = query(
-              EmptyPlotDb,
-              where("lamdaDataFromApi.propertyId", "==", propertyId)
-            );
-            const EmptyPlotShot = await getDocs(existingEmptyPlot);
+            // const EmptyPlotDb = collection(db, "empty_plot");
+            // const existingEmptyPlot = query(
+            //   EmptyPlotDb,
+            //   where("lamdaDataFromApi.propertyId", "==", propertyId)
+            // );
+            // const EmptyPlotShot = await getDocs(existingEmptyPlot);
 
-            if (EmptyPlotShot.empty) {
-              await addDoc(EmptyPlotDb, property);
-            }
+            // if (EmptyPlotShot.empty) {
+            //   await addDoc(EmptyPlotDb, property);
+            // }
 
-            const EmptyPlotErrorDb = collection(db, "empty_plot_error");
-            const existingEmptyPlotError = query(
-              EmptyPlotErrorDb,
-              where("lamdaDataFromApi.propertyId", "==", propertyId)
-            );
-            const EmptyPlotErrorShot = await getDocs(existingEmptyPlotError);
-            const finalData = {
-              lamdaApiData,
-              api1: true,
-              api2: false,
-              api3: false,
-            };
+            // const EmptyPlotErrorDb = collection(db, "empty_plot_error");
+            // const existingEmptyPlotError = query(
+            //   EmptyPlotErrorDb,
+            //   where("lamdaDataFromApi.propertyId", "==", propertyId)
+            // );
+            // const EmptyPlotErrorShot = await getDocs(existingEmptyPlotError);
+            // const finalData = {
+            //   lamdaApiData,
+            //   api1: true,
+            //   api2: false,
+            //   api3: false,
+            // };
 
-            if (EmptyPlotErrorShot.empty) {
-              await addDoc(EmptyPlotErrorDb, finalData);
-            }
+            // if (EmptyPlotErrorShot.empty) {
+            //   await addDoc(EmptyPlotErrorDb, finalData);
+            // }
             console.error("Error fetching additional data:", error?.message);
           }
         }
@@ -438,21 +439,117 @@ const Regulations = () => {
       setLoadingLamdaData(true);
 
       const fetchProperty = async () => {
-        const propertiesCollectionRef = collection(
-          db,
-          "users",
-          userUID,
-          "property"
-        );
-        try {
-          const propertiesSnapshot = await getDocs(propertiesCollectionRef);
-          const fetchedProperties: any = propertiesSnapshot.docs.map((doc) => ({
-            propertyId: doc.id,
-            ...doc.data(),
-          }));
-          const foundProperty = fetchedProperties.find(
-            (property: any) => property.propertyId === propertyId
+        let propertiesCollectionRef: any;
+        if (emptyPlot) {
+          propertiesCollectionRef = doc(db, "empty_plot", String(propertyId));
+        } else {
+          propertiesCollectionRef = collection(
+            db,
+            "users",
+            userUID,
+            "property"
           );
+        }
+        try {
+          let foundProperty: any;
+          if (emptyPlot) {
+            const plotDocSnap: any = await getDoc(propertiesCollectionRef);
+            if (plotDocSnap.exists()) {
+              const fetchedProperties = {
+                propertyId: plotDocSnap.id,
+                ...plotDocSnap.data(),
+              };
+              foundProperty = fetchedProperties;
+            } else {
+              console.error(
+                "No property found in empty_plot with the given ID."
+              );
+              return;
+            }
+          } else {
+            const propertiesSnapshot = await getDocs(propertiesCollectionRef);
+            const fetchedProperties = propertiesSnapshot.docs.map(
+              (doc: any) => ({
+                propertyId: doc.id,
+                ...doc.data(),
+              })
+            );
+            foundProperty = fetchedProperties.find(
+              (property: any) => property.propertyId === propertyId
+            );
+          }
+
+          const property = {
+            lamdaDataFromApi: foundProperty?.lamdaDataFromApi,
+            additionalData: foundProperty?.additionalData,
+            CadastreDataFromApi: foundProperty?.CadastreDataFromApi,
+            pris: null,
+          };
+          const queryParams = new URLSearchParams(window.location.search);
+          queryParams.set("plotId", String(propertyId));
+          queryParams.delete("empty");
+
+          const isEmptyPlot =
+            !foundProperty?.CadastreDataFromApi?.apis?.buildingsApi?.response
+              ?.items?.length;
+          const collectionName = isEmptyPlot ? "empty_plot" : "plot_building";
+          queryParams.set("empty", isEmptyPlot ? "true" : "false");
+
+          const collectionRef = collection(db, collectionName);
+          const existingQuery = query(
+            collectionRef,
+            where("lamdaDataFromApi.propertyId", "==", propertyId)
+          );
+          const querySnapshot = await getDocs(existingQuery);
+
+          let docId, plotData;
+          if (!querySnapshot.empty) {
+            const docSnap: any = querySnapshot.docs[0];
+            docId = docSnap.id;
+            plotData = docSnap.data();
+          } else {
+            const docRef = await addDoc(collectionRef, property);
+            docId = docRef.id;
+            plotData =
+              (await getDoc(doc(db, collectionName, docId))).data() || null;
+          }
+
+          const updatedPlotData = {
+            ...plotData,
+            view_count: (plotData?.view_count || 0) + 1,
+          };
+          await setDoc(doc(db, collectionName, docId), updatedPlotData, {
+            merge: true,
+          });
+
+          const viewerDocRef = doc(
+            db,
+            `${collectionName}/${docId}/viewer`,
+            user.uid
+          );
+          const viewerDocSnap = await getDoc(viewerDocRef);
+          let viewerViewCount = 1;
+
+          if (viewerDocSnap.exists()) {
+            const viewerData = viewerDocSnap.data();
+            viewerViewCount = (viewerData?.view_count || 0) + 1;
+          }
+
+          await setDoc(
+            viewerDocRef,
+            {
+              userId: user.uid,
+              name: user.name || "N/A",
+              last_updated_date: new Date().toISOString(),
+              view_count: viewerViewCount,
+            },
+            { merge: true }
+          );
+
+          router.replace({
+            pathname: router.pathname,
+            query: Object.fromEntries(queryParams),
+          });
 
           if (foundProperty) {
             setAdditionalData(foundProperty?.additionalData);
@@ -467,10 +564,11 @@ const Regulations = () => {
           setLoadingLamdaData(false);
         }
       };
-
-      fetchProperty();
+      if (user) {
+        fetchProperty();
+      }
     }
-  }, [propertyId, userUID, db]);
+  }, [propertyId, userUID, db, user]);
 
   useEffect(() => {
     if (plotId && userUID) {

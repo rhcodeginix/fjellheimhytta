@@ -1,266 +1,355 @@
-import React from "react";
-import Img_product_3d_img1 from "@/public/images/Img_product_3d_img1.png";
-import Img_product_3d_img2 from "@/public/images/Img_product_3d_img2.png";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Img_product1 from "@/public/images/Img_product1.png";
-import Img_product_logo1 from "@/public/images/Img_product_logo1.png";
-import Img_product_map from "@/public/images/Img_product_map.png";
-import ContactForm from "../stepperUi/contactForm";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
-// import { useRouter } from "next/router";
-import AccordionTab from "../accordion/accordionTab";
+import { useRouter } from "next/router";
+import Illustrasjoner, {
+  formatCurrency,
+} from "../RegulationHusmodell/Illustrasjoner";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
+import { useUserLayoutContext } from "@/context/userLayoutContext";
+import Loader from "@/components/Loader";
+import * as Yup from "yup";
+import { Formik, Form, Field } from "formik";
+import Ic_vapp from "@/public/images/Ic_vapp.svg";
+import LoginForm from "@/pages/login/loginForm";
 
-const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
-  // const router = useRouter();
+const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
+  const router = useRouter();
+  const id = router.query["husodellId"];
+  const city = router.query["city"];
+  const getEmbedUrl = (url: string) => {
+    const videoId = url.split("v=")[1]?.split("&")[0];
+    return videoId
+      ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&controls=0&disablekb=1&fs=0`
+      : "";
+  };
+  const [finalData, setFinalData] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const textareaRef = useRef<any>(null);
+  const husmodellData = finalData?.Husdetaljer;
+  const [isCall, setIsCall] = useState(false);
 
-  const sections = [
-    {
-      title: "Illustrasjoner",
-      content: (
-        <div className="w-full gap-6 flex">
-          <div className="w-1/2">
-            <Image
-              src={Img_product_3d_img1}
-              alt="image"
-              className="w-full"
-              fetchPriority="auto"
-            />
-          </div>
-          <div className="w-1/2">
-            <Image
-              src={Img_product_3d_img2}
-              alt="image"
-              className="w-full"
-              fetchPriority="auto"
-            />
-          </div>
-        </div>
-      ),
-    },
-  ];
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [husmodellData?.OmHusmodellen]);
+  const { loginUser, setLoginUser } = useUserLayoutContext();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const husmodellDocRef = doc(db, "house_model", String(id));
+        const husmodellDocSnap = await getDoc(husmodellDocRef);
+
+        if (husmodellDocSnap.exists()) {
+          setFinalData(husmodellDocSnap.data());
+        } else {
+          console.error("No document found for plot or husmodell ID.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id, isCall]);
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
+    if (isLoggedIn) {
+      setLoginUser(true);
+      setIsCall(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (!loginUser) {
+      setIsPopupOpen(true);
+    } else {
+      setIsPopupOpen(false);
+    }
+  }, [loginUser]);
+
+  const [supplierData, setSupplierData] = useState<any>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const supplierDocRef = doc(
+          db,
+          "suppliers",
+          husmodellData?.Leverandører
+        );
+        const docSnap: any = await getDoc(supplierDocRef);
+
+        if (docSnap.exists()) {
+          setSupplierData(docSnap.data());
+        } else {
+          console.error(
+            "No document found for ID:",
+            husmodellData?.Leverandører
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching supplier data:", error);
+      }
+    };
+    getData();
+  }, [husmodellData?.Leverandører]);
+
+  const [loginPopup, setLoginPopup] = useState(false);
+  const validationLoginSchema = Yup.object().shape({
+    terms_condition: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
+  });
+
+  const [isLoginChecked, setIsLoginChecked] = useState(false);
+  const handleLoginCheckboxChange = () => {
+    setIsLoginChecked(!isLoginChecked);
+  };
+
+  const handleLoginSubmit = async () => {
+    setIsPopupOpen(false);
+    setLoginPopup(true);
+    router.push(`${router.asPath}&login_popup=true`);
+  };
+
+  useEffect(() => {
+    if (isPopupOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isPopupOpen]);
+
+  const router_query: any = { ...router.query };
+
+  delete router_query.login_popup;
+
+  const queryString = new URLSearchParams(router_query).toString();
 
   return (
     <div className="relative">
-      <SideSpaceContainer>
-        <div className="pt-[24px] pb-[86px]">
-          <AccordionTab sections={sections} />
-          <div className="w-full flex gap-[60px] mt-8">
-            <div className="w-[43%]">
-              <h4 className="text-black mb-6 font-semibold text-2xl">
-                Almgaard
-              </h4>
-              <div className="relative">
-                <Image
-                  src={Img_product1}
-                  alt="image"
-                  className="w-full h-[262px] object-cover rounded-[12px] overflow-hidden"
+      {loading ? (
+        <Loader />
+      ) : (
+        <SideSpaceContainer>
+          <div className="pt-[24px] pb-[86px]">
+            <Illustrasjoner />
+            <div className="w-full flex gap-[60px] mt-8">
+              <div className="w-[43%]">
+                <h4 className="text-black mb-6 font-semibold text-2xl">
+                  {husmodellData?.husmodell_name}
+                </h4>
+                <div className="relative">
+                  <img
+                    src={husmodellData?.photo}
+                    alt="image"
+                    className="w-full h-[262px] object-cover rounded-[12px] overflow-hidden"
+                  />
+                  <img
+                    src={supplierData?.photo}
+                    alt="image"
+                    className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-[130px]"
+                  />
+                </div>
+                <div className="my-[20px] flex items-center justify-between">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-secondary text-base">Pris fra</p>
+                    <h4 className="text-xl font-semibold text-black">
+                      {formatCurrency(husmodellData?.pris)}
+                    </h4>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="text-secondary text-sm">
+                      <span className="text-black font-semibold">
+                        {husmodellData?.BRATotal}
+                      </span>{" "}
+                      m<sup>2</sup>
+                    </div>
+                    <div className="h-[12px] w-[1px] border-l border-gray"></div>
+                    <div className="text-secondary text-sm">
+                      <span className="text-black font-semibold">
+                        {husmodellData?.Soverom}
+                      </span>{" "}
+                      soverom
+                    </div>
+                    <div className="h-[12px] w-[1px] border-l border-gray"></div>
+                    <div className="text-secondary text-sm">
+                      <span className="text-black font-semibold">
+                        {husmodellData?.Bad}
+                      </span>{" "}
+                      bad
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full flex gap-8 mb-[60px]">
+                  <div className="w-1/2 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
+                    <table className="table-auto border-0 w-full text-left property_detail_tbl">
+                      <tbody>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            BRA total
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.BRATotal} m<sup>2</sup>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            BRA bolig
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.BebygdAreal} m<sup>2</sup>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            P-rom:
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.PRom} m<sup>2</sup>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            Bebygd Areal
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.BebygdAreal} m<sup>2</sup>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            L x B:
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.LB}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            Soverom
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.Soverom}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="w-1/2 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
+                    <table className="table-auto border-0 w-full text-left property_detail_tbl">
+                      <tbody>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            Bad
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.Bad}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            Innvendig bod
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.InnvendigBod}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            Energimerking
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.Energimerking}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            Tilgjengelig bolig
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.TilgjengeligBolig}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
+                            Tomtetype
+                          </td>
+                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                            {husmodellData?.Tomtetype}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <h2 className="mb-6 text-black text-2xl font-semibold">
+                  Plantegninger og fasader
+                </h2>
+                <img
+                  src={husmodellData?.PlantegningerFasader[0]}
+                  alt="map"
+                  className="w-full"
                 />
-                <Image
-                  src={Img_product_logo1}
-                  alt="image"
-                  className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-auto"
-                  fetchPriority="auto"
-                />
               </div>
-              <div className="my-[20px] flex items-center justify-between">
-                <div className="flex flex-col gap-2">
-                  <p className="text-secondary text-base">Pris fra</p>
-                  <h4 className="text-xl font-semibold text-black">
-                    5.860.000 NOK
-                  </h4>
+              <div className="w-[57%]">
+                <h2 className="text-black text-2xl font-semibold mb-4">
+                  {husmodellData?.Hustittel}
+                </h2>
+                <div className="flex flex-col gap-4 mb-[60px]">
+                  <textarea
+                    value={husmodellData?.OmHusmodellen}
+                    className="text-base text-gray h-full focus-within:outline-none resize-none"
+                    ref={textareaRef}
+                    readOnly
+                  ></textarea>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-secondary text-sm">
-                    <span className="text-black font-semibold">233</span> m
-                    <sup>2</sup>
-                  </div>
-                  <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                  <div className="text-secondary text-sm">
-                    <span className="text-black font-semibold">5</span> soverom
-                  </div>
-                  <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                  <div className="text-secondary text-sm">
-                    <span className="text-black font-semibold">3</span> bad
-                  </div>
+                <h2 className="text-black text-2xl font-semibold mb-4">
+                  {husmodellData?.TittelVideo}
+                </h2>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "400px",
+                  }}
+                  className="mb-8"
+                >
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={getEmbedUrl(husmodellData?.VideoLink)}
+                    title={husmodellData?.TittelVideo}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
                 </div>
-              </div>
-              <div className="w-full flex gap-8 mb-[60px]">
-                <div className="w-1/2 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
-                  <table className="table-auto border-0 w-full text-left property_detail_tbl">
-                    <tbody>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          BRA total
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          244 m<sup>2</sup>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          BRA bolig
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          233 m<sup>2</sup>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          P-rom:
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          221 m<sup>2</sup>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          Bebygd Areal
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          152 m<sup>2</sup>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          L x B:
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          14.3 x 12.8 m
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          Soverom
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          5
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="w-1/2 border-t-2 border-b-0 border-l-0 border-r-0 border-purple pt-4">
-                  <table className="table-auto border-0 w-full text-left property_detail_tbl">
-                    <tbody>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          Bad
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          3
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          Innvendig bod
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          3
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          Energimerking
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          B
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          Tilgjengelig bolig
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          Ja
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                          Tomtetype
-                        </td>
-                        <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                          Flat tomt
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <h2 className="mb-6 text-black text-2xl font-semibold">
-                Plantegninger og fasader
-              </h2>
-              <Image
-                src={Img_product_map}
-                alt="map"
-                className="w-full"
-                fetchPriority="auto"
-              />
-            </div>
-            <div className="w-[57%]">
-              <h2 className="text-black text-2xl font-semibold mb-4">
-                Herskapelige Almgaard er en drømmebolig for familien
-              </h2>
-              <div className="flex flex-col gap-4 mb-[60px]">
-                <p className="text-base text-secondary">
-                  Lukk øynene. Se for deg opplevelsen av å komme inn i vakre
-                  Almgaard. Her venter den majestetiske hallen på deg med over
-                  fem meters takhøyde. Videre ledes du inn i selve hjertet i
-                  huset – stueområdet på tilsammen nær 60 kvadratmeter og det
-                  flotte kjøkkenet. Her er plass nok til å samle venner rundt
-                  langbordet mens den myke kveldssola kaster et varmt lys inn
-                  gjennom vinduene. Husets første etasje har også en avdeling
-                  med gjestesoverom med walk-in closet, bad, wc, vaskerom og
-                  bod.
-                </p>
-                <p className="text-base text-secondary">
-                  Almgaard er et flott hus for flat tomt som kjennetegnes av
-                  mansardtaket. I inngangshallen faller blikket raskt mot den
-                  nydelige trappa som glir inn som et herskapelig møbel i
-                  rommet, og inviterer deg opp til galleriet i 2. etasje. Her
-                  oppe venter smarte løsninger med egen foreldreavdeling
-                  bestående av soverom walk-in closet og et romslig bad. I den
-                  andre fløyen av etasjen finner du barnas egen avdeling med
-                  tv-stue og to soverom med ett bad i mellom. I tillegg er det
-                  gjort plass til et hjemmekontor/ekstra soverom hvis det er
-                  behov for det. 
-                </p>
-                <p className="text-base text-secondary">
-                  Almgaard ble lansert i januar 2016 som den smarte
-                  lillesøsteren til herskapelige Holmgaard – selve symbolet på
-                  den store boligdrømmen for mange. I Almgaard har vi bevart
-                  Holmgaards ettertraktede kvaliteter, men komprimert det inn på
-                  233 kvadratmeter. Dermed har vi designet en herskapelig
-                  familiedrøm. 
-                </p>
-              </div>
-              <h2 className="text-black text-2xl font-semibold mb-4">
-                Film av Almgaard
-              </h2>
-              <div
-                style={{
-                  width: "100%",
-                  height: "400px",
-                }}
-                className="mb-8"
-              >
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/JG5zEa754N8"
-                  title="Almgaard"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                ></iframe>
-              </div>
 
-              <ContactForm />
+                {/* <ContactForm /> */}
+              </div>
             </div>
           </div>
-        </div>
-      </SideSpaceContainer>
+          {!loginUser && (
+            <div
+              className="absolute top-0 h-full w-full left-0"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(255, 255, 255, 0.7) 100%, rgba(255, 255, 255, 0.7) 100%)",
+              }}
+            ></div>
+          )}
+        </SideSpaceContainer>
+      )}
       <div
         className="sticky bottom-0 bg-white py-6"
         style={{
@@ -274,8 +363,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
               text="Tilbake"
               className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
-                handlePrevious();
-                // router.push("/husmodells");
+                router.push(`/husmodell?Kommue=${city}`);
               }}
             />
             <Button
@@ -288,6 +376,94 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext, handlePrevious }) => {
           </div>
         </SideSpaceContainer>
       </div>
+
+      {isPopupOpen && !loginUser && (
+        <div className="fixed top-0 left-0 flex justify-center items-center h-full w-full">
+          <div
+            className="bg-white p-8 rounded-[8px] w-[787px]"
+            style={{
+              boxShadow:
+                "0px 8px 8px -4px rgba(16, 24, 40, 0.031), 0px 20px 24px -4px rgba(16, 24, 40, 0.078)",
+            }}
+          >
+            <h2 className="text-black text-[24px] font-semibold mb-2 text-center">
+              Registrer deg
+            </h2>
+            <p className="text-secondary text-base text-center mb-2">
+              Logg inn med{" "}
+              <span className="font-semibold text-black">Vipps</span> for å få
+              se{" "}
+              <span className="font-semibold text-black">
+                alle bestemmelser og finne <br />
+                boliger som passer på denne eiendommen
+              </span>
+            </p>
+            <Formik
+              initialValues={{ terms_condition: false }}
+              validationSchema={validationLoginSchema}
+              onSubmit={handleLoginSubmit}
+            >
+              {({ values, setFieldValue, errors, touched }) => (
+                <Form>
+                  <div className="flex items-center justify-center flex-col">
+                    <label className="flex items-center gap-[12px] container w-max">
+                      <Field
+                        type="checkbox"
+                        name="terms_condition"
+                        checked={isLoginChecked}
+                        onChange={() => {
+                          setFieldValue(
+                            "terms_condition",
+                            !values.terms_condition
+                          );
+                          handleLoginCheckboxChange();
+                        }}
+                      />
+                      <span className="checkmark checkmark_primary"></span>
+
+                      <div className="text-secondary text-base">
+                        Jeg aksepterer{" "}
+                        <span className="text-primary">Vilkårene</span> og har
+                        lest{" "}
+                        <span className="text-primary">
+                          Personvernerklæringen
+                        </span>
+                      </div>
+                    </label>
+                    {errors.terms_condition && touched.terms_condition && (
+                      <div className="text-red text-sm">
+                        {errors.terms_condition}
+                      </div>
+                    )}
+                    <div className="flex justify-end mt-6">
+                      <button
+                        className="
+                            text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                      >
+                        Fortsett med{" "}
+                        <Image fetchPriority="auto" src={Ic_vapp} alt="logo" />
+                      </button>
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </div>
+      )}
+
+      {loginPopup && !loginUser && (
+        <div
+          className="fixed top-0 left-0 flex justify-center items-center h-full w-full"
+          style={{ zIndex: 9999999 }}
+        >
+          <LoginForm
+            path={`${router.pathname}?${queryString}`}
+            setLoginPopup={setLoginPopup}
+            setIsCall={setIsCall}
+          />
+        </div>
+      )}
     </div>
   );
 };

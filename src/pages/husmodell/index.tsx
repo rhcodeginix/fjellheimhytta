@@ -54,7 +54,7 @@ const HusmodellPropertyPage: React.FC = () => {
         }));
 
         const maxHousePrice = Math.max(
-          ...data.map((house: any) =>
+          ...data?.map((house: any) =>
             parseInt(house?.Husdetaljer?.pris.replace(/\s/g, ""), 10)
           )
         );
@@ -148,6 +148,7 @@ const HusmodellPropertyPage: React.FC = () => {
               <HusmodellProperty
                 HouseModelProperty={HouseModelProperty}
                 isLoading={isLoading}
+                name={Name}
               />
             </div>
           </div>

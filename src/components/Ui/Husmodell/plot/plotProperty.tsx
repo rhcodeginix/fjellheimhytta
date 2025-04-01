@@ -13,10 +13,11 @@ export function formatPrice(price: any) {
   return formatted + " NOK";
 }
 
-const BelopProperty: React.FC<{
+const PlotProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;
-}> = ({ HouseModelProperty, isLoading }) => {
+  handleNext: any;
+}> = ({ HouseModelProperty, isLoading, handleNext }) => {
   const router = useRouter();
 
   const [supplierData, setSupplierData] = useState<{ [key: string]: any }>({});
@@ -235,17 +236,27 @@ const BelopProperty: React.FC<{
                             text="Utforsk"
                             className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
-                              // router.push(
-                              //   `husmodell-plot-view?plot=${property?.plot?.id}&&husmodell=${property?.house?.id}`
-                              // );
+                              const router_query: any = { ...router.query };
+
+                              delete router_query.minRangePlot;
+                              delete router_query.maxRangePlot;
+                              delete router_query.plotId;
+                              delete router_query.leadId;
+
+                              if (property?.plot?.id) {
+                                router_query.plotId = property.plot.id;
+                              }
+
                               router.push(
-                                `regulations?propertyId=${property?.plot?.id}&&husodellId=${property?.house?.id}&&emptyPlot=true`
+                                {
+                                  pathname: router.pathname,
+                                  query: router_query,
+                                },
+                                undefined,
+                                { shallow: true }
                               );
-                              const currIndex = 0;
-                              localStorage.setItem(
-                                "currIndex",
-                                currIndex.toString()
-                              );
+
+                              handleNext();
                             }}
                           />
                         </div>
@@ -266,4 +277,4 @@ const BelopProperty: React.FC<{
   );
 };
 
-export default BelopProperty;
+export default PlotProperty;

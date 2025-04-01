@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
-import PropertyHusmodellDetail from "@/components/Ui/stepperUi/propertyHusmodellDetail";
-// import SideSpaceContainer from "@/components/common/sideSpace";
-import PlotAllProperty from "@/components/Ui/Husmodell/plotAllProperty";
+import Plots from "@/components/Ui/Husmodell/plot";
 
-const Tomt: React.FC<any> = ({
-  handleNext,
-  lamdaDataFromApi,
-  loadingAdditionalData,
-  additionalData,
-}) => {
+const Tomt: React.FC<any> = ({ handleNext, handlePrevious }) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -19,15 +12,7 @@ const Tomt: React.FC<any> = ({
 
   return (
     <div className="relative">
-      <PropertyHusmodellDetail
-        isShow={false}
-        loadingAdditionalData={loadingAdditionalData}
-        additionalData={additionalData}
-      />
-      <PlotAllProperty
-        handleNext={handleNext}
-        lamdaDataFromApi={lamdaDataFromApi}
-      />
+      <Plots handleNext={handleNext} handlePrevious={handlePrevious} />
     </div>
   );
 };

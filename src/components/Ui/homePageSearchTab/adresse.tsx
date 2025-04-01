@@ -101,7 +101,7 @@ const AdresseTab = () => {
             }}
           >
             {addressData &&
-              addressData.map((address: any, index: number) => (
+              addressData?.map((address: any, index: number) => (
                 <Link
                   href={`/regulations?kommunenummer=${address.kommunenummer}&gardsnummer=${address.gardsnummer}&bruksnummer=${address.bruksnummer}&kommunenavn=${address.kommunenavn}`}
                   className="p-2 desktop:p-3 flex items-center gap-2.5 desktop:gap-4 hover:bg-lightGreen"

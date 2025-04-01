@@ -110,6 +110,7 @@ const PropertyDetailPage: React.FC<{
 
       const queryParams = new URLSearchParams(window.location.search);
       const isEmptyPlot = queryParams.get("empty");
+      queryParams.delete("leadId");
 
       try {
         let plotCollectionRef;
@@ -164,7 +165,12 @@ const PropertyDetailPage: React.FC<{
         );
         if (!querySnapshot.empty) {
           setLeadId(querySnapshot.docs[0].id);
-          router.push(`${router.asPath}&&leadId=${querySnapshot.docs[0].id}`);
+          router.push(`${router.asPath}&leadId=${querySnapshot.docs[0].id}`);
+          queryParams.set("leadId", querySnapshot.docs[0].id);
+          router.replace({
+            pathname: router.pathname,
+            query: Object.fromEntries(queryParams),
+          });
           return;
         }
 
@@ -178,7 +184,11 @@ const PropertyDetailPage: React.FC<{
           IsEmptyPlot: isEmptyPlot === "true",
         });
 
-        router.push(`${router.asPath}&&leadId=${querySnapshot.docs[0].id}`);
+        queryParams.set("leadId", querySnapshot.docs[0].id);
+        router.replace({
+          pathname: router.pathname,
+          query: Object.fromEntries(queryParams),
+        });
         setLeadId(docRef.id);
       } catch (error) {
         console.error("Firestore operation failed:", error);
@@ -186,7 +196,7 @@ const PropertyDetailPage: React.FC<{
     };
 
     fetchData();
-  }, [plotId, husmodellId, user]);
+  }, [plotId, husmodellId, user, leadId]);
   const [supplierData, setSupplierData] = useState<any>(null);
 
   useEffect(() => {
@@ -434,16 +444,18 @@ const PropertyDetailPage: React.FC<{
                   text="Tilbake"
                   className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                   onClick={() => {
-                    handlePrevious();
                     router.push(router.asPath);
+                    handlePrevious();
                   }}
                 />
                 <Button
                   text="Gjør tilvalg"
                   className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                   onClick={() => {
-                    router.push(router.asPath);
-                    handleNext();
+                    if (leadId) {
+                      router.push(router.asPath);
+                      handleNext();
+                    }
                   }}
                 />
               </div>

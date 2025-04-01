@@ -407,7 +407,7 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
                                     ""
                                   );
 
-                                  if (data) {
+                                  if (values.equityAmount) {
                                     const totalData: any =
                                       Number(data) -
                                       Number(values.equityAmount);
@@ -417,7 +417,7 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
 
                                     return finalData;
                                   } else {
-                                    return data;
+                                    return husmodellData?.pris;
                                   }
                                 })()}
                               </h4>

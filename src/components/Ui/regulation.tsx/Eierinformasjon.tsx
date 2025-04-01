@@ -7,7 +7,7 @@ const Eierinformasjon: React.FC<{ data: any }> = ({ data }) => {
     let percentage = (owned / total) * 100;
     return percentage + "%";
   }
-  const EierinformasjonData = data.map((item: any) => ({
+  const EierinformasjonData = data?.map((item: any) => ({
     name: "Ownership Share",
     value: calculateOwnership(item?.andel),
   }));

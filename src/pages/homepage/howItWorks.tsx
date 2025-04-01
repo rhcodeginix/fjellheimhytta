@@ -92,7 +92,7 @@ const HowItWorks = () => {
         <div className="hidden md:block">
           <div className="h-screen desktop:h-screen flex relative gap-8 desktop:gap-[58px]">
             <div className="w-1/2 sticky left-0 top-0 h-full flex flex-col gap-4 justify-center">
-              {tabData.map((tab: any, index: any) => (
+              {tabData?.map((tab: any, index: any) => (
                 <div
                   key={index}
                   className={`flex w-full gap-4 items-start border-l-[4px] pl-4 desktop:pl-7 py-4 desktop:py-5 ${activeSection === index ? "border-primary" : "border-transparent"}`}
@@ -121,7 +121,7 @@ const HowItWorks = () => {
               className="overflow-y-auto scroll-smooth overFlowScrollHidden w-1/2"
               style={{ scrollSnapType: "y mandatory" }}
             >
-              {tabData.map((tab: any, index: any) => (
+              {tabData?.map((tab: any, index: any) => (
                 <div
                   key={index}
                   ref={(el: any) => (sectionRefs.current[index] = el)}
@@ -142,7 +142,7 @@ const HowItWorks = () => {
         <div className="md:hidden">
           <div className="overflow-x-auto overFlowScrollHidden">
             <div className="left-0 w-[1000px] sm:w-[1400px] top-0 h-full flex gap-3 md:justify-center mb-4">
-              {tabData.map((tab: any, index: any) => (
+              {tabData?.map((tab: any, index: any) => (
                 <div
                   key={index}
                   className={`flex w-[240px] sm:w-[270px] gap-2.5 items-start border-b-[4px] py-3 ${activeSection === index ? "border-primary" : "border-transparent"}`}
@@ -168,7 +168,7 @@ const HowItWorks = () => {
           </div>
 
           <div>
-            {tabData.map((tab: any, index: any) => (
+            {tabData?.map((tab: any, index: any) => (
               <div
                 key={index}
                 style={{ display: activeSection === index ? "block" : "none" }}

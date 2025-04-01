@@ -5,8 +5,10 @@ import Button from "@/components/common/button";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const ContactForm: React.FC<{ leadId?: any }> = ({ leadId }) => {
+  const router = useRouter();
   const [isChecked, setIsChecked] = useState(false);
   const [isShow, setIsShow] = useState(true);
   const handleCheckboxChange = () => {
@@ -47,6 +49,53 @@ const ContactForm: React.FC<{ leadId?: any }> = ({ leadId }) => {
       console.error("Firestore update operation failed:", error);
     }
   };
+  const [finalData, setFinalData] = useState<any>(null);
+  const id = router.query["husodellId"];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const husmodellDocRef = doc(db, "house_model", String(id));
+        const husmodellDocSnap = await getDoc(husmodellDocRef);
+
+        if (husmodellDocSnap.exists()) {
+          setFinalData(husmodellDocSnap.data());
+        } else {
+          console.error("No document found for plot or husmodell ID.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+  const husmodellData = finalData?.Husdetaljer;
+  const [supplierData, setSupplierData] = useState<any>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const supplierDocRef = doc(
+          db,
+          "suppliers",
+          husmodellData?.Leverandører
+        );
+        const docSnap: any = await getDoc(supplierDocRef);
+
+        if (docSnap.exists()) {
+          setSupplierData(docSnap.data());
+        } else {
+          console.error(
+            "No document found for ID:",
+            husmodellData?.Leverandører
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching supplier data:", error);
+      }
+    };
+    getData();
+  }, [husmodellData?.Leverandører]);
 
   return (
     <>
@@ -64,7 +113,9 @@ const ContactForm: React.FC<{ leadId?: any }> = ({ leadId }) => {
                     <p className="text-white text-lg mb-4">
                       Ønsker du å{" "}
                       <span className="font-semibold">bli kontaktet</span> av{" "}
-                      <span className="font-semibold">BoligPartner</span>{" "}
+                      <span className="font-semibold">
+                        {supplierData?.company_name}
+                      </span>{" "}
                       vedrørende denne eiendommen?
                     </p>
                     <label className="flex items-center gap-[12px] container">
@@ -82,7 +133,9 @@ const ContactForm: React.FC<{ leadId?: any }> = ({ leadId }) => {
                       <div className="text-[#FFFFFFCC] text-base">
                         Jeg aksepterer{" "}
                         <span className="text-white">deling av data</span> med{" "}
-                        <span className="text-white">BoligPartner.</span>
+                        <span className="text-white">
+                          {supplierData?.company_name}.
+                        </span>
                       </div>
                     </label>
                     {errors.checkbox && touched.checkbox && (

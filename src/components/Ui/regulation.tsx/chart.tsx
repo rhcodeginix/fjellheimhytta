@@ -10,7 +10,7 @@ const getRandomColor = (index: number) => {
 //   `hsl(${(index * 137) % 360}, 70%, 50%)`;
 
 const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
-  const data = chartData.map((item: any) => ({
+  const data = chartData?.map((item: any) => ({
     name: item.Navn,
     value: parseFloat(item.value),
   }));
@@ -29,7 +29,7 @@ const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
               fill="#8884d8"
               dataKey="value"
             >
-              {data.map((_entry: any, index: any) => (
+              {data?.map((_entry: any, index: any) => (
                 <Cell key={`cell-${index}`} fill={getRandomColor(index)} />
               ))}
             </Pie>
@@ -42,7 +42,7 @@ const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
       </div>
       <div className="mt-[48px] mb-3">
         <div className="flex justify-between gap-4">
-          {data.map((item: any, index: any) => (
+          {data?.map((item: any, index: any) => (
             <div key={index} className="flex items-start gap-2">
               <div className="h-[26px] w-3 flex items-center">
                 <div

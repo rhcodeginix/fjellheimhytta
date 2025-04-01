@@ -371,6 +371,9 @@ const Tomt: React.FC<{
     { id: "Dokument", label: "Dokument" },
   ];
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
+  const [selectedBuildIndex, setSelectedBuildIndex] = useState<number | null>(
+    null
+  );
 
   if (loadingLamdaData) {
     <Loader />;
@@ -1866,8 +1869,13 @@ const Tomt: React.FC<{
               {buildOption.map((build: any, index: any) => {
                 return (
                   <div
-                    className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4"
                     key={index}
+                    onClick={() => setSelectedBuildIndex(index)}
+                    className={`rounded-[8px] p-5 flex flex-col gap-4 cursor-pointer border-2 ${
+                      selectedBuildIndex === index
+                        ? "border-primary bg-lightPurple"
+                        : "border-gray bg-gray3"
+                    }`}
                   >
                     <div className="flex items-center gap-4">
                       <div className="w-[60px] h-[60px] rounded-full bg-lightPurple customShadow flex items-center justify-center">
