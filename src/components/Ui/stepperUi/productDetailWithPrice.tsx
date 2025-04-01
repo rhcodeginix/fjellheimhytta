@@ -24,7 +24,7 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
         let plotCollectionRef: any;
         let correctPlotId = null;
 
-        if (isEmptyPlot) {
+        if (isEmptyPlot && !plotId) {
           if (isEmptyPlot === "true") {
             plotCollectionRef = collection(db, "empty_plot");
           } else {
