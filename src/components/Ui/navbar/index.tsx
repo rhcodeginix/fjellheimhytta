@@ -11,12 +11,14 @@ import { useUserLayoutContext } from "@/context/userLayoutContext";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "@/config/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const { loginUser, setLoginUser } = useUserLayoutContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const router = useRouter();
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
@@ -98,7 +100,7 @@ const Header = () => {
                 onClick={toggleDrawer}
                 fetchPriority="auto"
               />
-              <Link href={"/"}>
+              <Link href={"/"} onClick={()=>router.push("/")}>
                 <Image
                   src={Ic_logo}
                   alt="logo"
