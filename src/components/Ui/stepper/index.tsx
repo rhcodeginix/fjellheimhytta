@@ -18,7 +18,7 @@ interface StepperProps {
 const Stepper: React.FC<StepperProps> = ({
   steps,
   currIndex,
-  setCurrIndex,
+  // setCurrIndex,
   Style,
 }) => {
   useEffect(() => {
@@ -27,12 +27,12 @@ const Stepper: React.FC<StepperProps> = ({
     }
   }, [currIndex]);
 
-  const handleStepClick = (index: number) => {
-    if (index <= currIndex) {
-      setCurrIndex(index);
-    }
-    localStorage.setItem("currIndex", index.toString());
-  };
+  // const handleStepClick = (index: number) => {
+  //   if (index <= currIndex) {
+  //     setCurrIndex(index);
+  //   }
+  //   localStorage.setItem("currIndex", index.toString());
+  // };
 
   return (
     <>
@@ -52,7 +52,7 @@ const Stepper: React.FC<StepperProps> = ({
                           ? "current"
                           : ""
                     }`}
-                    onClick={() => handleStepClick(index)}
+                    // onClick={() => handleStepClick(index)}
                     style={{
                       color: index === currIndex ? "#2a343e" : "",
                     }}

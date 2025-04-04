@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Stepper from "@/components/Ui/stepper";
 import Tomt from "./Tomt";
 import Husmodell from "./Husmodell";
-import Tilvalg from "./Tilvalg";
 import Tilbud from "./Tilbud";
 import Finansiering from "./Finansiering";
 import Oppsummering from "./Oppsummering";
@@ -25,6 +24,8 @@ import {
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import toast from "react-hot-toast";
 import * as XLSX from "xlsx";
+import Tilpass from "./Tilpass";
+import HouseModelSingleProperty from "@/components/Ui/regulation/houseModelSingleProperty";
 
 const Regulations = () => {
   const [currIndex, setCurrIndex] = useState<number | null>(null);
@@ -824,40 +825,88 @@ const Regulations = () => {
       component: (
         <Husmodell
           handleNext={handleNext}
-          handlePrevious={handlePrevious}
           lamdaDataFromApi={lamdaDataFromApi}
           CadastreDataFromApi={CadastreDataFromApi}
           askData={askData}
-          loading={loading}
+        />
+      ),
+    },
+    {
+      name: "Detaljer",
+      component: (
+        <HouseModelSingleProperty
+          handleNext={handleNext}
+          handlePrevious={handlePrevious}
           loadingAdditionalData={loadingAdditionalData}
           loginUser={loginUser}
           loadingLamdaData={loadingLamdaData}
           supplierData={supplierData}
+          CadastreDataFromApi={CadastreDataFromApi}
           HouseModelData={HouseModelData}
+          askData={askData}
+          lamdaDataFromApi={lamdaDataFromApi}
         />
       ),
     },
     {
       name: "Tilpass",
       component: (
-        <Tilvalg handleNext={handleNext} handlePrevious={handlePrevious} />
+        <Tilpass
+          handleNext={handleNext}
+          lamdaDataFromApi={lamdaDataFromApi}
+          loadingLamdaData={loading}
+          CadastreDataFromApi={CadastreDataFromApi}
+          askData={askData}
+          HouseModelData={HouseModelData}
+          handlePrevious={handlePrevious}
+          supplierData={supplierData}
+        />
       ),
     },
     {
       name: "Tilbud",
       component: (
-        <Tilbud handleNext={handleNext} handlePrevious={handlePrevious} />
+        <Tilbud
+          handleNext={handleNext}
+          lamdaDataFromApi={lamdaDataFromApi}
+          loadingLamdaData={loading}
+          CadastreDataFromApi={CadastreDataFromApi}
+          askData={askData}
+          HouseModelData={HouseModelData}
+          supplierData={supplierData}
+          handlePrevious={handlePrevious}
+        />
       ),
     },
     {
       name: "Finansiering",
       component: (
-        <Finansiering handleNext={handleNext} handlePrevious={handlePrevious} />
+        <Finansiering
+          handleNext={handleNext}
+          lamdaDataFromApi={lamdaDataFromApi}
+          loadingLamdaData={loading}
+          CadastreDataFromApi={CadastreDataFromApi}
+          askData={askData}
+          HouseModelData={HouseModelData}
+          handlePrevious={handlePrevious}
+          supplierData={supplierData}
+        />
       ),
     },
     {
       name: "Oppsummering",
-      component: <Oppsummering handlePrevious={handlePrevious} />,
+      component: (
+        <Oppsummering
+          handleNext={handleNext}
+          lamdaDataFromApi={lamdaDataFromApi}
+          loadingLamdaData={loading}
+          CadastreDataFromApi={CadastreDataFromApi}
+          askData={askData}
+          HouseModelData={HouseModelData}
+          handlePrevious={handlePrevious}
+          supplierData={supplierData}
+        />
+      ),
     },
   ];
 

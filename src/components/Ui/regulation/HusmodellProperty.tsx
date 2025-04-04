@@ -11,7 +11,8 @@ import { formatPrice } from "@/pages/belop/belopProperty";
 const HusmodellProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;
-}> = ({ HouseModelProperty, isLoading }) => {
+  handleNext: any;
+}> = ({ HouseModelProperty, isLoading, handleNext }) => {
   useEffect(() => {
     const fetchSupplierDetails = async () => {
       const supplierMap: { [key: string]: any } = {};
@@ -165,6 +166,7 @@ const HusmodellProperty: React.FC<{
                               router.push(
                                 `${router.asPath}&husodellId=${property?.id}&hasReload="true"`
                               );
+                              handleNext();
                             }}
                           />
                         </div>

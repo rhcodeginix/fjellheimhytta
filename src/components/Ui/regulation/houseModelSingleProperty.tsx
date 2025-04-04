@@ -247,7 +247,7 @@ const HouseModelSingleProperty: React.FC<{
     { id: "Dokument", label: "Dokument", icon: <ClipboardList /> },
   ];
   const [PlotActiveTab, setPlotActiveTab] = useState<string>(plotTabs[0].id);
-  const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
+  const [activeTab, setActiveTab] = useState<string>(tabs[1].id);
 
   if (loadingLamdaData) {
     <Loader />;
@@ -287,7 +287,7 @@ const HouseModelSingleProperty: React.FC<{
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
               </>
             )}
-            <span className="text-secondary2 text-sm">Husmodell og tomt</span>
+            <span className="text-secondary2 text-sm">Detaljer</span>
           </div>
           <PropertyHouseDetails
             HouseModelData={HouseModelData}
@@ -341,15 +341,9 @@ const HouseModelSingleProperty: React.FC<{
             <div
               className={`${activeTab === "Eiendomsinformasjon" ? "block" : "hidden"}`}
             >
-              <div
-                className="p-6 rounded-lg"
-                style={{
-                  boxShadow:
-                    "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
-                }}
-              >
+              <div className="rounded-lg border border-[#EFF1F5]">
                 <div
-                  className="flex items-center justify-between gap-2 cursor-pointer"
+                  className="flex items-center justify-between gap-2 cursor-pointer p-5"
                   onClick={toggleAccordion}
                 >
                   <h3 className="text-black text-2xl font-semibold">
@@ -370,7 +364,9 @@ const HouseModelSingleProperty: React.FC<{
                     />
                   )}
                 </div>
-                <div className={`mt-6 ${isOpen ? "block" : "hidden"}`}>
+                <div
+                  className={`${isOpen ? "block border-t border-[#EFF1F5] p-5" : "hidden"}`}
+                >
                   <div className="flex gap-6 justify-between">
                     <div className="grid grid-cols-3 gap-6">
                       <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">
@@ -1705,6 +1701,9 @@ const HouseModelSingleProperty: React.FC<{
                 router.replace({ pathname, query: updatedQuery }, undefined, {
                   shallow: true,
                 });
+                window.location.reload();
+                const currIndex = 0;
+                localStorage.setItem("currIndex", currIndex.toString());
               }}
             />
             <Button

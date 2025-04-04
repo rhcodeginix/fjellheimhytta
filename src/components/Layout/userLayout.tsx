@@ -23,7 +23,8 @@ const UserLayout = ({ children }: Props) => {
     }
     if (
       !pathname.startsWith("/housemodell-plot") &&
-      !pathname.startsWith("/husmodells")
+      !pathname.startsWith("/husmodells") &&
+      !pathname.startsWith("/regulations")
     ) {
       localStorage.removeItem("customizeHouse");
     }

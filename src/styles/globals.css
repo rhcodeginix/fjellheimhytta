@@ -200,7 +200,6 @@ input::placeholder {
   width: 10%;
   color: #344054;
   white-space: nowrap;
-  cursor: pointer;
 }
 .screen-indicator-span span {
   font-size: 14px;

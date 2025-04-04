@@ -374,15 +374,9 @@ const Tomt: React.FC<{
             <div
               className={`${activeTab === "Eiendomsinformasjon" ? "block" : "hidden"}`}
             >
-              <div
-                className="p-6 rounded-lg"
-                style={{
-                  boxShadow:
-                    "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
-                }}
-              >
+              <div className="rounded-lg border border-[#EFF1F5]">
                 <div
-                  className="flex items-center justify-between gap-2 cursor-pointer"
+                  className="flex items-center justify-between gap-2 cursor-pointer p-5"
                   onClick={toggleAccordion}
                 >
                   <h3 className="text-black text-2xl font-semibold">
@@ -403,7 +397,9 @@ const Tomt: React.FC<{
                     />
                   )}
                 </div>
-                <div className={`mt-6 ${isOpen ? "block" : "hidden"}`}>
+                <div
+                  className={`${isOpen ? "block border-t border-[#EFF1F5] p-5" : "hidden"}`}
+                >
                   <div className="flex gap-6 justify-between">
                     <div className="grid grid-cols-3 gap-6">
                       <div className="bg-gray3 rounded-[8px] p-5 flex flex-col gap-4">

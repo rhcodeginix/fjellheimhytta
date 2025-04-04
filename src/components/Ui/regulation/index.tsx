@@ -16,7 +16,8 @@ const HusmodellPropertyPage: React.FC<{
   CadastreDataFromApi: any;
   lamdaDataFromApi: any;
   askData: any;
-}> = ({ CadastreDataFromApi, lamdaDataFromApi, askData }) => {
+  handleNext: any;
+}> = ({ CadastreDataFromApi, lamdaDataFromApi, askData, handleNext }) => {
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
   const [maxRangeData, setMaxRangeData] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -185,6 +186,7 @@ const HusmodellPropertyPage: React.FC<{
               <HusmodellProperty
                 HouseModelProperty={HouseModelProperty}
                 isLoading={isLoading}
+                handleNext={handleNext}
               />
             </div>
           </div>
