@@ -34,12 +34,12 @@ const NameModal: React.FC<{ isOpen: any; onClose: any; onSubmit: any }> = ({
             <div className="flex justify-center gap-4 items-center mt-4">
               <Button
                 text="Cancel"
-                className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[28px] relative desktop:py-[16px]"
+                className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[28px] relative desktop:py-[16px]"
                 onClick={onClose}
               />
               <Button
                 text="Submit"
-                className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium relative desktop:px-[28px] desktop:py-[16px]"
+                className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium relative desktop:px-[28px] desktop:py-[16px]"
                 type="submit"
               />
             </div>

@@ -6,6 +6,7 @@ const config: Config = {
     colors: {
       primary: "#7F56D9",
       secondary: "#667085",
+      secondary2: "#5D6B98",
       black: "#101828",
       white: "#fff",
       lightGreen: "#F9FAFB",
@@ -14,6 +15,7 @@ const config: Config = {
       blue: "#6941C6",
       blue2: "#3538CD",
       lightPurple: "#F9F5FF",
+      lightPurple2: "#F5F3FF",
       lightBlue: "#EEF4FF",
       lightPink: "#FDF2FA",
       pink: "#C11574",
@@ -26,6 +28,8 @@ const config: Config = {
       gray3: "#F9F9FB",
       darkGreen: "#125D56",
       grayText: "#4A5578",
+      darkBlack: "#111322",
+      purple2: "#6938EF",
     },
     borderColor: {
       transparent: "transparent",
@@ -36,11 +40,13 @@ const config: Config = {
       gray: "#EAECF0",
       darkGray: "#B9C0D4",
       gray2: "#D0D5DD",
+      gray3: "#EFF1F5",
     },
     boxShadow: {
       shadow1: "0px 4px 16px 0px #0000001A",
       shadow2: "0px -1px 4px 0px #00000026 inset",
       shadow3: "0px 4px 9px 0px #2A343E21",
+      shadow4: "0px 1px 2px 0px #1018280D",
     },
     backgroundImage: {
       "gradientPink-box":

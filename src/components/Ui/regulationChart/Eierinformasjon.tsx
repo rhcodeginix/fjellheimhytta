@@ -70,7 +70,7 @@ const Eierinformasjon: React.FC<{ data: any }> = ({ data }) => {
                       </h6>
                     </div>
                   </div>
-                  {/* <div className="w-full border-t border-[#EFF1F5]"></div>
+                  {/* <div className="w-full border-t border-gray3"></div>
                   <div>
                     <h6 className="text-black text-sm font-medium mb-1">
                       Type eierskap

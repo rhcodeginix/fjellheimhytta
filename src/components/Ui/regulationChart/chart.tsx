@@ -54,7 +54,7 @@ const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
                 <div className="font-semibold text-[20px] h-[26px]">
                   {item.value}%
                 </div>
-                <span className="text-sm font-medium text-[#111322]">
+                <span className="text-sm font-medium text-darkBlack">
                   {item.name}
                 </span>
               </div>

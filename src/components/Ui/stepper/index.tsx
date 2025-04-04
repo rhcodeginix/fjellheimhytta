@@ -1,33 +1,26 @@
 import SideSpaceContainer from "@/components/common/sideSpace";
-// import { useRouter } from "next/router";
+import Image from "next/image";
 import React, { useEffect } from "react";
-import PropertyDetail from "../stepperUi/propertyDetail";
+import Ic_Check_white from "@/public/images/Ic_Check_white.svg";
 
 interface Step {
   name: string;
-  component: JSX.Element;
+  component: any;
 }
 
 interface StepperProps {
   steps: Step[];
   currIndex: any;
   setCurrIndex: any;
-  loadingAdditionalData?: any;
-  CadastreDataFromApi?: any;
-  askData?: any;
-  lamdaDataFromApi?: any;
+  Style?: any;
 }
 
 const Stepper: React.FC<StepperProps> = ({
   steps,
   currIndex,
   setCurrIndex,
-  loadingAdditionalData,
-  CadastreDataFromApi,
-  askData,
-  lamdaDataFromApi,
+  Style,
 }) => {
-  // const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined" && currIndex) {
       localStorage.setItem("currIndex", currIndex.toString());
@@ -39,63 +32,62 @@ const Stepper: React.FC<StepperProps> = ({
       setCurrIndex(index);
     }
     localStorage.setItem("currIndex", index.toString());
-    if (currIndex > index && (index === 0 || index === 1 || index === 2)) {
-      // const { plot, ...restQuery } = router.query as any;
-      // const updatedQuery = new URLSearchParams(restQuery).toString();
-      // router.push(
-      //   `${router.pathname}${updatedQuery ? `?${updatedQuery}` : ""}`
-      // );
-    }
   };
 
   return (
     <>
       <>
-        <SideSpaceContainer>
-          <div className="stepper_main overFlowScrollHidden">
-            <div className="stepper-wrapper">
-              <div className="progress"></div>
-              {steps.map((step, index) => (
-                <div
-                  key={index}
-                  className={`screen-indicator-span ${
-                    index < currIndex
-                      ? "completed"
-                      : index === currIndex
-                        ? "current"
-                        : ""
-                  }`}
-                  onClick={() => handleStepClick(index)}
-                  style={{
-                    color: index === currIndex ? "#2a343e" : "",
-                  }}
-                >
-                  <div className="flex items-center bg-white gap-1.5 md:gap-2 px-1 md:px-2">
-                    <span className="screen-index">{index + 1}</span>
-                    <span>{step.name}</span>
-                  </div>
-                  {index < steps.length - 1 && (
+        <div className="py-3 bg-[#491C96]">
+          <SideSpaceContainer>
+            <div className="stepper_main overFlowScrollHidden">
+              <div className="stepper-wrapper">
+                <div className="progress"></div>
+                {steps.map((step, index) => (
+                  <div
+                    key={index}
+                    className={`screen-indicator-span ${
+                      index < currIndex
+                        ? "completed"
+                        : index === currIndex
+                          ? "current"
+                          : ""
+                    }`}
+                    onClick={() => handleStepClick(index)}
+                    style={{
+                      color: index === currIndex ? "#2a343e" : "",
+                    }}
+                  >
                     <div
-                      className={`screen-indicator ${
-                        index < currIndex
-                          ? "completed"
-                          : index === currIndex
-                            ? "current"
-                            : ""
-                      }`}
-                    ></div>
-                  )}
-                </div>
-              ))}
+                      className="flex items-center gap-1.5 md:gap-2 px-1 md:px-2 bg-[#491C96]"
+                      style={{ zIndex: 2 }}
+                    >
+                      {/* <span className="screen-index">{index + 1}</span> */}
+                      {index < currIndex ? (
+                        <div className="w-6 h-6 bg-[#099250] flex items-center justify-center rounded-full">
+                          <Image src={Ic_Check_white} alt="Completed" />
+                        </div>
+                      ) : (
+                        <span className="screen-index">{index + 1}</span>
+                      )}
+                      <span>{step.name}</span>
+                    </div>
+                    {index < steps.length - 1 && (
+                      <div
+                        className={`screen-indicator ${Style && "screen-more"} ${
+                          index < currIndex
+                            ? "completed"
+                            : index === currIndex
+                              ? "current"
+                              : ""
+                        }`}
+                      ></div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </SideSpaceContainer>
-        <PropertyDetail
-          loadingAdditionalData={loadingAdditionalData}
-          askData={askData}
-          CadastreDataFromApi={CadastreDataFromApi}
-          lamdaDataFromApi={lamdaDataFromApi}
-        />
+          </SideSpaceContainer>
+        </div>
 
         <div className="active_page">
           {steps[currIndex]?.component || <div>Unknown step</div>}

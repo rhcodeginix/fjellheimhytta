@@ -153,7 +153,6 @@ input::placeholder {
 
 /* ----wizard------ */
 .stepper-wrapper {
-  margin: 24px auto;
   width: 100%;
   display: flex;
   gap: 16px;
@@ -172,20 +171,24 @@ input::placeholder {
 }
 
 .screen-indicator {
-  background-color: #dcdfea;
-  min-width: 16.6%;
+  background-color: rgba(249, 249, 251, 0.4);
+  min-width: 24%;
   max-width: 100%;
-  height: 4px;
+  height: 3px;
   transition: 0.7s all;
   position: absolute;
-  z-index: -1;
+  z-index: 1;
+}
+.screen-indicator.screen-more {
+  min-width: 18% !important;
 }
 .screen-index {
-  background: #eff1f5;
+  background: #111322;
+  border: 1px solid #00359e;
   height: 24px;
   width: 24px;
   border-radius: 50%;
-  color: #111322;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,25 +204,20 @@ input::placeholder {
 }
 .screen-indicator-span span {
   font-size: 14px;
+  color: white;
 }
 
-.screen-indicator.current {
-  background-color: #7f56d9;
-}
 .screen-indicator-span.current span {
-  color: #6941c6;
-  font-weight: 500;
+  font-weight: 700;
 }
 .screen-indicator-span.current .screen-index {
-  background-color: #6941c6;
-  color: white;
+  background-color: white;
+  border: 1px solid white;
+  color: #7839ee;
 }
 .screen-indicator-span.completed .screen-index {
-  color: white;
-  background-color: #277252;
-}
-.screen-indicator.completed {
-  background-color: #277252;
+  color: #099250;
+  background-color: #099250;
 }
 @media only screen and (max-width: 575px) {
   .stepper_main {
@@ -473,4 +471,62 @@ td {
   box-shadow:
     0px 1px 2px 0px #1018280f,
     0px 1px 3px 0px #1018281a;
+}
+
+/* Custom Navigation Buttons */
+.custom-swiper .swiper-button-prev,
+.custom-swiper .swiper-button-next {
+  background-color: white;
+  border: 1x solid #dcdfea !important;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: auto;
+  bottom: 10px !important;
+}
+
+.custom-swiper .swiper-button-prev::after,
+.custom-swiper .swiper-button-next::after {
+  font-size: 10px;
+  color: #5f6368;
+}
+
+.custom-swiper .swiper-pagination-bullet {
+  background-color: #2a2a2a;
+  width: 10px;
+  height: 10px;
+  opacity: 0.5;
+}
+
+.custom-swiper .swiper-pagination {
+  position: absolute;
+  bottom: 16px !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: center;
+  background-color: #111322;
+  width: max-content !important;
+  border-radius: 30px;
+  padding: 2px;
+}
+
+.custom-swiper .swiper-pagination-bullet {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+  margin: 0 !important;
+}
+
+.custom-swiper .swiper-pagination-bullet-active {
+  background-color: #7839ee;
+  width: 24px;
+  border-radius: 10px;
 }

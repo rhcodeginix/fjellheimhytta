@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import Ic_search from "@/public/images/Ic_search.svg";
+import Ic_Search2 from "@/public/images/Ic_Search2.svg";
 import Ic_search_location from "@/public/images/Ic_search_location.svg";
 import Ic_close from "@/public/images/Ic_close.svg";
 import Link from "next/link";
@@ -60,17 +60,22 @@ const AdresseTab = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="lg:h-[80px] bg-[#F9F9FB] border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col sm:flex-row sm:items-center relative justify-between">
+      <div
+        className="lg:h-[100px] bg-white border-gray3 border rounded-[8px] lg:rounded-[98px] flex flex-col lg:flex-row lg:items-center relative justify-between"
+        style={{
+          boxShadow: "0px 32px 82px -12px #10182812",
+        }}
+      >
         <div className="flex flex-col sm:flex-row sm:items-center lg:justify-between w-full sm:w-11/12 lg:h-[80px]">
           <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex sm:justify-between relative">
-            <div className="w-[92%] sm:w-auto">
-              <div className="text-[#111322] mb-1 text-sm">
+            <div className="w-[92%]">
+              <div className="text-[#30374F] mb-2 text-sm">
                 Vet du hvilken adresse du vil bygge på?
               </div>
               <input
                 ref={kartInputRef}
                 type="text"
-                className={`focus:outline-none text-black text-base desktop:text-xl font-medium bg-transparent w-full
+                className={`focus:outline-none text-black text-base desktop:text-lg font-medium bg-transparent w-full
                   ${errors.address ? "border border-red-500" : ""}`}
                 placeholder="Fyll inn ønsket adresse"
                 onChange={handleKartInputChange}
@@ -136,18 +141,19 @@ const AdresseTab = () => {
         )}
 
         <button
-          className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2 ${
+          className={`p-3 lg:px-5 lg:py-4 cursor-pointer flex justify-center items-center bg-primary rounded-[40px] transition-all duration-300 ease-out lg:h-[56px] my-[22px] mx-6 gap-2 ${
             !formData.address ? "opacity-50 cursor-not-allowed" : ""
           }`}
           type="submit"
           disabled={!formData.address}
         >
           <Image
-            src={Ic_search}
+            src={Ic_Search2}
             alt="search"
-            className="w-6 h-6"
+            className="w-5 h-5"
             fetchPriority="auto"
           />
+          <span className="text-white font-medium text-base">Søk</span>
         </button>
       </div>
     </form>

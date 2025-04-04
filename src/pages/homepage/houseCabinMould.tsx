@@ -11,13 +11,10 @@ import Image from "next/image";
 const HouseCabinMould = () => {
   return (
     <>
-      <div
-        className="bg-navyBlue py-[44px] md:py-[58px] desktop:py-[80px] relative"
-        style={{ zIndex: 9 }}
-      >
+      <div className="relative" style={{ zIndex: 9 }}>
         <SideSpaceContainer>
           <div className="flex flex-col gap-5 md:gap-8 items-center justify-center">
-            <h3 className="text-white font-semibold text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
+            <h3 className="text-darkBlack font-semibold text-lg md:text-[24px] desktop:leading-[120%]">
               Velg blant over 100 hus- og hyttemodeller fra
             </h3>
             <div className="flex items-center justify-between w-full overFlowScrollHidden overflow-x-auto gap-4">

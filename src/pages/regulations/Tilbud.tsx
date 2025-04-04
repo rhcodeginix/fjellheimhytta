@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import Loader from "@/components/Loader";
-import { addDaysToDate } from "../husmodell-plot-view";
+import { addDaysToDate } from "@/components/Ui/stepperUi/productDetailWithPrice";
 
 const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
   const offerInclude = [
@@ -321,14 +321,14 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
               <div className="flex justify-end gap-4 items-center">
                 <Button
                   text="Tilbake"
-                  className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+                  className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                   onClick={() => {
                     handlePrevious();
                   }}
                 />
                 <Button
                   text="Se detaljer"
-                  className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                  className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                   onClick={() => {
                     handleNext();
                   }}

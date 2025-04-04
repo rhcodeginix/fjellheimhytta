@@ -45,7 +45,6 @@ type FormDataType = {
   AntallSoverom: string[];
   minRangeForHusmodell: number;
   maxRangeForHusmodell: number;
-  TypeHusprodusent: string[];
   Tomtetype: string[];
 };
 
@@ -56,7 +55,6 @@ const HusmodellFilterSection: React.FC<{
 }> = ({ setFormData, formData, maxRangeData }) => {
   const [openIndex, setOpenIndex] = useState<string[]>([
     "Eiendomstype",
-    "Type husprodusent",
     "Type husmodell",
     "Antall soverom",
     "Tomtetype",
@@ -84,14 +82,6 @@ const HusmodellFilterSection: React.FC<{
     { name: "Ett plan", value: "Ett plan" },
     { name: "Med garasje", value: "Med garasje" },
   ];
-  const TypeHusprodusentArray: any = [
-    { name: "Blink Hus", value: "Blink Hus" },
-    { name: "BoligPartner", value: "BoligPartner" },
-    { name: "Mesterhus", value: "Mesterhus" },
-    { name: "Nordbohus", value: "Nordbohus" },
-    { name: "Systemhus", value: "Systemhus" },
-    { name: "Saltdalshytta", value: "Saltdalshytta" },
-  ];
   const AntallSoveromArray: any = [
     { name: "1 Soverom", value: "1 Soverom" },
     { name: "2 Soverom", value: "2 Soverom" },
@@ -109,7 +99,7 @@ const HusmodellFilterSection: React.FC<{
     <>
       <div className="sticky top-[86px] bg-[#F9F5FF] rounded-[12px]">
         <div className="p-6 flex items-center justify-between gap-3 border-b border-[#7D89B04D]">
-          <h4 className="text-[#111322] font-medium text-base md:text-lg lg:text-xl desktop:text-2xl">
+          <h4 className="text-darkBlack font-medium text-base md:text-lg lg:text-xl desktop:text-2xl">
             Filter
           </h4>
           <h5
@@ -122,7 +112,6 @@ const HusmodellFilterSection: React.FC<{
                 TypeHusmodell: [],
                 AntallSoverom: [],
                 minRangeForHusmodell: 0,
-                TypeHusprodusent: [],
                 Tomtetype: [],
                 maxRangeForHusmodell: maxRangeData,
               }));
@@ -133,7 +122,7 @@ const HusmodellFilterSection: React.FC<{
         </div>
         <div className="px-6 py-5 h-auto max-h-[600px] overflow-y-auto overFlowYAuto overflow-x-hidden">
           <div
-            className="border border-[#EFF1F5] rounded-[48px] p-1 pl-5 flex items-center justify-between gap-3 bg-white mb-5"
+            className="border border-gray3 rounded-[48px] p-1 pl-5 flex items-center justify-between gap-3 bg-white mb-5"
             style={{
               boxShadow:
                 "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
@@ -165,7 +154,7 @@ const HusmodellFilterSection: React.FC<{
           <div className="flex flex-col gap-6">
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Eiendomstype")}
               >
                 Eiendomstype
@@ -187,7 +176,7 @@ const HusmodellFilterSection: React.FC<{
                       htmlFor={data.name}
                       key={index}
                     >
-                      <span className="text-[#111322] text-sm md:text-base">
+                      <span className="text-darkBlack text-sm md:text-base">
                         {data.name}
                       </span>
                       <input
@@ -219,63 +208,7 @@ const HusmodellFilterSection: React.FC<{
             <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
-                onClick={() => handleToggleAccordion("Type husprodusent")}
-              >
-                Type husprodusent
-                <Image
-                  src={Ic_chevron_down}
-                  alt="arrow"
-                  className={
-                    openIndex.includes("Type husprodusent") ? "rotate-180" : ""
-                  }
-                  fetchPriority="auto"
-                />
-              </p>
-
-              {openIndex.includes("Type husprodusent") && (
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-                  {TypeHusprodusentArray.map((data: any, index: number) => (
-                    <label
-                      className="container container_darkgray"
-                      htmlFor={data.name}
-                      key={index}
-                    >
-                      <span className="text-[#111322] text-sm md:text-base">
-                        {data.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        id={data.name}
-                        value={data.name}
-                        checked={formData?.TypeHusprodusent.includes(data.name)}
-                        onChange={() => {
-                          setFormData((prev: any) => {
-                            const updatedSet: any = new Set(
-                              prev.TypeHusprodusent
-                            );
-                            updatedSet.has(data.name)
-                              ? updatedSet.delete(data.name)
-                              : updatedSet.add(data.name);
-                            return {
-                              ...prev,
-                              TypeHusprodusent: Array.from(updatedSet),
-                            };
-                          });
-                        }}
-                        className="mr-2"
-                      />
-
-                      <span className="checkmark checkmark_darkgray"></span>
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
-            <div className="w-full">
-              <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Type husmodell")}
               >
                 Type husmodell
@@ -297,7 +230,7 @@ const HusmodellFilterSection: React.FC<{
                       htmlFor={data.name}
                       key={index}
                     >
-                      <span className="text-[#111322] text-sm md:text-base">
+                      <span className="text-darkBlack text-sm md:text-base">
                         {data.name}
                       </span>
                       <input
@@ -329,7 +262,7 @@ const HusmodellFilterSection: React.FC<{
             <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Antall soverom")}
               >
                 Antall soverom
@@ -351,7 +284,7 @@ const HusmodellFilterSection: React.FC<{
                       htmlFor={data.name}
                       key={index}
                     >
-                      <span className="text-[#111322] text-sm md:text-base">
+                      <span className="text-darkBlack text-sm md:text-base">
                         {data.name}
                       </span>
                       <input
@@ -383,7 +316,7 @@ const HusmodellFilterSection: React.FC<{
             <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Tomtetype")}
               >
                 Tomtetype
@@ -405,7 +338,7 @@ const HusmodellFilterSection: React.FC<{
                       htmlFor={data.name}
                       key={index}
                     >
-                      <span className="text-[#111322] text-sm md:text-base">
+                      <span className="text-darkBlack text-sm md:text-base">
                         {data.name}
                       </span>
                       <input
@@ -437,7 +370,7 @@ const HusmodellFilterSection: React.FC<{
             <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Pris på husmodell")}
               >
                 Pris på husmodell

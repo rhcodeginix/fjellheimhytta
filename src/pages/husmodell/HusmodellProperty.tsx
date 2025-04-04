@@ -11,8 +11,7 @@ import { useRouter } from "next/router";
 const HusmodellProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;
-  name: any;
-}> = ({ HouseModelProperty, isLoading, name }) => {
+}> = ({ HouseModelProperty, isLoading }) => {
   useEffect(() => {
     const fetchSupplierDetails = async () => {
       const supplierMap: { [key: string]: any } = {};
@@ -66,7 +65,7 @@ const HusmodellProperty: React.FC<{
                 return (
                   <div
                     key={index}
-                    className="border border-[#EFF1F5] rounded-[8px] p-5"
+                    className="border border-gray3 rounded-[8px] p-5"
                     style={{
                       boxShadow:
                         "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
@@ -74,7 +73,7 @@ const HusmodellProperty: React.FC<{
                   >
                     <div className="mb-2 md:mb-3 desktop:mb-4 flex items-start justify-between gap-3">
                       <div>
-                        <h4 className="text-[#111322] text-lg">
+                        <h4 className="text-darkBlack text-lg">
                           <span className="font-bold text-2xl leading-[30px]">
                             {property?.Husdetaljer?.husmodell_name}
                           </span>{" "}
@@ -108,28 +107,28 @@ const HusmodellProperty: React.FC<{
                         </div>
                       </div>
                       <div className="w-[60%]">
-                        <h5 className="text-[#111322] font-medium text-sm md:text-lg mb-1 one_line_elipse">
+                        <h5 className="text-darkBlack font-medium text-sm md:text-lg mb-1 one_line_elipse">
                           {property?.Husdetaljer?.Hustittel}
                         </h5>
                         <h5 className="text-[#4A5578] text-sm mb-4 two_line_elipse">
                           {property?.Husdetaljer?.OmHusmodellen}
                         </h5>
                         <div className="flex gap-3 items-center">
-                          <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
                             {property?.Husdetaljer?.BRATotal}{" "}
                             <span className="text-[#4A5578] font-normal">
                               m²
                             </span>
                           </div>
                           <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                          <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
                             {property?.Husdetaljer?.Soverom}{" "}
                             <span className="text-[#4A5578] font-normal">
                               soverom
                             </span>
                           </div>
                           <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                          <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
                             {property?.Husdetaljer?.Bad}{" "}
                             <span className="text-[#4A5578] font-normal">
                               bad
@@ -161,15 +160,10 @@ const HusmodellProperty: React.FC<{
                           </div>
                           <Button
                             text="Utforsk"
-                            className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
                               router.push(
-                                `husmodells/husmodell-details?husodellId=${property?.id}&&city=${name}`
-                              );
-                              const currIndex = 0;
-                              localStorage.setItem(
-                                "currIndex",
-                                currIndex.toString()
+                                `${router.asPath}&husodellId=${property?.id}`
                               );
                             }}
                           />

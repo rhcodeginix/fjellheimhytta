@@ -71,7 +71,7 @@ const AddPlot = () => {
             style={{ zIndex: 1 }}
           />
           <SideSpaceContainer>
-            <h2 className="text-[#111322] font-medium text-[20px] md:text-[24px] lg:text-[32px] desktop:text-[40px] mb-1">
+            <h2 className="text-darkBlack font-medium text-[20px] md:text-[24px] lg:text-[32px] desktop:text-[40px] mb-1">
               Selg din tomt – helt gratis!
             </h2>
             <p className="text-[#4A5578] text-sm md:text-base desktop:text-xl">
@@ -156,7 +156,7 @@ const AddPlot = () => {
                     <div className="flex justify-end mt-6">
                       <button
                         className="
-                                text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                                text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                       >
                         Fortsett med{" "}
                         <Image fetchPriority="auto" src={Ic_vapp} alt="logo" />

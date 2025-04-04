@@ -5,8 +5,18 @@ import { useRouter } from "next/router";
 import { collection, doc, getDoc, getDocs, query } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import Loader from "@/components/Loader";
-import { addDaysToDate } from "@/pages/husmodell-plot-view";
 import { formatCurrency } from "../RegulationHusmodell/Illustrasjoner";
+
+export function addDaysToDate(dateString: any, days: any) {
+  let date = new Date(dateString);
+  date.setDate(date.getDate() + days);
+
+  let day = String(date.getDate()).padStart(2, "0");
+  let month = String(date.getMonth() + 1).padStart(2, "0");
+  let year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
 
 const PropertyDetailWithPrice: React.FC<any> = () => {
   const router = useRouter();

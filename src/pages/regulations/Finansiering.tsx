@@ -544,7 +544,7 @@ const Finansiering: React.FC<any> = ({ handleNext, handlePrevious }) => {
               <div className="flex justify-end gap-4 items-center">
                 <Button
                   text="Tilbake"
-                  className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+                  className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                   onClick={() => {
                     handlePrevious();
                   }}

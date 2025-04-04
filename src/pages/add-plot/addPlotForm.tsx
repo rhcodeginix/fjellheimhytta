@@ -541,11 +541,11 @@ const AddPlotForm = () => {
                     Søk opp adressen/matrikkelen
                   </h4>
                   <div className="p-6 grid grid-cols-1 gap-y-6">
-                    <div className="lg:h-[80px] bg-[#F9F9FB] border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col sm:flex-row sm:items-center relative justify-between">
+                    <div className="lg:h-[80px] bg-[#F9F9FB] border-gray3 border rounded-[8px] lg:rounded-[100px] flex flex-col sm:flex-row sm:items-center relative justify-between">
                       <div className="flex flex-col lg:justify-between w-full sm:w-11/12 lg:h-[80px]">
                         <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex sm:justify-between relative">
                           <div className="w-[92%]">
-                            <div className="text-[#111322] mb-1 text-sm">
+                            <div className="text-darkBlack mb-1 text-sm">
                               Vet du hvilken adresse du vil bygge på?
                             </div>
                             <input
@@ -671,12 +671,12 @@ const AddPlotForm = () => {
                     </div>
                     <div className="text-center font-medium text-sm">eller</div>
                     <div>
-                      <div className="desktop:h-[80px] bg-[#F9F9FB] border-[#EFF1F5] border rounded-[8px] desktop:rounded-[100px] flex flex-col desktop:flex-row desktop:items-center relative justify-between">
+                      <div className="desktop:h-[80px] bg-[#F9F9FB] border-gray3 border rounded-[8px] desktop:rounded-[100px] flex flex-col desktop:flex-row desktop:items-center relative justify-between">
                         <div className="flex flex-col desktop:flex-row desktop:items-center desktop:justify-between w-full desktop:w-11/12 desktop:h-[80px]">
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
                               <div className="w-[92%] lg:w-auto truncate">
-                                <div className="text-[#111322] mb-1 text-sm truncate">
+                                <div className="text-darkBlack mb-1 text-sm truncate">
                                   Kommunenummer
                                 </div>
                                 <input
@@ -713,7 +713,7 @@ const AddPlotForm = () => {
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
                               <div className="w-[92%] lg:w-auto truncate">
-                                <div className="text-[#111322] mb-1 text-sm truncate">
+                                <div className="text-darkBlack mb-1 text-sm truncate">
                                   Gårdsnummer
                                 </div>
                                 <input
@@ -751,7 +751,7 @@ const AddPlotForm = () => {
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
                               <div className="w-[92%] lg:w-auto truncate">
-                                <div className="text-[#111322] mb-1 text-sm truncate">
+                                <div className="text-darkBlack mb-1 text-sm truncate">
                                   Bruksnummer (valgfritt)
                                 </div>
                                 <input
@@ -789,7 +789,7 @@ const AddPlotForm = () => {
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
                               <div className="w-[92%] lg:w-auto truncate">
-                                <div className="text-[#111322] mb-1 text-sm truncate">
+                                <div className="text-darkBlack mb-1 text-sm truncate">
                                   Seksjonsnummer (valgfritt)
                                 </div>
                                 <input
@@ -827,7 +827,7 @@ const AddPlotForm = () => {
                           <div className="desktop:w-[20%]">
                             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-7 lg:items-center flex lg:justify-between relative">
                               <div className="w-[92%] lg:w-auto truncate">
-                                <div className="text-[#111322] mb-1 text-sm truncate">
+                                <div className="text-darkBlack mb-1 text-sm truncate">
                                   Festenummer (valgfritt)
                                 </div>
                                 <input
@@ -1076,7 +1076,7 @@ const AddPlotForm = () => {
                       />
                     </div>
                     <div className="w-[64%]">
-                      <label className={`text-[#111322] text-sm font-semibold`}>
+                      <label className={`text-darkBlack text-sm font-semibold`}>
                         Kartutsnitt
                       </label>
 
@@ -1149,7 +1149,7 @@ const AddPlotForm = () => {
                   </h4>
                   <div className="p-6 flex gap-[74px]">
                     <div className="w-[36%]">
-                      <label className={`text-[#111322] text-sm font-semibold`}>
+                      <label className={`text-darkBlack text-sm font-semibold`}>
                         Last opp bilder av tomten (Minimum 3 bilder, maks 10)
                       </label>
                       <div
@@ -1164,9 +1164,9 @@ const AddPlotForm = () => {
                           <div className="gap-3 flex items-center">
                             <Button
                               text="Velg"
-                              className="border-2 border-primary text-primary sm:text-base w-max h-36px] font-semibold relative desktop:px-4 desktop:py-2 rounded-[50px]"
+                              className="border-2 border-primary text-primary sm:text-base w-max h-36px] font-semibold relative desktop:px-4 desktop:py-2 rounded-[40px]"
                             />
-                            <span className="text-[#111322] font-medium text-sm">
+                            <span className="text-darkBlack font-medium text-sm">
                               Dra & slipp for å laste opp
                             </span>
                           </div>
@@ -1313,7 +1313,7 @@ const AddPlotForm = () => {
                     <div className="flex gap-6 items-start">
                       <div className="w-[64%]">
                         <label
-                          className={`text-[#111322] text-sm font-semibold flex justify-between items-center gap-3 cursor-pointer`}
+                          className={`text-darkBlack text-sm font-semibold flex justify-between items-center gap-3 cursor-pointer`}
                           onClick={toggleAccordion}
                         >
                           Fasiliteter
@@ -1341,7 +1341,7 @@ const AddPlotForm = () => {
                                   htmlFor={data.name}
                                   key={index}
                                 >
-                                  <span className="text-[#111322] text-sm md:text-base truncate">
+                                  <span className="text-darkBlack text-sm md:text-base truncate">
                                     {data.name}
                                   </span>
                                   <input
@@ -1419,13 +1419,13 @@ const AddPlotForm = () => {
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-3">
                             <Image src={Ic_gray_check_circle} alt="check" />
-                            <span className="text-[#111322] text-base">
+                            <span className="text-darkBlack text-base">
                               Skjøte
                             </span>
                           </div>
                           <div className="flex items-center gap-3">
                             <Image src={Ic_gray_check_circle} alt="check" />
-                            <span className="text-[#111322] text-base">
+                            <span className="text-darkBlack text-base">
                               Byggetillatelser
                             </span>
                           </div>
@@ -1438,13 +1438,13 @@ const AddPlotForm = () => {
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-3">
                             <Image src={Ic_gray_check_circle} alt="check" />
-                            <span className="text-[#111322] text-base">
+                            <span className="text-darkBlack text-base">
                               Tegninger
                             </span>
                           </div>
                           <div className="flex items-center gap-3">
                             <Image src={Ic_gray_check_circle} alt="check" />
-                            <span className="text-[#111322] text-base">
+                            <span className="text-darkBlack text-base">
                               reguleringsinformasjon
                             </span>
                           </div>
@@ -1457,7 +1457,7 @@ const AddPlotForm = () => {
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center gap-3">
                             <Image src={Ic_gray_check_circle} alt="check" />
-                            <span className="text-[#111322] text-base">
+                            <span className="text-darkBlack text-base">
                               e-Takst (hvis tilgjengelig)
                             </span>
                           </div>
@@ -1465,7 +1465,7 @@ const AddPlotForm = () => {
                       </div>
                     </div>
                     <div className="w-[78%]">
-                      <label className={`text-[#111322] text-sm font-semibold`}>
+                      <label className={`text-darkBlack text-sm font-semibold`}>
                         Upload Document
                       </label>
                       <div className="flex items-start gap-6">
@@ -1481,9 +1481,9 @@ const AddPlotForm = () => {
                             <div className="gap-3 flex items-center">
                               <Button
                                 text="Velg"
-                                className="border-2 border-primary text-primary sm:text-base w-max h-36px] font-semibold relative desktop:px-4 desktop:py-2 rounded-[50px]"
+                                className="border-2 border-primary text-primary sm:text-base w-max h-36px] font-semibold relative desktop:px-4 desktop:py-2 rounded-[40px]"
                               />
-                              <span className="text-[#111322] font-medium text-sm">
+                              <span className="text-darkBlack font-medium text-sm">
                                 Dra & slipp for å laste opp
                               </span>
                             </div>
@@ -1542,7 +1542,7 @@ const AddPlotForm = () => {
                               <div className="flex items-center gap-3">
                                 <Image src={Ic_pdf} alt="pdf" />
                                 <div className="flex flex-col">
-                                  <span className="text-[#111322] text-base font-medium">
+                                  <span className="text-darkBlack text-base font-medium">
                                     {PlotLocationPreview.name}
                                   </span>
                                   <span className="text-xs text-[#4A5578]">
@@ -1581,10 +1581,10 @@ const AddPlotForm = () => {
               />
               <Button
                 text="Fårhåndsvis"
-                className="border-2 border-primary text-primary sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
+                className="border-2 border-primary text-primary sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[40px]"
               />
               <button
-                className={`flex items-center border py-[4px] px-4 border-primary bg-primary text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] ${isValid ? "" : "opacity-50"}`}
+                className={`flex items-center border py-[4px] px-4 border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] ${isValid ? "" : "opacity-50"}`}
                 type="submit"
                 disabled={!isValid}
               >

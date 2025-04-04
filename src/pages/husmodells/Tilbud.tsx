@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Image from "next/image";
-import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import Button from "@/components/common/button";
-import Ic_inside_Kjøkken from "@/public/images/Ic_inside_Kjøkken.svg";
-import Ic_inside_Parkett from "@/public/images/Ic_inside_Parkett.svg";
-import Ic_Tegning_og_byggesøknad from "@/public/images/Ic_Tegning_og_byggesøknad.svg";
-import Ic_inside_VVS from "@/public/images/Ic_inside_VVS.svg";
-import Ic_outside_elektro from "@/public/images/Ic_outside_elektro.svg";
-import Ic_outside_garasje from "@/public/images/Ic_outside_garasje.svg";
-import Ic_Tilbud_line from "@/public/images/Ic_Tilbud_line.svg";
-import Ic_Graving_og_terrengarbeider from "@/public/images/Ic_Graving_og_terrengarbeider.svg";
-import Ic_Betongarbeider from "@/public/images/Ic_Betongarbeider.svg";
+import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
 import { useRouter } from "next/router";
-import Illustrasjoner from "@/components/Ui/RegulationHusmodell/Illustrasjoner";
+import { formatCurrency } from "@/components/Ui/RegulationHusmodell/Illustrasjoner";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/config/firebaseConfig";
 import {
@@ -26,76 +17,38 @@ import {
   where,
 } from "firebase/firestore";
 import Loader from "@/components/Loader";
-import { addDaysToDate } from "../husmodell-plot-view";
+import { addDaysToDate } from "@/components/Ui/stepperUi/productDetailWithPrice";
+import Link from "next/link";
+import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
+import GoogleMapComponent from "@/components/Ui/map";
+import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
+import { formatPrice } from "../belop/belopProperty";
+import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
 
-const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
+const Tilbud: React.FC<{
+  handleNext: any;
+  lamdaDataFromApi: any;
+  CadastreDataFromApi: any;
+  askData: any;
+  HouseModelData: any;
+  handlePrevious: any;
+  supplierData: any;
+  pris: any;
+}> = ({
+  handleNext,
+  lamdaDataFromApi,
+  askData,
+  CadastreDataFromApi,
+  HouseModelData,
+  handlePrevious,
+  supplierData,
+  pris,
+}) => {
   const router = useRouter();
 
-  useEffect(() => {
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
-
-    if (!hasReloaded) {
-      setTimeout(() => {
-        window.location.reload();
-        sessionStorage.setItem("hasReloaded", "true");
-      }, 2);
-    } else {
-      sessionStorage.removeItem("hasReloaded");
-    }
-  }, []);
-
-  const offerInclude = [
-    {
-      id: 1,
-      imageSrc: Ic_inside_Parkett,
-      title: "Almgaard",
-      description: "BoligPartner",
-    },
-    {
-      id: 2,
-      imageSrc: Ic_inside_Kjøkken,
-      title: "Kjøkken",
-      description: "Drømmekjøkkenet",
-    },
-    {
-      id: 3,
-      imageSrc: Ic_outside_elektro,
-      title: "Elektro",
-      description: "Inkludert",
-    },
-    {
-      id: 4,
-      imageSrc: Ic_inside_VVS,
-      title: "VVS",
-      description: "Inkludert",
-    },
-    {
-      id: 5,
-      imageSrc: Ic_Betongarbeider,
-      title: "Betongarbeider",
-      description: "Inkludert",
-    },
-    {
-      id: 6,
-      imageSrc: Ic_Tegning_og_byggesøknad,
-      title: "Tegning og byggesøknad",
-      description: "Søknad uten dispenensjoner",
-    },
-  ];
-  const outsideItems = [
-    {
-      id: 1,
-      imageSrc: Ic_Graving_og_terrengarbeider,
-      title: "Graving og terrengarbeider",
-      description: "BoligPartner",
-    },
-    {
-      id: 2,
-      imageSrc: Ic_outside_garasje,
-      title: "Tomt",
-      description: "Pris fra",
-    },
-  ];
+  const Huskonfigurator =
+    HouseModelData?.Huskonfigurator?.hovedkategorinavn || [];
+  const Husdetaljer = HouseModelData?.Husdetaljer;
   const [plotId, setPlotId] = useState<string | null>(null);
   const [husmodellId, setHusmodellId] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
@@ -230,32 +183,59 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
 
     fetchData();
   }, [plotId, husmodellId, user, leadId]);
-  const [supplierData, setSupplierData] = useState<any>(null);
+
+  const [custHouse, setCusHouse] = useState<any>(null);
+  useEffect(() => {
+    const customizeHouse = localStorage.getItem("customizeHouse");
+    if (customizeHouse) {
+      setCusHouse(JSON.parse(customizeHouse));
+    }
+  }, []);
+
+  const totalCustPris = custHouse?.reduce(
+    (sum: any, item: any) =>
+      sum + Number(item?.product?.pris.replace(/\s/g, "")),
+    0
+  );
+
+  const [updatedArray, setUpdatedArray] = useState([]);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const supplierDocRef = doc(
-          db,
-          "suppliers",
-          husmodellData?.Leverandører
-        );
-        const docSnap: any = await getDoc(supplierDocRef);
+    if (Huskonfigurator?.length > 0 && custHouse?.length > 0) {
+      const mergedArray = Huskonfigurator.map(
+        (category: any, catIndex: number) => ({
+          ...category,
+          Kategorinavn:
+            category?.Kategorinavn?.length > 0
+              ? category.Kategorinavn.map(
+                  (subCategory: any, subIndex: number) => {
+                    const match = custHouse.find(
+                      (item: any) =>
+                        item.category === catIndex &&
+                        item.subCategory === subIndex
+                    );
 
-        if (docSnap.exists()) {
-          setSupplierData(docSnap.data());
-        } else {
-          console.error(
-            "No document found for ID:",
-            husmodellData?.Leverandører
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching supplier data:", error);
-      }
-    };
-    getData();
-  }, [husmodellData?.Leverandører]);
+                    return match
+                      ? {
+                          ...subCategory,
+                          produkter: [match.product],
+                        }
+                      : subCategory;
+                  }
+                )
+              : [],
+        })
+      );
+
+      const filteredArray = mergedArray.filter(
+        (item: any) =>
+          Array.isArray(item.Kategorinavn) && item.Kategorinavn.length > 0
+      );
+
+      setUpdatedArray(filteredArray);
+    }
+  }, [Huskonfigurator, custHouse]);
+
   const totalDays = [
     husmodellData?.signConractConstructionDrawing +
       husmodellData?.neighborNotification +
@@ -275,173 +255,388 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
         <Loader />
       ) : (
         <>
-          <SideSpaceContainer>
-            <div className="pt-[24px] pb-[147px]">
-              <Illustrasjoner />
-              <h4 className="text-black mb-6 mt-8 font-semibold text-2xl">
-                Tilbud
-              </h4>
-              <div className="w-full flex gap-[60px]">
-                <div className="w-[43%]">
-                  <div
-                    style={{
-                      boxShadow:
-                        "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
-                    }}
-                    className="rounded-[8px] overflow-hidden mb-8"
-                  >
-                    <div className="relative">
-                      <img
-                        src={husmodellData?.photo}
-                        alt="image"
-                        className="w-full h-[262px] object-cover rounded-[12px] overflow-hidden"
-                      />
-                      <img
-                        src={supplierData?.photo}
-                        alt="image"
-                        className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-[130px]"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h4 className="text-black mb-2 text-lg font-medium">
-                        {husmodellData?.Hustittel}
-                      </h4>
-                      <div className="flex items-center gap-4">
-                        <div className="text-secondary text-sm">
-                          <span className="text-black font-semibold">
-                            {husmodellData?.BRATotal}
-                          </span>{" "}
-                          m<sup>2</sup>
-                        </div>
-                        <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                        <div className="text-secondary text-sm">
-                          <span className="text-black font-semibold">
-                            {husmodellData?.Soverom}
-                          </span>{" "}
-                          soverom
-                        </div>
-                        <div className="h-[12px] w-[1px] border-l border-gray"></div>
-                        <div className="text-secondary text-sm">
-                          <span className="text-black font-semibold">
-                            {husmodellData?.Bad}
-                          </span>{" "}
-                          bad
-                        </div>
+          <div className="bg-lightPurple2 py-4">
+            <SideSpaceContainer>
+              <div className="flex items-center gap-1 mb-6">
+                <Link href={"/"} className="text-[#7839EE] text-sm font-medium">
+                  Hjem
+                </Link>
+                <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+                <div
+                  className="text-[#7839EE] text-sm font-medium"
+                  onClick={() => {
+                    handlePrevious();
+                    const currIndex = 0;
+                    localStorage.setItem("currIndex", currIndex.toString());
+                    window.location.reload();
+                  }}
+                >
+                  Husmodell
+                </div>
+                <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+                <div
+                  className="text-[#7839EE] text-sm font-medium"
+                  onClick={() => {
+                    handlePrevious();
+                    const currIndex = 1;
+                    localStorage.setItem("currIndex", currIndex.toString());
+                    window.location.reload();
+                  }}
+                >
+                  Tilpass
+                </div>
+                <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+                <Link
+                  href={"/"}
+                  className="text-[#7839EE] text-sm font-medium"
+                  onClick={() => {
+                    handlePrevious();
+                  }}
+                >
+                  Tomt
+                </Link>
+                <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+                <span className="text-secondary2 text-sm">Tilbud</span>
+              </div>
+              <PropertyHouseDetails
+                HouseModelData={HouseModelData}
+                lamdaDataFromApi={lamdaDataFromApi}
+                supplierData={supplierData}
+                pris={pris}
+              />
+            </SideSpaceContainer>
+          </div>
+          <PropertyDetails
+            askData={askData}
+            CadastreDataFromApi={CadastreDataFromApi}
+            lamdaDataFromApi={lamdaDataFromApi}
+          />
+          <div className="pt-6 pb-8">
+            <SideSpaceContainer>
+              <div className="flex items-start gap-6">
+                <div className="w-[40%]">
+                  <h5 className="text-darkBlack text-xl font-semibold mb-4">
+                    Tilbud
+                  </h5>
+                  <div className="border border-[#DCDFEA] rounded-lg p-5">
+                    <h4 className="text-black text-sm md:text-base lg:text-lg mb-1">
+                      <span className="font-semibold">
+                        {HouseModelData?.Husdetaljer?.husmodell_name}
+                      </span>{" "}
+                      bygget i{" "}
+                      {
+                        CadastreDataFromApi?.presentationAddressApi?.response
+                          ?.item?.formatted?.line1
+                      }{" "}
+                      <span className="text-secondary2">
+                        (
+                        {
+                          CadastreDataFromApi?.presentationAddressApi?.response
+                            ?.item?.street?.municipality?.municipalityName
+                        }
+                        )
+                      </span>
+                    </h4>
+                    <p className="text-secondary2 text-xs md:text-sm">
+                      {
+                        CadastreDataFromApi?.presentationAddressApi?.response
+                          ?.item?.formatted?.line2
+                      }
+                    </p>
+                    <div className="flex gap-2 h-[189px] mb-4">
+                      <div className="w-[63%] h-full relative">
+                        <img
+                          src={Husdetaljer?.photo}
+                          alt="husmodell"
+                          className="w-full h-full rounded-[8px] object-cover"
+                        />
+                        <img
+                          src={supplierData?.photo}
+                          alt="product-logo"
+                          className="absolute top-[12px] left-[12px] bg-[#FFFFFFB2] py-2 px-3 flex items-center justify-center rounded-[32px] w-[107px]"
+                        />
+                      </div>
+                      <div className="w-[37%] rounded-[8px] overflow-hidden h-full">
+                        <GoogleMapComponent
+                          coordinates={
+                            lamdaDataFromApi?.coordinates?.convertedCoordinates
+                          }
+                        />
                       </div>
                     </div>
-                    <div className="px-6 flex items-center gap-1 mb-5">
+                    <div className="flex gap-3 items-center">
+                      <div className="text-darkBlack text-xs md:text-sm font-semibold">
+                        {
+                          askData?.bya_calculations?.results
+                            ?.available_building_area
+                        }{" "}
+                        <span className="text-[#4A5578] font-normal">m²</span>
+                      </div>
+                      <div className="border-l border-[#EAECF0] h-[12px]"></div>
+                      <div className="text-darkBlack text-xs md:text-sm font-semibold">
+                        {Husdetaljer?.Soverom}{" "}
+                        <span className="text-[#4A5578] font-normal">
+                          soverom
+                        </span>
+                      </div>
+                      <div className="border-l border-[#EAECF0] h-[12px]"></div>
+                      <div className="text-darkBlack text-xs md:text-sm font-semibold">
+                        {Husdetaljer?.Bad}{" "}
+                        <span className="text-[#4A5578] font-normal">bad</span>
+                      </div>
+                      <div className="text-darkBlack text-xs md:text-sm font-semibold ml-auto">
+                        {askData?.bya_calculations?.input?.plot_size}{" "}
+                        <span className="text-[#4A5578] font-normal">m²</span>
+                      </div>
+                    </div>
+                    <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <p className="text-[#4A5578] text-xs md:text-sm mb-1 truncate">
+                        Pris for{" "}
+                        <span className="font-semibold">
+                          {Husdetaljer?.husmodell_name}
+                        </span>
+                      </p>
+                      <h6 className="text-xs md:text-base font-semibold desktop:text-lg">
+                        {formatCurrency(
+                          (
+                            totalCustPris +
+                            Number(Husdetaljer?.pris?.replace(/\s/g, ""))
+                          ).toLocaleString("nb-NO")
+                        )}
+                      </h6>
+                    </div>
+                    <div className="flex items-center justify-between gap-2 mb-4">
+                      <div className="flex flex-col gap-1 w-max">
+                        <p className="text-secondary text-sm whitespace-nowrap">
+                          Estimert byggestart
+                        </p>
+                        <h5 className="text-black text-sm font-semibold whitespace-nowrap">
+                          {addDaysToDate(
+                            HouseModelData?.createdAt,
+                            Husdetaljer?.appSubmitApprove
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex flex-col gap-1 w-max">
+                        <p className="text-secondary text-sm whitespace-nowrap">
+                          Estimert Innflytting
+                        </p>
+                        <h5 className="text-black text-sm font-semibold text-right whitespace-nowrap">
+                          {addDaysToDate(HouseModelData?.createdAt, totalDays)}
+                        </h5>
+                      </div>
+                    </div>
+                    <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <p className="text-[#4A5578] text-xs md:text-sm mb-1 truncate">
+                        Pris for <span className="font-semibold">Tomt</span>
+                      </p>
+                      <h6 className="text-xs md:text-base font-semibold desktop:text-lg">
+                        {Husdetaljer?.pris ? formatPrice(pris) : "0 NOK"}
+                      </h6>
+                    </div>
+                    <div className="flex items-center justify-between gap-2 mb-4">
                       <div className="flex flex-col gap-1 w-max">
                         <p className="text-secondary text-sm whitespace-nowrap">
                           ESTIMERT BYGGESTART
                         </p>
-                        <h5 className="text-black text-xl font-semibold whitespace-nowrap">
+                        <h5 className="text-black text-sm font-semibold whitespace-nowrap">
                           {addDaysToDate(
-                            finalData?.husmodell?.createdAt,
-                            husmodellData?.appSubmitApprove
+                            HouseModelData?.createdAt,
+                            Husdetaljer?.appSubmitApprove
                           )}
                         </h5>
-                      </div>
-                      <div className="w-full">
-                        <Image
-                          fetchPriority="auto"
-                          src={Ic_Tilbud_line}
-                          alt="image"
-                          className="w-full"
-                        />
                       </div>
                       <div className="flex flex-col gap-1 w-max">
                         <p className="text-secondary text-sm whitespace-nowrap">
                           ESTIMERT INNFLYTTING
                         </p>
-                        <h5 className="text-black text-xl font-semibold text-right whitespace-nowrap">
-                          {addDaysToDate(
-                            finalData?.husmodell?.createdAt,
-                            totalDays
-                          )}
+                        <h5 className="text-black text-sm font-semibold text-right whitespace-nowrap">
+                          {addDaysToDate(HouseModelData?.createdAt, totalDays)}
                         </h5>
                       </div>
                     </div>
-                    <div className="bg-lightPurple p-3">
-                      <p className="text-base text-secondary text-center">
+                    <div className="bg-[#F5F8FF] rounded-lg p-3">
+                      <p className="text-secondary2 text-sm mb-1 text-center">
                         Tilbudpris
                       </p>
-                      <h3 className="text-black font-semibold text-[32px] text-center">
-                        8.300.000 NOK
-                      </h3>
+                      <h4 className="text-center font-semibold text-2xl text-black mb-2">
+                        {formatCurrency(
+                          (
+                            totalCustPris +
+                            Number(Husdetaljer?.pris?.replace(/\s/g, "")) +
+                            Number(pris || 0)
+                          ).toLocaleString("nb-NO")
+                        )}
+                      </h4>
                       <div className="text-secondary text-base text-center">
-                        Tilbudet er gyldig til{" "}
-                        <span className="font-semibold text-black">
+                        Tilbudet gjelder til{" "}
+                        <span className="text-[#101828] font-semibold">
                           01.12.2024
                         </span>
                       </div>
                     </div>
                   </div>
-                  <ContactForm leadId={leadId} />
+                  <LeadsBox col={true} />
                 </div>
-                <div className="w-[57%]">
-                  <div>
-                    <h2 className="text-black text-xl mb-6">
-                      Ditt tilbud på Almgaard{" "}
-                      <span className="font-semibold">(Almgaard)</span>{" "}
-                      inkluderer
-                    </h2>
-                    <div className="grid grid-cols-2 gap-6 mb-6">
-                      {offerInclude.map((item) => (
-                        <div
-                          key={item.id}
-                          className={`rounded-[8px] p-4 flex items-center gap-3`}
-                        >
-                          <Image
-                            fetchPriority="auto"
-                            src={item.imageSrc}
-                            alt={item.title}
-                            className="rounded-full overflow-hidden w-[80px] h-[80px]"
-                          />
-                          <div>
-                            <h6 className="text-black font-medium text-lg mb-2">
-                              {item.title}
-                            </h6>
-                            <h5 className="text-secondary text-sm">
-                              {item.description}
-                            </h5>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                <div className="w-[60%] border border-[#DCDFEA] rounded-lg overflow-hidden">
+                  <div className="p-5 border-b w-full border-[#DCDFEA] text-darkBlack text-xl font-semibold">
+                    Ditt tilbud på{" "}
+                    <span className="text-2xl">
+                      {HouseModelData?.Husdetaljer?.husmodell_name}
+                    </span>{" "}
+                    inkluderer
                   </div>
-                  <div>
-                    <h2 className="text-black text-xl font-semibold mb-6">
-                      Her kan du gjøre dine tilvalg{" "}
-                      <span className="font-extrabold">(utvendig)</span>
-                    </h2>
-                    <div className="grid grid-cols-2 gap-6 mb-6">
-                      {outsideItems.map((item) => (
-                        <div
-                          key={item.id}
-                          className={`rounded-[8px] p-4 flex items-center gap-3`}
-                        >
-                          <Image
-                            fetchPriority="auto"
-                            src={item.imageSrc}
-                            alt={item.title}
-                            className="rounded-full overflow-hidden w-[80px] h-[80px]"
-                          />
-                          <div>
-                            <h6 className="text-black font-medium text-lg mb-2">
-                              {item.title}
-                            </h6>
-                            <h5 className="text-secondary text-sm">
-                              {item.description}
-                            </h5>
+                  <div className="p-5 flex gap-8">
+                    <div className="w-[62%]">
+                      {updatedArray?.length > 0 ? (
+                        <div className="flex flex-col gap-6">
+                          {updatedArray.map((item: any, index: number) => (
+                            <div key={index}>
+                              <h4 className="text-black font-semibold text-base mb-3">
+                                {item?.navn}
+                              </h4>
+                              <div className="flex flex-col gap-3">
+                                {item?.Kategorinavn?.map(
+                                  (cat: any, catIndex: number) => (
+                                    <div key={catIndex}>
+                                      {cat?.produkter?.map(
+                                        (product: any, proIndex: number) => (
+                                          <div
+                                            key={proIndex}
+                                            className="flex gap-4 w-full"
+                                          >
+                                            <div className="w-[57px] h-[40px] rounded-[4px] overflow-hidden">
+                                              <img
+                                                src={product?.Hovedbilde?.[0]}
+                                                alt="image"
+                                                className="w-full h-full object-cover"
+                                              />
+                                            </div>
+                                            <div className="flex items-center justify-between gap-2 w-full">
+                                              <div>
+                                                <p className="text-secondary2 text-sm">
+                                                  {product?.Produktnavn}
+                                                </p>
+                                                <h5 className="text-black text-sm font-medium">
+                                                  {cat?.navn}
+                                                </h5>
+                                              </div>
+                                              <div className="text-black font-semibold text-sm">
+                                                {product?.IncludingOffer
+                                                  ? "Standard"
+                                                  : formatCurrency(
+                                                      product?.pris
+                                                    )}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        )
+                                      )}
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-center py-3 text-lg">
+                          Du har ikke noe alternativ.
+                        </p>
+                      )}
+                    </div>
+                    <div className="w-[38%] bg-lightPurple2 rounded-lg h-max overflow-hidden">
+                      <div className="p-4">
+                        <h5 className="text-black font-semibold text-base mb-[14px]">
+                          Prisliste (inkludert MVA)
+                        </h5>
+                        <div className="flex flex-col gap-3">
+                          {updatedArray?.length > 0 ? (
+                            <div className="flex flex-col gap-3">
+                              {updatedArray.map((item: any, index: number) => (
+                                <div
+                                  key={index}
+                                  className="flex-col flex gap-3"
+                                >
+                                  {item?.Kategorinavn?.map(
+                                    (cat: any, catIndex: number) => (
+                                      <div key={catIndex}>
+                                        {cat?.produkter?.map(
+                                          (product: any, proIndex: number) => (
+                                            <div
+                                              key={proIndex}
+                                              className="flex gap-2 w-full justify-between"
+                                            >
+                                              <h4 className="text-secondary2 text-sm">
+                                                {item?.navn}
+                                              </h4>
+                                              <div className="text-black font-medium text-sm">
+                                                {product?.IncludingOffer
+                                                  ? "Standard"
+                                                  : formatCurrency(
+                                                      product?.pris
+                                                    )}
+                                              </div>
+                                            </div>
+                                          )
+                                        )}
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-center py-3 text-lg">
+                              Ingen tilpasning.
+                            </p>
+                          )}
+                          <div className="w-full border-t border-[#DCDFEA]"></div>
+                          <div className="flex gap-2 w-full justify-between">
+                            <h4 className="text-secondary2 text-sm">
+                              Totalt tilpassing
+                            </h4>
+                            <div className="text-black font-medium text-sm">
+                              {totalCustPris
+                                ? formatCurrency(
+                                    totalCustPris.toLocaleString("nb-NO")
+                                  )
+                                : 0}
+                            </div>
+                          </div>
+                          <div className="w-full border-t border-[#DCDFEA]"></div>
+                          <div className="flex gap-2 w-full justify-between">
+                            <h4 className="text-secondary2 text-sm">
+                              Husmodellpris
+                            </h4>
+                            <div className="text-black font-medium text-sm">
+                              {Husdetaljer
+                                ? formatCurrency(Husdetaljer?.pris)
+                                : 0}
+                            </div>
                           </div>
                         </div>
-                      ))}
+                      </div>
+                      <div className="bg-[#ECE9FE] p-4 flex gap-2 w-full justify-between">
+                        <h4 className="text-secondary2 text-sm">Total</h4>
+                        <div className="text-black font-medium text-sm">
+                          {formatCurrency(
+                            (
+                              totalCustPris +
+                              Number(Husdetaljer?.pris?.replace(/\s/g, "")) +
+                              Number(pris || 0)
+                            ).toLocaleString("nb-NO")
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </SideSpaceContainer>
+            </SideSpaceContainer>
+          </div>
           <div
             className="sticky bottom-0 bg-white py-6"
             style={{
@@ -453,16 +648,18 @@ const Tilbud: React.FC<any> = ({ handleNext, handlePrevious }) => {
               <div className="flex justify-end gap-4 items-center">
                 <Button
                   text="Tilbake"
-                  className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+                  className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                   onClick={() => {
                     handlePrevious();
+                    window.location.reload();
                   }}
                 />
                 <Button
-                  text="Se detaljer"
-                  className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                  text="Next: Finance"
+                  className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                   onClick={() => {
                     handleNext();
+                    window.location.reload();
                   }}
                 />
               </div>

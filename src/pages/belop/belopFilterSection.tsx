@@ -110,7 +110,7 @@ const BelopFilterSection: React.FC<{
     <>
       <div className="sticky top-[86px] bg-[#F9F5FF] rounded-[12px]">
         <div className="p-6 flex items-center justify-between gap-3 border-b border-[#7D89B04D]">
-          <h4 className="text-[#111322] font-medium text-base md:text-lg lg:text-xl desktop:text-2xl">
+          <h4 className="text-darkBlack font-medium text-base md:text-lg lg:text-xl desktop:text-2xl">
             Filter
           </h4>
           <h5
@@ -139,7 +139,7 @@ const BelopFilterSection: React.FC<{
         </div>
         <div className="px-6 py-5 h-auto max-h-[600px] overflow-y-auto overFlowYAuto overflow-x-hidden">
           <div
-            className="border border-[#EFF1F5] rounded-[48px] p-1 pl-5 flex items-center justify-between gap-3 bg-white mb-5"
+            className="border border-gray3 rounded-[48px] p-1 pl-5 flex items-center justify-between gap-3 bg-white mb-5"
             style={{
               boxShadow:
                 "0px 2px 4px -2px #1018280F, 0px 4px 8px -2px #1018281A",
@@ -193,7 +193,7 @@ const BelopFilterSection: React.FC<{
                       htmlFor={data.name}
                       key={index}
                     >
-                      <span className="text-[#111322] text-sm md:text-base">
+                      <span className="text-darkBlack text-sm md:text-base">
                         {data.name}
                       </span>
                       <input
@@ -247,7 +247,7 @@ const BelopFilterSection: React.FC<{
                       htmlFor={data.name}
                       key={index}
                     >
-                      <span className="text-[#111322] text-sm md:text-base">
+                      <span className="text-darkBlack text-sm md:text-base">
                         {data.name}
                       </span>
                       <input
@@ -281,7 +281,7 @@ const BelopFilterSection: React.FC<{
             <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Antall soverom")}
               >
                 Antall soverom
@@ -303,7 +303,7 @@ const BelopFilterSection: React.FC<{
                       htmlFor={data.name}
                       key={index}
                     >
-                      <span className="text-[#111322] text-sm md:text-base">
+                      <span className="text-darkBlack text-sm md:text-base">
                         {data.name}
                       </span>
                       <input
@@ -355,7 +355,7 @@ const BelopFilterSection: React.FC<{
             <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Pris på tomt")}
               >
                 Pris på tomt
@@ -418,7 +418,7 @@ const BelopFilterSection: React.FC<{
             <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
             <div className="w-full">
               <p
-                className={`text-[#111322] font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Pris på husmodell")}
               >
                 Pris på husmodell

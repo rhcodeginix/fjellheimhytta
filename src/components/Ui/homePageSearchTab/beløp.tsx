@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import Ic_search from "@/public/images/Ic_search.svg";
+import Ic_Search2 from "@/public/images/Ic_Search2.svg";
 import Ic_close from "@/public/images/Ic_close.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import { collection, getDocs } from "firebase/firestore";
@@ -113,27 +113,35 @@ const BeløpTab = () => {
     if (hasError) return;
 
     router.push(
-      `belop?city=${formData.selectedCountry}&pris=${formData.amount.replace(/\s+/g, "")}`
+      `housemodell-plot?city=${formData.selectedCountry}&pris=${formData.amount.replace(/\s+/g, "")}`
     );
+    const currIndex = 0;
+    localStorage.setItem("currIndex", currIndex.toString());
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="lg:h-[80px] bg-[#F9F9FB] border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col lg:flex-row lg:items-center relative justify-between">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[80px]">
+      <div
+        className="lg:h-[100px] bg-white border-gray3 border rounded-[8px] lg:rounded-[98px] flex flex-col lg:flex-row lg:items-center relative justify-between"
+        style={{
+          boxShadow: "0px 32px 82px -12px #10182812",
+        }}
+      >
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[100px]">
           <div className="relative min-w-[30%] w-auto h-full" ref={dropdownRef}>
             <div
-              className={`bg-[#F4EBFF] rounded-[8px] lg:rounded-[40px] desktop:rounded-[70px] py-3 px-2 lg:py-4 lg:px-5 desktop:px-[40px] ${
+              className={`bg-[#F4EBFF] py-3 px-2 lg:py-4 lg:px-5 desktop:px-8 h-full flex flex-col justify-center rounded-l-[98px] overflow-hidden ${
                 errors.selectedCountry ? "border border-red-500" : ""
               }`}
             >
-              <div className="text-[#5D6B98] mb-1 text-sm">
+              <div className="text-secondary2 mb-2 text-sm">
+                {/* Jeg vil bygge */}
                 Velg fylke fra <span className="font-bold">TomteBanken</span>
               </div>
               <button
                 type="button"
                 onClick={toggleDropdown}
-                className="text-[#111322] text-base font-medium flex items-center justify-between w-full"
+                className="text-darkBlack text-base font-medium flex items-center justify-between w-full"
               >
                 {formData.selectedCountry || "Velg et alternativ"}
                 <Image src={Ic_chevron_down} alt="arrow" fetchPriority="auto" />
@@ -165,7 +173,7 @@ const BeløpTab = () => {
                         onClick={() =>
                           handleSelect(`${option.name} (${option.count})`)
                         }
-                        className={`text-sm text-[#111322] px-4 py-[14px] cursor-pointer 
+                        className={`text-sm text-darkBlack px-4 py-[14px] cursor-pointer 
                       ${
                         formData.selectedCountry ===
                         `${option.name} (${option.count})`
@@ -187,13 +195,13 @@ const BeløpTab = () => {
           </div>
 
           <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
-            <div className="w-[92%] lg:w-auto">
-              <div className="text-[#111322] mb-1 text-sm">
+            <div className="w-[92%]">
+              <div className="text-[#30374F] mb-2 text-sm">
                 Hvor mye kan du bruke totalt for både tomt og bolig?
               </div>
               <input
                 ref={kartInputRef}
-                className={`focus:outline-none text-black text-base desktop:text-xl font-medium bg-transparent w-full
+                className={`focus:outline-none text-black text-base desktop:text-lg font-medium bg-transparent w-full
                   ${errors.amount ? "border border-red-500" : ""}`}
                 placeholder="Fyll inn beløp i NOK"
                 onChange={handleKartInputChange}
@@ -218,7 +226,7 @@ const BeløpTab = () => {
         </div>
 
         <button
-          className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2 ${
+          className={`p-3 lg:px-5 lg:py-4 cursor-pointer flex justify-center items-center bg-primary rounded-[40px] transition-all duration-300 ease-out lg:h-[56px] my-[22px] mx-6 gap-2 ${
             !formData.selectedCountry || !formData.amount
               ? "opacity-50 cursor-not-allowed"
               : ""
@@ -227,11 +235,12 @@ const BeløpTab = () => {
           disabled={!formData.selectedCountry || !formData.amount}
         >
           <Image
-            src={Ic_search}
+            src={Ic_Search2}
             alt="search"
-            className="w-6 h-6"
+            className="w-5 h-5"
             fetchPriority="auto"
           />
+          <span className="text-white font-medium text-base">Søk</span>
         </button>
       </div>
     </form>

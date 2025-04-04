@@ -23,7 +23,7 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
 import GoogleMapComponent from "@/components/Ui/map";
-import Eierinformasjon from "@/components/Ui/regulation.tsx/Eierinformasjon";
+import Eierinformasjon from "@/components/Ui/regulationChart/Eierinformasjon";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
@@ -383,7 +383,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
       />
       <div id="regulationDocument">
         <div
-          className="border-b border-[#EFF1F5] py-6 pb-8"
+          className="border-b border-gray3 py-6 pb-8"
           id="logoDiv"
           style={{ display: "none" }}
         >
@@ -1222,7 +1222,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 text-[#111322] border-b-[3px] text-lg transition-colors duration-300 ${
+                  className={`px-4 py-2 text-darkBlack border-b-[3px] text-lg transition-colors duration-300 ${
                     activeTab === tab.id
                       ? "border-[#6941C6] font-semibold"
                       : "border-transparent"

@@ -57,8 +57,8 @@ const Illustrasjoner: React.FC = () => {
   };
   const images = finalData?.Husdetaljer?.photo3D || [];
 
-  const displayedImages = images.slice(0, 4);
-  const extraImagesCount = images.length - 4;
+  const displayedImages = images.slice(0, 3);
+  const extraImagesCount = images.length - 3;
 
   const handlePopup = () => {
     if (isPopupOpen) {
@@ -73,36 +73,48 @@ const Illustrasjoner: React.FC = () => {
         <Loader />
       ) : (
         <>
-          <div style={{ borderBottom: "1px solid #B9C0D4" }}>
+          <div className="border border-[#DCDFEA] rounded-lg overflow-hidden">
             <button
-              className={`bg-white flex justify-between items-center w-full pb-6 duration-1000 ${isOpen ? "active" : ""}`}
+              className={`bg-white flex justify-between items-center w-full p-5 duration-1000 ${isOpen ? "active" : ""}`}
               onClick={toggleAccordion}
             >
-              <span className="text-black text-lg font-semibold">
-                Illustrasjoner
+              <span className="text-black text-xl font-semibold">
+                Bilder av {husmodellData?.husmodell_name}
               </span>
-              {isOpen ? (
-                <Image src={Ic_chevron_up} alt="arrow" fetchPriority="auto" />
-              ) : (
-                <Image src={Ic_chevron_down} alt="arrow" fetchPriority="auto" />
-              )}
+              <div className="flex items-center gap-4">
+                <div className="text-secondary2 text-sm">
+                  pris fra :{" "}
+                  <span className="text-black font-medium text-base">
+                    {formatCurrency(husmodellData?.pris)}
+                  </span>
+                </div>
+                {isOpen ? (
+                  <Image src={Ic_chevron_up} alt="arrow" fetchPriority="auto" />
+                ) : (
+                  <Image
+                    src={Ic_chevron_down}
+                    alt="arrow"
+                    fetchPriority="auto"
+                  />
+                )}
+              </div>
             </button>
             <div
-              className={`overflow-hidden max-h-0 ${isOpen ? "pb-6" : ""}`}
+              className={`overflow-hidden max-h-0 ${isOpen ? "p-5 border-t border-[#DCDFEA]" : ""}`}
               style={{
                 maxHeight: isOpen ? "max-content" : "0",
                 transition: "max-height 0.2s ease-out",
               }}
             >
               <div className="gap-6 flex h-[400px]">
-                <div className="w-1/2">
+                <div className="w-[40%]">
                   <Image
                     src={Img_product_3d_img1}
                     alt="product"
                     className="w-full h-full"
                   />
                 </div>
-                <div className="w-1/2 grid grid-cols-2 gap-6">
+                <div className="w-[60%] grid grid-cols-3 grid-rows-2 gap-6">
                   {displayedImages.map((image: any, index: number) => (
                     <div
                       key={index}
@@ -114,7 +126,7 @@ const Illustrasjoner: React.FC = () => {
                         className="w-full h-full object-fill rounded-lg"
                       />
 
-                      {index === 3 && extraImagesCount > 0 && (
+                      {index === 5 && extraImagesCount > 0 && (
                         <div
                           className="absolute inset-0 bg-black bg-opacity-35 flex items-center justify-center text-white text-base font-bold cursor-pointer rounded-lg"
                           onClick={handlePopup}

@@ -1,166 +1,111 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import Stepper from "@/components/Ui/stepper";
-import Husmodell from "./Husmodell";
-import Tilvalg from "./Tilvalg";
-import { useRouter } from "next/router";
-import Tomt from "./Tomt";
-import Tilbud from "./Tilbud";
-import Okonomi from "./Okonomi";
-import Finansiering from "./Finansiering";
-import Oppsummering from "./Oppsummering";
-import ErrorPopup from "@/components/Ui/error";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "@/config/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import React, { useState } from "react";
+import SideSpaceContainer from "@/components/common/sideSpace";
+import Button from "@/components/common/button";
+import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
+import Link from "next/link";
+import Image from "next/image";
+import HouseDetailsection from "@/components/Ui/houseDetail/houseDetailSection";
+import Loader from "@/components/Loader";
+import HouseDetailPage from "@/components/Ui/houseDetail";
+import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
 
-const HusmodellDetail = () => {
-  const [currIndex, setCurrIndex] = useState(0);
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedIndex = localStorage.getItem("currIndex");
-      if (savedIndex) {
-        setCurrIndex(Number(savedIndex));
-      } else {
-        setCurrIndex(0);
-      }
-    }
-  }, [currIndex]);
-  const router = useRouter();
-  const { plotId } = router.query;
-  const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [showErrorPopup, setShowErrorPopup] = useState(false);
-  const [additionalData, setAdditionalData] = useState<any | undefined>(null);
-  const [CadastreDataFromApi, setCadastreDataFromApi] = useState<any | null>(
-    null
-  );
-  const [askData, setAskData] = useState<any | null>(null);
-  const [userUID, setUserUID] = useState(null);
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
-      if (user) {
-        setUserUID(user.uid);
-      } else {
-        setUserUID(null);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-  useEffect(() => {
-    if (additionalData?.answer) {
-      try {
-        const cleanAnswer = additionalData?.answer;
-
-        setAskData(cleanAnswer);
-      } catch (error) {
-        console.error("Error parsing additionalData.answer:", error);
-        setAskData(null);
-      }
-    }
-  }, [additionalData]);
-
-  const handleNext = () => {
-    if (currIndex < steps.length - 1) {
-      setCurrIndex(currIndex + 1);
-    }
-  };
-  const handlePrevious = () => {
-    if (currIndex > 0) {
-      setCurrIndex(currIndex - 1);
-    }
-  };
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [currIndex]);
-  useEffect(() => {
-    if (plotId && userUID) {
-      setLoading(true);
-
-      const fetchProperty = async () => {
-        const plotDocRef = doc(db, "empty_plot", String(plotId));
-
-        try {
-          const plotDocSnap = await getDoc(plotDocRef);
-          if (plotDocSnap.exists()) {
-            const fetchedProperties: any = {
-              propertyId: plotDocSnap.id,
-              ...plotDocSnap.data(),
-            };
-
-            if (fetchedProperties) {
-              setAdditionalData(fetchedProperties?.additionalData);
-              setLamdaDataFromApi(fetchedProperties?.lamdaDataFromApi);
-              setCadastreDataFromApi(fetchedProperties?.CadastreDataFromApi);
-            } else {
-              console.error("No property found with the given ID.");
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching user's properties:", error);
-          setShowErrorPopup(true);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchProperty();
-    }
-  }, [plotId, db, userUID]);
-
-  const steps = [
+const HusmodellDetail: React.FC<{
+  handleNext: any;
+  HouseModelData: any;
+  loading: any;
+  pris: any;
+  lamdaDataFromApi: any;
+  supplierData: any;
+}> = ({
+  handleNext,
+  HouseModelData,
+  loading,
+  pris,
+  lamdaDataFromApi,
+  supplierData,
+}) => {
+  const tabs: any = [
     {
-      name: "Husmodell",
-      component: <Husmodell handleNext={handleNext} />,
-    },
-    {
-      name: "Tilvalg",
-      component: (
-        <Tilvalg handleNext={handleNext} handlePrevious={handlePrevious} />
-      ),
-    },
-    {
-      name: "Tomt",
-      component: (
-        <Tomt handleNext={handleNext} handlePrevious={handlePrevious} />
-      ),
-    },
-    {
-      name: "Tilbud",
-      component: (
-        <Tilbud handleNext={handleNext} handlePrevious={handlePrevious} />
-      ),
-    },
-    {
-      name: "Økonomi",
-      component: (
-        <Okonomi handleNext={handleNext} handlePrevious={handlePrevious} />
-      ),
-    },
-    {
-      name: "Finansiering",
-      component: (
-        <Finansiering handleNext={handleNext} handlePrevious={handlePrevious} />
-      ),
-    },
-    {
-      name: "Oppsummering",
-      component: <Oppsummering handlePrevious={handlePrevious} />,
+      id: `house`,
+      label: "Husmodellinformasjon",
     },
   ];
+
+  const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
+
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <>
-      <Stepper
-        steps={steps}
-        currIndex={currIndex}
-        setCurrIndex={setCurrIndex}
-        lamdaDataFromApi={lamdaDataFromApi}
-        loadingAdditionalData={loading}
-        CadastreDataFromApi={CadastreDataFromApi}
-        askData={askData}
-      />
-      {showErrorPopup && <ErrorPopup />}
+      <div className="relative">
+        <div className="bg-lightPurple2 py-4">
+          <SideSpaceContainer>
+            <div className="flex items-center gap-1 mb-6">
+              <Link href={"/"} className="text-[#7839EE] text-sm font-medium">
+                Hjem
+              </Link>
+              <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+              <span className="text-secondary2 text-sm">Husmodell</span>
+            </div>
+            <PropertyHouseDetails
+              HouseModelData={HouseModelData}
+              lamdaDataFromApi={lamdaDataFromApi}
+              supplierData={supplierData}
+              pris={pris}
+            />
+          </SideSpaceContainer>
+        </div>
+        <HouseDetailsection HouseModelData={HouseModelData} loading={loading} />
+        <SideSpaceContainer className="relative pt-[38px]">
+          <div>
+            <div className="flex border border-gray3 rounded-lg w-max bg-gray3 p-[6px] mb-[38px]">
+              {tabs.map((tab: any) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-4 py-2 text-base transition-colors duration-300 flex items-center gap-2 ${
+                    activeTab === tab.id
+                      ? "bg-white font-medium text-[#7839EE]"
+                      : "text-black"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+            <div className={`${activeTab === "house" ? "block" : "hidden"}`}>
+              <HouseDetailPage />
+            </div>
+          </div>
+        </SideSpaceContainer>
+        <div
+          className="sticky bottom-0 bg-white py-6"
+          style={{
+            boxShadow:
+              "0px -4px 6px -2px #10182808, 0px -12px 16px -4px #10182814",
+            zIndex: 9999,
+          }}
+        >
+          <SideSpaceContainer>
+            <div className="flex justify-end gap-4 items-center">
+              <Button
+                text="Tilbake"
+                className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+                path="/"
+              />
+              <Button
+                text="Neste: Tilpass"
+                className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                onClick={() => {
+                  handleNext();
+                  // window.location.reload();
+                }}
+              />
+            </div>
+          </SideSpaceContainer>
+        </div>
+      </div>
     </>
   );
 };

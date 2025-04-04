@@ -62,6 +62,7 @@ const Regulations = () => {
     propertyId,
     plotId,
     emptyPlot,
+    husodellId,
   } = router.query;
   const [loadingAdditionalData, setLoadingAdditionalData] = useState(false);
   const [loadingLamdaData, setLoadingLamdaData] = useState(false);
@@ -70,6 +71,7 @@ const Regulations = () => {
   const hasFetchedData = useRef(false);
   const [userUID, setUserUID] = useState(null);
   const [isCall, setIsCall] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { loginUser, setLoginUser } = useUserLayoutContext();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -747,6 +749,57 @@ const Regulations = () => {
       }
     }
   }, [additionalData]);
+  const [HouseModelData, setHouseModelData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const husmodellDocRef = doc(db, "house_model", String(husodellId));
+        const husmodellDocSnap = await getDoc(husmodellDocRef);
+
+        if (husmodellDocSnap.exists()) {
+          setHouseModelData(husmodellDocSnap.data());
+        } else {
+          console.error("No document found for plot or husmodell ID.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [husodellId, isCall]);
+  const husmodellData = HouseModelData?.Husdetaljer;
+  const [supplierData, setSupplierData] = useState<any>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const supplierDocRef = doc(
+          db,
+          "suppliers",
+          husmodellData?.Leverandører
+        );
+        const docSnap: any = await getDoc(supplierDocRef);
+
+        if (docSnap.exists()) {
+          setSupplierData(docSnap.data());
+        } else {
+          console.error(
+            "No document found for ID:",
+            husmodellData?.Leverandører
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching supplier data:", error);
+      }
+    };
+    getData();
+  }, [husmodellData?.Leverandører]);
 
   const steps = [
     {
@@ -769,7 +822,19 @@ const Regulations = () => {
     {
       name: "Hva kan du bygge?",
       component: (
-        <Husmodell handleNext={handleNext} handlePrevious={handlePrevious} />
+        <Husmodell
+          handleNext={handleNext}
+          handlePrevious={handlePrevious}
+          lamdaDataFromApi={lamdaDataFromApi}
+          CadastreDataFromApi={CadastreDataFromApi}
+          askData={askData}
+          loading={loading}
+          loadingAdditionalData={loadingAdditionalData}
+          loginUser={loginUser}
+          loadingLamdaData={loadingLamdaData}
+          supplierData={supplierData}
+          HouseModelData={HouseModelData}
+        />
       ),
     },
     {
@@ -802,10 +867,7 @@ const Regulations = () => {
         steps={steps}
         currIndex={currIndex}
         setCurrIndex={setCurrIndex}
-        lamdaDataFromApi={lamdaDataFromApi}
-        loadingAdditionalData={loadingAdditionalData}
-        CadastreDataFromApi={CadastreDataFromApi}
-        askData={askData}
+        Style="true"
       />
       {showErrorPopup && <ErrorPopup />}
     </>

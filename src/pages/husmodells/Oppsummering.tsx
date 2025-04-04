@@ -1,30 +1,114 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Image from "next/image";
+import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
 import Button from "@/components/common/button";
-import PropertyDetailWithPrice from "@/components/Ui/stepperUi/productDetailWithPrice";
-import * as Yup from "yup";
-import { Formik, Form, Field } from "formik";
-import Ic_product_detail_avatar from "@/public/images/Ic_product_detail_avatar.svg";
-import Ic_product_detail_position from "@/public/images/Ic_product_detail_position.svg";
-import Ic_info_circle from "@/public/images/Ic_info_circle.svg";
+import Loader from "@/components/Loader";
+import Link from "next/link";
+import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
+import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import Ic_phone from "@/public/images/Ic_phone.svg";
 import Ic_mail from "@/public/images/Ic_mail.svg";
+import Tilbudsdetaljer from "@/components/Ui/husmodellPlot/Tilbudsdetaljer";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import * as Yup from "yup";
+import { Formik, Form, Field } from "formik";
 import Ic_spareBank from "@/public/images/Ic_spareBank.svg";
+import Ic_Info_gray from "@/public/images/Ic_Info_gray.svg";
+import { formatCurrency } from "@/components/Ui/RegulationHusmodell/Illustrasjoner";
 import Ic_contact from "@/public/images/Ic_contact.svg";
-import Illustrasjoner from "@/components/Ui/RegulationHusmodell/Illustrasjoner";
 
-const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
-  const [isChecked, setIsChecked] = useState(false);
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
+const Oppsummering: React.FC<{
+  handleNext: any;
+  lamdaDataFromApi: any;
+  loading: any;
+  CadastreDataFromApi: any;
+  askData: any;
+  HouseModelData: any;
+  handlePrevious: any;
+  pris: any;
+  supplierData: any;
+}> = ({
+  handleNext,
+  lamdaDataFromApi,
+  askData,
+  loading,
+  CadastreDataFromApi,
+  HouseModelData,
+  handlePrevious,
+  pris,
+  supplierData,
+}) => {
+  const Husdetaljer = HouseModelData?.Husdetaljer;
+
+  const [custHouse, setCusHouse] = useState<any>(null);
+  useEffect(() => {
+    const customizeHouse = localStorage.getItem("customizeHouse");
+    if (customizeHouse) {
+      setCusHouse(JSON.parse(customizeHouse));
+    }
+  }, []);
+
+  const totalCustPris = custHouse?.reduce(
+    (sum: any, item: any) =>
+      sum + Number(item?.product?.pris.replace(/\s/g, "")),
+    0
+  );
   const validationSchema = Yup.object().shape({
-    checkbox: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
+    existingLoan: Yup.string()
+      .oneOf(["Ja", "Nei"], "Please select an option")
+      .required("Påkrevd"),
+    previousExperience: Yup.string()
+      .oneOf(["Ja", "Nei"], "Please select an option")
+      .required("Påkrevd"),
+    collateral: Yup.string()
+      .oneOf(["Ja", "Nei"], "Please select an option")
+      .required("Påkrevd"),
+    permissions: Yup.string()
+      .oneOf(["Ja", "Nei"], "Please select an option")
+      .required("Påkrevd"),
+    buffer: Yup.string()
+      .oneOf(["Ja", "Nei"], "Please select an option")
+      .required("Påkrevd"),
+    equityAmount: Yup.number()
+      .typeError("Must be a number")
+      .min(1, "Amount must be greater than 0")
+      .optional(),
+    sharingData: Yup.boolean()
+      .oneOf([true], "You must accept the sharing data")
+      .required("Påkrevd"),
+    Isopt: Yup.boolean()
+      .oneOf([true], "You must accept this")
+      .required("Påkrevd"),
   });
 
+  const router = useRouter();
+
+  const leadId = router.query["leadId"];
+
   const handleSubmit = async (values: any) => {
-    console.log(values);
+    const bankValue = values;
+
+    try {
+      if (leadId) {
+        await updateDoc(doc(db, "leads", String(leadId)), {
+          IsoptForBank: true,
+          updatedAt: new Date(),
+          bankValue,
+        });
+        toast.success("Update Lead successfully.", { position: "top-right" });
+      } else {
+        toast.error("Lead id not found.", { position: "top-right" });
+      }
+    } catch (error) {
+      console.error("Firestore update operation failed:", error);
+    }
   };
 
   const [isContactChecked, setIsContactChecked] = useState(false);
@@ -38,220 +122,483 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
   const handleContactSubmit = async (values: any) => {
     console.log(values);
   };
-
+  if (loading) {
+    <Loader />;
+  }
   return (
     <div className="relative">
-      <SideSpaceContainer>
-        <div className="pt-[24px] pb-[147px]">
-          <Illustrasjoner />
-          <h3 className="text-black text-2xl font-semibold my-6">
-            Oppsummering
-          </h3>
-          <div className="mb-[40px]">
-            <PropertyDetailWithPrice />
+      <div className="bg-lightPurple2 py-4">
+        <SideSpaceContainer>
+          <div className="flex items-center gap-1 mb-6">
+            <Link href={"/"} className="text-[#7839EE] text-sm font-medium">
+              Hjem
+            </Link>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <div
+              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              onClick={() => {
+                handlePrevious();
+                const currIndex = 0;
+                localStorage.setItem("currIndex", currIndex.toString());
+                window.location.reload();
+              }}
+            >
+              Tomt og husmodell
+            </div>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <div
+              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              onClick={() => {
+                handlePrevious();
+                const currIndex = 1;
+                localStorage.setItem("currIndex", currIndex.toString());
+                window.location.reload();
+              }}
+            >
+              Tilpass
+            </div>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <div
+              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              onClick={() => {
+                handlePrevious();
+                const currIndex = 2;
+                localStorage.setItem("currIndex", currIndex.toString());
+                window.location.reload();
+              }}
+            >
+              Tomt
+            </div>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <div
+              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              onClick={() => {
+                handlePrevious();
+                const currIndex = 3;
+                localStorage.setItem("currIndex", currIndex.toString());
+                window.location.reload();
+              }}
+            >
+              Tilbud
+            </div>
+            <div
+              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              onClick={() => {
+                handlePrevious();
+                const currIndex = 4;
+                localStorage.setItem("currIndex", currIndex.toString());
+                window.location.reload();
+              }}
+            >
+              Finansiering
+            </div>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <span className="text-secondary2 text-sm">Oppsummering</span>
           </div>
-          <div className="flex gap-[48px] w-full">
-            <div className="w-[42%]">
-              <Formik
-                initialValues={{ checkbox: false }}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-              >
-                {({ values, setFieldValue, errors, touched }) => (
-                  <Form className="flex flex-col h-full">
-                    <h3 className="text-black mb-6 text-2xl">
-                      <span className="font-bold">Book møte</span> med din{" "}
-                      <span className="font-bold">boligkonsulent:</span>
-                    </h3>
-                    <div
-                      className="rounded-[8px] p-5 flex flex-col justify-between"
-                      style={{
-                        boxShadow:
-                          "0px 1px 2px 0px #1018280F, 0px 4px 16px 0px #1018281A",
-                        flexGrow: 1,
-                      }}
-                    >
-                      <div className="flex flex-col gap-4">
-                        <div className="flex gap-3 w-full">
-                          <div className="w-[13%]">
-                            <Image
-                              fetchPriority="auto"
-                              src={Ic_product_detail_avatar}
-                              alt="avatar"
-                              className="w-full"
-                            />
-                          </div>
-                          <div className="w-[87%]">
-                            <div className="flex mb-3 justify-between w-full items-start">
-                              <div>
-                                <h4 className="text-black mb-1 text-xl font-semibold">
-                                  Simen Wolmer
-                                </h4>
-                                <p className="text-secondary text-base font-medium">
-                                  Boligkonsulent
-                                </p>
-                              </div>
-                              <Image
-                                fetchPriority="auto"
-                                src={Ic_product_detail_position}
-                                alt="logo"
-                                className="w-[108px]"
-                              />
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <div className="flex items-center gap-[6px] text-sm font-medium text-secondary">
-                                <Image
-                                  fetchPriority="auto"
-                                  src={Ic_mail}
-                                  alt="mail"
-                                />{" "}
-                                simen.wolmer@boligpartner.no
-                              </div>
-                              <div className="flex items-center gap-[6px] text-sm font-medium text-secondary">
-                                <Image
-                                  fetchPriority="auto"
-                                  src={Ic_phone}
-                                  alt="phone"
-                                />{" "}
-                                +47 958 01 043
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="border w-full border-t border-b-0 border-r-0 border-l-0 border-darkGray"></div>
-                        <p className="text-secondary font-medium text-base">
-                          Ved å booke tid vil{" "}
-                          <span className="font-bold">
-                            Simen Wolmer i BoligPartner
-                          </span>{" "}
-                          ringe deg etter å satt seg godt inn i din drømmebolig.{" "}
-                          <span className="font-bold">BoligPartner</span> vil ha
-                          tilgang til informasjonen du har lagt igjen her på{" "}
-                          <span className="font-bold">MinTomt</span> for at dere
-                          får en mest effektiv prosess og for at{" "}
-                          <span className="font-bold">BoligPartner</span> skal
-                          forstå dine ønsker.
-                        </p>
-                        <div>
-                          <label className="flex items-center gap-[12px] container">
-                            <Field
-                              type="checkbox"
-                              name="checkbox"
-                              checked={isChecked}
-                              onChange={() => {
-                                setFieldValue("checkbox", !values.checkbox);
-                                handleCheckboxChange();
-                              }}
-                            />
-                            <span
-                              className="checkmark checkmark_primary"
-                              style={{ margin: "2px" }}
-                            ></span>
+          <PropertyHouseDetails
+            HouseModelData={HouseModelData}
+            lamdaDataFromApi={lamdaDataFromApi}
+            supplierData={supplierData}
+            pris={pris}
+          />
+        </SideSpaceContainer>
+      </div>
+      <PropertyDetails
+        askData={askData}
+        CadastreDataFromApi={CadastreDataFromApi}
+        lamdaDataFromApi={lamdaDataFromApi}
+      />
 
-                            <div className="text-secondary text-sm font-semibold">
-                              Jeg aksepterer{" "}
-                              <span className="text-black">
-                                {" "}
-                                deling av data
+      <div className="pt-6 pb-8">
+        <SideSpaceContainer>
+          <h5 className="text-darkBlack text-xl font-semibold mb-4">
+            Tilbudsdetaljer
+          </h5>
+          <Tilbudsdetaljer />
+          <div className="my-8">
+            <Formik
+              initialValues={{
+                existingLoan: "",
+                previousExperience: "",
+                collateral: "",
+                permissions: "",
+                buffer: "",
+                equityAmount: "",
+                sharingData: false,
+                Isopt: false,
+              }}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ values, setFieldValue, errors, touched }) => {
+                useEffect(() => {
+                  (async () => {
+                    try {
+                      const docSnap = await getDoc(
+                        doc(db, "leads", String(leadId))
+                      );
+
+                      if (docSnap.exists()) {
+                        const data = docSnap.data();
+
+                        const value = data?.bankValue;
+                        setFieldValue(
+                          "sharingData",
+                          data.IsoptForBank || false
+                        );
+                        setFieldValue("Isopt", data.Isopt || false);
+                        setFieldValue(
+                          "existingLoan",
+                          value?.existingLoan || ""
+                        );
+                        setFieldValue(
+                          "previousExperience",
+                          value?.previousExperience || ""
+                        );
+                        setFieldValue("collateral", value?.collateral || "");
+                        setFieldValue("permissions", value?.permissions || "");
+                        setFieldValue("buffer", value?.buffer || "");
+                        setFieldValue("equityAmount", value?.equityAmount);
+                      }
+                    } catch (error) {
+                      console.error(
+                        "Error fetching IsoptForBank status:",
+                        error
+                      );
+                    }
+                  })();
+                }, [leadId]);
+                return (
+                  <Form>
+                    <div className="w-full flex gap-[24px]">
+                      <div className="w-[34%] rounded-[8px] border border-[#DCDFEA] h-max">
+                        <h3 className="text-darkBlack text-xl p-5 border-b border-[#DCDFEA] font-light">
+                          Book et møte med din{" "}
+                          <span className="font-semibold">boligkonsulent</span>{" "}
+                          fra{" "}
+                          <span className="font-semibold">
+                            {supplierData?.company_name}
+                          </span>
+                        </h3>
+                        <div className="rounded-[8px] p-5 flex flex-col gap-5 justify-between">
+                          <div className="flex flex-col gap-4">
+                            <div>
+                              <div className="flex gap-3 w-full mb-4">
+                                <div className="w-[13%]">
+                                  <img
+                                    src={supplierData?.createDataBy?.photo}
+                                    alt="avatar"
+                                    className="w-full"
+                                  />
+                                </div>
+                                <div className="w-[87%]">
+                                  <div className="flex mb-3 justify-between w-full items-start">
+                                    <div>
+                                      <h4 className="text-black mb-1 text-xl font-semibold">
+                                        {supplierData?.Kontaktperson}
+                                      </h4>
+                                      <p className="text-secondary text-base font-medium">
+                                        Boligkonsulent
+                                      </p>
+                                    </div>
+                                    <img
+                                      src={supplierData?.photo}
+                                      alt="logo"
+                                      className="w-[108px]"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex gap-2 justify-between">
+                                <div className="flex items-center gap-[6px] text-sm text-secondary">
+                                  <Image
+                                    fetchPriority="auto"
+                                    src={Ic_mail}
+                                    alt="mail"
+                                  />{" "}
+                                  {supplierData?.KontaktpersonEPost}
+                                </div>
+                                <div className="flex items-center gap-[6px] text-sm text-secondary">
+                                  <Image
+                                    fetchPriority="auto"
+                                    src={Ic_phone}
+                                    alt="phone"
+                                  />{" "}
+                                  {supplierData?.KontaktpersonMobil}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="border w-full border-t border-b-0 border-r-0 border-l-0 border-darkGray"></div>
+                            <p className="text-secondary2 text-base">
+                              Ved å booke en avtale vil{" "}
+                              <span className="font-bold">Simen Wolmer</span>{" "}
+                              hos{" "}
+                              <span className="font-bold">
+                                {supplierData?.company_name}
                               </span>{" "}
-                              med{" "}
-                              <span className="text-black">BoligPartner.</span>
+                              ringe deg etter å ha satt seg grundig inn i
+                              drømmeboligen din.{" "}
+                              <span className="font-bold">
+                                {supplierData?.company_name}
+                              </span>{" "}
+                              vil få tilgang til informasjonen du har lagt igjen
+                              her på her på{" "}
+                              <span className="font-bold">MinTomt</span> for å
+                              sikre en mest mulig effektiv prosess og for å
+                              forstå dine ønsker på best mulig måte.
+                            </p>
+                            <div>
+                              <label className="flex items-center gap-[12px] container">
+                                <Field type="checkbox" name="Isopt" />
+                                <span
+                                  className="checkmark checkmark_primary"
+                                  style={{ margin: "2px" }}
+                                ></span>
+
+                                <div className="text-secondary2 text-sm">
+                                  Jeg samtykker til
+                                  <span className="text-[#7839EE] font-medium">
+                                    {" "}
+                                    deling av data
+                                  </span>{" "}
+                                  med{" "}
+                                  <span className="text-black font-medium">
+                                    BoligPartner.
+                                  </span>
+                                </div>
+                              </label>
+                              {errors.Isopt && touched.Isopt && (
+                                <div className="text-red text-sm">
+                                  {errors.Isopt}
+                                </div>
+                              )}
                             </div>
-                          </label>
-                          {errors.checkbox && touched.checkbox && (
-                            <div className="text-red text-sm">
-                              {errors.checkbox}
-                            </div>
-                          )}
+                          </div>
+                          <div className="flex justify-end">
+                            <Button
+                              text="Kontakt meg"
+                              className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                              type="submit"
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div className="flex justify-end">
-                        <Button
-                          text="Send inn"
-                          className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                          type="submit"
-                        />
+                      <div className="w-[66%]">
+                        <div className="flex flex-col gap-4 mb-[40px]">
+                          <div className="flex items-center justify-between">
+                            <p className="text-secondary2 text-sm font-bold">
+                              Totale bygge- og tomtekostnader (inkl. mva)
+                            </p>
+                            <h4 className="text-black text-xl font-semibold">
+                              {formatCurrency(
+                                (
+                                  totalCustPris +
+                                  Number(
+                                    Husdetaljer?.pris?.replace(/\s/g, "")
+                                  ) +
+                                  Number(pris || 0)
+                                ).toLocaleString("nb-NO")
+                              )}
+                            </h4>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <p className="text-secondary2 text-sm">
+                              Egenkapital
+                            </p>
+                            <div className="flex items-center gap-4">
+                              <div>
+                                <Field
+                                  id="equityAmount"
+                                  name="equityAmount"
+                                  type="number"
+                                  className={`w-[160px] border border-darkGray focus:outline-none text-black rounded-[8px] py-2 px-4 text-sm ${
+                                    errors.equityAmount && touched.equityAmount
+                                      ? "border-red"
+                                      : "border-darkGray"
+                                  }`}
+                                  placeholder="Enter"
+                                />
+                                {touched.equityAmount &&
+                                  errors.equityAmount && (
+                                    <p className="text-red text-xs mt-1">
+                                      {errors.equityAmount}
+                                    </p>
+                                  )}
+                              </div>
+                              <p className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[40px] font-medium flex items-center justify-center px-5 cursor-pointer">
+                                Legg til
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <p className="text-secondary text-sm font-bold">
+                              Lånebeløp
+                            </p>
+                            <h4 className="text-black text-xl font-semibold">
+                              {(() => {
+                                const data: any =
+                                  totalCustPris +
+                                  Number(
+                                    Husdetaljer?.pris?.replace(/\s/g, "")
+                                  ) +
+                                  Number(pris || 0);
+
+                                if (values.equityAmount) {
+                                  const totalData: any =
+                                    Number(data) - Number(values.equityAmount);
+                                  const finalData = new Intl.NumberFormat(
+                                    "nb-NO"
+                                  ).format(totalData);
+
+                                  return formatCurrency(finalData);
+                                } else {
+                                  return formatCurrency(
+                                    (
+                                      totalCustPris +
+                                      Number(
+                                        Husdetaljer?.pris?.replace(/\s/g, "")
+                                      ) +
+                                      Number(pris || 0)
+                                    ).toLocaleString("nb-NO")
+                                  );
+                                }
+                              })()}
+                            </h4>
+                          </div>
+                        </div>
+                        <div className="rounded-[8px] border border-[#DCDFEA]">
+                          <div className="flex items-center justify-between border-b border-[#DCDFEA] p-5">
+                            <h3 className="text-black text-xl font-semibold">
+                              Søk byggelån{" "}
+                              {(() => {
+                                const data: any =
+                                  totalCustPris +
+                                  Number(
+                                    Husdetaljer?.pris?.replace(/\s/g, "")
+                                  ) +
+                                  Number(pris || 0);
+
+                                if (values.equityAmount) {
+                                  const totalData: any =
+                                    Number(data) - Number(values.equityAmount);
+                                  const finalData = new Intl.NumberFormat(
+                                    "nb-NO"
+                                  ).format(totalData);
+
+                                  return formatCurrency(finalData);
+                                } else {
+                                  return formatCurrency(
+                                    (
+                                      totalCustPris +
+                                      Number(
+                                        Husdetaljer?.pris?.replace(/\s/g, "")
+                                      ) +
+                                      Number(pris || 0)
+                                    ).toLocaleString("nb-NO")
+                                  );
+                                }
+                              })()}{" "}
+                              hos:
+                            </h3>
+                            <Image
+                              fetchPriority="auto"
+                              src={Ic_spareBank}
+                              alt="icon"
+                              className="w-[119px] h-[30px]"
+                            />
+                          </div>
+                          <div className="flex flex-col gap-4 p-5 border-b border-[#DCDFEA]">
+                            <div className="flex items-center justify-between">
+                              <div className="text-secondary2 text-sm">
+                                Nominell rente fra
+                              </div>
+                              <h6 className="text-black font-medium text-base">
+                                8,75%
+                              </h6>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <div className="text-secondary2 text-sm">
+                                Effektiv rente ved byggelån ved 2 MNOK ved 100%
+                                utnyttelse
+                              </div>
+                              <h6 className="text-black font-medium text-base">
+                                11,01%
+                              </h6>
+                            </div>
+                            <div className="border-t w-full border-[#DCDFEA]"></div>
+                            <div className="flex items-center justify-between">
+                              <div className="text-secondary2 text-base font-bold">
+                                Estimert kostnad per måned
+                              </div>
+                              <h6 className="text-black font-medium text-xl">
+                                48.667 NOK
+                              </h6>
+                            </div>
+                          </div>
+                          <div className="p-5">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <label className="flex items-center container">
+                                  <Field type="checkbox" name="sharingData" />
+
+                                  <span
+                                    className="checkmark checkmark_primary"
+                                    style={{ margin: "2px" }}
+                                  ></span>
+
+                                  <div className="text-secondary2 text-sm">
+                                    Jeg samtykker til{" "}
+                                    <span className="text-[#7839EE] font-bold">
+                                      deling av data
+                                    </span>{" "}
+                                    med{" "}
+                                    <span className="text-secondary2 font-bold">
+                                      SpareBank1 Hallingdal Valdres.
+                                    </span>
+                                  </div>
+                                </label>
+                                {touched.sharingData && errors.sharingData && (
+                                  <p className="text-red text-xs mt-1">
+                                    {errors.sharingData}
+                                  </p>
+                                )}
+                              </div>
+                              <Button
+                                text="Send inn lånesøknad"
+                                className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
+                                type="submit"
+                              />
+                            </div>
+                            <div className="flex items-start gap-3 mt-5">
+                              <Image
+                                fetchPriority="auto"
+                                src={Ic_Info_gray}
+                                alt="icon"
+                              />
+                              <p className="text-secondary2 text-sm">
+                                Loan facility for construction of a home/holiday
+                                home. Will be converted into a repayment loan
+                                upon completion of the home/holiday home.
+                                Interest rate will vary based on an overall
+                                assessment of payment ability and security.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </Form>
-                )}
-              </Formik>
-            </div>
-            <div className="w-[58%]">
-              <h3 className="text-black text-2xl mb-6">
-                Behov for <span className="font-semibold">finansiering?</span>
-              </h3>
-              <div
-                className="rounded-[8px] p-6 gap-6 flex flex-col"
-                style={{
-                  boxShadow:
-                    "0px 1px 2px 0px #1018280F, 0px 4px 16px 0px #1018281A",
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="text-black text-2xl font-medium">
-                    Søk byggelån{" "}
-                    <span className="font-semibold">(10.608.690 NOK)</span> hos:
-                  </h3>
-                  <Image fetchPriority="auto" src={Ic_spareBank} alt="icon" />
-                </div>
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center justify-between">
-                    <div className="text-secondary text-base font-medium">
-                      <span className="text-black font-bold">
-                        Nominell rente{" "}
-                      </span>
-                      fra:
-                    </div>
-                    <h6 className="text-black font-bold text-base">8,75%</h6>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="text-secondary text-base font-medium">
-                      <span className="text-black font-bold">
-                        Effektiv rente med{" "}
-                      </span>
-                      byggelånsramme på 2 <br /> mill. ved 100% utnyttelse:
-                    </div>
-                    <h6 className="text-black font-bold text-base">11,01%</h6>
-                  </div>
-                  {/* <div className="border w-full border-t border-b-0 border-r-0 border-l-0 border-darkGray"></div>
-                  <div className="flex items-center justify-between">
-                    <div className="text-secondary text-base font-medium">
-                      Estimert kostnad per måned
-                    </div>
-                    <h6 className="text-black font-semibold text-xl">
-                      57.640 NOK
-                    </h6>
-                  </div> */}
-                </div>
-                <div className="flex justify-end">
-                  <Button
-                    text="Send inn søknad"
-                    className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
-                  />
-                </div>
-                <div className="flex items-start gap-4">
-                  <Image fetchPriority="auto" src={Ic_info_circle} alt="icon" />
-                  <p className="text-secondary text-base font-medium">
-                    Låneramme til oppføring av bolig/fritidsbolig. Blir gjort om
-                    til nedbetalingslån ved ferdigstilling av
-                    bolig/fritidsbolig. Rente vil variere ut fra
-                    helhetsvurdering av betalingsevne og sikkerhet.
-                  </p>
-                </div>
-              </div>
-            </div>
+                );
+              }}
+            </Formik>
           </div>
-          <div className="my-7">
-            <h4 className="text-black text-xl mb-7">
-              Vil du få en <span className="font-bold">forhåndstakst</span> fra
-              en megler i <span className="font-bold">EIE Eiendomsmegling</span>
-              ?
+          <div className="mb-8 border border-[#DCDFEA] rounded-[8px]">
+            <h4 className="text-darkBlack text-xl border-b border-[#DCDFEA] p-5">
+              Vil du at{" "}
+              <span className="font-semibold">EIE Eiendomsmegling</span>
+              EIE Eiendomsmegling skal gi deg en forhåndstakst på prosjektet?
             </h4>
-            <div
-              className="p-6"
-              style={{ boxShadow: "0px 4px 16px 0px #0000001A" }}
-            >
+            <div className="p-5">
               <Formik
                 initialValues={{ contactCheckbox: false }}
                 validationSchema={validationContactSchema}
@@ -263,17 +610,17 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                       <div className="flex items-start gap-3 w-1/2">
                         <Image
                           fetchPriority="auto"
-                          src={Ic_info_circle}
+                          src={Ic_Info_gray}
                           alt="icon"
                         />
-                        <p className="text-secondary text-base font-medium">
-                          Et byggelån krever en forhåndsktakst på prosjektet,
-                          ved en høyere{" "}
-                          <span className="font-bold">eTakst</span> enn
-                          byggekostnad, vil du kunne bruke dette som egenkapital
-                          ovenfor banken.
+                        <p className="text-secondary2 text-sm">
+                          Et byggelån krever et forhåndsestimat av prosjektet.
+                          Hvis <span className="font-bold">e-taksten</span> er
+                          høyere enn byggekostnaden, kan du bruke dette som
+                          egenkapital overfor banken.
                         </p>
                       </div>
+                      <div className="border-l border-[#DCDFEA]"></div>
                       <div className="w-1/2">
                         <label className="flex items-center gap-[12px] container">
                           <Field
@@ -292,22 +639,25 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
                             className="checkmark checkmark_primary"
                             style={{ margin: "2px" }}
                           ></span>
-                          <div className="text-secondary text-sm font-medium">
-                            Jeg aksepterer{" "}
-                            <span className="font-bold underline">
-                              deling av data
+                          <div className="text-secondary2 text-sm">
+                            Jeg samtykker i å{" "}
+                            <span className="font-bold text-[#7839EE]">
+                              dele data
                             </span>{" "}
                             med{" "}
                             <span className="font-bold">
-                              Eie Eiendomsmegling
+                              Eie Eiendomsmegling,
                             </span>
-                            , slik at de kan kontakte meg for{" "}
-                            <span className="font-bold">forhåndstakst</span> og
+                            slik at de kan kontakte meg for en{" "}
                             <span className="font-bold">
-                              verdivurdering av eksisterende bolig.
+                              forhåndstakst av prosjektet
                             </span>{" "}
-                            Samlet gir dette et bilde på egenkapital som kan
-                            være nødvendig for å få byggelån.
+                            og en{" "}
+                            <span className="font-bold">
+                              verdivurdering av min nåværende bolig.
+                            </span>{" "}
+                            Dette gir totalt sett et bilde av egenkapitalen som
+                            kan være nødvendig for å få innvilget et byggelån.
                           </div>
                         </label>
                         {errors.contactCheckbox && touched.contactCheckbox && (
@@ -321,8 +671,8 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
 
                     <div className="flex justify-end">
                       <Button
-                        text="Kontakt meg"
-                        className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                        text="Send til EIE"
+                        className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                         type="submit"
                       />
                     </div>
@@ -331,27 +681,33 @@ const Oppsummering: React.FC<any> = ({ handlePrevious }) => {
               </Formik>
             </div>
           </div>
-        </div>
-      </SideSpaceContainer>
+        </SideSpaceContainer>
+      </div>
       <div
         className="sticky bottom-0 bg-white py-6"
         style={{
           boxShadow:
             "0px -4px 6px -2px #10182808, 0px -12px 16px -4px #10182814",
+          zIndex: 9999,
         }}
       >
         <SideSpaceContainer>
           <div className="flex justify-end gap-4 items-center">
             <Button
               text="Tilbake"
-              className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+              className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
+                window.location.reload();
               }}
             />
             <Button
-              text="Send inn"
-              className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+              text="Send til BoligPartner"
+              className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+              onClick={() => {
+                handleNext();
+                window.location.reload();
+              }}
             />
           </div>
         </SideSpaceContainer>

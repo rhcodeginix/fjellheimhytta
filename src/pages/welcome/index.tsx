@@ -69,7 +69,7 @@ const Welcome = () => {
                 <div className="flex justify-end mt-6">
                   <Button
                     text="Send inn"
-                    className="border border-primary bg-white text-primary sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
+                    className="border border-primary bg-white text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
                     type="submit"
                   />
                 </div>

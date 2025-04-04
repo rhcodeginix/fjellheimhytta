@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import Ic_search from "@/public/images/Ic_search.svg";
+import Ic_Search2 from "@/public/images/Ic_Search2.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
@@ -100,19 +100,26 @@ const HusmodellTab = () => {
       ""
     );
 
-    router.push(`husmodell?Kommue=${formData.Kommue}`);
+    router.push(`husmodells?Kommue=${formData.Kommue}`);
+    const currIndex = 0;
+    localStorage.setItem("currIndex", currIndex.toString());
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="lg:h-[80px] bg-[#F9F9FB] border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col lg:flex-row lg:items-center relative justify-between">
+      <div
+        className="lg:h-[100px] bg-white border-gray3 border rounded-[8px] lg:rounded-[98px] flex flex-col lg:flex-row lg:items-center relative justify-between"
+        style={{
+          boxShadow: "0px 32px 82px -12px #10182812",
+        }}
+      >
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[80px]">
           <div
             className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative"
             ref={dropdownRef}
           >
             <div className="w-full">
-              <div className="text-[#111322] mb-1 text-sm">
+              <div className="text-[#30374F] mb-2 text-sm">
                 Se hvilke husmodeller som tilbys i kommunen der du ønsker å
                 bygge:
               </div>
@@ -123,7 +130,7 @@ const HusmodellTab = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onClick={toggleDropdown}
                   placeholder="Søk opp kommune"
-                  className="w-full bg-[#F9F9FB] rounded-md text-base focus:outline-none"
+                  className="w-full bg-white rounded-md text-base focus:outline-none"
                 />
                 <Image
                   src={Ic_chevron_down}
@@ -152,7 +159,7 @@ const HusmodellTab = () => {
                         onClick={() =>
                           handleSelect(`${city.name} Kommune (Vestfold Fylke)`)
                         }
-                        className={`text-sm text-[#111322] px-4 py-[14px] cursor-pointer 
+                        className={`text-sm text-darkBlack px-4 py-[14px] cursor-pointer 
                           ${
                             formData.Kommue ===
                             `${city.name} Kommune (Vestfold Fylke)`
@@ -185,18 +192,19 @@ const HusmodellTab = () => {
         </div>
 
         <button
-          className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2 ${
+          className={`p-3 lg:px-5 lg:py-4 cursor-pointer flex justify-center items-center bg-primary rounded-full transition-all duration-300 ease-out lg:h-[56px] my-[22px] mx-6 gap-2 ${
             !formData.Kommue ? "opacity-50 cursor-not-allowed" : ""
           }`}
           type="submit"
           disabled={!formData.Kommue}
         >
           <Image
-            src={Ic_search}
+            src={Ic_Search2}
             alt="search"
-            className="w-6 h-6"
+            className="w-5 h-5"
             fetchPriority="auto"
           />
+          <span className="text-white font-medium text-base">Søk</span>
         </button>
       </div>
     </form>

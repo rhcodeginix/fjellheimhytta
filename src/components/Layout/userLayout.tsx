@@ -14,13 +14,20 @@ const UserLayout = ({ children }: Props) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      !router.pathname.startsWith("/belop")
-    ) {
+    if (!router.isReady) return;
+
+    const { pathname } = router;
+
+    if (!pathname.startsWith("/belop")) {
       localStorage.removeItem("soverom");
     }
-  }, [router.pathname]);
+    if (
+      !pathname.startsWith("/housemodell-plot") &&
+      !pathname.startsWith("/husmodells")
+    ) {
+      localStorage.removeItem("customizeHouse");
+    }
+  }, [router.pathname, router.isReady]);
   return (
     <div>
       <Chatbot />

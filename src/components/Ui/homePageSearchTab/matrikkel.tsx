@@ -103,12 +103,17 @@ const MatrikkelTab = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="lg:h-[80px] bg-[#F9F9FB] border-[#EFF1F5] border rounded-[8px] lg:rounded-[100px] flex flex-col lg:flex-row lg:items-center relative justify-between">
+      <div
+        className="lg:h-[80px] bg-[#F9F9FB] border-gray3 border rounded-[8px] lg:rounded-[100px] flex flex-col lg:flex-row lg:items-center relative justify-between"
+        style={{
+          boxShadow: "0px 32px 82px -12px #10182812",
+        }}
+      >
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[80px]">
           <div className="lg:w-1/4">
             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
               <div className="w-[92%] lg:w-auto">
-                <div className="text-[#111322] mb-1 text-sm">Kommunenummer</div>
+                <div className="text-darkBlack mb-1 text-sm">Kommunenummer</div>
                 <input
                   ref={kartInputRef}
                   type="number"
@@ -137,7 +142,7 @@ const MatrikkelTab = () => {
           <div className="lg:w-1/4">
             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
               <div className="w-[92%] lg:w-auto">
-                <div className="text-[#111322] mb-1 text-sm">Gårsnummer</div>
+                <div className="text-darkBlack mb-1 text-sm">Gårsnummer</div>
                 <input
                   ref={GårsnummerInputRef}
                   type="number"
@@ -168,7 +173,7 @@ const MatrikkelTab = () => {
           <div className="lg:w-1/4">
             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
               <div className="w-[92%] lg:w-auto">
-                <div className="text-[#111322] mb-1 text-sm">Bruksnummer</div>
+                <div className="text-darkBlack mb-1 text-sm">Bruksnummer</div>
                 <input
                   ref={BruksnummerInputRef}
                   type="number"
@@ -199,7 +204,7 @@ const MatrikkelTab = () => {
           <div className="lg:w-1/4">
             <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
               <div className="w-[92%] lg:w-auto">
-                <div className="text-[#111322] mb-1 text-sm">
+                <div className="text-darkBlack mb-1 text-sm">
                   Seksjonsnummer
                 </div>
                 <input

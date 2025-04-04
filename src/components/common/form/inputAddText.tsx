@@ -32,7 +32,7 @@ const TextInputField: React.FC<InputProps> = ({
 }) => {
   return (
     <div>
-      <label htmlFor={id} className={`text-[#111322] text-sm font-semibold`}>
+      <label htmlFor={id} className={`text-darkBlack text-sm font-semibold`}>
         {label}
       </label>
       <div
@@ -53,7 +53,7 @@ const TextInputField: React.FC<InputProps> = ({
           disabled={disabled}
           inputMode={inputMode}
         />
-        <span className="text-[#111322] font-semibold text-base whitespace-nowrap">
+        <span className="text-darkBlack font-semibold text-base whitespace-nowrap">
           {text}
         </span>
       </div>

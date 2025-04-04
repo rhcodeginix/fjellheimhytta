@@ -12,6 +12,9 @@ import { db } from "@/config/firebaseConfig";
 import BelopProperty from "./belopProperty";
 import { useRouter } from "next/router";
 import Button from "@/components/common/button";
+import Link from "next/link";
+import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
+import Image from "next/image";
 
 const Belop: React.FC = () => {
   const router: any = useRouter();
@@ -180,10 +183,23 @@ const Belop: React.FC = () => {
 
   return (
     <>
+      <div className="bg-lightPurple2 py-4">
+        <SideSpaceContainer>
+          <div className="flex items-center gap-1">
+            <Link href={"/"} className="text-[#7839EE] text-sm font-medium">
+              Hjem
+            </Link>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <span className="text-secondary2 text-sm">
+              Start med tomt og husmodell
+            </span>
+          </div>
+        </SideSpaceContainer>
+      </div>
       <div className="relative pt-8">
         <SideSpaceContainer>
           <div className="flex items-end justify-between gap-4 mb-[40px]">
-            <h3 className="text-[#111322] text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
+            <h3 className="text-darkBlack text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
               Kombinasjoner av <span className="font-bold">husmodell</span> og{" "}
               <span className="font-bold">tomt</span> i{" "}
               <span className="font-bold text-blue">
@@ -193,7 +209,7 @@ const Belop: React.FC = () => {
               </span>
             </h3>
             {!isLoading && (
-              <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
+              <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
                 treff i <span className="font-bold">2 206</span> Tomter
               </p>
@@ -224,11 +240,8 @@ const Belop: React.FC = () => {
           <div className="flex justify-end items-center gap-6">
             <Button
               text="Tilbake"
-              className="border-2 border-[#6941C6] bg-white text-[#6941C6] sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
-            />
-            <Button
-              text="Neste"
-              className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[20px] desktop:py-[16px]"
+              className="border-2 border-[#6941C6] bg-white text-[#6941C6] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
+              onClick={() => router.push("/")}
             />
           </div>
         </div>

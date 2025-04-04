@@ -61,7 +61,7 @@ const SelectDropDown: React.FC<SelectDropDownProps> = ({
 
   return (
     <div className="relative">
-      <label htmlFor={id} className={`text-[#111322] text-sm font-semibold`}>
+      <label htmlFor={id} className={`text-darkBlack text-sm font-semibold`}>
         {label}
       </label>
       <div
@@ -74,7 +74,7 @@ const SelectDropDown: React.FC<SelectDropDownProps> = ({
         onClick={disabled ? undefined : handleToggle}
       >
         <div
-          className={`truncate ${selectedLabel == placeholder ? "text-[#4A5578]" : "text-[#111322]"} ${
+          className={`truncate ${selectedLabel == placeholder ? "text-[#4A5578]" : "text-darkBlack"} ${
             disabled ? "text-grayText" : ""
           }`}
         >

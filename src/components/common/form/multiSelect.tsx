@@ -57,7 +57,7 @@ const MultiSelectDropDown: React.FC<MultiSelectDropDownProps> = ({
 
   return (
     <div className="relative">
-      <label htmlFor={id} className="text-[#111322] text-sm font-semibold">
+      <label htmlFor={id} className="text-darkBlack text-sm font-semibold">
         {label}
       </label>
       <div
@@ -71,7 +71,7 @@ const MultiSelectDropDown: React.FC<MultiSelectDropDownProps> = ({
         }`}
         onClick={handleToggle}
       >
-        <div className="truncate text-[#111322]">
+        <div className="truncate text-darkBlack">
           {value.length > 0
             ? options
                 .filter((opt) => value.includes(opt.value))
@@ -101,7 +101,7 @@ const MultiSelectDropDown: React.FC<MultiSelectDropDownProps> = ({
                   }`}
                   key={index}
                 >
-                  <span className="text-[#111322] text-sm md:text-base">
+                  <span className="text-darkBlack text-sm md:text-base">
                     {option.label}
                   </span>
                   <input

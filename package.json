@@ -33,6 +33,7 @@
     "husky": "^9.0.11",
     "jspdf": "^2.5.2",
     "libphonenumber-js": "^1.11.1",
+    "lucide-react": "^0.487.0",
     "matter-js": "^0.20.0",
     "next": "14.1.4",
     "next-intl": "^3.10.0",
@@ -53,6 +54,7 @@
     "recharts": "^2.15.1",
     "sharp": "^0.33.3",
     "slick-carousel": "^1.8.1",
+    "swiper": "^11.2.6",
     "xlsx": "^0.18.5",
     "xml2js": "^0.6.2",
     "yup": "^1.4.0"

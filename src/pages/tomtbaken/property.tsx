@@ -2,11 +2,6 @@ import Loading from "@/components/Loading";
 import GoogleMapComponent from "@/components/Ui/map";
 import Link from "next/link";
 
-export function formatPrice(price: any) {
-  const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  return formatted + " NOK";
-}
-
 const TomtBakenProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;

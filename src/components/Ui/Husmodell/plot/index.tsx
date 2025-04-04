@@ -15,13 +15,16 @@ import Button from "@/components/common/button";
 import PlotFilterSection from "./plotFilterSection";
 import PlotProperty from "./plotProperty";
 
-const Plots: React.FC<{ handlePrevious: any; handleNext: any }> = ({
-  handlePrevious,
-  handleNext,
-}) => {
+const Plots: React.FC<{
+  handlePrevious: any;
+  handleNext: any;
+  HouseModelData: any;
+}> = ({ handlePrevious, handleNext, HouseModelData }) => {
   const router: any = useRouter();
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { hasReload } = router.query;
+
   const [formData, setFormData] = useState({
     address: "",
     Eiendomstype: [] as string[],
@@ -29,16 +32,21 @@ const Plots: React.FC<{ handlePrevious: any; handleNext: any }> = ({
     minRangeForPlot: 0,
     maxRangeForPlot: 10000000,
   });
-  useEffect(() => {
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
 
-    if (!hasReloaded) {
-      window.location.reload();
-      sessionStorage.setItem("hasReloaded", "true");
-    } else {
-      sessionStorage.removeItem("hasReloaded");
+  useEffect(() => {
+    if (hasReload) {
+      const newQuery: any = { ...router.query };
+      delete newQuery.hasReload;
+
+      const newUrl = `${router.pathname}?${new URLSearchParams(newQuery).toString()}`;
+      window.history.replaceState(null, "", newUrl);
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     }
-  }, [router.asPath]);
+  }, [hasReload]);
+
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
 
@@ -67,7 +75,7 @@ const Plots: React.FC<{ handlePrevious: any; handleNext: any }> = ({
 
         const db = getFirestore();
         const citiesCollectionRef = collection(db, "cities");
-        const cityQuery = queryParams.get("city");
+        const cityQuery = queryParams.get("Kommue");
         const husodellId = queryParams.get("husodellId");
         const citiesSnapshot = await getDocs(citiesCollectionRef);
         const fetchedCities = citiesSnapshot.docs.map((doc) => ({
@@ -162,9 +170,11 @@ const Plots: React.FC<{ handlePrevious: any; handleNext: any }> = ({
       <div className="relative pt-8">
         <SideSpaceContainer>
           <div className="flex items-end justify-between gap-4 mb-[40px]">
-            <h3 className="text-[#111322] text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
-              <span className="font-bold">Tomter</span> der du kan bygge
-              Almgaard{" "}
+            <h3 className="text-darkBlack text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
+              <span className="font-bold">Tomter</span> der du kan bygge{" "}
+              <span className="text-[#6938EF] font-bold">
+                {HouseModelData?.Husdetaljer?.husmodell_name}
+              </span>{" "}
               <span className="font-bold text-blue">
                 {router.query.city
                   ? router.query.city.replace(/\s*\(\d+\)/, "")
@@ -172,7 +182,7 @@ const Plots: React.FC<{ handlePrevious: any; handleNext: any }> = ({
               </span>
             </h3>
             {!isLoading && (
-              <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
+              <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
                 treff i <span className="font-bold">2 206</span> annonser
               </p>
@@ -206,14 +216,15 @@ const Plots: React.FC<{ handlePrevious: any; handleNext: any }> = ({
             <div className="flex justify-end gap-4 items-center">
               <Button
                 text="Tilbake"
-                className="border border-lightPurple bg-lightPurple text-blue sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+                className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                 onClick={() => {
                   handlePrevious();
+                  window.location.reload();
                 }}
               />
               {/* <Button
                 text="Neste: Tilbud"
-                className="border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                 onClick={() => {
                   handleNext();
                 }}

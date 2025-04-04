@@ -7,11 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
-
-export function formatPrice(price: any) {
-  const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  return formatted + " NOK";
-}
+import { formatPrice } from "@/pages/belop/belopProperty";
 
 const PlotProperty: React.FC<{
   isLoading: any;
@@ -72,7 +68,7 @@ const PlotProperty: React.FC<{
                 return (
                   <div
                     key={index}
-                    className="border border-[#EFF1F5] rounded-[8px] p-5"
+                    className="border border-gray3 rounded-[8px] p-5"
                     style={{
                       boxShadow:
                         "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
@@ -80,7 +76,7 @@ const PlotProperty: React.FC<{
                   >
                     <div className="mb-2 md:mb-3 desktop:mb-4 flex items-start justify-between gap-3">
                       <div>
-                        <h4 className="text-[#111322] text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 one_line_elipse">
+                        <h4 className="text-darkBlack text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 one_line_elipse">
                           <span className="font-bold">
                             {property?.house?.Husdetaljer?.husmodell_name}
                           </span>{" "}
@@ -142,7 +138,7 @@ const PlotProperty: React.FC<{
                       </div>
                       <div className="w-1/2">
                         <div className="flex gap-3 items-center">
-                          <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
                             {
                               property?.plot?.additionalData?.answer
                                 ?.bya_calculations?.results
@@ -153,21 +149,21 @@ const PlotProperty: React.FC<{
                             </span>
                           </div>
                           <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                          <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
                             {property?.house?.Husdetaljer?.Soverom}{" "}
                             <span className="text-[#4A5578] font-normal">
                               soverom
                             </span>
                           </div>
                           <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                          <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
                             {property?.house?.Husdetaljer?.Bad}{" "}
                             <span className="text-[#4A5578] font-normal">
                               bad
                             </span>
                           </div>
                           <div className="border-l-2 border-[#7F56D9] h-[12px] mx-4"></div>
-                          <div className="text-[#111322] text-xs md:text-sm font-semibold">
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
                             {
                               property?.plot?.additionalData?.answer
                                 ?.bya_calculations?.input?.plot_size
@@ -234,7 +230,7 @@ const PlotProperty: React.FC<{
                           </div>
                           <Button
                             text="Utforsk"
-                            className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
                               const router_query: any = { ...router.query };
 
@@ -257,6 +253,7 @@ const PlotProperty: React.FC<{
                               );
 
                               handleNext();
+                              window.location.reload();
                             }}
                           />
                         </div>

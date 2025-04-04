@@ -104,7 +104,7 @@ const TomtBaken: React.FC = () => {
       <div className="relative pt-8">
         <SideSpaceContainer>
           {/* <div className="flex items-end justify-between gap-4 mb-[40px]">
-            <h3 className="text-[#111322] text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
+            <h3 className="text-darkBlack text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
               Kombinasjoner av <span className="font-bold">husmodell</span> og{" "}
               <span className="font-bold">tomt</span> i{" "}
               <span className="font-bold text-blue">
@@ -114,7 +114,7 @@ const TomtBaken: React.FC = () => {
               </span>
             </h3>
             {!isLoading && (
-              <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
+              <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
                 treff i <span className="font-bold">2 606</span> Tomter
               </p>

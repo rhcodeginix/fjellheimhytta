@@ -6,10 +6,11 @@ import Button from "@/components/common/button";
 import HusmodellFilterSection from "./husmodellFilterSection";
 import HusmodellProperty from "./HusmodellProperty";
 
-const HusmodellPropertyPage: React.FC = () => {
+const HusmodellPropertyPage: React.FC<{ CadastreDataFromApi?: any }> = ({
+  CadastreDataFromApi,
+}) => {
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
   const [maxRangeData, setMaxRangeData] = useState<number>(0);
-  const [Name, setName] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     address: "",
@@ -18,30 +19,21 @@ const HusmodellPropertyPage: React.FC = () => {
     AntallSoverom: [] as string[],
     minRangeForHusmodell: 0,
     maxRangeForHusmodell: maxRangeData,
-    TypeHusprodusent: [] as string[],
     Tomtetype: [] as string[],
   });
   const [total, setTotal] = useState();
 
   useEffect(() => {
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
-
-    if (!hasReloaded) {
-      window.location.reload();
-      sessionStorage.setItem("hasReloaded", "true");
-    } else {
-      sessionStorage.removeItem("hasReloaded");
-
-      const storedMaxPrice = sessionStorage.getItem("maxHousePrice");
-      if (storedMaxPrice) {
-        setMaxRangeData(parseInt(storedMaxPrice, 10));
-        setFormData((prev) => ({
-          ...prev,
-          maxRangeForHusmodell: parseInt(storedMaxPrice, 10),
-        }));
-      }
+    const storedMaxPrice = sessionStorage.getItem("maxHousePrice");
+    if (storedMaxPrice) {
+      setMaxRangeData(parseInt(storedMaxPrice, 10));
+      setFormData((prev) => ({
+        ...prev,
+        maxRangeForHusmodell: parseInt(storedMaxPrice, 10),
+      }));
     }
   }, []);
+
   useEffect(() => {
     const fetchMaxPrice = async () => {
       try {
@@ -74,10 +66,6 @@ const HusmodellPropertyPage: React.FC = () => {
       setIsLoading(true);
 
       try {
-        const queryParams: any = new URLSearchParams(window.location.search);
-        const a = queryParams.get("Kommue").replace(/\s*\(\d+\)/, "");
-        setName(a);
-
         const q = query(collection(db, "house_model"));
 
         const querySnapshot = await getDocs(q);
@@ -125,12 +113,18 @@ const HusmodellPropertyPage: React.FC = () => {
       <div className="relative pt-8">
         <SideSpaceContainer>
           <div className="flex items-end justify-between gap-4 mb-[40px]">
-            <h3 className="text-[#111322] text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
-              <span className="font-bold">Husmodeller</span> i{" "}
-              <span className="font-bold text-blue">{Name} Kommune</span>
+            <h3 className="text-darkBlack text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
+              <span className="font-bold">Husmodeller</span> i du kan bygge i{" "}
+              <span className="font-bold text-blue">
+                {
+                  CadastreDataFromApi?.presentationAddressApi?.response?.item
+                    ?.municipality?.municipalityName
+                }
+              </span>{" "}
+              Kommune
             </h3>
             {!isLoading && (
-              <p className="text-[#111322] text-sm md:text-base desktop:text-xl font-light">
+              <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
                 treff i <span className="font-bold">{total}</span> annonser
               </p>
@@ -148,7 +142,6 @@ const HusmodellPropertyPage: React.FC = () => {
               <HusmodellProperty
                 HouseModelProperty={HouseModelProperty}
                 isLoading={isLoading}
-                name={Name}
               />
             </div>
           </div>
@@ -163,11 +156,8 @@ const HusmodellPropertyPage: React.FC = () => {
           <div className="flex justify-end items-center gap-6">
             <Button
               text="Tilbake"
-              className="border-2 border-[#6941C6] bg-white text-[#6941C6] sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
-            />
-            <Button
-              text="Neste"
-              className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[50px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[20px] desktop:py-[16px]"
+              className="border-2 border-[#6941C6] bg-white text-[#6941C6] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
+              path="/"
             />
           </div>
         </div>

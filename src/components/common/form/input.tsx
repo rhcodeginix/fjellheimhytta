@@ -28,7 +28,7 @@ const InputField: React.FC<InputProps> = ({
 }) => {
   return (
     <div>
-      <label htmlFor={id} className={`text-[#111322] text-sm font-semibold`}>
+      <label htmlFor={id} className={`text-darkBlack text-sm font-semibold`}>
         {label}
       </label>
       <Field
