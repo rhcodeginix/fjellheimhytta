@@ -19,9 +19,11 @@ const Footer = () => {
               />
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 sm:items-end">
                 <span className="text-white font-medium text-sm md:text-base">
-                  Sokkabekkveien 81,
+                  Mintomt AS
                   <br className="hidden sm:block" />
-                  3478 Nærsnes
+                  834632772
+                  <br className="hidden sm:block" />
+                  Sokkabekkveien 81, 3478 Nærsnes
                 </span>
                 <span className="text-white font-medium text-sm md:text-base">
                   +47 48 17 97 60
