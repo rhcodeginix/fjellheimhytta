@@ -366,7 +366,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
     { id: "Regulering", label: "Regulering" },
     { id: "Eierinformasjon", label: "Eierinformasjon" },
     { id: "Bygninger", label: "Bygninger" },
-    { id: "Dokument", label: "Dokument" },
+    { id: "Plandokumenter", label: "Plandokumenter" },
   ];
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
 
@@ -1674,7 +1674,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
                   )}
                 </>
               )}
-              {activeTab === "Dokument" && (
+              {activeTab === "Plandokumenter" && (
                 <>
                   {loadingLamdaData ? (
                     <div className="relative">

@@ -17,18 +17,24 @@ const HusmodellPropertyPage: React.FC<{
   lamdaDataFromApi: any;
   askData: any;
   handleNext: any;
-}> = ({ CadastreDataFromApi, lamdaDataFromApi, askData, handleNext }) => {
+  handlePrevious: any;
+}> = ({
+  CadastreDataFromApi,
+  lamdaDataFromApi,
+  askData,
+  handleNext,
+  handlePrevious,
+}) => {
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
   const [maxRangeData, setMaxRangeData] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     address: "",
-    Eiendomstype: [] as string[],
+    Hustype: [] as string[],
     TypeHusmodell: [] as string[],
     AntallSoverom: [] as string[],
     minRangeForHusmodell: 0,
     maxRangeForHusmodell: maxRangeData,
-    Tomtetype: [] as string[],
   });
   const [total, setTotal] = useState();
   const router: any = useRouter();
@@ -141,7 +147,18 @@ const HusmodellPropertyPage: React.FC<{
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
-            <span className="text-secondary2 text-sm">Tomt</span>
+            <div
+              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              onClick={() => {
+                handlePrevious();
+                const currIndex = 0;
+                localStorage.setItem("currIndex", currIndex.toString());
+              }}
+            >
+              Tomt
+            </div>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <span className="text-secondary2 text-sm">Hva kan du bygge?</span>
           </div>
           <PropertyDetail
             CadastreDataFromApi={CadastreDataFromApi}

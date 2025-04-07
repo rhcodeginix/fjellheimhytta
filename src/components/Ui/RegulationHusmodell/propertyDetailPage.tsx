@@ -28,7 +28,7 @@ const PropertyDetailPage: React.FC<{
   id: string;
 }> = ({ handleNext, handlePrevious, id }) => {
   const getEmbedUrl = (url: string) => {
-    const videoId = url.split("v=")[1]?.split("&")[0];
+    const videoId = url?.split("v=")[1]?.split("&")[0];
     return videoId
       ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&controls=0&disablekb=1&fs=0`
       : "";
@@ -184,7 +184,7 @@ const PropertyDetailPage: React.FC<{
           IsEmptyPlot: isEmptyPlot === "true",
         });
 
-        queryParams.set("leadId", querySnapshot.docs[0].id);
+        queryParams.set("leadId", docRef.id);
         router.replace({
           pathname: router.pathname,
           query: Object.fromEntries(queryParams),
@@ -404,9 +404,8 @@ const PropertyDetailPage: React.FC<{
                     ></textarea>
                   </div>
                   <h2 className="text-black text-2xl font-semibold mb-4">
-                    {husmodellData?.TittelVideo}
+                    Film av {husmodellData?.husmodell_name}
                   </h2>
-
                   <div
                     style={{
                       width: "100%",

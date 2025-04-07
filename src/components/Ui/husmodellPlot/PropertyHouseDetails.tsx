@@ -15,7 +15,12 @@ const PropertyHouseDetails: React.FC<{
   const router = useRouter();
   const leadId = router.query["leadId"];
   const Husdetaljer = HouseModelData?.Husdetaljer;
-
+  const [kommune, setKommune] = useState<any>(null);
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const cityQuery = queryParams.get("Kommue");
+    setKommune(cityQuery);
+  }, []);
   const [custHouse, setCusHouse] = useState<any>(null);
   const [equityAmount, setEquityAmount] = useState<any>(null);
   useEffect(() => {
@@ -79,7 +84,9 @@ const PropertyHouseDetails: React.FC<{
               <span className="font-bold">{supplierData?.company_name}</span>{" "}
               bygget i{" "}
               <span className="font-bold">
-                {lamdaDataFromApi?.eiendomsInformasjon?.kommune_info?.kommune}{" "}
+                {kommune ||
+                  lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
+                    ?.kommune}{" "}
                 Kommune
               </span>
             </h4>
@@ -119,9 +126,10 @@ const PropertyHouseDetails: React.FC<{
           <div>
             <p className="text-secondary text-sm mb-2">Dine tillegg</p>
             <h4 className="text-darkBlack font-semibold text-xl">
-              {equityAmount
+              {/* {equityAmount
                 ? formatCurrency(equityAmount.toLocaleString("nb-NO"))
-                : "0 NOK"}
+                : "0 NOK"} */}
+              {Husdetaljer ? formatCurrency(Husdetaljer?.pris) : 0}
             </h4>
           </div>
           <div>

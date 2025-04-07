@@ -20,7 +20,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
   const id = router.query["husodellId"];
   const city = router.query["city"];
   const getEmbedUrl = (url: string) => {
-    const videoId = url.split("v=")[1]?.split("&")[0];
+    const videoId = url?.split("v=")[1]?.split("&")[0];
     return videoId
       ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&controls=0&disablekb=1&fs=0`
       : "";
@@ -314,7 +314,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                   ></textarea>
                 </div>
                 <h2 className="text-black text-2xl font-semibold mb-4">
-                  {husmodellData?.TittelVideo}
+                  Film av {husmodellData?.husmodell_name}
                 </h2>
                 <div
                   style={{

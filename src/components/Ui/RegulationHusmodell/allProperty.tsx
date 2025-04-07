@@ -7,6 +7,7 @@ const AllProperty: React.FC<any> = ({
   lamdaDataFromApi,
   askData,
   handleNext,
+  handlePrevious,
 }) => {
   return (
     <>
@@ -16,6 +17,7 @@ const AllProperty: React.FC<any> = ({
           lamdaDataFromApi={lamdaDataFromApi}
           askData={askData}
           handleNext={handleNext}
+          handlePrevious={handlePrevious}
         />
       </div>
     </>

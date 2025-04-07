@@ -152,7 +152,13 @@ const HusmodellFilterSection: React.FC<{
             </div>
           </div>
           <div className="flex flex-col gap-6">
-            <div className="w-full">
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Eiendomstype")}
@@ -169,44 +175,54 @@ const HusmodellFilterSection: React.FC<{
               </p>
 
               {openIndex.includes("Eiendomstype") && (
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-                  {EiendomstypeArray.map((data: any, index: number) => (
-                    <label
-                      className="container container_darkgray"
-                      htmlFor={data.name}
-                      key={index}
-                    >
-                      <span className="text-darkBlack text-sm md:text-base">
-                        {data.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        id={data.name}
-                        value={data.name}
-                        checked={formData?.Eiendomstype.includes(data.name)}
-                        onChange={() => {
-                          setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.Eiendomstype);
-                            updatedSet.has(data.name)
-                              ? updatedSet.delete(data.name)
-                              : updatedSet.add(data.name);
-                            return {
-                              ...prev,
-                              Eiendomstype: Array.from(updatedSet),
-                            };
-                          });
-                        }}
-                        className="mr-2"
-                      />
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {EiendomstypeArray.map((data: any, index: number) => (
+                      <label
+                        className="container container_darkgray"
+                        htmlFor={data.name}
+                        key={index}
+                      >
+                        <span className="text-darkBlack text-sm md:text-base">
+                          {data.name}
+                        </span>
+                        <input
+                          type="checkbox"
+                          id={data.name}
+                          value={data.name}
+                          checked={formData?.Eiendomstype.includes(data.name)}
+                          onChange={() => {
+                            setFormData((prev: any) => {
+                              const updatedSet: any = new Set(
+                                prev.Eiendomstype
+                              );
+                              updatedSet.has(data.name)
+                                ? updatedSet.delete(data.name)
+                                : updatedSet.add(data.name);
+                              return {
+                                ...prev,
+                                Eiendomstype: Array.from(updatedSet),
+                              };
+                            });
+                          }}
+                          className="mr-2"
+                        />
 
-                      <span className="checkmark checkmark_darkgray"></span>
-                    </label>
-                  ))}
-                </div>
+                        <span className="checkmark checkmark_darkgray"></span>
+                      </label>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
-            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
-            <div className="w-full">
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Type husmodell")}
@@ -223,44 +239,54 @@ const HusmodellFilterSection: React.FC<{
               </p>
 
               {openIndex.includes("Type husmodell") && (
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-                  {TypeHusmodellArray.map((data: any, index: number) => (
-                    <label
-                      className="container container_darkgray"
-                      htmlFor={data.name}
-                      key={index}
-                    >
-                      <span className="text-darkBlack text-sm md:text-base">
-                        {data.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        id={data.name}
-                        value={data.name}
-                        checked={formData?.TypeHusmodell.includes(data.name)}
-                        onChange={() => {
-                          setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.TypeHusmodell);
-                            updatedSet.has(data.name)
-                              ? updatedSet.delete(data.name)
-                              : updatedSet.add(data.name);
-                            return {
-                              ...prev,
-                              TypeHusmodell: Array.from(updatedSet),
-                            };
-                          });
-                        }}
-                        className="mr-2"
-                      />
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {TypeHusmodellArray.map((data: any, index: number) => (
+                      <label
+                        className="container container_darkgray"
+                        htmlFor={data.name}
+                        key={index}
+                      >
+                        <span className="text-darkBlack text-sm md:text-base">
+                          {data.name}
+                        </span>
+                        <input
+                          type="checkbox"
+                          id={data.name}
+                          value={data.name}
+                          checked={formData?.TypeHusmodell.includes(data.name)}
+                          onChange={() => {
+                            setFormData((prev: any) => {
+                              const updatedSet: any = new Set(
+                                prev.TypeHusmodell
+                              );
+                              updatedSet.has(data.name)
+                                ? updatedSet.delete(data.name)
+                                : updatedSet.add(data.name);
+                              return {
+                                ...prev,
+                                TypeHusmodell: Array.from(updatedSet),
+                              };
+                            });
+                          }}
+                          className="mr-2"
+                        />
 
-                      <span className="checkmark checkmark_darkgray"></span>
-                    </label>
-                  ))}
-                </div>
+                        <span className="checkmark checkmark_darkgray"></span>
+                      </label>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
-            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
-            <div className="w-full">
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Antall soverom")}
@@ -277,44 +303,54 @@ const HusmodellFilterSection: React.FC<{
               </p>
 
               {openIndex.includes("Antall soverom") && (
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-                  {AntallSoveromArray.map((data: any, index: number) => (
-                    <label
-                      className="container container_darkgray"
-                      htmlFor={data.name}
-                      key={index}
-                    >
-                      <span className="text-darkBlack text-sm md:text-base">
-                        {data.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        id={data.name}
-                        value={data.name}
-                        checked={formData?.AntallSoverom.includes(data.name)}
-                        onChange={() => {
-                          setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.AntallSoverom);
-                            updatedSet.has(data.name)
-                              ? updatedSet.delete(data.name)
-                              : updatedSet.add(data.name);
-                            return {
-                              ...prev,
-                              AntallSoverom: Array.from(updatedSet),
-                            };
-                          });
-                        }}
-                        className="mr-2"
-                      />
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {AntallSoveromArray.map((data: any, index: number) => (
+                      <label
+                        className="container container_darkgray"
+                        htmlFor={data.name}
+                        key={index}
+                      >
+                        <span className="text-darkBlack text-sm md:text-base">
+                          {data.name}
+                        </span>
+                        <input
+                          type="checkbox"
+                          id={data.name}
+                          value={data.name}
+                          checked={formData?.AntallSoverom.includes(data.name)}
+                          onChange={() => {
+                            setFormData((prev: any) => {
+                              const updatedSet: any = new Set(
+                                prev.AntallSoverom
+                              );
+                              updatedSet.has(data.name)
+                                ? updatedSet.delete(data.name)
+                                : updatedSet.add(data.name);
+                              return {
+                                ...prev,
+                                AntallSoverom: Array.from(updatedSet),
+                              };
+                            });
+                          }}
+                          className="mr-2"
+                        />
 
-                      <span className="checkmark checkmark_darkgray"></span>
-                    </label>
-                  ))}
-                </div>
+                        <span className="checkmark checkmark_darkgray"></span>
+                      </label>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
-            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
-            <div className="w-full">
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Tomtetype")}
@@ -331,44 +367,52 @@ const HusmodellFilterSection: React.FC<{
               </p>
 
               {openIndex.includes("Tomtetype") && (
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-                  {TomtetypeArray.map((data: any, index: number) => (
-                    <label
-                      className="container container_darkgray"
-                      htmlFor={data.name}
-                      key={index}
-                    >
-                      <span className="text-darkBlack text-sm md:text-base">
-                        {data.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        id={data.name}
-                        value={data.name}
-                        checked={formData?.Tomtetype.includes(data.name)}
-                        onChange={() => {
-                          setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.Tomtetype);
-                            updatedSet.has(data.name)
-                              ? updatedSet.delete(data.name)
-                              : updatedSet.add(data.name);
-                            return {
-                              ...prev,
-                              Tomtetype: Array.from(updatedSet),
-                            };
-                          });
-                        }}
-                        className="mr-2"
-                      />
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {TomtetypeArray.map((data: any, index: number) => (
+                      <label
+                        className="container container_darkgray"
+                        htmlFor={data.name}
+                        key={index}
+                      >
+                        <span className="text-darkBlack text-sm md:text-base">
+                          {data.name}
+                        </span>
+                        <input
+                          type="checkbox"
+                          id={data.name}
+                          value={data.name}
+                          checked={formData?.Tomtetype.includes(data.name)}
+                          onChange={() => {
+                            setFormData((prev: any) => {
+                              const updatedSet: any = new Set(prev.Tomtetype);
+                              updatedSet.has(data.name)
+                                ? updatedSet.delete(data.name)
+                                : updatedSet.add(data.name);
+                              return {
+                                ...prev,
+                                Tomtetype: Array.from(updatedSet),
+                              };
+                            });
+                          }}
+                          className="mr-2"
+                        />
 
-                      <span className="checkmark checkmark_darkgray"></span>
-                    </label>
-                  ))}
-                </div>
+                        <span className="checkmark checkmark_darkgray"></span>
+                      </label>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
-            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
-            <div className="w-full">
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Pris på husmodell")}
@@ -385,7 +429,8 @@ const HusmodellFilterSection: React.FC<{
               </p>
 
               {openIndex.includes("Pris på husmodell") && (
-                <div className="mt-8">
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
                   <div className="mx-1">
                     <CustomSlider
                       value={[
@@ -414,7 +459,7 @@ const HusmodellFilterSection: React.FC<{
                       {formData?.maxRangeForHusmodell} NOK
                     </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
           </div>

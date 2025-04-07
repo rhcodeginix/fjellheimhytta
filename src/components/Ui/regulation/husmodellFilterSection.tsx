@@ -40,12 +40,11 @@ const CustomSlider = styled(Slider)({
 });
 type FormDataType = {
   address: string;
-  Eiendomstype: string[];
+  Hustype: string[];
   TypeHusmodell: string[];
   AntallSoverom: string[];
   minRangeForHusmodell: number;
   maxRangeForHusmodell: number;
-  Tomtetype: string[];
 };
 
 const HusmodellFilterSection: React.FC<{
@@ -54,10 +53,10 @@ const HusmodellFilterSection: React.FC<{
   maxRangeData: number;
 }> = ({ setFormData, formData, maxRangeData }) => {
   const [openIndex, setOpenIndex] = useState<string[]>([
-    "Eiendomstype",
+    "Område",
+    "Hustype",
     "Type husmodell",
     "Antall soverom",
-    "Tomtetype",
     "Pris på husmodell",
   ]);
 
@@ -68,7 +67,7 @@ const HusmodellFilterSection: React.FC<{
         : [...prevOpenIndex, type]
     );
   };
-  const EiendomstypeArray: any = [
+  const HustypeArray: any = [
     { name: "Bolig", value: "Bolig" },
     { name: "Hytte", value: "Hytte" },
   ];
@@ -91,10 +90,6 @@ const HusmodellFilterSection: React.FC<{
     { name: "5 Soverom", value: "5 Soverom" },
     { name: "6 Soverom", value: "6 Soverom" },
   ];
-  const TomtetypeArray: any = [
-    { name: "Flat", value: "Flat" },
-    { name: "Skrånet", value: "Skrånet" },
-  ];
 
   return (
     <>
@@ -109,11 +104,10 @@ const HusmodellFilterSection: React.FC<{
               setFormData((prev: any) => ({
                 ...prev,
                 address: "",
-                Eiendomstype: [],
+                Hustype: [],
                 TypeHusmodell: [],
                 AntallSoverom: [],
                 minRangeForHusmodell: 0,
-                Tomtetype: [],
                 maxRangeForHusmodell: maxRangeData,
               }));
             }}
@@ -153,61 +147,133 @@ const HusmodellFilterSection: React.FC<{
             </div>
           </div>
           <div className="flex flex-col gap-6">
-            <div className="w-full">
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
-                onClick={() => handleToggleAccordion("Eiendomstype")}
+                onClick={() => handleToggleAccordion("Område")}
               >
-                Eiendomstype
+                Område
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
-                  className={
-                    openIndex.includes("Eiendomstype") ? "rotate-180" : ""
-                  }
+                  className={openIndex.includes("Område") ? "rotate-180" : ""}
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex.includes("Eiendomstype") && (
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-                  {EiendomstypeArray.map((data: any, index: number) => (
-                    <label
-                      className="container container_darkgray"
-                      htmlFor={data.name}
-                      key={index}
-                    >
-                      <span className="text-darkBlack text-sm md:text-base">
-                        {data.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        id={data.name}
-                        value={data.name}
-                        checked={formData?.Eiendomstype.includes(data.name)}
-                        onChange={() => {
-                          setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.Eiendomstype);
-                            updatedSet.has(data.name)
-                              ? updatedSet.delete(data.name)
-                              : updatedSet.add(data.name);
-                            return {
-                              ...prev,
-                              Eiendomstype: Array.from(updatedSet),
-                            };
-                          });
-                        }}
-                        className="mr-2"
-                      />
+              {openIndex.includes("Område") && (
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {HustypeArray.map((data: any, index: number) => (
+                      <label
+                        className="container container_darkgray"
+                        htmlFor={data.name}
+                        key={index}
+                      >
+                        <span className="text-darkBlack text-sm md:text-base">
+                          {data.name}
+                        </span>
+                        <input
+                          type="checkbox"
+                          id={data.name}
+                          value={data.name}
+                          checked={formData?.Hustype.includes(data.name)}
+                          onChange={() => {
+                            setFormData((prev: any) => {
+                              const updatedSet: any = new Set(prev.Hustype);
+                              updatedSet.has(data.name)
+                                ? updatedSet.delete(data.name)
+                                : updatedSet.add(data.name);
+                              return {
+                                ...prev,
+                                Hustype: Array.from(updatedSet),
+                              };
+                            });
+                          }}
+                          className="mr-2"
+                        />
 
-                      <span className="checkmark checkmark_darkgray"></span>
-                    </label>
-                  ))}
-                </div>
+                        <span className="checkmark checkmark_darkgray"></span>
+                      </label>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
-            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
-            <div className="w-full">
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
+              <p
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                onClick={() => handleToggleAccordion("Hustype")}
+              >
+                Hustype
+                <Image
+                  src={Ic_chevron_down}
+                  alt="arrow"
+                  className={openIndex.includes("Hustype") ? "rotate-180" : ""}
+                  fetchPriority="auto"
+                />
+              </p>
+
+              {openIndex.includes("Hustype") && (
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {HustypeArray.map((data: any, index: number) => (
+                      <label
+                        className="container container_darkgray"
+                        htmlFor={data.name}
+                        key={index}
+                      >
+                        <span className="text-darkBlack text-sm md:text-base">
+                          {data.name}
+                        </span>
+                        <input
+                          type="checkbox"
+                          id={data.name}
+                          value={data.name}
+                          checked={formData?.Hustype.includes(data.name)}
+                          onChange={() => {
+                            setFormData((prev: any) => {
+                              const updatedSet: any = new Set(prev.Hustype);
+                              updatedSet.has(data.name)
+                                ? updatedSet.delete(data.name)
+                                : updatedSet.add(data.name);
+                              return {
+                                ...prev,
+                                Hustype: Array.from(updatedSet),
+                              };
+                            });
+                          }}
+                          className="mr-2"
+                        />
+
+                        <span className="checkmark checkmark_darkgray"></span>
+                      </label>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Type husmodell")}
@@ -224,44 +290,54 @@ const HusmodellFilterSection: React.FC<{
               </p>
 
               {openIndex.includes("Type husmodell") && (
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-                  {TypeHusmodellArray.map((data: any, index: number) => (
-                    <label
-                      className="container container_darkgray"
-                      htmlFor={data.name}
-                      key={index}
-                    >
-                      <span className="text-darkBlack text-sm md:text-base">
-                        {data.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        id={data.name}
-                        value={data.name}
-                        checked={formData?.TypeHusmodell.includes(data.name)}
-                        onChange={() => {
-                          setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.TypeHusmodell);
-                            updatedSet.has(data.name)
-                              ? updatedSet.delete(data.name)
-                              : updatedSet.add(data.name);
-                            return {
-                              ...prev,
-                              TypeHusmodell: Array.from(updatedSet),
-                            };
-                          });
-                        }}
-                        className="mr-2"
-                      />
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {TypeHusmodellArray.map((data: any, index: number) => (
+                      <label
+                        className="container container_darkgray"
+                        htmlFor={data.name}
+                        key={index}
+                      >
+                        <span className="text-darkBlack text-sm md:text-base">
+                          {data.name}
+                        </span>
+                        <input
+                          type="checkbox"
+                          id={data.name}
+                          value={data.name}
+                          checked={formData?.TypeHusmodell.includes(data.name)}
+                          onChange={() => {
+                            setFormData((prev: any) => {
+                              const updatedSet: any = new Set(
+                                prev.TypeHusmodell
+                              );
+                              updatedSet.has(data.name)
+                                ? updatedSet.delete(data.name)
+                                : updatedSet.add(data.name);
+                              return {
+                                ...prev,
+                                TypeHusmodell: Array.from(updatedSet),
+                              };
+                            });
+                          }}
+                          className="mr-2"
+                        />
 
-                      <span className="checkmark checkmark_darkgray"></span>
-                    </label>
-                  ))}
-                </div>
+                        <span className="checkmark checkmark_darkgray"></span>
+                      </label>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
-            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
-            <div className="w-full">
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Antall soverom")}
@@ -278,98 +354,54 @@ const HusmodellFilterSection: React.FC<{
               </p>
 
               {openIndex.includes("Antall soverom") && (
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-                  {AntallSoveromArray.map((data: any, index: number) => (
-                    <label
-                      className="container container_darkgray"
-                      htmlFor={data.name}
-                      key={index}
-                    >
-                      <span className="text-darkBlack text-sm md:text-base">
-                        {data.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        id={data.name}
-                        value={data.name}
-                        checked={formData?.AntallSoverom.includes(data.name)}
-                        onChange={() => {
-                          setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.AntallSoverom);
-                            updatedSet.has(data.name)
-                              ? updatedSet.delete(data.name)
-                              : updatedSet.add(data.name);
-                            return {
-                              ...prev,
-                              AntallSoverom: Array.from(updatedSet),
-                            };
-                          });
-                        }}
-                        className="mr-2"
-                      />
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {AntallSoveromArray.map((data: any, index: number) => (
+                      <label
+                        className="container container_darkgray"
+                        htmlFor={data.name}
+                        key={index}
+                      >
+                        <span className="text-darkBlack text-sm md:text-base">
+                          {data.name}
+                        </span>
+                        <input
+                          type="checkbox"
+                          id={data.name}
+                          value={data.name}
+                          checked={formData?.AntallSoverom.includes(data.name)}
+                          onChange={() => {
+                            setFormData((prev: any) => {
+                              const updatedSet: any = new Set(
+                                prev.AntallSoverom
+                              );
+                              updatedSet.has(data.name)
+                                ? updatedSet.delete(data.name)
+                                : updatedSet.add(data.name);
+                              return {
+                                ...prev,
+                                AntallSoverom: Array.from(updatedSet),
+                              };
+                            });
+                          }}
+                          className="mr-2"
+                        />
 
-                      <span className="checkmark checkmark_darkgray"></span>
-                    </label>
-                  ))}
-                </div>
+                        <span className="checkmark checkmark_darkgray"></span>
+                      </label>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
-            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
-            <div className="w-full">
-              <p
-                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
-                onClick={() => handleToggleAccordion("Tomtetype")}
-              >
-                Tomtetype
-                <Image
-                  src={Ic_chevron_down}
-                  alt="arrow"
-                  className={
-                    openIndex.includes("Tomtetype") ? "rotate-180" : ""
-                  }
-                  fetchPriority="auto"
-                />
-              </p>
-
-              {openIndex.includes("Tomtetype") && (
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
-                  {TomtetypeArray.map((data: any, index: number) => (
-                    <label
-                      className="container container_darkgray"
-                      htmlFor={data.name}
-                      key={index}
-                    >
-                      <span className="text-darkBlack text-sm md:text-base">
-                        {data.name}
-                      </span>
-                      <input
-                        type="checkbox"
-                        id={data.name}
-                        value={data.name}
-                        checked={formData?.Tomtetype.includes(data.name)}
-                        onChange={() => {
-                          setFormData((prev: any) => {
-                            const updatedSet: any = new Set(prev.Tomtetype);
-                            updatedSet.has(data.name)
-                              ? updatedSet.delete(data.name)
-                              : updatedSet.add(data.name);
-                            return {
-                              ...prev,
-                              Tomtetype: Array.from(updatedSet),
-                            };
-                          });
-                        }}
-                        className="mr-2"
-                      />
-
-                      <span className="checkmark checkmark_darkgray"></span>
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="border-t border-[#7D89B0] w-full border-opacity-30"></div>
-            <div className="w-full">
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Pris på husmodell")}
@@ -386,36 +418,39 @@ const HusmodellFilterSection: React.FC<{
               </p>
 
               {openIndex.includes("Pris på husmodell") && (
-                <div className="mt-8">
-                  <div className="mx-1">
-                    <CustomSlider
-                      value={[
-                        formData?.minRangeForHusmodell,
-                        formData?.maxRangeForHusmodell,
-                      ]}
-                      onChange={(_event: any, newValue: any) => {
-                        setFormData((prev: any) => ({
-                          ...prev,
-                          minRangeForHusmodell: newValue[0],
-                          maxRangeForHusmodell: newValue[1],
-                        }));
-                      }}
-                      valueLabelDisplay="auto"
-                      aria-labelledby="range-slider"
-                      min={0}
-                      max={maxRangeData}
-                      step={100}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between h-[30px] mt-2">
-                    <div className="text-grayText text-sm lg:text-base">
-                      {formData?.minRangeForHusmodell} NOK
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div>
+                    <div className="mx-1">
+                      <CustomSlider
+                        value={[
+                          formData?.minRangeForHusmodell,
+                          formData?.maxRangeForHusmodell,
+                        ]}
+                        onChange={(_event: any, newValue: any) => {
+                          setFormData((prev: any) => ({
+                            ...prev,
+                            minRangeForHusmodell: newValue[0],
+                            maxRangeForHusmodell: newValue[1],
+                          }));
+                        }}
+                        valueLabelDisplay="auto"
+                        aria-labelledby="range-slider"
+                        min={0}
+                        max={maxRangeData}
+                        step={100}
+                      />
                     </div>
-                    <div className="text-grayText text-sm lg:text-base">
-                      {formData?.maxRangeForHusmodell} NOK
+                    <div className="flex items-center justify-between h-[30px] mt-2">
+                      <div className="text-grayText text-sm lg:text-base">
+                        {formData?.minRangeForHusmodell} NOK
+                      </div>
+                      <div className="text-grayText text-sm lg:text-base">
+                        {formData?.maxRangeForHusmodell} NOK
+                      </div>
                     </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
           </div>

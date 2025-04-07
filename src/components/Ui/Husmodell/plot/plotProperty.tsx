@@ -243,17 +243,20 @@ const PlotProperty: React.FC<{
                                 router_query.plotId = property.plot.id;
                               }
 
-                              router.push(
-                                {
-                                  pathname: router.pathname,
-                                  query: router_query,
-                                },
-                                undefined,
-                                { shallow: true }
-                              );
+                              router
+                                .push(
+                                  {
+                                    pathname: router.pathname,
+                                    query: router_query,
+                                  },
+                                  undefined,
+                                  { shallow: true }
+                                )
+                                .then(() => {
+                                  window.location.reload();
+                                });
 
                               handleNext();
-                              window.location.reload();
                             }}
                           />
                         </div>

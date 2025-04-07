@@ -18,7 +18,7 @@ export function addDaysToDate(dateString: any, days: any) {
   return `${day}-${month}-${year}`;
 }
 
-const Tilbudsdetaljer: React.FC<any> = () => {
+const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
   const router = useRouter();
   const id = router.query["husodellId"];
 
@@ -32,6 +32,7 @@ const Tilbudsdetaljer: React.FC<any> = () => {
         const plotId = queryParams.get("plotId")
           ? queryParams.get("plotId")
           : queryParams.get("propertyId");
+        const isNumericPlotId = plotId && /^\d+$/.test(plotId);
 
         let plotCollectionRef: any;
         let correctPlotId = null;
@@ -66,7 +67,34 @@ const Tilbudsdetaljer: React.FC<any> = () => {
             return;
           }
         } else {
-          plotCollectionRef = doc(db, "empty_plot", String(plotId));
+          if (isNumericPlotId) {
+            plotCollectionRef = collection(db, "empty_plot");
+
+            const allLeadsQuery = query(plotCollectionRef);
+            const allLeadsSnapshot = await getDocs(allLeadsQuery);
+
+            if (allLeadsSnapshot.empty) {
+              console.warn("No leads found in the collection.");
+              return;
+            }
+
+            const allLeads = allLeadsSnapshot.docs.map((doc: any) => {
+              return { propertyId: doc.id, ...doc.data() };
+            });
+            for (const lead of allLeads) {
+              if (lead?.propertyId) {
+                correctPlotId = lead.propertyId;
+                break;
+              }
+            }
+
+            if (!correctPlotId) {
+              console.error("No valid plotId found in lamdaData.");
+              return;
+            }
+          } else {
+            plotCollectionRef = doc(db, "empty_plot", String(plotId));
+          }
         }
 
         let plotDocSnap;
@@ -74,7 +102,12 @@ const Tilbudsdetaljer: React.FC<any> = () => {
           const plotDocRef = doc(plotCollectionRef, correctPlotId);
           plotDocSnap = await getDoc(plotDocRef);
         } else {
-          plotDocSnap = await getDoc(plotCollectionRef);
+          if (isNumericPlotId) {
+            const plotDocRef = doc(plotCollectionRef, correctPlotId);
+            plotDocSnap = await getDoc(plotDocRef);
+          } else {
+            plotDocSnap = await getDoc(plotCollectionRef);
+          }
         }
 
         const husmodellDocRef = doc(db, "house_model", String(id));
@@ -241,8 +274,8 @@ const Tilbudsdetaljer: React.FC<any> = () => {
                 </div>
               </div>
               <div className="flex gap-8 my-5">
-                <div className="w-full">
-                  <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="w-full flex flex-col gap-3">
+                  <div className="flex items-center justify-between gap-2">
                     <p className="text-[#4A5578] text-xs md:text-sm mb-1 truncate">
                       Pris for{" "}
                       <span className="font-semibold">
@@ -258,34 +291,36 @@ const Tilbudsdetaljer: React.FC<any> = () => {
                       )}
                     </h6>
                   </div>
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex flex-col gap-1 w-max">
-                      <p className="text-secondary text-sm whitespace-nowrap">
-                        Estimert byggestart
-                      </p>
-                      <h5 className="text-black text-sm font-semibold whitespace-nowrap">
-                        {addDaysToDate(
-                          finalData?.husmodell?.createdAt,
-                          husmodellData?.appSubmitApprove
-                        )}
-                      </h5>
+                  {isRemove ? null : (
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex flex-col gap-1 w-max">
+                        <p className="text-secondary text-sm whitespace-nowrap">
+                          Estimert byggestart
+                        </p>
+                        <h5 className="text-black text-sm font-semibold whitespace-nowrap">
+                          {addDaysToDate(
+                            finalData?.husmodell?.createdAt,
+                            husmodellData?.appSubmitApprove
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex flex-col gap-1 w-max">
+                        <p className="text-secondary text-sm whitespace-nowrap">
+                          Estimert Innflytting
+                        </p>
+                        <h5 className="text-black text-sm font-semibold text-right whitespace-nowrap">
+                          {addDaysToDate(
+                            finalData?.husmodell?.createdAt,
+                            totalDays
+                          )}
+                        </h5>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1 w-max">
-                      <p className="text-secondary text-sm whitespace-nowrap">
-                        Estimert Innflytting
-                      </p>
-                      <h5 className="text-black text-sm font-semibold text-right whitespace-nowrap">
-                        {addDaysToDate(
-                          finalData?.husmodell?.createdAt,
-                          totalDays
-                        )}
-                      </h5>
-                    </div>
-                  </div>
+                  )}
                 </div>
                 <div className="border-l border-[#DCDFEA]"></div>
-                <div className="w-full">
-                  <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="w-full flex flex-col gap-3">
+                  <div className="flex items-center justify-between gap-2">
                     <p className="text-[#4A5578] text-xs md:text-sm mb-1 truncate">
                       Pris for <span className="font-semibold">Tomt</span>
                     </p>
@@ -297,30 +332,32 @@ const Tilbudsdetaljer: React.FC<any> = () => {
                         : "0 NOK"}
                     </h6>
                   </div>
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <div className="flex flex-col gap-1 w-max">
-                      <p className="text-secondary text-sm whitespace-nowrap">
-                        Estimert start kjøpsprosess
-                      </p>
-                      <h5 className="text-black text-sm font-semibold whitespace-nowrap">
-                        {addDaysToDate(
-                          finalData?.husmodell?.createdAt,
-                          husmodellData?.appSubmitApprove
-                        )}
-                      </h5>
+                  {isRemove ? null : (
+                    <div className="flex items-center justify-between gap-2 mb-4">
+                      <div className="flex flex-col gap-1 w-max">
+                        <p className="text-secondary text-sm whitespace-nowrap">
+                          Estimert start kjøpsprosess
+                        </p>
+                        <h5 className="text-black text-sm font-semibold whitespace-nowrap">
+                          {addDaysToDate(
+                            finalData?.husmodell?.createdAt,
+                            husmodellData?.appSubmitApprove
+                          )}
+                        </h5>
+                      </div>
+                      <div className="flex flex-col gap-1 w-max">
+                        <p className="text-secondary text-sm whitespace-nowrap">
+                          Estimert overtakelse
+                        </p>
+                        <h5 className="text-black text-sm font-semibold text-right whitespace-nowrap">
+                          {addDaysToDate(
+                            finalData?.husmodell?.createdAt,
+                            totalDays
+                          )}
+                        </h5>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1 w-max">
-                      <p className="text-secondary text-sm whitespace-nowrap">
-                        Estimert overtakelse
-                      </p>
-                      <h5 className="text-black text-sm font-semibold text-right whitespace-nowrap">
-                        {addDaysToDate(
-                          finalData?.husmodell?.createdAt,
-                          totalDays
-                        )}
-                      </h5>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
               <div className="bg-[#F5F8FF] p-3 rounded-lg flex items-center justify-between">

@@ -6,6 +6,7 @@ const Husmodell: React.FC<any> = ({
   lamdaDataFromApi,
   CadastreDataFromApi,
   askData,
+  handlePrevious,
 }) => {
   return (
     <div className="relative">
@@ -14,6 +15,7 @@ const Husmodell: React.FC<any> = ({
         CadastreDataFromApi={CadastreDataFromApi}
         askData={askData}
         handleNext={handleNext}
+        handlePrevious={handlePrevious}
       />
     </div>
   );

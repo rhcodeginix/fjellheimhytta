@@ -217,7 +217,7 @@ const LeadsBox: React.FC<{ col?: any; isShow?: any }> = ({ col, isShow }) => {
                       className="mb-6 w-[152px] h-[40px]"
                     />
                     <div className="text-black text-lg font-light mb-6">
-                      Ønsker du å bli kontaktet av
+                      Ønsker du å bli kontaktet av{" "}
                       <span className="font-bold">
                         {supplierData?.company_name}
                       </span>{" "}

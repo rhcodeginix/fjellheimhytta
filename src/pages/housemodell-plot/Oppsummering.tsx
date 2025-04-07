@@ -137,10 +137,10 @@ const Oppsummering: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Tomt og husmodell
@@ -149,10 +149,10 @@ const Oppsummering: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 1;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Tilpass
@@ -161,10 +161,10 @@ const Oppsummering: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 2;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Tilbud
@@ -173,10 +173,10 @@ const Oppsummering: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 3;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Finansiering
@@ -320,7 +320,9 @@ const Oppsummering: React.FC<{
                             <div className="border w-full border-t border-b-0 border-r-0 border-l-0 border-darkGray"></div>
                             <p className="text-secondary2 text-base">
                               Ved å booke en avtale vil{" "}
-                              <span className="font-bold">Simen Wolmer</span>{" "}
+                              <span className="font-bold">
+                                {supplierData?.Kontaktperson}
+                              </span>{" "}
                               hos{" "}
                               <span className="font-bold">
                                 {supplierData?.company_name}
@@ -691,7 +693,7 @@ const Oppsummering: React.FC<{
               }}
             />
             <Button
-              text="Send til BoligPartner"
+              text={`Send til ${supplierData?.company_name}`}
               className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 handleNext();

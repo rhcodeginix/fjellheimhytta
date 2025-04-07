@@ -14,6 +14,7 @@ import "swiper/css/pagination";
 import GoogleMapComponent from "@/components/Ui/map";
 import { addDaysToDate } from "@/components/Ui/stepperUi/productDetailWithPrice";
 import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
+import { useRouter } from "next/router";
 
 const Tilbud: React.FC<{
   handleNext: any;
@@ -34,6 +35,11 @@ const Tilbud: React.FC<{
   handlePrevious,
   supplierData,
 }) => {
+  const router = useRouter();
+  const { homePage } = router.query;
+  const { query } = router;
+  const updatedQuery = { ...query };
+
   const Huskonfigurator =
     HouseModelData?.Huskonfigurator?.hovedkategorinavn || [];
   const Husdetaljer = HouseModelData?.Husdetaljer;
@@ -72,34 +78,36 @@ const Tilbud: React.FC<{
     if (Huskonfigurator?.length > 0 && custHouse?.length > 0) {
       const mergedArray = Huskonfigurator.map(
         (category: any, catIndex: number) => {
-          return {
-            ...category,
-            Kategorinavn: category.Kategorinavn.map(
-              (subCategory: any, subIndex: number) => {
-                const match = custHouse.find(
-                  (item: any) =>
-                    item.category === catIndex && item.subCategory === subIndex
-                );
+          const matchedSubCategories = category.Kategorinavn.map(
+            (subCategory: any, subIndex: number) => {
+              const match = custHouse.find(
+                (item: any) =>
+                  item.category === catIndex && item.subCategory === subIndex
+              );
 
-                if (match) {
-                  return {
-                    ...subCategory,
-                    produkter: [match.product],
-                  };
-                }
-                return subCategory;
+              if (match) {
+                return {
+                  ...subCategory,
+                  produkter: [match.product],
+                };
               }
-            ),
-          };
+
+              return null;
+            }
+          ).filter(Boolean);
+
+          if (matchedSubCategories.length > 0) {
+            return {
+              ...category,
+              Kategorinavn: matchedSubCategories,
+            };
+          }
+
+          return null;
         }
-      );
+      ).filter(Boolean);
 
-      const filteredArray = mergedArray.filter(
-        (item: any) =>
-          Array.isArray(item.Kategorinavn) && item.Kategorinavn.length > 0
-      );
-
-      setUpdatedArray(filteredArray);
+      setUpdatedArray(mergedArray);
     }
   }, [Huskonfigurator, custHouse]);
 
@@ -118,34 +126,53 @@ const Tilbud: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
+                handlePrevious();
               }}
             >
               Tomt
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            {!homePage && (
+              <>
+                <div
+                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
+                  onClick={() => {
+                    delete updatedQuery.propertyId;
+                    delete updatedQuery.husodellId;
+                    delete updatedQuery.leadId;
+                    delete updatedQuery.emptyPlot;
+
+                    router
+                      .push(
+                        {
+                          pathname: router.pathname,
+                          query: updatedQuery,
+                        },
+                        undefined,
+                        { shallow: true }
+                      )
+                      .then(() => {
+                        window.location.reload();
+                      });
+                    const currIndex = 1;
+                    localStorage.setItem("currIndex", currIndex.toString());
+                    handlePrevious();
+                  }}
+                >
+                  Hva kan du bygge?
+                </div>
+                <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+              </>
+            )}
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
-                const currIndex = 1;
-                localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
-              }}
-            >
-              Hva du kan bygge?
-            </div>
-            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
-            <div
-              className="text-[#7839EE] text-sm font-medium cursor-pointer"
-              onClick={() => {
-                handlePrevious();
                 const currIndex = 2;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Detaljer
@@ -154,10 +181,10 @@ const Tilbud: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 3;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Tilpass
@@ -180,11 +207,9 @@ const Tilbud: React.FC<{
 
       <div className="pt-6 pb-8">
         <SideSpaceContainer>
+          <h5 className="text-darkBlack text-xl font-semibold mb-4">Tilbud</h5>
           <div className="flex items-start gap-6">
             <div className="w-[40%]">
-              <h5 className="text-darkBlack text-xl font-semibold mb-4">
-                Tilbud
-              </h5>
               <div className="border border-[#DCDFEA] rounded-lg p-5">
                 <h4 className="text-black text-sm md:text-base lg:text-lg mb-1">
                   <span className="font-semibold">

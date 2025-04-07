@@ -101,7 +101,7 @@ const Husdetaljer: React.FC<{ husmodellData: any }> = ({ husmodellData }) => {
         </div>
         <div className="w-1/3 border border-gray shadow-shadow2 rounded-lg h-full">
           <div className="px-4 py-5 border-b border-gray text-black text-base font-semibold">
-            Dokumenter
+            Plandokumenter
           </div>
           <div className="p-4 flex flex-col gap-4 overflow-y-auto h-[calc(100%-65px)] overFlowYAuto">
             {husmodellData?.documents.map((doc: any, index: number) => {
@@ -296,9 +296,8 @@ const Husdetaljer: React.FC<{ husmodellData: any }> = ({ husmodellData }) => {
             ></textarea>
           </div>
           <h2 className="text-black text-2xl font-semibold mb-4">
-            {husmodellData?.TittelVideo}
+            Film av {husmodellData?.husmodell_name}
           </h2>
-
           <div
             style={{
               width: "100%",

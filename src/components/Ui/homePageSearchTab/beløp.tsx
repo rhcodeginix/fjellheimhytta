@@ -197,7 +197,7 @@ const BeløpTab = () => {
           <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
             <div className="w-[92%]">
               <div className="text-[#30374F] mb-2 text-sm">
-                Hvor mye kan du bruke totalt for både tomt og bolig?
+                Hvor mye vil du bruke totalt for både tomt og bolig?
               </div>
               <input
                 ref={kartInputRef}

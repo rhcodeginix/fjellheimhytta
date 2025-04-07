@@ -29,7 +29,7 @@ import Eierinformasjon from "@/components/Ui/regulationChart/Eierinformasjon";
 import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
 import Link from "next/link";
 import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
-import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
+// import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
 import {
   Building,
   Building2,
@@ -300,7 +300,7 @@ const Tomt: React.FC<{
     { id: "Regulering", label: "Regulering", icon: <FileText /> },
     { id: "Eierinformasjon", label: "Eierinformasjon", icon: <FileUser /> },
     { id: "Bygninger", label: "Bygninger", icon: <Building /> },
-    { id: "Dokument", label: "Dokument", icon: <ClipboardList /> },
+    { id: "Plandokumenter", label: "Plandokumenter", icon: <ClipboardList /> },
   ];
   const [PlotActiveTab, setPlotActiveTab] = useState<string>(plotTabs[0].id);
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
@@ -334,9 +334,9 @@ const Tomt: React.FC<{
         lamdaDataFromApi={lamdaDataFromApi}
         askData={askData}
       />
-      <SideSpaceContainer>
+      {/* <SideSpaceContainer>
         <LeadsBox isShow={true} />
-      </SideSpaceContainer>
+      </SideSpaceContainer> */}
       <div id="regulationDocument">
         <div
           className="border-b border-gray3 py-6 pb-8"
@@ -1668,7 +1668,7 @@ const Tomt: React.FC<{
                       )}
                     </>
                   )}
-                  {PlotActiveTab === "Dokument" && (
+                  {PlotActiveTab === "Plandokumenter" && (
                     <>
                       {loadingLamdaData ? (
                         <div className="relative">

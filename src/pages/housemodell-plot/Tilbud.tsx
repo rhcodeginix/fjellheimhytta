@@ -75,34 +75,36 @@ const Tilbud: React.FC<{
     if (Huskonfigurator?.length > 0 && custHouse?.length > 0) {
       const mergedArray = Huskonfigurator.map(
         (category: any, catIndex: number) => {
-          return {
-            ...category,
-            Kategorinavn: category.Kategorinavn.map(
-              (subCategory: any, subIndex: number) => {
-                const match = custHouse.find(
-                  (item: any) =>
-                    item.category === catIndex && item.subCategory === subIndex
-                );
+          const matchedSubCategories = category.Kategorinavn.map(
+            (subCategory: any, subIndex: number) => {
+              const match = custHouse.find(
+                (item: any) =>
+                  item.category === catIndex && item.subCategory === subIndex
+              );
 
-                if (match) {
-                  return {
-                    ...subCategory,
-                    produkter: [match.product],
-                  };
-                }
-                return subCategory;
+              if (match) {
+                return {
+                  ...subCategory,
+                  produkter: [match.product],
+                };
               }
-            ),
-          };
+
+              return null;
+            }
+          ).filter(Boolean);
+
+          if (matchedSubCategories.length > 0) {
+            return {
+              ...category,
+              Kategorinavn: matchedSubCategories,
+            };
+          }
+
+          return null;
         }
-      );
+      ).filter(Boolean);
 
-      const filteredArray = mergedArray.filter(
-        (item: any) =>
-          Array.isArray(item.Kategorinavn) && item.Kategorinavn.length > 0
-      );
-
-      setUpdatedArray(filteredArray);
+      setUpdatedArray(mergedArray);
     }
   }, [Huskonfigurator, custHouse]);
 
@@ -121,10 +123,10 @@ const Tilbud: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Tomt og husmodell
@@ -133,10 +135,10 @@ const Tilbud: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 1;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Tilpass
@@ -160,11 +162,9 @@ const Tilbud: React.FC<{
 
       <div className="pt-6 pb-8">
         <SideSpaceContainer>
+          <h5 className="text-darkBlack text-xl font-semibold mb-4">Tilbud</h5>
           <div className="flex items-start gap-6">
             <div className="w-[40%]">
-              <h5 className="text-darkBlack text-xl font-semibold mb-4">
-                Tilbud
-              </h5>
               <div className="border border-[#DCDFEA] rounded-lg p-5">
                 <h4 className="text-black text-sm md:text-base lg:text-lg mb-1">
                   <span className="font-semibold">

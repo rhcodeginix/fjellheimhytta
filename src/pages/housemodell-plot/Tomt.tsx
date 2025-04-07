@@ -288,7 +288,7 @@ const Tomt: React.FC<{
     { id: "Regulering", label: "Regulering", icon: <FileText /> },
     { id: "Eierinformasjon", label: "Eierinformasjon", icon: <FileUser /> },
     { id: "Bygninger", label: "Bygninger", icon: <Building /> },
-    { id: "Dokument", label: "Dokument", icon: <ClipboardList /> },
+    { id: "Plandokumenter", label: "Plandokumenter", icon: <ClipboardList /> },
   ];
   const [PlotActiveTab, setPlotActiveTab] = useState<string>(plotTabs[0].id);
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
@@ -1680,7 +1680,7 @@ const Tomt: React.FC<{
                       )}
                     </>
                   )}
-                  {PlotActiveTab === "Dokument" && (
+                  {PlotActiveTab === "Plandokumenter" && (
                     <>
                       {loadingLamdaData ? (
                         <div className="relative">

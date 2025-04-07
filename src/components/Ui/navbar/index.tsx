@@ -100,7 +100,7 @@ const Header = () => {
                 onClick={toggleDrawer}
                 fetchPriority="auto"
               />
-              <Link href={"/"} onClick={()=>router.push("/")}>
+              <Link href={"/"} onClick={() => router.push("/")}>
                 <Image
                   src={Ic_logo}
                   alt="logo"
@@ -173,7 +173,7 @@ const Header = () => {
                           setIsDropdownOpen(false);
                         }}
                       >
-                        Search History
+                        Søkehistorikk
                       </Link>
                       <Link
                         href={"/add-plot-list"}
@@ -182,14 +182,14 @@ const Header = () => {
                           setIsDropdownOpen(false);
                         }}
                       >
-                        Added Plot List
+                        Annonser din tomt
                       </Link>
                       <Link
                         href={"/login"}
                         className="block px-4 py-2 text-sm hover:bg-lightPurple text-black w-full text-left cursor-pointer"
                         onClick={handleLogout}
                       >
-                        Logout
+                        Logg ut
                       </Link>
                     </div>
                   )}

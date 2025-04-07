@@ -28,26 +28,25 @@ const Tomt: React.FC<any> = ({
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-[#7839EE] text-sm font-medium"
+              className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Husmodell
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
-            <Link
-              href={"/"}
-              className="text-[#7839EE] text-sm font-medium"
+            <div
+              className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
                 handlePrevious();
               }}
             >
               Tilpass
-            </Link>
+            </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <span className="text-secondary2 text-sm">Tomt</span>
           </div>

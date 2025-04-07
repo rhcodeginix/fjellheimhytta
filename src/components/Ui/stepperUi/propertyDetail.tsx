@@ -31,7 +31,7 @@ const PropertyDetail: React.FC<any> = ({
                   CadastreDataFromApi?.presentationAddressApi?.response?.item
                     ?.municipality?.municipalityName
                 }
-                )
+                ) Kommune
               </span>
             </h2>
             <p className="text-secondary2 text-lg">

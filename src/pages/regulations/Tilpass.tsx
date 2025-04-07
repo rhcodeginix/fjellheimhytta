@@ -15,6 +15,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
+import { useRouter } from "next/router";
 
 const Tilpass: React.FC<{
   handleNext: any;
@@ -35,6 +36,11 @@ const Tilpass: React.FC<{
   handlePrevious,
   supplierData,
 }) => {
+  const router = useRouter();
+  const { homePage } = router.query;
+  const { query } = router;
+  const updatedQuery = { ...query };
+
   const Huskonfigurator =
     HouseModelData?.Huskonfigurator?.hovedkategorinavn || [];
 
@@ -77,32 +83,34 @@ const Tilpass: React.FC<{
       const defaultSelectedProducts: any = {};
       const defaultSelectedProductsArray: any[] = [];
 
-      Huskonfigurator.forEach((tabItem: any, tabIndex: number) => {
-        if (tabItem.Kategorinavn?.length > 0) {
-          tabItem.Kategorinavn.forEach(
-            (categoryItem: any, categoryIndex: number) => {
-              if (categoryItem.produkter?.length > 0) {
-                const product = categoryItem.produkter[0];
-                const key = `${tabIndex}-${categoryIndex}`;
+      const selectedTab = Huskonfigurator.find(
+        (tabItem: any) => tabItem.isSelected
+      );
 
-                defaultSelectedProducts[key] = {
-                  category: tabIndex,
-                  subCategory: categoryIndex,
-                  product,
-                  index: 1,
-                };
+      if (selectedTab && selectedTab.Kategorinavn?.length > 0) {
+        selectedTab.Kategorinavn.forEach(
+          (categoryItem: any, categoryIndex: number) => {
+            if (categoryItem.produkter?.length > 0) {
+              const product = categoryItem.produkter[0];
+              const key = `0-${categoryIndex}`;
 
-                defaultSelectedProductsArray.push({
-                  category: tabIndex,
-                  subCategory: categoryIndex,
-                  product,
-                  index: 1,
-                });
-              }
+              defaultSelectedProducts[key] = {
+                category: 0,
+                subCategory: categoryIndex,
+                product,
+                index: 0,
+              };
+
+              defaultSelectedProductsArray.push({
+                category: 0,
+                subCategory: categoryIndex,
+                product,
+                index: 1,
+              });
             }
-          );
-        }
-      });
+          }
+        );
+      }
 
       setSelectedProducts(defaultSelectedProducts);
       setSelectedProductsArray(defaultSelectedProductsArray);
@@ -154,34 +162,53 @@ const Tilpass: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
+                handlePrevious();
               }}
             >
               Tomt
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            {!homePage && (
+              <>
+                <div
+                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
+                  onClick={() => {
+                    delete updatedQuery.propertyId;
+                    delete updatedQuery.husodellId;
+                    delete updatedQuery.leadId;
+                    delete updatedQuery.emptyPlot;
+
+                    router
+                      .push(
+                        {
+                          pathname: router.pathname,
+                          query: updatedQuery,
+                        },
+                        undefined,
+                        { shallow: true }
+                      )
+                      .then(() => {
+                        window.location.reload();
+                      });
+                    const currIndex = 1;
+                    localStorage.setItem("currIndex", currIndex.toString());
+                    handlePrevious();
+                  }}
+                >
+                  Hva kan du bygge?
+                </div>
+                <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+              </>
+            )}
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
-                const currIndex = 1;
-                localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
-              }}
-            >
-              Hva du kan bygge?
-            </div>
-            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
-            <div
-              className="text-[#7839EE] text-sm font-medium cursor-pointer"
-              onClick={() => {
-                handlePrevious();
                 const currIndex = 2;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Detaljer
@@ -225,7 +252,7 @@ const Tilpass: React.FC<{
                     }}
                   >
                     <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs mt-1 ${
                         selectedTab === index
                           ? "bg-[#00359E] text-white"
                           : "bg-[#ECE9FE] text-darkBlack"
@@ -353,7 +380,7 @@ const Tilpass: React.FC<{
                                   </h5>
                                 </div>
                                 <Button
-                                  text="Velge"
+                                  text="Velg"
                                   className={`border-2 text-[#7839EE] ${
                                     isSelected
                                       ? "border-[#7839EE] bg-[#ECE9FE]"

@@ -67,32 +67,34 @@ const Tilpass: React.FC<any> = ({
       const defaultSelectedProducts: any = {};
       const defaultSelectedProductsArray: any[] = [];
 
-      Huskonfigurator.forEach((tabItem: any, tabIndex: number) => {
-        if (tabItem.Kategorinavn?.length > 0) {
-          tabItem.Kategorinavn.forEach(
-            (categoryItem: any, categoryIndex: number) => {
-              if (categoryItem.produkter?.length > 0) {
-                const product = categoryItem.produkter[0];
-                const key = `${tabIndex}-${categoryIndex}`;
+      const selectedTab = Huskonfigurator.find(
+        (tabItem: any) => tabItem.isSelected
+      );
 
-                defaultSelectedProducts[key] = {
-                  category: tabIndex,
-                  subCategory: categoryIndex,
-                  product,
-                  index: 1,
-                };
+      if (selectedTab && selectedTab.Kategorinavn?.length > 0) {
+        selectedTab.Kategorinavn.forEach(
+          (categoryItem: any, categoryIndex: number) => {
+            if (categoryItem.produkter?.length > 0) {
+              const product = categoryItem.produkter[0];
+              const key = `0-${categoryIndex}`;
 
-                defaultSelectedProductsArray.push({
-                  category: tabIndex,
-                  subCategory: categoryIndex,
-                  product,
-                  index: 1,
-                });
-              }
+              defaultSelectedProducts[key] = {
+                category: 0,
+                subCategory: categoryIndex,
+                product,
+                index: 0,
+              };
+
+              defaultSelectedProductsArray.push({
+                category: 0,
+                subCategory: categoryIndex,
+                product,
+                index: 1,
+              });
             }
-          );
-        }
-      });
+          }
+        );
+      }
 
       setSelectedProducts(defaultSelectedProducts);
       setSelectedProductsArray(defaultSelectedProductsArray);
@@ -145,8 +147,10 @@ const Tilpass: React.FC<any> = ({
                 </Link>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
                 <div
-                  className="text-[#7839EE] text-sm font-medium"
+                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
                   onClick={() => {
+                    const currIndex = 0;
+                    localStorage.setItem("currIndex", currIndex.toString());
                     handlePrevious();
                   }}
                 >
@@ -190,7 +194,7 @@ const Tilpass: React.FC<any> = ({
                         }}
                       >
                         <div
-                          className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                          className={`w-6 h-6 rounded-full flex items-center justify-center text-xs mt-1 ${
                             selectedTab === index
                               ? "bg-[#00359E] text-white"
                               : "bg-[#ECE9FE] text-darkBlack"
@@ -320,7 +324,7 @@ const Tilpass: React.FC<any> = ({
                                       </h5>
                                     </div>
                                     <Button
-                                      text="Velge"
+                                      text="Velg"
                                       className={`border-2 text-[#7839EE] ${
                                         isSelected
                                           ? "border-[#7839EE] bg-[#ECE9FE]"
@@ -369,6 +373,8 @@ const Tilpass: React.FC<any> = ({
                   className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                   onClick={() => {
                     handlePrevious();
+                    const currIndex = 0;
+                    localStorage.setItem("currIndex", currIndex.toString());
                   }}
                 />
                 <Button

@@ -6,9 +6,7 @@ import Button from "@/components/common/button";
 import HusmodellFilterSection from "./husmodellFilterSection";
 import HusmodellProperty from "./HusmodellProperty";
 
-const HusmodellPropertyPage: React.FC<{ CadastreDataFromApi?: any }> = ({
-  CadastreDataFromApi,
-}) => {
+const HusmodellPropertyPage: React.FC = () => {
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
   const [maxRangeData, setMaxRangeData] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +32,12 @@ const HusmodellPropertyPage: React.FC<{ CadastreDataFromApi?: any }> = ({
     }
   }, []);
 
+  const [kommune, setKommune] = useState<any>(null);
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const cityQuery = queryParams.get("Kommue");
+    setKommune(cityQuery);
+  }, []);
   useEffect(() => {
     const fetchMaxPrice = async () => {
       try {
@@ -115,13 +119,7 @@ const HusmodellPropertyPage: React.FC<{ CadastreDataFromApi?: any }> = ({
           <div className="flex items-end justify-between gap-4 mb-[40px]">
             <h3 className="text-darkBlack text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
               <span className="font-bold">Husmodeller</span> i du kan bygge i{" "}
-              <span className="font-bold text-blue">
-                {
-                  CadastreDataFromApi?.presentationAddressApi?.response?.item
-                    ?.municipality?.municipalityName
-                }
-              </span>{" "}
-              Kommune
+              <span className="font-bold text-blue">{kommune}</span> Kommune
             </h3>
             {!isLoading && (
               <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">

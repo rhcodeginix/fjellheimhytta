@@ -30,6 +30,16 @@ import {
   House,
 } from "lucide-react";
 import HouseDetailPage from "@/components/Ui/houseDetail";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
 
 const HouseModelSingleProperty: React.FC<{
   handleNext: any;
@@ -42,10 +52,11 @@ const HouseModelSingleProperty: React.FC<{
   HouseModelData: any;
   askData: any;
   lamdaDataFromApi: any;
+  user: any;
 }> = ({
   handleNext,
   HouseModelData,
-  //   handlePrevious,
+  // handlePrevious,
   loadingAdditionalData,
   loginUser,
   loadingLamdaData,
@@ -53,11 +64,12 @@ const HouseModelSingleProperty: React.FC<{
   CadastreDataFromApi,
   lamdaDataFromApi,
   askData,
+  user,
 }) => {
   const router = useRouter();
   const { hasReload, homePage } = router.query;
-  const { pathname, query } = router;
-  const updatedQuery = { ...query };
+  const { pathname, query: routequery } = router;
+  const updatedQuery = { ...routequery };
 
   useEffect(() => {
     if (hasReload) {
@@ -244,10 +256,100 @@ const HouseModelSingleProperty: React.FC<{
     { id: "Regulering", label: "Regulering", icon: <FileText /> },
     { id: "Eierinformasjon", label: "Eierinformasjon", icon: <FileUser /> },
     { id: "Bygninger", label: "Bygninger", icon: <Building /> },
-    { id: "Dokument", label: "Dokument", icon: <ClipboardList /> },
+    { id: "Plandokumenter", label: "Plandokumenter", icon: <ClipboardList /> },
   ];
   const [PlotActiveTab, setPlotActiveTab] = useState<string>(plotTabs[0].id);
   const [activeTab, setActiveTab] = useState<string>(tabs[1].id);
+
+  const id = router.query["husodellId"];
+  const plotId = router.query["plotId"];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user || !plotId || !id) return;
+
+      const queryParams = new URLSearchParams(window.location.search);
+      const isEmptyPlot = queryParams.get("empty");
+      const currentLeadId = queryParams.get("leadId");
+      queryParams.delete("leadId");
+
+      try {
+        let plotCollectionRef = collection(
+          db,
+          isEmptyPlot === "true" ? "empty_plot" : "plot_building"
+        );
+
+        const allLeadsSnapshot = await getDocs(query(plotCollectionRef));
+        if (allLeadsSnapshot.empty) {
+          console.warn("No leads found in the collection.");
+          return;
+        }
+
+        let correctPlotId: string | null = null;
+        for (const doc of allLeadsSnapshot.docs) {
+          if (doc.id) {
+            correctPlotId = doc.id;
+            break;
+          }
+        }
+
+        if (!correctPlotId) {
+          console.error("No valid plotId found.");
+          return;
+        }
+
+        const [plotDocSnap, husmodellDocSnap] = await Promise.all([
+          getDoc(doc(plotCollectionRef, correctPlotId)),
+          getDoc(doc(db, "house_model", String(id))),
+        ]);
+
+        const finalData = {
+          plot: { id: correctPlotId, ...plotDocSnap.data() },
+          husmodell: { id: String(id), ...husmodellDocSnap.data() },
+        };
+
+        const leadsQuerySnapshot: any = await getDocs(
+          query(
+            collection(db, "leads"),
+            where("finalData.plot.id", "==", correctPlotId),
+            where("finalData.husmodell.id", "==", id)
+          )
+        );
+
+        if (!leadsQuerySnapshot.empty) {
+          const existingLeadId = leadsQuerySnapshot.docs[0].id;
+          if (currentLeadId !== existingLeadId) {
+            queryParams.set("leadId", existingLeadId);
+            router.replace({
+              pathname: router.pathname,
+              query: Object.fromEntries(queryParams),
+            });
+          }
+          return;
+        }
+
+        const newDocRef = await addDoc(collection(db, "leads"), {
+          finalData,
+          user,
+          Isopt: false,
+          IsoptForBank: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          IsEmptyPlot: isEmptyPlot === "true",
+        });
+
+        queryParams.set("leadId", newDocRef.id);
+        router.replace({
+          pathname: router.pathname,
+          query: Object.fromEntries(queryParams),
+        });
+      } catch (error) {
+        console.error("Firestore operation failed:", error);
+      }
+    };
+
+    fetchData();
+  }, [plotId, id, user]);
 
   if (loadingLamdaData) {
     <Loader />;
@@ -261,29 +363,44 @@ const HouseModelSingleProperty: React.FC<{
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <div
+              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              onClick={() => {
+                const currIndex = 0;
+                localStorage.setItem("currIndex", currIndex.toString());
+              }}
+            >
+              Tomt
+            </div>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             {!homePage && (
               <>
-                <Link
-                  href={"/"}
-                  className="text-[#7839EE] text-sm font-medium"
+                <div
+                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
                   onClick={() => {
                     delete updatedQuery.propertyId;
                     delete updatedQuery.husodellId;
                     delete updatedQuery.leadId;
                     delete updatedQuery.emptyPlot;
-                    delete updatedQuery.empty;
 
-                    router.replace(
-                      { pathname, query: updatedQuery },
-                      undefined,
-                      {
-                        shallow: true,
-                      }
-                    );
+                    router
+                      .push(
+                        {
+                          pathname: router.pathname,
+                          query: updatedQuery,
+                        },
+                        undefined,
+                        { shallow: true }
+                      )
+                      .then(() => {
+                        window.location.reload();
+                      });
+                    const currIndex = 1;
+                    localStorage.setItem("currIndex", currIndex.toString());
                   }}
                 >
-                  Start med tomt og husmodell
-                </Link>
+                  Hva kan du bygge?
+                </div>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
               </>
             )}
@@ -1635,7 +1752,7 @@ const HouseModelSingleProperty: React.FC<{
                       )}
                     </>
                   )}
-                  {PlotActiveTab === "Dokument" && (
+                  {PlotActiveTab === "Plandokumenter" && (
                     <>
                       {loadingLamdaData ? (
                         <div className="relative">

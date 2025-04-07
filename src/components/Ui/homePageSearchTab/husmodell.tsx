@@ -95,10 +95,7 @@ const HusmodellTab = () => {
     }
 
     if (hasError) return;
-    formData.Kommue = formData.Kommue.replace(
-      / Kommune \(Vestfold Fylke\)$/,
-      ""
-    );
+    formData.Kommue = formData.Kommue.replace(/ Kommune/, "");
 
     router.push(`husmodells?Kommue=${formData.Kommue}`);
     const currIndex = 0;
@@ -156,13 +153,10 @@ const HusmodellTab = () => {
                     filteredCities.map((city: any, index) => (
                       <li
                         key={index}
-                        onClick={() =>
-                          handleSelect(`${city.name} Kommune (Vestfold Fylke)`)
-                        }
+                        onClick={() => handleSelect(`${city.name} Kommune`)}
                         className={`text-sm text-darkBlack px-4 py-[14px] cursor-pointer 
                           ${
-                            formData.Kommue ===
-                            `${city.name} Kommune (Vestfold Fylke)`
+                            formData.Kommue === `${city.name} Kommune`
                               ? "bg-[#F9F5FF] font-semibold"
                               : "bg-white"
                           }`}
@@ -170,7 +164,7 @@ const HusmodellTab = () => {
                         <span>
                           {city.name}{" "}
                           <span className="text-grayText font-normal">
-                            Kommune (Vestfold Fylke)
+                            Kommune
                           </span>
                         </span>
                       </li>

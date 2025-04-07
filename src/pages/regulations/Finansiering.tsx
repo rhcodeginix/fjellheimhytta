@@ -41,6 +41,10 @@ const Finansiering: React.FC<{
   handlePrevious,
   supplierData,
 }) => {
+  const router = useRouter();
+  const { homePage } = router.query;
+  const { query } = router;
+  const updatedQuery = { ...query };
   const Husdetaljer = HouseModelData?.Husdetaljer;
 
   const [custHouse, setCusHouse] = useState<any>(null);
@@ -76,12 +80,18 @@ const Finansiering: React.FC<{
       .typeError("Must be a number")
       .min(1, "Amount must be greater than 0")
       .optional(),
-    sharingData: Yup.boolean()
-      .oneOf([true], "You must accept the sharing data")
-      .required("Påkrevd"),
+    helpWithFinancing: Yup.boolean().optional(),
+    sharingData: Yup.boolean().when(
+      "helpWithFinancing",
+      ([helpWithFinancing], schema) => {
+        return helpWithFinancing
+          ? schema.notRequired()
+          : schema
+              .oneOf([true], "You must accept the sharing data")
+              .required("Påkrevd");
+      }
+    ),
   });
-
-  const router = useRouter();
 
   const leadId = router.query["leadId"];
 
@@ -91,7 +101,7 @@ const Finansiering: React.FC<{
     try {
       if (leadId) {
         await updateDoc(doc(db, "leads", String(leadId)), {
-          IsoptForBank: true,
+          IsoptForBank: values.sharingData,
           updatedAt: new Date(),
           bankValue,
         });
@@ -118,34 +128,53 @@ const Finansiering: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
+                handlePrevious();
               }}
             >
               Tomt
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            {!homePage && (
+              <>
+                <div
+                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
+                  onClick={() => {
+                    delete updatedQuery.propertyId;
+                    delete updatedQuery.husodellId;
+                    delete updatedQuery.leadId;
+                    delete updatedQuery.emptyPlot;
+
+                    router
+                      .push(
+                        {
+                          pathname: router.pathname,
+                          query: updatedQuery,
+                        },
+                        undefined,
+                        { shallow: true }
+                      )
+                      .then(() => {
+                        window.location.reload();
+                      });
+                    const currIndex = 1;
+                    localStorage.setItem("currIndex", currIndex.toString());
+                    handlePrevious();
+                  }}
+                >
+                  Hva kan du bygge?
+                </div>
+                <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+              </>
+            )}
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
-                const currIndex = 1;
-                localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
-              }}
-            >
-              Hva du kan bygge?
-            </div>
-            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
-            <div
-              className="text-[#7839EE] text-sm font-medium cursor-pointer"
-              onClick={() => {
-                handlePrevious();
                 const currIndex = 2;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Detaljer
@@ -154,10 +183,10 @@ const Finansiering: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 3;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Tilpass
@@ -166,10 +195,10 @@ const Finansiering: React.FC<{
             <div
               className="text-[#7839EE] text-sm font-medium cursor-pointer"
               onClick={() => {
-                handlePrevious();
                 const currIndex = 4;
                 localStorage.setItem("currIndex", currIndex.toString());
                 window.location.reload();
+                handlePrevious();
               }}
             >
               Tilbud
@@ -195,7 +224,7 @@ const Finansiering: React.FC<{
           <h5 className="text-darkBlack text-xl font-semibold mb-4">
             Tilbudsdetaljer
           </h5>
-          <Tilbudsdetaljer />
+          <Tilbudsdetaljer isRemove={true} />
           <div className="my-8">
             <Formik
               initialValues={{
@@ -206,6 +235,7 @@ const Finansiering: React.FC<{
                 buffer: "",
                 equityAmount: "",
                 sharingData: false,
+                helpWithFinancing: false,
               }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
@@ -222,22 +252,33 @@ const Finansiering: React.FC<{
                         const data = docSnap.data();
 
                         const value = data?.bankValue;
-                        setFieldValue(
-                          "sharingData",
-                          data.IsoptForBank || false
-                        );
-                        setFieldValue(
-                          "existingLoan",
-                          value?.existingLoan || ""
-                        );
-                        setFieldValue(
-                          "previousExperience",
-                          value?.previousExperience || ""
-                        );
-                        setFieldValue("collateral", value?.collateral || "");
-                        setFieldValue("permissions", value?.permissions || "");
-                        setFieldValue("buffer", value?.buffer || "");
-                        setFieldValue("equityAmount", value?.equityAmount);
+                        if (data && data?.IsoptForBank) {
+                          setFieldValue(
+                            "sharingData",
+                            data?.IsoptForBank || false
+                          );
+                        }
+                        if (value) {
+                          setFieldValue(
+                            "existingLoan",
+                            value?.existingLoan || ""
+                          );
+                          setFieldValue(
+                            "previousExperience",
+                            value?.previousExperience || ""
+                          );
+                          setFieldValue("collateral", value?.collateral || "");
+                          setFieldValue(
+                            "permissions",
+                            value?.permissions || ""
+                          );
+                          setFieldValue("buffer", value?.buffer || "");
+                          setFieldValue("equityAmount", value?.equityAmount);
+                          setFieldValue(
+                            "helpWithFinancing",
+                            value?.helpWithFinancing || false
+                          );
+                        }
                       }
                     } catch (error) {
                       console.error(
@@ -589,11 +630,68 @@ const Finansiering: React.FC<{
                               </h6>
                             </div>
                           </div>
+                          {!values.helpWithFinancing && (
+                            <div className="p-5">
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <label className="flex items-center container">
+                                    <Field type="checkbox" name="sharingData" />
+
+                                    <span
+                                      className="checkmark checkmark_primary"
+                                      style={{ margin: "2px" }}
+                                    ></span>
+
+                                    <div className="text-secondary2 text-sm">
+                                      Jeg samtykker til{" "}
+                                      <span className="text-[#7839EE] font-bold">
+                                        deling av data
+                                      </span>{" "}
+                                      med{" "}
+                                      <span className="text-secondary2 font-bold">
+                                        SpareBank1 Hallingdal Valdres.
+                                      </span>
+                                    </div>
+                                  </label>
+                                  {touched.sharingData &&
+                                    errors.sharingData && (
+                                      <p className="text-red text-xs mt-1">
+                                        {errors.sharingData}
+                                      </p>
+                                    )}
+                                </div>
+                                <Button
+                                  text="Send inn lånesøknad"
+                                  className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
+                                  type="submit"
+                                />
+                              </div>
+                              <div className="flex items-start gap-3 mt-5">
+                                <Image
+                                  fetchPriority="auto"
+                                  src={Ic_Info_gray}
+                                  alt="icon"
+                                />
+                                <p className="text-secondary2 text-sm">
+                                  Loan facility for construction of a
+                                  home/holiday home. Will be converted into a
+                                  repayment loan upon completion of the
+                                  home/holiday home. Interest rate will vary
+                                  based on an overall assessment of payment
+                                  ability and security.
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                          <div className="border-t w-full border-[#DCDFEA]"></div>
                           <div className="p-5">
                             <div className="flex items-center justify-between">
                               <div>
                                 <label className="flex items-center container">
-                                  <Field type="checkbox" name="sharingData" />
+                                  <Field
+                                    type="checkbox"
+                                    name="helpWithFinancing"
+                                  />
 
                                   <span
                                     className="checkmark checkmark_primary"
@@ -601,40 +699,28 @@ const Finansiering: React.FC<{
                                   ></span>
 
                                   <div className="text-secondary2 text-sm">
-                                    Jeg samtykker til{" "}
-                                    <span className="text-[#7839EE] font-bold">
-                                      deling av data
-                                    </span>{" "}
-                                    med{" "}
-                                    <span className="text-secondary2 font-bold">
-                                      SpareBank1 Hallingdal Valdres.
-                                    </span>
+                                    Jeg ønsker ikke hjelp med finansiering
                                   </div>
                                 </label>
-                                {touched.sharingData && errors.sharingData && (
-                                  <p className="text-red text-xs mt-1">
-                                    {errors.sharingData}
-                                  </p>
-                                )}
+                                {touched.helpWithFinancing &&
+                                  errors.helpWithFinancing && (
+                                    <p className="text-red text-xs mt-1">
+                                      {errors.helpWithFinancing}
+                                    </p>
+                                  )}
                               </div>
-                              <Button
-                                text="Send inn lånesøknad"
-                                className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
-                                type="submit"
-                              />
+                              {values.helpWithFinancing && (
+                                <Button
+                                  text="Send inn lånesøknad"
+                                  className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
+                                  type="submit"
+                                />
+                              )}
                             </div>
                             <div className="flex items-start gap-3 mt-5">
-                              <Image
-                                fetchPriority="auto"
-                                src={Ic_Info_gray}
-                                alt="icon"
-                              />
                               <p className="text-secondary2 text-sm">
-                                Loan facility for construction of a home/holiday
-                                home. Will be converted into a repayment loan
-                                upon completion of the home/holiday home.
-                                Interest rate will vary based on an overall
-                                assessment of payment ability and security.
+                                Du kan fortsatt hente ut priskalkyler og gjøre
+                                tomteanalyse – uten å søke finansiering
                               </p>
                             </div>
                           </div>

@@ -117,72 +117,63 @@ const Tilbud: React.FC<{
 
     return () => unsubscribe();
   }, []);
-  const [leadId, setLeadId] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
-      if (!user || !plotId || !husmodellId) {
-        return;
-      }
+      if (!user || !plotId || !husmodellId) return;
 
       const queryParams = new URLSearchParams(window.location.search);
       const isEmptyPlot = queryParams.get("empty");
       queryParams.delete("leadId");
 
       try {
-        let plotCollectionRef = collection(db, "empty_plot");
-
-        const plotDocRef = doc(plotCollectionRef, plotId);
-        const plotDocSnap = await getDoc(plotDocRef);
-
-        const husmodellDocRef = doc(db, "house_model", husmodellId);
-        const husmodellDocSnap = await getDoc(husmodellDocRef);
+        const plotDocSnap = await getDoc(doc(db, "empty_plot", plotId));
+        const husmodellDocSnap = await getDoc(
+          doc(db, "house_model", husmodellId)
+        );
 
         const finalData = {
           plot: { id: plotId, ...plotDocSnap.data() },
           husmodell: { id: husmodellId, ...husmodellDocSnap.data() },
         };
-        const leadsCollectionRef = collection(db, "leads");
-        const querySnapshot: any = await getDocs(
-          query(
-            leadsCollectionRef,
-            where("finalData.plot.id", "==", plotId),
-            where("finalData.husmodell.id", "==", husmodellId)
-          )
+
+        const leadsQuery = query(
+          collection(db, "leads"),
+          where("finalData.plot.id", "==", plotId),
+          where("finalData.husmodell.id", "==", husmodellId)
         );
+
+        const querySnapshot: any = await getDocs(leadsQuery);
+
+        let leadIdToSet: any = "";
+
         if (!querySnapshot.empty) {
-          setLeadId(querySnapshot.docs[0].id);
-          router.push(`${router.asPath}&leadId=${querySnapshot.docs[0].id}`);
-          queryParams.set("leadId", querySnapshot.docs[0].id);
-          router.replace({
-            pathname: router.pathname,
-            query: Object.fromEntries(queryParams),
+          leadIdToSet = querySnapshot.docs[0].id;
+        } else {
+          const docRef = await addDoc(collection(db, "leads"), {
+            finalData,
+            user,
+            Isopt: false,
+            IsoptForBank: false,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            IsEmptyPlot: isEmptyPlot === "true",
           });
-          return;
+          leadIdToSet = docRef.id;
         }
 
-        const docRef: any = await addDoc(leadsCollectionRef, {
-          finalData,
-          user,
-          Isopt: false,
-          IsoptForBank: false,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          IsEmptyPlot: isEmptyPlot === "true",
-        });
-
-        queryParams.set("leadId", querySnapshot.docs[0].id);
+        queryParams.set("leadId", leadIdToSet);
         router.replace({
           pathname: router.pathname,
           query: Object.fromEntries(queryParams),
         });
-        setLeadId(docRef.id);
       } catch (error) {
         console.error("Firestore operation failed:", error);
       }
     };
 
     fetchData();
-  }, [plotId, husmodellId, user, leadId]);
+  }, [plotId, husmodellId, user]);
 
   const [custHouse, setCusHouse] = useState<any>(null);
   useEffect(() => {
@@ -203,36 +194,37 @@ const Tilbud: React.FC<{
   useEffect(() => {
     if (Huskonfigurator?.length > 0 && custHouse?.length > 0) {
       const mergedArray = Huskonfigurator.map(
-        (category: any, catIndex: number) => ({
-          ...category,
-          Kategorinavn:
-            category?.Kategorinavn?.length > 0
-              ? category.Kategorinavn.map(
-                  (subCategory: any, subIndex: number) => {
-                    const match = custHouse.find(
-                      (item: any) =>
-                        item.category === catIndex &&
-                        item.subCategory === subIndex
-                    );
+        (category: any, catIndex: number) => {
+          const matchedSubCategories = category.Kategorinavn.map(
+            (subCategory: any, subIndex: number) => {
+              const match = custHouse.find(
+                (item: any) =>
+                  item.category === catIndex && item.subCategory === subIndex
+              );
 
-                    return match
-                      ? {
-                          ...subCategory,
-                          produkter: [match.product],
-                        }
-                      : subCategory;
-                  }
-                )
-              : [],
-        })
-      );
+              if (match) {
+                return {
+                  ...subCategory,
+                  produkter: [match.product],
+                };
+              }
 
-      const filteredArray = mergedArray.filter(
-        (item: any) =>
-          Array.isArray(item.Kategorinavn) && item.Kategorinavn.length > 0
-      );
+              return null;
+            }
+          ).filter(Boolean);
 
-      setUpdatedArray(filteredArray);
+          if (matchedSubCategories.length > 0) {
+            return {
+              ...category,
+              Kategorinavn: matchedSubCategories,
+            };
+          }
+
+          return null;
+        }
+      ).filter(Boolean);
+
+      setUpdatedArray(mergedArray);
     }
   }, [Huskonfigurator, custHouse]);
 
@@ -263,38 +255,37 @@ const Tilbud: React.FC<{
                 </Link>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
                 <div
-                  className="text-[#7839EE] text-sm font-medium"
+                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
                   onClick={() => {
-                    handlePrevious();
                     const currIndex = 0;
                     localStorage.setItem("currIndex", currIndex.toString());
                     window.location.reload();
+                    handlePrevious();
                   }}
                 >
                   Husmodell
                 </div>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
                 <div
-                  className="text-[#7839EE] text-sm font-medium"
+                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
                   onClick={() => {
-                    handlePrevious();
                     const currIndex = 1;
                     localStorage.setItem("currIndex", currIndex.toString());
                     window.location.reload();
+                    handlePrevious();
                   }}
                 >
                   Tilpass
                 </div>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
-                <Link
-                  href={"/"}
-                  className="text-[#7839EE] text-sm font-medium"
+                <div
+                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
                   onClick={() => {
                     handlePrevious();
                   }}
                 >
                   Tomt
-                </Link>
+                </div>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
                 <span className="text-secondary2 text-sm">Tilbud</span>
               </div>
@@ -313,11 +304,11 @@ const Tilbud: React.FC<{
           />
           <div className="pt-6 pb-8">
             <SideSpaceContainer>
+              <h5 className="text-darkBlack text-xl font-semibold mb-4">
+                Tilbud
+              </h5>
               <div className="flex items-start gap-6">
                 <div className="w-[40%]">
-                  <h5 className="text-darkBlack text-xl font-semibold mb-4">
-                    Tilbud
-                  </h5>
                   <div className="border border-[#DCDFEA] rounded-lg p-5">
                     <h4 className="text-black text-sm md:text-base lg:text-lg mb-1">
                       <span className="font-semibold">

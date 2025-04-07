@@ -827,6 +827,7 @@ const Regulations = () => {
           handleNext={handleNext}
           lamdaDataFromApi={lamdaDataFromApi}
           CadastreDataFromApi={CadastreDataFromApi}
+          handlePrevious={handlePrevious}
           askData={askData}
         />
       ),
@@ -845,6 +846,7 @@ const Regulations = () => {
           HouseModelData={HouseModelData}
           askData={askData}
           lamdaDataFromApi={lamdaDataFromApi}
+          user={user}
         />
       ),
     },
