@@ -529,3 +529,8 @@ td {
   width: 24px;
   border-radius: 10px;
 }
+
+#chatbase-bubble-button,
+#chatbase-bubble-button {
+  bottom: 5rem !important;
+}

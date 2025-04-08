@@ -277,7 +277,6 @@ const BelopFilterSection: React.FC<{
                                     JSON.stringify(updatedSubOmrade)
                                   );
 
-                                  // Trigger shallow route update
                                   setTimeout(() => {
                                     router.push(
                                       {
@@ -304,7 +303,7 @@ const BelopFilterSection: React.FC<{
                             <span className="checkmark checkmark_darkgray_withPurple"></span>
                           </label>
                           {formData?.Område.includes(data.name) && (
-                            <div className="grid grid-cols-2 gap-x-8 gap-y-4 px-2.5">
+                            <div className="grid grid-cols-1 gap-x-8 gap-y-4 px-2.5 h-full max-h-52 overflow-y-auto overFlowYAuto">
                               {data?.kommunerList &&
                                 data?.kommunerList.length > 0 &&
                                 data?.kommunerList?.map(

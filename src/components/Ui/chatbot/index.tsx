@@ -1,9 +1,10 @@
 import Button from "@/components/common/button";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 const Chatbot: React.FC = () => {
   const router = useRouter();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -29,7 +30,7 @@ const Chatbot: React.FC = () => {
 
   return (
     <>
-      {router.pathname !== "/add-plot" && (
+      {router.pathname !== "/add-plot" && isVisible && (
         <div
           className="fixed bottom-[12px] left-[12px] bg-white w-[240px] sm:w-[284px] border-gray3 rounded-[12px] p-4"
           style={{
@@ -38,6 +39,12 @@ const Chatbot: React.FC = () => {
               "0px -4px 12px -2px #1018281A, 0px 12px 16px -4px #1018281F",
           }}
         >
+          <button
+            onClick={() => setIsVisible(false)}
+            className="absolute top-2 right-2 text-primary text-lg"
+          >
+            ⨯
+          </button>
           <h4 className="text-[#4A5578] text-sm mb-3">
             <span className="font-bold">Har du en tomt du vil selge?</span>{" "}
             Markedsfør den <span className="font-bold underline">gratis</span>{" "}
