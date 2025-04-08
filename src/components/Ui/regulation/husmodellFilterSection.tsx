@@ -173,7 +173,7 @@ const HusmodellFilterSection: React.FC<{
                   <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                     {HustypeArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray"
+                        className="container container_darkgray_withPurple"
                         htmlFor={data.name}
                         key={index}
                       >
@@ -200,7 +200,7 @@ const HusmodellFilterSection: React.FC<{
                           className="mr-2"
                         />
 
-                        <span className="checkmark checkmark_darkgray"></span>
+                        <span className="checkmark checkmark_darkgray_withPurple"></span>
                       </label>
                     ))}
                   </div>
@@ -233,7 +233,7 @@ const HusmodellFilterSection: React.FC<{
                   <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                     {HustypeArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray"
+                        className="container container_darkgray_withPurple"
                         htmlFor={data.name}
                         key={index}
                       >
@@ -260,7 +260,7 @@ const HusmodellFilterSection: React.FC<{
                           className="mr-2"
                         />
 
-                        <span className="checkmark checkmark_darkgray"></span>
+                        <span className="checkmark checkmark_darkgray_withPurple"></span>
                       </label>
                     ))}
                   </div>
@@ -295,7 +295,7 @@ const HusmodellFilterSection: React.FC<{
                   <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                     {TypeHusmodellArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray"
+                        className="container container_darkgray_withPurple"
                         htmlFor={data.name}
                         key={index}
                       >
@@ -324,7 +324,7 @@ const HusmodellFilterSection: React.FC<{
                           className="mr-2"
                         />
 
-                        <span className="checkmark checkmark_darkgray"></span>
+                        <span className="checkmark checkmark_darkgray_withPurple"></span>
                       </label>
                     ))}
                   </div>
@@ -359,7 +359,7 @@ const HusmodellFilterSection: React.FC<{
                   <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                     {AntallSoveromArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray"
+                        className="container container_darkgray_withPurple"
                         htmlFor={data.name}
                         key={index}
                       >
@@ -388,7 +388,7 @@ const HusmodellFilterSection: React.FC<{
                           className="mr-2"
                         />
 
-                        <span className="checkmark checkmark_darkgray"></span>
+                        <span className="checkmark checkmark_darkgray_withPurple"></span>
                       </label>
                     ))}
                   </div>

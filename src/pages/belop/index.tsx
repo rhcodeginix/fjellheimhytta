@@ -8,7 +8,6 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "@/config/firebaseConfig";
 import BelopProperty from "./belopProperty";
 import { useRouter } from "next/router";
 import Button from "@/components/common/button";
@@ -22,13 +21,15 @@ const Belop: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     address: "",
-    Eiendomstype: [] as string[],
+    Hustype: [] as string[],
     TypeHusmodell: [] as string[],
     AntallSoverom: [] as string[],
     minRangeForPlot: 0,
     maxRangeForPlot: 5000000,
     minRangeForHusmodell: 0,
     maxRangeForHusmodell: 5000000,
+    Område: [] as string[],
+    SubOmråde: [] as string[],
   });
 
   useEffect(() => {
@@ -59,85 +60,300 @@ const Belop: React.FC = () => {
     }
   }, [router.asPath]);
 
+  // useEffect(() => {
+  //   const fetchProperty = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const queryParams = new URLSearchParams(window.location.search);
+  //       const soveromFormLocalStorage = JSON.parse(
+  //         localStorage.getItem("soverom") || "[]"
+  //       );
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         AntallSoverom: soveromFormLocalStorage,
+  //       }));
+  //       const soveromValues = soveromFormLocalStorage.map((item: any) =>
+  //         parseInt(item.replace(" Soverom", ""), 10)
+  //       );
+  //       const maxRangePlot: any = queryParams.get("maxRangePlot");
+  //       const maxRangeHusmodell = queryParams.get("maxRangeHusmodell");
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         AntallSoverom: soveromFormLocalStorage,
+  //       }));
+
+  //       const db = getFirestore();
+  //       const citiesCollectionRef = collection(db, "cities");
+  //       const queryPrice = queryParams.get("pris");
+  //       const cityQuery = queryParams.get("city");
+  //       let cleanedCity = String(cityQuery).replace(/\s*\(\d+\)/, "");
+  //       const cityFormLocalStorage = JSON.parse(
+  //         localStorage.getItem("city") || "[]"
+  //       );
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         Område:
+  //           cityFormLocalStorage.length > 0
+  //             ? cityFormLocalStorage
+  //             : [cleanedCity],
+  //       }));
+  //       const citiesSnapshot = await getDocs(citiesCollectionRef);
+  //       const fetchedCities = citiesSnapshot.docs.map((doc) => ({
+  //         propertyId: doc.id,
+  //         ...doc.data(),
+  //       }));
+  //       const filterProperty: any = cityQuery
+  //         ? fetchedCities.find(
+  //             (property: any) => `${property.name}` === cleanedCity
+  //           )
+  //         : null;
+
+  //       if (!filterProperty || !filterProperty.kommunenummer)
+  //         return setHouseModelProperty([]);
+
+  //       const kommuneNumbers = Object.values(filterProperty.kommunenummer)
+  //         .map((value: any) =>
+  //           parseInt(
+  //             (typeof value === "string"
+  //               ? value.replace(/"/g, "")
+  //               : value
+  //             ).toString(),
+  //             10
+  //           )
+  //         )
+  //         .filter((num) => !isNaN(num));
+
+  //       if (kommuneNumbers.length === 0) return setHouseModelProperty([]);
+
+  //       const [plotsRef, husmodellRef] = [
+  //         collection(db, "empty_plot"),
+  //         collection(db, "house_model"),
+  //       ];
+  //       const allHusmodell = (await getDocs(husmodellRef)).docs.map((doc) => ({
+  //         id: doc.id,
+  //         ...doc.data(),
+  //       }));
+  //       const filteredHusmodell = queryPrice
+  //         ? allHusmodell.filter(
+  //             (plot: any) =>
+  //               (maxRangeHusmodell
+  //                 ? (plot?.Husdetaljer?.pris.replace(/\s/g, ""), 10) <=
+  //                   parseInt(maxRangeHusmodell)
+  //                 : parseInt(plot?.Husdetaljer?.pris.replace(/\s/g, ""), 10) <=
+  //                   parseInt(queryPrice.replace(/\s/g, ""), 10) * 0.4) &&
+  //               (soveromValues.length > 0
+  //                 ? soveromValues.includes(plot?.Husdetaljer?.Soverom)
+  //                 : true)
+  //           )
+  //         : allHusmodell;
+
+  //       const allPlots: any = [];
+  //       const chunkSize = 10;
+  //       for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
+  //         const chunk = kommuneNumbers.slice(i, i + chunkSize);
+  //         const q = query(
+  //           plotsRef,
+  //           where(
+  //             "lamdaDataFromApi.searchParameters.kommunenummer",
+  //             "in",
+  //             chunk
+  //           )
+  //         );
+  //         const querySnapshot = await getDocs(q);
+  //         querySnapshot.forEach((doc) => {
+  //           const data = doc.data();
+  //           if (data?.CadastreDataFromApi?.presentationAddressApi)
+  //             allPlots.push({ id: doc.id, ...data });
+  //         });
+  //       }
+
+  //       const filteredPlots = queryPrice
+  //         ? allPlots.filter(
+  //             (plot: any) =>
+  //               plot.pris <=
+  //               (maxRangePlot && parseInt(maxRangePlot, 10)
+  //                 ? Number(maxRangePlot)
+  //                 : parseInt(queryPrice, 10) * 0.6)
+  //           )
+  //         : allPlots;
+  //       const combinedData = filteredPlots.flatMap((plot: any) =>
+  //         filteredHusmodell.map((house) => ({ plot, house }))
+  //       );
+
+  //       setHouseModelProperty(combinedData);
+  //     } catch (error) {
+  //       console.error("Error fetching properties:", error);
+  //       setHouseModelProperty([]);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   fetchProperty();
+  // }, [db, router.asPath]);
+
   useEffect(() => {
     const fetchProperty = async () => {
       setIsLoading(true);
       try {
         const queryParams = new URLSearchParams(window.location.search);
-        const soveromFormLocalStorage = JSON.parse(
-          localStorage.getItem("soverom") || "[]"
-        );
-        setFormData((prev) => ({
-          ...prev,
-          AntallSoverom: soveromFormLocalStorage,
-        }));
-        const soveromValues = soveromFormLocalStorage.map((item: any) =>
-          parseInt(item.replace(" Soverom", ""), 10)
-        );
-        const maxRangePlot: any = queryParams.get("maxRangePlot");
-        const maxRangeHusmodell = queryParams.get("maxRangeHusmodell");
-        setFormData((prev) => ({
-          ...prev,
-          AntallSoverom: soveromFormLocalStorage,
-        }));
 
         const db = getFirestore();
         const citiesCollectionRef = collection(db, "cities");
         const queryPrice = queryParams.get("pris");
         const cityQuery = queryParams.get("city");
+
+        const cityFormLocalStorage = JSON.parse(
+          localStorage.getItem("city") || "[]"
+        );
+        const subCityFormLocalStorage = JSON.parse(
+          localStorage.getItem("subcity") || "[]"
+        );
+
+        const cleanedCities =
+          cityQuery
+            ?.split(",")
+            .map((city) => city.trim().replace(/\s*\(\d+\)/, "")) || [];
+
+        const citiesToUse =
+          cityFormLocalStorage.length > 0
+            ? cityFormLocalStorage
+            : cleanedCities;
+
+        setFormData((prev) => ({
+          ...prev,
+          Område: citiesToUse,
+          SubOmråde:
+            subCityFormLocalStorage.length > 0 ? subCityFormLocalStorage : [],
+        }));
+
+        const soveromFormLocalStorage = JSON.parse(
+          localStorage.getItem("soverom") || "[]"
+        );
+        const soveromValues = soveromFormLocalStorage.map((item: any) =>
+          parseInt(item.replace(" Soverom", ""), 10)
+        );
+        const HustypeFormLocalStorage = JSON.parse(
+          localStorage.getItem("Hustype") || "[]"
+        );
+
+        setFormData((prev) => ({
+          ...prev,
+          AntallSoverom: soveromFormLocalStorage,
+          Hustype: HustypeFormLocalStorage,
+        }));
+
+        const maxRangePlot: any = queryParams.get("maxRangePlot");
+        const maxRangeHusmodell = queryParams.get("maxRangeHusmodell");
+
         const citiesSnapshot = await getDocs(citiesCollectionRef);
         const fetchedCities = citiesSnapshot.docs.map((doc) => ({
           propertyId: doc.id,
           ...doc.data(),
         }));
-        const filterProperty: any = cityQuery
-          ? fetchedCities.find(
-              (property: any) =>
-                `${property.name} (${property.total_entries})` === cityQuery
+
+        const matchedCities = fetchedCities.filter((property: any) =>
+          citiesToUse.includes(property.name)
+        );
+
+        if (!matchedCities.length) {
+          setHouseModelProperty([]);
+          return;
+        }
+
+        // const kommuneNumbers = matchedCities
+        //   .flatMap((property: any) =>
+        //     Object.values(property?.kommunenummer).map((value: any) =>
+        //       parseInt(
+        //         (typeof value === "string"
+        //           ? value.replace(/"/g, "")
+        //           : value
+        //         ).toString(),
+        //         10
+        //       )
+        //     )
+        //   )
+        //   .filter((num) => !isNaN(num));
+
+        let kommuneNumbers: number[] = [];
+
+        if (subCityFormLocalStorage.length > 0) {
+          kommuneNumbers = matchedCities
+            .flatMap((property: any) => {
+              const matchedNumbers = property.kommunerList
+                .filter((k: any) => subCityFormLocalStorage.includes(k.name))
+                .map((k: any) => parseInt(k.number, 10));
+
+              if (matchedNumbers.length === 0) {
+                return Object.values(property?.kommunenummer).map(
+                  (value: any) =>
+                    parseInt(
+                      (typeof value === "string"
+                        ? value.replace(/"/g, "")
+                        : value
+                      ).toString(),
+                      10
+                    )
+                );
+              }
+
+              return matchedNumbers;
+            })
+            .filter((num) => !isNaN(num));
+        } else {
+          kommuneNumbers = matchedCities
+            .flatMap((property: any) =>
+              Object.values(property?.kommunenummer).map((value: any) =>
+                parseInt(
+                  (typeof value === "string"
+                    ? value.replace(/"/g, "")
+                    : value
+                  ).toString(),
+                  10
+                )
+              )
             )
-          : null;
+            .filter((num) => !isNaN(num));
+        }
 
-        if (!filterProperty || !filterProperty.kommunenummer)
-          return setHouseModelProperty([]);
+        if (!kommuneNumbers.length) {
+          setHouseModelProperty([]);
+          return;
+        }
 
-        const kommuneNumbers = Object.values(filterProperty.kommunenummer)
-          .map((value: any) =>
-            parseInt(
-              (typeof value === "string"
-                ? value.replace(/"/g, "")
-                : value
-              ).toString(),
-              10
-            )
-          )
-          .filter((num) => !isNaN(num));
-
-        if (kommuneNumbers.length === 0) return setHouseModelProperty([]);
-
-        const [plotsRef, husmodellRef] = [
-          collection(db, "empty_plot"),
-          collection(db, "house_model"),
-        ];
+        const husmodellRef = collection(db, "house_model");
         const allHusmodell = (await getDocs(husmodellRef)).docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+
         const filteredHusmodell = queryPrice
-          ? allHusmodell.filter(
-              (plot: any) =>
-                (maxRangeHusmodell
-                  ? (plot?.Husdetaljer?.pris.replace(/\s/g, ""), 10) <=
-                    parseInt(maxRangeHusmodell)
-                  : parseInt(plot?.Husdetaljer?.pris.replace(/\s/g, ""), 10) <=
-                    parseInt(queryPrice.replace(/\s/g, ""), 10) * 0.4) &&
+          ? allHusmodell.filter((plot: any) => {
+              const price = parseInt(
+                plot?.Husdetaljer?.pris.replace(/\s/g, ""),
+                10
+              );
+              const maxPrice = maxRangeHusmodell
+                ? parseInt(maxRangeHusmodell)
+                : parseInt(queryPrice.replace(/\s/g, ""), 10) * 0.4;
+              return (
+                price <= maxPrice &&
                 (soveromValues.length > 0
                   ? soveromValues.includes(plot?.Husdetaljer?.Soverom)
+                  : true) &&
+                (HustypeFormLocalStorage.length > 0
+                  ? HustypeFormLocalStorage.map((item: any) =>
+                      item.toLowerCase()
+                    ).includes(plot?.Husdetaljer?.TypeObjekt?.toLowerCase())
                   : true)
-            )
+              );
+            })
           : allHusmodell;
 
+        const plotsRef = collection(db, "empty_plot");
         const allPlots: any = [];
         const chunkSize = 10;
+
         for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
           const chunk = kommuneNumbers.slice(i, i + chunkSize);
           const q = query(
@@ -165,6 +381,7 @@ const Belop: React.FC = () => {
                   : parseInt(queryPrice, 10) * 0.6)
             )
           : allPlots;
+
         const combinedData = filteredPlots.flatMap((plot: any) =>
           filteredHusmodell.map((house) => ({ plot, house }))
         );
@@ -179,7 +396,7 @@ const Belop: React.FC = () => {
     };
 
     fetchProperty();
-  }, [db, router.asPath]);
+  }, [router.asPath]);
 
   return (
     <>
@@ -201,12 +418,15 @@ const Belop: React.FC = () => {
           <div className="flex items-end justify-between gap-4 mb-[40px]">
             <h3 className="text-darkBlack text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
               Kombinasjoner av <span className="font-bold">husmodell</span> og{" "}
-              <span className="font-bold">tomt</span> i{" "}
-              <span className="font-bold text-blue">
-                {router.query.city
-                  ? router.query.city.replace(/\s*\(\d+\)/, "")
-                  : ""}
-              </span>
+              <span className="font-bold">tomt</span>{" "}
+              {formData.Område.length > 1 ? null : (
+                <>
+                  i{" "}
+                  <span className="font-bold text-blue">
+                    {formData.Område[0]}
+                  </span>
+                </>
+              )}
             </h3>
             {!isLoading && (
               <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">

@@ -18,8 +18,11 @@ const UserLayout = ({ children }: Props) => {
 
     const { pathname } = router;
 
-    if (!pathname.startsWith("/belop")) {
+    if (!pathname.startsWith("/housemodell-plot")) {
       localStorage.removeItem("soverom");
+      localStorage.removeItem("city");
+      localStorage.removeItem("subcity");
+      localStorage.removeItem("Hustype");
     }
     if (
       !pathname.startsWith("/housemodell-plot") &&

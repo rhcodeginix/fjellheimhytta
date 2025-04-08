@@ -4,6 +4,8 @@ import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import { useEffect, useState } from "react";
 import { Slider, styled } from "@mui/material";
 import { useRouter } from "next/router";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
 
 const CustomSlider = styled(Slider)({
   color: "#6941C6",
@@ -41,13 +43,15 @@ const CustomSlider = styled(Slider)({
 });
 type FormDataType = {
   address: string;
-  Eiendomstype: string[];
+  Hustype: string[];
   TypeHusmodell: string[];
   AntallSoverom: string[];
   minRangeForHusmodell: number;
   maxRangeForHusmodell: number;
   maxRangeForPlot: number;
   minRangeForPlot: number;
+  Område: string[];
+  SubOmråde: string[];
 };
 
 const BelopFilterSection: React.FC<{
@@ -65,7 +69,8 @@ const BelopFilterSection: React.FC<{
   }, []);
 
   const [openIndex, setOpenIndex] = useState<string[]>([
-    "Eiendomstype",
+    "Område",
+    "Hustype",
     "Type husmodell",
     "Antall soverom",
     "Pris på tomt",
@@ -79,7 +84,7 @@ const BelopFilterSection: React.FC<{
         : [...prevOpenIndex, type]
     );
   };
-  const EiendomstypeArray: any = [
+  const HustypeArray: any = [
     { name: "Bolig", value: "Bolig" },
     { name: "Hytte", value: "Hytte" },
   ];
@@ -102,6 +107,28 @@ const BelopFilterSection: React.FC<{
     { name: "6 Soverom", value: "6 Soverom" },
   ];
 
+  const [OmrådeArray, setOmrådeArray] = useState([]);
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const citiesCollectionRef = collection(db, "cities");
+        const citiesSnapshot = await getDocs(citiesCollectionRef);
+        const fetchedCities: any = citiesSnapshot.docs.map((doc) => ({
+          propertyId: doc.id,
+          ...doc.data(),
+        }));
+
+        setOmrådeArray(fetchedCities);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+        setOmrådeArray([]);
+      }
+    };
+
+    fetchProperty();
+  }, [router.asPath]);
+
   const { pathname, query } = router;
 
   const updatedQuery = { ...query };
@@ -119,8 +146,9 @@ const BelopFilterSection: React.FC<{
               setFormData((prev: any) => ({
                 ...prev,
                 AntallSoverom: [],
-                Eiendomstype: [],
+                Hustype: [],
                 TypeHusmodell: [],
+                Område: [],
                 minRangeForPlot: 0,
                 minRangeForHusmodell: 0,
                 maxRangeForPlot: Number(maxPrice) * 0.4,
@@ -177,56 +205,253 @@ const BelopFilterSection: React.FC<{
               }}
             >
               <p
-                className={`text-red font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
-                onClick={() => handleToggleAccordion("Eiendomstype")}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                onClick={() => handleToggleAccordion("Område")}
               >
-                Eiendomstype
+                Område
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
-                  className={
-                    openIndex.includes("Eiendomstype") ? "rotate-180" : ""
-                  }
+                  className={openIndex.includes("Område") ? "rotate-180" : ""}
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex.includes("Eiendomstype") && (
+              {openIndex.includes("Område") && (
+                <>
+                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-1 gap-x-8 gap-y-4">
+                    {OmrådeArray.map((data: any, index: number) => {
+                      return (
+                        <>
+                          <label
+                            className="container container_darkgray_withPurple"
+                            htmlFor={data.name}
+                            key={index}
+                          >
+                            <span
+                              className={`text-darkBlack text-sm md:text-base ${formData?.Område.includes(data.name) && "font-semibold"}`}
+                            >
+                              {data.name}
+                            </span>
+                            <input
+                              type="checkbox"
+                              id={data.name}
+                              value={data.name}
+                              checked={formData?.Område.includes(data.name)}
+                              onChange={() => {
+                                setFormData((prev: any) => {
+                                  const updatedOmradeSet = new Set(
+                                    prev?.Område
+                                  );
+                                  const isSelected = updatedOmradeSet.has(
+                                    data.name
+                                  );
+
+                                  if (isSelected) {
+                                    updatedOmradeSet.delete(data.name);
+                                  } else {
+                                    updatedOmradeSet.add(data.name);
+                                  }
+
+                                  let updatedSubOmrade = [...prev?.SubOmråde];
+                                  if (
+                                    isSelected &&
+                                    data.kommunerList?.length > 0
+                                  ) {
+                                    const kommunerNames = data.kommunerList.map(
+                                      (k: any) => k.name
+                                    );
+                                    updatedSubOmrade = updatedSubOmrade.filter(
+                                      (sub: string) =>
+                                        !kommunerNames.includes(sub)
+                                    );
+                                  }
+
+                                  localStorage.setItem(
+                                    "city",
+                                    JSON.stringify(Array.from(updatedOmradeSet))
+                                  );
+                                  localStorage.setItem(
+                                    "subcity",
+                                    JSON.stringify(updatedSubOmrade)
+                                  );
+
+                                  // Trigger shallow route update
+                                  setTimeout(() => {
+                                    router.push(
+                                      {
+                                        pathname: router.pathname,
+                                        query: {
+                                          ...router.query,
+                                          omrade: new Date().toISOString(),
+                                        },
+                                      },
+                                      undefined,
+                                      { shallow: true }
+                                    );
+                                  }, 2000);
+
+                                  return {
+                                    ...prev,
+                                    Område: Array.from(updatedOmradeSet),
+                                    SubOmråde: updatedSubOmrade,
+                                  };
+                                });
+                              }}
+                              className="mr-2"
+                            />
+                            <span className="checkmark checkmark_darkgray_withPurple"></span>
+                          </label>
+                          {formData?.Område.includes(data.name) && (
+                            <div className="grid grid-cols-2 gap-x-8 gap-y-4 px-2.5">
+                              {data?.kommunerList &&
+                                data?.kommunerList.length > 0 &&
+                                data?.kommunerList?.map(
+                                  (kom: any, komIndex: any) => {
+                                    return (
+                                      <label
+                                        className="container container_darkgray_withPurple"
+                                        htmlFor={kom.name}
+                                        key={komIndex}
+                                      >
+                                        <span
+                                          className={`text-darkBlack text-sm md:text-base ${formData?.SubOmråde.includes(kom.name) && "font-semibold"}`}
+                                        >
+                                          {kom.name}
+                                        </span>
+                                        <input
+                                          type="checkbox"
+                                          id={kom.name}
+                                          value={kom.name}
+                                          checked={formData?.SubOmråde.includes(
+                                            kom.name
+                                          )}
+                                          onChange={() => {
+                                            setFormData((prev: any) => {
+                                              const updatedSet: any = new Set(
+                                                prev?.SubOmråde
+                                              );
+                                              updatedSet.has(kom.name)
+                                                ? updatedSet.delete(kom.name)
+                                                : updatedSet.add(kom.name);
+
+                                              localStorage.setItem(
+                                                "subcity",
+                                                JSON.stringify(
+                                                  Array.from(updatedSet)
+                                                )
+                                              );
+                                              setTimeout(() => {
+                                                router.push(
+                                                  {
+                                                    pathname: router.pathname,
+                                                    query: {
+                                                      ...router.query,
+                                                      omrade:
+                                                        new Date().toISOString(),
+                                                    },
+                                                  },
+                                                  undefined,
+                                                  { shallow: true }
+                                                );
+                                              }, 2000);
+                                              return {
+                                                ...prev,
+                                                SubOmråde:
+                                                  Array.from(updatedSet),
+                                              };
+                                            });
+                                          }}
+                                          className="mr-2"
+                                        />
+                                        <span className="checkmark checkmark_darkgray_withPurple"></span>
+                                      </label>
+                                    );
+                                  }
+                                )}
+                            </div>
+                          )}
+                        </>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+            <div
+              className="w-full bg-white p-4 rounded-lg"
+              style={{
+                boxShadow:
+                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+              }}
+            >
+              <p
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                onClick={() => handleToggleAccordion("Hustype")}
+              >
+                Hustype
+                <Image
+                  src={Ic_chevron_down}
+                  alt="arrow"
+                  className={openIndex.includes("Hustype") ? "rotate-180" : ""}
+                  fetchPriority="auto"
+                />
+              </p>
+
+              {openIndex.includes("Hustype") && (
                 <>
                   <div className="my-4 border-t border-[#DCDFEA]"></div>
                   <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-                    {EiendomstypeArray.map((data: any, index: number) => (
+                    {HustypeArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray"
+                        className="container container_darkgray_withPurple"
                         htmlFor={data.name}
                         key={index}
                       >
-                        <span className="text-darkBlack text-sm md:text-base">
+                        <span
+                          className={`text-darkBlack text-sm md:text-base ${formData?.Hustype.includes(data.name) && "font-semibold"}`}
+                        >
                           {data.name}
                         </span>
                         <input
                           type="checkbox"
                           id={data.name}
                           value={data.name}
-                          checked={formData?.Eiendomstype.includes(data.name)}
+                          checked={formData?.Hustype.includes(data.name)}
                           onChange={() => {
                             setFormData((prev: any) => {
-                              const updatedSet: any = new Set(
-                                prev?.Eiendomstype
-                              );
+                              const updatedSet: any = new Set(prev?.Hustype);
                               updatedSet.has(data.name)
                                 ? updatedSet.delete(data.name)
                                 : updatedSet.add(data.name);
+                              localStorage.setItem(
+                                "Hustype",
+                                JSON.stringify(Array.from(updatedSet))
+                              );
+                              setTimeout(() => {
+                                router.push(
+                                  {
+                                    pathname: router.pathname,
+                                    query: {
+                                      ...router.query,
+                                      Hustype: new Date().toISOString(),
+                                    },
+                                  },
+                                  undefined,
+                                  { shallow: true }
+                                );
+                              }, 2000);
                               return {
                                 ...prev,
-                                Eiendomstype: Array.from(updatedSet),
+                                Hustype: Array.from(updatedSet),
                               };
                             });
                           }}
                           className="mr-2"
                         />
 
-                        <span className="checkmark checkmark_darkgray"></span>
+                        <span className="checkmark checkmark_darkgray_withPurple"></span>
                       </label>
                     ))}
                   </div>
@@ -241,7 +466,7 @@ const BelopFilterSection: React.FC<{
               }}
             >
               <p
-                className={`text-red font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Type husmodell")}
               >
                 Type husmodell
@@ -261,11 +486,13 @@ const BelopFilterSection: React.FC<{
                   <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                     {TypeHusmodellArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray"
+                        className="container container_darkgray_withPurple"
                         htmlFor={data.name}
                         key={index}
                       >
-                        <span className="text-darkBlack text-sm md:text-base">
+                        <span
+                          className={`text-darkBlack text-sm md:text-base ${formData?.TypeHusmodell.includes(data.name) && "font-semibold"}`}
+                        >
                           {data.name}
                         </span>
                         <input
@@ -290,7 +517,7 @@ const BelopFilterSection: React.FC<{
                           className="mr-2"
                         />
 
-                        <span className="checkmark checkmark_darkgray"></span>
+                        <span className="checkmark checkmark_darkgray_withPurple"></span>
                       </label>
                     ))}
                   </div>
@@ -325,11 +552,13 @@ const BelopFilterSection: React.FC<{
                   <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                     {AntallSoveromArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray"
+                        className="container container_darkgray_withPurple"
                         htmlFor={data.name}
                         key={index}
                       >
-                        <span className="text-darkBlack text-sm md:text-base">
+                        <span
+                          className={`text-darkBlack text-sm md:text-base ${formData?.AntallSoverom.includes(data.name) && "font-semibold"}`}
+                        >
                           {data.name}
                         </span>
                         <input
@@ -372,7 +601,7 @@ const BelopFilterSection: React.FC<{
                           className="mr-2"
                         />
 
-                        <span className="checkmark checkmark_darkgray"></span>
+                        <span className="checkmark checkmark_darkgray_withPurple"></span>
                       </label>
                     ))}
                   </div>

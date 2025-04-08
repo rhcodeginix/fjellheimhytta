@@ -105,7 +105,7 @@ const HusmodellPropertyPage: React.FC<{
           ...doc.data(),
         }));
         setTotal(data.length);
-        const soveromValues = formData.AntallSoverom.map((item: any) =>
+        const soveromValues = formData?.AntallSoverom.map((item: any) =>
           parseInt(item.replace(" Soverom", ""), 10)
         );
         const filterData =
@@ -116,13 +116,18 @@ const HusmodellPropertyPage: React.FC<{
             );
 
             return (
-              (formData.AntallSoverom.length > 0
+              (formData?.AntallSoverom.length > 0
                 ? soveromValues.includes(house?.Husdetaljer?.Soverom)
                 : true) &&
-              (formData.minRangeForHusmodell !== 0
-                ? housePrice >= formData.minRangeForHusmodell
+              (formData?.minRangeForHusmodell !== 0
+                ? housePrice >= formData?.minRangeForHusmodell
                 : true) &&
-              housePrice <= Number(formData.maxRangeForHusmodell)
+              housePrice <= Number(formData?.maxRangeForHusmodell) &&
+              (formData?.Hustype.length > 0
+                ? formData?.Hustype.map((item: any) =>
+                    item.toLowerCase()
+                  ).includes(house?.Husdetaljer?.TypeObjekt?.toLowerCase())
+                : true)
             );
           }) || data;
 
