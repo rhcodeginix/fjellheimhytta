@@ -19,7 +19,7 @@ import LoginForm from "../login/loginForm";
 import { useRouter } from "next/router";
 import Loading from "@/components/Loading";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
-import GoogleMapComponent from "@/components/Ui/map";
+// import GoogleMapComponent from "@/components/Ui/map";
 import Eierinformasjon from "@/components/Ui/regulationChart/Eierinformasjon";
 import Link from "next/link";
 import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
@@ -34,6 +34,10 @@ import {
   House,
 } from "lucide-react";
 import HouseDetailPage from "@/components/Ui/houseDetail";
+import dynamic from "next/dynamic";
+const GoogleMapComponent = dynamic(() => import("@/components/Ui/map"), {
+  ssr: false,
+});
 
 const Tomt: React.FC<{
   loginUser: any;
@@ -65,23 +69,23 @@ const Tomt: React.FC<{
   pris,
 }) => {
   const router = useRouter();
-  const { hasReload, homePage } = router.query;
+  const { homePage } = router.query;
   const { pathname, query } = router;
   const updatedQuery = { ...query };
 
-  useEffect(() => {
-    if (hasReload) {
-      const newQuery: any = { ...router.query };
-      delete newQuery.hasReload;
+  // useEffect(() => {
+  //   if (hasReload) {
+  //     const newQuery: any = { ...router.query };
+  //     delete newQuery.hasReload;
 
-      const newUrl = `${router.pathname}?${new URLSearchParams(newQuery).toString()}`;
-      window.history.replaceState(null, "", newUrl);
+  //     const newUrl = `${router.pathname}?${new URLSearchParams(newQuery).toString()}`;
+  //     window.history.replaceState(null, "", newUrl);
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
-    }
-  }, [hasReload]);
+  //     setTimeout(() => {
+  //       window.location.reload();
+  //     }, 100);
+  //   }
+  // }, [hasReload]);
 
   const [loginPopup, setLoginPopup] = useState(false);
   const [dropdownState, setDropdownState] = useState({
@@ -1754,7 +1758,7 @@ const Tomt: React.FC<{
               onClick={() => {
                 if (!loadingLamdaData && !loadingAdditionalData) {
                   handleNext();
-                  window.location.reload();
+                  // window.location.reload();
                 }
               }}
             />

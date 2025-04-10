@@ -16,9 +16,13 @@ import {
 } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import Loading from "@/components/Loading";
-import GoogleMapComponent from "../map";
+// import GoogleMapComponent from "../map";
 import { useRouter } from "next/router";
 import { formatPrice } from "@/pages/belop/belopProperty";
+import dynamic from "next/dynamic";
+const GoogleMapComponent = dynamic(() => import("../map"), {
+  ssr: false,
+});
 
 const tabs = [
   { id: "beløp", label: ["Start med", "beløp"] },

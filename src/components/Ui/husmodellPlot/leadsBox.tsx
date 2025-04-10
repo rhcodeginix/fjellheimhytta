@@ -5,9 +5,19 @@ import Button from "@/components/common/button";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/router";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/config/firebaseConfig";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { auth, db } from "@/config/firebaseConfig";
 import toast from "react-hot-toast";
+import { onAuthStateChanged } from "firebase/auth";
 
 const LeadsBox: React.FC<{ col?: any; isShow?: any }> = ({ col, isShow }) => {
   const validationBankSchema = Yup.object().shape({
@@ -18,9 +28,107 @@ const LeadsBox: React.FC<{ col?: any; isShow?: any }> = ({ col, isShow }) => {
   const validationSchema = Yup.object().shape({
     checkbox: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
-
   const router = useRouter();
-  const leadId = router.query["leadId"];
+  const { propertyId, husodellId } = router.query;
+
+  const [leadId, setLeadId] = useState(router.query["leadId"]);
+
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    setLeadId(router.query["leadId"]);
+  }, [router.query["leadId"]]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
+      if (user) {
+        try {
+          const userDocRef = doc(db, "users", user.uid);
+          const userDocSnapshot = await getDoc(userDocRef);
+
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            setUser({
+              id: userDocSnapshot.id,
+              ...userData,
+            });
+          } else {
+            console.error("No such document in Firestore!");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user || !propertyId || !husodellId) {
+        return;
+      }
+
+      const queryParams = new URLSearchParams(window.location.search);
+      const isEmptyPlot = queryParams.get("empty");
+      queryParams.delete("leadId");
+
+      try {
+        let plotCollectionRef = collection(db, "empty_plot");
+        const plotDocRef = doc(plotCollectionRef, String(propertyId));
+        const plotDocSnap = await getDoc(plotDocRef);
+
+        const husmodellDocRef = doc(db, "house_model", String(husodellId));
+        const husmodellDocSnap = await getDoc(husmodellDocRef);
+
+        const finalData = {
+          plot: { id: propertyId, ...plotDocSnap.data() },
+          husmodell: { id: husodellId, ...husmodellDocSnap.data() },
+        };
+
+        const leadsCollectionRef = collection(db, "leads");
+        const querySnapshot: any = await getDocs(
+          query(
+            leadsCollectionRef,
+            where("finalData.plot.id", "==", propertyId),
+            where("finalData.husmodell.id", "==", husodellId)
+          )
+        );
+
+        if (!querySnapshot.empty) {
+          router.replace({
+            pathname: router.pathname,
+            query: { ...router.query, leadId: querySnapshot.docs[0].id },
+          });
+          setLeadId(querySnapshot.docs[0].id);
+          return;
+        }
+
+        const docRef: any = await addDoc(leadsCollectionRef, {
+          finalData,
+          user,
+          Isopt: false,
+          IsoptForBank: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          IsEmptyPlot: isEmptyPlot === "true",
+        });
+
+        router.replace({
+          pathname: router.pathname,
+          query: { ...router.query, leadId: docRef.id },
+        });
+        setLeadId(docRef.id);
+      } catch (error) {
+        console.error("Firestore operation failed:", error);
+      }
+    };
+
+    if (propertyId && husodellId && !leadId) {
+      fetchData();
+    }
+  }, [propertyId, husodellId, user]);
 
   const handleSubmit = async () => {
     try {

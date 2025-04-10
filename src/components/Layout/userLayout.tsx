@@ -24,6 +24,10 @@ const UserLayout = ({ children }: Props) => {
       localStorage.removeItem("subcity");
       localStorage.removeItem("Hustype");
     }
+    if (!pathname.startsWith("husmodells")) {
+      localStorage.removeItem("city");
+      localStorage.removeItem("subcity");
+    }
     if (
       !pathname.startsWith("/housemodell-plot") &&
       !pathname.startsWith("/husmodells") &&

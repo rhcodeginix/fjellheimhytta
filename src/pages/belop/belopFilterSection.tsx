@@ -6,6 +6,7 @@ import { Slider, styled } from "@mui/material";
 import { useRouter } from "next/router";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
+import Button from "@/components/common/button";
 
 const CustomSlider = styled(Slider)({
   color: "#6941C6",
@@ -60,7 +61,8 @@ const BelopFilterSection: React.FC<{
 }> = ({ setFormData, formData }) => {
   const router = useRouter();
   const [maxPrice, setMaxPrice] = useState(null);
-
+  const [maxPlotPrice, setMaxPlotPrice] = useState("");
+  const [maxHousePrice, setMaxHousePrice] = useState("");
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
 
@@ -673,6 +675,53 @@ const BelopFilterSection: React.FC<{
                       {maxPrice} NOK
                     </div>
                   </div>
+                  <div className="flex justify-end mt-2 items-center gap-3">
+                    <input
+                      type="text"
+                      placeholder="Enter Pris"
+                      className="border border-gray2 rounded-lg px-3 py-2 focus-within:outline-none w-full"
+                      value={maxPlotPrice}
+                      onChange={(e: any) => {
+                        const rawValue = e.target.value.replace(/\D/g, "");
+
+                        if (rawValue) {
+                          const formattedValue = new Intl.NumberFormat(
+                            "no-NO"
+                          ).format(Number(rawValue));
+                          setMaxPlotPrice(formattedValue);
+                        } else {
+                          setMaxPlotPrice("");
+                        }
+                      }}
+                    />
+
+                    <Button
+                      text="Save"
+                      className="border border-[#6941C6] bg-[#6941C6] text-white md:text-sm rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative desktop:px-4 desktop:py-2"
+                      type="button"
+                      onClick={() => {
+                        setFormData((prev: any) => ({
+                          ...prev,
+                          maxRangeForPlot: maxPlotPrice,
+                        }));
+                        setTimeout(() => {
+                          router.push(
+                            {
+                              pathname: router.pathname,
+                              query: {
+                                ...router.query,
+                                maxRangePlot: Math.floor(
+                                  Number(maxPlotPrice.replace(/\s+/g, ""))
+                                ),
+                              },
+                            },
+                            undefined,
+                            { shallow: true }
+                          );
+                        }, 2000);
+                      }}
+                    />
+                  </div>
                 </>
               )}
             </div>
@@ -741,6 +790,53 @@ const BelopFilterSection: React.FC<{
                     <div className="text-grayText text-sm lg:text-base">
                       {maxPrice} NOK
                     </div>
+                  </div>
+                  <div className="flex justify-end mt-2 items-center gap-3">
+                    <input
+                      type="text"
+                      placeholder="Enter Pris"
+                      className="border border-gray2 rounded-lg px-3 py-2 focus-within:outline-none w-full"
+                      value={maxHousePrice}
+                      onChange={(e: any) => {
+                        const rawValue = e.target.value.replace(/\D/g, "");
+
+                        if (rawValue) {
+                          const formattedValue = new Intl.NumberFormat(
+                            "no-NO"
+                          ).format(Number(rawValue));
+                          setMaxHousePrice(formattedValue);
+                        } else {
+                          setMaxHousePrice("");
+                        }
+                      }}
+                    />
+
+                    <Button
+                      text="Save"
+                      className="border border-[#6941C6] bg-[#6941C6] text-white md:text-sm rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative desktop:px-4 desktop:py-2"
+                      type="button"
+                      onClick={() => {
+                        setFormData((prev: any) => ({
+                          ...prev,
+                          maxRangeForHusmodell: maxHousePrice,
+                        }));
+                        setTimeout(() => {
+                          router.push(
+                            {
+                              pathname: router.pathname,
+                              query: {
+                                ...router.query,
+                                maxRangeForHusmodell: Math.floor(
+                                  Number(maxHousePrice.replace(/\s+/g, ""))
+                                ),
+                              },
+                            },
+                            undefined,
+                            { shallow: true }
+                          );
+                        }, 2000);
+                      }}
+                    />
                   </div>
                 </>
               )}

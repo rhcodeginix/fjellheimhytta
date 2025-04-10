@@ -24,6 +24,7 @@ const HusmodellTab = () => {
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const [allCity, setAllCity] = useState([]);
   useEffect(() => {
     const fetchProperty = async () => {
       setIsLoading(true);
@@ -35,6 +36,7 @@ const HusmodellTab = () => {
           propertyId: doc.id,
           ...doc.data(),
         }));
+        setAllCity(fetchedProperties);
 
         const mergedCities = fetchedProperties.flatMap((property: any) =>
           Array.isArray(property.kommunerList) ? property.kommunerList : []
@@ -97,7 +99,13 @@ const HusmodellTab = () => {
     if (hasError) return;
     formData.Kommue = formData.Kommue.replace(/ Kommune/, "");
 
-    router.push(`husmodells?Kommue=${formData.Kommue}`);
+    const matchedCities: any = allCity.find((city: any) =>
+      city.kommunerList.find((kom: any) => formData.Kommue === kom.name)
+    );
+
+    router.push(
+      `husmodells?Kommue=${formData.Kommue}&city=${matchedCities?.name}`
+    );
     const currIndex = 0;
     localStorage.setItem("currIndex", currIndex.toString());
   };

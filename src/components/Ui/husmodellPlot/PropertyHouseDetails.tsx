@@ -126,10 +126,10 @@ const PropertyHouseDetails: React.FC<{
           <div>
             <p className="text-secondary text-sm mb-2">Dine tillegg</p>
             <h4 className="text-darkBlack font-semibold text-xl">
-              {/* {equityAmount
-                ? formatCurrency(equityAmount.toLocaleString("nb-NO"))
-                : "0 NOK"} */}
-              {Husdetaljer ? formatCurrency(Husdetaljer?.pris) : 0}
+              {totalCustPris
+                ? formatCurrency(totalCustPris.toLocaleString("nb-NO"))
+                : "0 NOK"}
+              {/* {Husdetaljer ? formatCurrency(Husdetaljer?.pris) : 0} */}
             </h4>
           </div>
           <div>
@@ -138,7 +138,9 @@ const PropertyHouseDetails: React.FC<{
               {formatCurrency(totalPrice.toLocaleString("nb-NO"))}
             </h4>
 
-            <p className="text-secondary text-sm mb-2">+ tomtepris</p>
+            <p className="text-secondary text-sm mb-2">
+              + tomtepris ({formatCurrency(husPris.toLocaleString("nb-NO"))})
+            </p>
           </div>
         </div>
       </div>

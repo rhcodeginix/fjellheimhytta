@@ -125,7 +125,7 @@ const Tilbud: React.FC<{
               onClick={() => {
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
+                // window.location.reload();
                 handlePrevious();
               }}
             >
@@ -137,7 +137,7 @@ const Tilbud: React.FC<{
               onClick={() => {
                 const currIndex = 1;
                 localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
+                // window.location.reload();
                 handlePrevious();
               }}
             >
@@ -488,7 +488,7 @@ const Tilbud: React.FC<{
               className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
-                window.location.reload();
+                // window.location.reload();
               }}
             />
             <Button
@@ -496,7 +496,7 @@ const Tilbud: React.FC<{
               className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 handleNext();
-                window.location.reload();
+                // window.location.reload();
               }}
             />
           </div>

@@ -1,12 +1,17 @@
 import Loading from "@/components/Loading";
 import Image from "next/image";
 import Ic_wishlist_heart from "@/public/images/Ic_wishlist_heart.svg";
-import GoogleMapComponent from "@/components/Ui/map";
+// import GoogleMapComponent from "@/components/Ui/map";
 import Button from "@/components/common/button";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
+import dynamic from "next/dynamic";
+
+const GoogleMapComponent = dynamic(() => import("../../components/Ui/map"), {
+  ssr: false,
+});
 
 export function formatPrice(price: any) {
   const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -236,7 +241,7 @@ const BelopProperty: React.FC<{
                             className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
                               router.push(
-                                `${router.asPath}&propertyId=${property?.plot?.id}&husodellId=${property?.house?.id}&emptyPlot=true&hasReload=true`
+                                `${router.asPath}&propertyId=${property?.plot?.id}&husodellId=${property?.house?.id}&emptyPlot=true`
                               );
                               const currIndex = 0;
                               localStorage.setItem(

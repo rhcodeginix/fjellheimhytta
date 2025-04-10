@@ -49,16 +49,16 @@ const Belop: React.FC = () => {
     }));
   }, []);
 
-  useEffect(() => {
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
+  // useEffect(() => {
+  //   const hasReloaded = sessionStorage.getItem("hasReloaded");
 
-    if (!hasReloaded) {
-      window.location.reload();
-      sessionStorage.setItem("hasReloaded", "true");
-    } else {
-      sessionStorage.removeItem("hasReloaded");
-    }
-  }, [router.asPath]);
+  //   if (!hasReloaded) {
+  //     window.location.reload();
+  //     sessionStorage.setItem("hasReloaded", "true");
+  //   } else {
+  //     sessionStorage.removeItem("hasReloaded");
+  //   }
+  // }, [router.asPath]);
 
   // useEffect(() => {
   //   const fetchProperty = async () => {

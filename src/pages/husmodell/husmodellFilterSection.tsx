@@ -3,6 +3,7 @@ import Ic_search from "@/public/images/Ic_search.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import { useState } from "react";
 import { Slider, styled } from "@mui/material";
+import Button from "@/components/common/button";
 
 const CustomSlider = styled(Slider)({
   color: "#6941C6",
@@ -53,6 +54,8 @@ const HusmodellFilterSection: React.FC<{
   formData: FormDataType;
   maxRangeData: number;
 }> = ({ setFormData, formData, maxRangeData }) => {
+  const [maxHousePrice, setMaxHousePrice] = useState("");
+
   const [openIndex, setOpenIndex] = useState<string[]>([
     "Eiendomstype",
     "Type husmodell",
@@ -458,6 +461,38 @@ const HusmodellFilterSection: React.FC<{
                     <div className="text-grayText text-sm lg:text-base">
                       {formData?.maxRangeForHusmodell} NOK
                     </div>
+                  </div>
+                  <div className="flex justify-end mt-2 items-center gap-3">
+                    <input
+                      type="text"
+                      placeholder="Enter Pris"
+                      className="border border-gray2 rounded-lg px-3 py-2 focus-within:outline-none w-full"
+                      value={maxHousePrice}
+                      onChange={(e: any) => {
+                        const rawValue = e.target.value.replace(/\D/g, "");
+
+                        if (rawValue) {
+                          const formattedValue = new Intl.NumberFormat(
+                            "no-NO"
+                          ).format(Number(rawValue));
+                          setMaxHousePrice(formattedValue);
+                        } else {
+                          setMaxHousePrice("");
+                        }
+                      }}
+                    />
+
+                    <Button
+                      text="Save"
+                      className="border border-[#6941C6] bg-[#6941C6] text-white md:text-sm rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative desktop:px-4 desktop:py-2"
+                      type="button"
+                      onClick={() => {
+                        setFormData((prev: any) => ({
+                          ...prev,
+                          maxRangeForHusmodell: maxHousePrice,
+                        }));
+                      }}
+                    />
                   </div>
                 </>
               )}

@@ -380,7 +380,7 @@ const Tilpass: React.FC<{
                                   </h5>
                                 </div>
                                 <Button
-                                  text="Velg"
+                                  text={isSelected ? "Valgt" : "Velg"}
                                   className={`border-2 text-[#7839EE] ${
                                     isSelected
                                       ? "border-[#7839EE] bg-[#ECE9FE]"
