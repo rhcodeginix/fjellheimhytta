@@ -31,9 +31,6 @@ const AddressProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     const timeoutId = setTimeout(() => {
-      // toast.error("Request timed out. Please try again later.", {
-      //   position: "top-right",
-      // });
       setLoading(false);
     }, 10000);
     const queryParams = storedAddress;

@@ -130,11 +130,20 @@ const LoginForm: React.FC<{
         setNewUser(user);
         setIsModalOpen(true);
       }
-    } catch (error) {
-      console.error("Error during Google Sign-In", error);
-      toast.error("Google sign-in failed. Please try again.", {
-        position: "top-right",
-      });
+    } catch (error: any) {
+      if (error.code === "auth/popup-closed-by-user") {
+        toast.error("Google login popup was closed.", {
+          position: "top-right",
+        });
+      } else {
+        toast.error("Google sign-in failed. Please try again.", {
+          position: "top-right",
+        });
+      }
+
+      if (path) {
+        router.push("/login");
+      }
     } finally {
       setLoading(false);
     }

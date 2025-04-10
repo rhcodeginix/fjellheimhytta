@@ -40,16 +40,7 @@ const Regulations = () => {
       }
     }
   }, [currIndex]);
-  useEffect(() => {
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
 
-    if (!hasReloaded) {
-      window.location.reload();
-      sessionStorage.setItem("hasReloaded", "true");
-    } else {
-      sessionStorage.removeItem("hasReloaded");
-    }
-  }, []);
   const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
   const [CadastreDataFromApi, setCadastreDataFromApi] = useState<any | null>(
     null

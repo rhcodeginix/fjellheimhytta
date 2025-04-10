@@ -15,9 +15,6 @@ const useAuth = () => {
       }
     } else {
       setIsAuthenticated(false);
-      // if (router.pathname !== "/login") {
-      //   router.push("/login");
-      // }
     }
   };
 

@@ -56,7 +56,6 @@ const HusmodellFilterSection: React.FC<{
   const [maxHousePrice, setMaxHousePrice] = useState("");
 
   const [openIndex, setOpenIndex] = useState<string[]>([
-    "Område",
     "Hustype",
     "Type husmodell",
     "Antall soverom",
@@ -150,66 +149,6 @@ const HusmodellFilterSection: React.FC<{
             </div>
           </div>
           <div className="flex flex-col gap-6">
-            <div
-              className="w-full bg-white p-4 rounded-lg"
-              style={{
-                boxShadow:
-                  "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
-              }}
-            >
-              <p
-                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
-                onClick={() => handleToggleAccordion("Område")}
-              >
-                Område
-                <Image
-                  src={Ic_chevron_down}
-                  alt="arrow"
-                  className={openIndex.includes("Område") ? "rotate-180" : ""}
-                  fetchPriority="auto"
-                />
-              </p>
-
-              {openIndex.includes("Område") && (
-                <>
-                  <div className="my-4 border-t border-[#DCDFEA]"></div>
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-                    {HustypeArray.map((data: any, index: number) => (
-                      <label
-                        className="container container_darkgray_withPurple"
-                        htmlFor={data.name}
-                        key={index}
-                      >
-                        <span className="text-darkBlack text-sm md:text-base">
-                          {data.name}
-                        </span>
-                        <input
-                          type="checkbox"
-                          id={data.name}
-                          value={data.name}
-                          checked={formData?.Hustype.includes(data.name)}
-                          onChange={() => {
-                            setFormData((prev: any) => {
-                              const updatedSet: any = new Set(prev.Hustype);
-                              updatedSet.has(data.name)
-                                ? updatedSet.delete(data.name)
-                                : updatedSet.add(data.name);
-                              return {
-                                ...prev,
-                                Hustype: Array.from(updatedSet),
-                              };
-                            });
-                          }}
-                          className="mr-2"
-                        />
-
-                        <span className="checkmark checkmark_darkgray_withPurple"></span>
-                      </label>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
             <div
               className="w-full bg-white p-4 rounded-lg"
               style={{

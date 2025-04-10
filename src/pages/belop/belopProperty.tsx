@@ -1,7 +1,6 @@
 import Loading from "@/components/Loading";
 import Image from "next/image";
 import Ic_wishlist_heart from "@/public/images/Ic_wishlist_heart.svg";
-// import GoogleMapComponent from "@/components/Ui/map";
 import Button from "@/components/common/button";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

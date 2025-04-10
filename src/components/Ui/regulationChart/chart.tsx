@@ -6,9 +6,6 @@ const getRandomColor = (index: number) => {
   const variation = (index * 20) % 40;
   return `hsl(${baseHue + variation}, 65%, ${50 + (index % 10)}%)`;
 };
-// const getRandomColor = (index: number) =>
-//   `hsl(${(index * 137) % 360}, 70%, 50%)`;
-
 const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
   const data = chartData?.map((item: any) => ({
     name: item.Navn,

@@ -56,7 +56,6 @@ const HouseModelSingleProperty: React.FC<{
 }> = ({
   handleNext,
   HouseModelData,
-  // handlePrevious,
   loadingAdditionalData,
   loginUser,
   loadingLamdaData,
@@ -67,23 +66,9 @@ const HouseModelSingleProperty: React.FC<{
   user,
 }) => {
   const router = useRouter();
-  const { hasReload, homePage } = router.query;
+  const { homePage } = router.query;
   const { pathname, query: routequery } = router;
   const updatedQuery = { ...routequery };
-
-  useEffect(() => {
-    if (hasReload) {
-      const newQuery: any = { ...router.query };
-      delete newQuery.hasReload;
-
-      const newUrl = `${router.pathname}?${new URLSearchParams(newQuery).toString()}`;
-      window.history.replaceState(null, "", newUrl);
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
-    }
-  }, [hasReload]);
 
   const [dropdownState, setDropdownState] = useState({
     Tomteopplysninger: false,
@@ -101,7 +86,6 @@ const HouseModelSingleProperty: React.FC<{
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        // Close all dropdowns if clicked outside
         setDropdownState((prevState: any) =>
           Object.keys(prevState).reduce(
             (acc: any, key) => {
@@ -142,7 +126,7 @@ const HouseModelSingleProperty: React.FC<{
     }
 
     const day = String(dateObject.getDate()).padStart(2, "0");
-    const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
     const year = dateObject.getFullYear();
 
     return `${day}.${month}.${year}`;
@@ -383,18 +367,14 @@ const HouseModelSingleProperty: React.FC<{
                     delete updatedQuery.leadId;
                     delete updatedQuery.emptyPlot;
 
-                    router
-                      .push(
-                        {
-                          pathname: router.pathname,
-                          query: updatedQuery,
-                        },
-                        undefined,
-                        { shallow: true }
-                      )
-                      .then(() => {
-                        window.location.reload();
-                      });
+                    router.push(
+                      {
+                        pathname: router.pathname,
+                        query: updatedQuery,
+                      },
+                      undefined,
+                      { shallow: true }
+                    );
                     const currIndex = 1;
                     localStorage.setItem("currIndex", currIndex.toString());
                   }}
@@ -1818,7 +1798,6 @@ const HouseModelSingleProperty: React.FC<{
                 router.replace({ pathname, query: updatedQuery }, undefined, {
                   shallow: true,
                 });
-                window.location.reload();
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
               }}
@@ -1829,7 +1808,6 @@ const HouseModelSingleProperty: React.FC<{
               onClick={() => {
                 if (!loadingLamdaData && !loadingAdditionalData) {
                   handleNext();
-                  window.location.reload();
                 }
               }}
             />

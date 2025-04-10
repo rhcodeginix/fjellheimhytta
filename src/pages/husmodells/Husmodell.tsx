@@ -62,16 +62,7 @@ const Husmodell: React.FC<any> = ({
   useEffect(() => {
     setHasMounted(true);
   }, []);
-  useEffect(() => {
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
 
-    if (!hasReloaded) {
-      window.location.reload();
-      sessionStorage.setItem("hasReloaded", "true");
-    } else {
-      sessionStorage.removeItem("hasReloaded");
-    }
-  }, [router.asPath]);
   if (!hasMounted) return null;
 
   return (

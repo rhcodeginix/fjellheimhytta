@@ -135,7 +135,6 @@ const BeløpTab = () => {
               }`}
             >
               <div className="text-secondary2 mb-2 text-sm">
-                {/* Jeg vil bygge */}
                 Velg fylke fra <span className="font-bold">TomteBanken</span>
               </div>
               <button

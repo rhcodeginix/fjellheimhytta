@@ -46,7 +46,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   return (
-    // <ProtectedRoute>
     <>
       {router.pathname === "/welcome" ? (
         <>
@@ -72,7 +71,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         </UserLayout>
       )}
     </>
-    // </ProtectedRoute>
   );
 }
 

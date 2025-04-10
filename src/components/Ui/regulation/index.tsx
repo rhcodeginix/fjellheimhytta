@@ -8,7 +8,6 @@ import HusmodellProperty from "./HusmodellProperty";
 import Link from "next/link";
 import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import PropertyDetail from "../stepperUi/propertyDetail";
 import PropertyDetails from "../husmodellPlot/properyDetails";
 
@@ -37,23 +36,6 @@ const HusmodellPropertyPage: React.FC<{
     maxRangeForHusmodell: maxRangeData,
   });
   const [total, setTotal] = useState();
-  const router: any = useRouter();
-  const { hasReload } = router.query;
-
-  useEffect(() => {
-    if (hasReload) {
-      const newQuery: any = { ...router.query };
-      delete newQuery.hasReload;
-
-      const newUrl = `${router.pathname}?${new URLSearchParams(newQuery).toString()}`;
-      window.history.replaceState(null, "", newUrl);
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
-    }
-  }, [hasReload]);
-
   useEffect(() => {
     const storedMaxPrice = sessionStorage.getItem("maxHousePrice");
     if (storedMaxPrice) {

@@ -160,7 +160,6 @@ const Tilpass: React.FC<{
               onClick={() => {
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
-                // window.location.reload();
                 handlePrevious();
               }}
             >

@@ -19,16 +19,7 @@ const AddPlot = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [loginPopup, setLoginPopup] = useState(false);
   const router = useRouter();
-  useEffect(() => {
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
 
-    if (!hasReloaded) {
-      window.location.reload();
-      sessionStorage.setItem("hasReloaded", "true");
-    } else {
-      sessionStorage.removeItem("hasReloaded");
-    }
-  }, [router.asPath]);
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
     if (isLoggedIn) {

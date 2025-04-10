@@ -144,18 +144,14 @@ const Tilbud: React.FC<{
                     delete updatedQuery.leadId;
                     delete updatedQuery.emptyPlot;
 
-                    router
-                      .push(
-                        {
-                          pathname: router.pathname,
-                          query: updatedQuery,
-                        },
-                        undefined,
-                        { shallow: true }
-                      )
-                      .then(() => {
-                        window.location.reload();
-                      });
+                    router.push(
+                      {
+                        pathname: router.pathname,
+                        query: updatedQuery,
+                      },
+                      undefined,
+                      { shallow: true }
+                    );
                     const currIndex = 1;
                     localStorage.setItem("currIndex", currIndex.toString());
                     handlePrevious();
@@ -171,7 +167,6 @@ const Tilbud: React.FC<{
               onClick={() => {
                 const currIndex = 2;
                 localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
                 handlePrevious();
               }}
             >
@@ -183,7 +178,6 @@ const Tilbud: React.FC<{
               onClick={() => {
                 const currIndex = 3;
                 localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
                 handlePrevious();
               }}
             >
@@ -531,7 +525,6 @@ const Tilbud: React.FC<{
               className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
-                window.location.reload();
               }}
             />
             <Button
@@ -539,7 +532,6 @@ const Tilbud: React.FC<{
               className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 handleNext();
-                window.location.reload();
               }}
             />
           </div>

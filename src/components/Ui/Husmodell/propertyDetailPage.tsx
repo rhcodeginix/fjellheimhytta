@@ -334,8 +334,6 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                     allowFullScreen
                   ></iframe>
                 </div>
-
-                {/* <ContactForm /> */}
               </div>
             </div>
           </div>

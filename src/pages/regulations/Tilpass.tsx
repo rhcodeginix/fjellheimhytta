@@ -180,18 +180,14 @@ const Tilpass: React.FC<{
                     delete updatedQuery.leadId;
                     delete updatedQuery.emptyPlot;
 
-                    router
-                      .push(
-                        {
-                          pathname: router.pathname,
-                          query: updatedQuery,
-                        },
-                        undefined,
-                        { shallow: true }
-                      )
-                      .then(() => {
-                        window.location.reload();
-                      });
+                    router.push(
+                      {
+                        pathname: router.pathname,
+                        query: updatedQuery,
+                      },
+                      undefined,
+                      { shallow: true }
+                    );
                     const currIndex = 1;
                     localStorage.setItem("currIndex", currIndex.toString());
                     handlePrevious();
@@ -207,7 +203,6 @@ const Tilpass: React.FC<{
               onClick={() => {
                 const currIndex = 2;
                 localStorage.setItem("currIndex", currIndex.toString());
-                window.location.reload();
                 handlePrevious();
               }}
             >

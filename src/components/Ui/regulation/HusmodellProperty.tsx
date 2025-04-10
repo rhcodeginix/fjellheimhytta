@@ -164,7 +164,7 @@ const HusmodellProperty: React.FC<{
                             className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
                               router.push(
-                                `${router.asPath}&husodellId=${property?.id}&hasReload="true"`
+                                `${router.asPath}&husodellId=${property?.id}`
                               );
                               handleNext();
                             }}

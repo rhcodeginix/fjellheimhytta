@@ -58,16 +58,6 @@ const CustomSlider = styled(Slider)({
 });
 
 const AllPlot = () => {
-  useEffect(() => {
-    const hasReloaded = sessionStorage.getItem("hasReloaded");
-
-    if (!hasReloaded) {
-      window.location.reload();
-      sessionStorage.setItem("hasReloaded", "true");
-    } else {
-      sessionStorage.removeItem("hasReloaded");
-    }
-  }, []);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [bedroomFilters, setBedroomFilters] = useState<string[]>([]);
   const [facilityFilters, setFacilityFilters] = useState<string[]>([]);

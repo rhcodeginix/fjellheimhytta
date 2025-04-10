@@ -12,7 +12,6 @@ const Welcome = () => {
   const validationSchema = Yup.object().shape({
     password: Yup.string()
       .oneOf(["Iplot@2025"], "Password is incorrect")
-      //   .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
 

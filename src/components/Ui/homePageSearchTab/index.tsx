@@ -16,7 +16,6 @@ import {
 } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import Loading from "@/components/Loading";
-// import GoogleMapComponent from "../map";
 import { useRouter } from "next/router";
 import { formatPrice } from "@/pages/belop/belopProperty";
 import dynamic from "next/dynamic";
@@ -394,7 +393,7 @@ const HomePageSearchTab: React.FC = () => {
                           className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                           onClick={() => {
                             router.push(
-                              `regulations?propertyId=${property?.plot?.id}&husodellId=${property?.house?.id}&emptyPlot=true&hasReload=true&homePage=true`
+                              `regulations?propertyId=${property?.plot?.id}&husodellId=${property?.house?.id}&emptyPlot=true&homePage=true`
                             );
                             const currIndex = 0;
                             localStorage.setItem(

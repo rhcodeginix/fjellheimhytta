@@ -29,7 +29,6 @@ import Eierinformasjon from "@/components/Ui/regulationChart/Eierinformasjon";
 import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
 import Link from "next/link";
 import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
-// import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
 import {
   Building,
   Building2,
@@ -105,7 +104,6 @@ const Tomt: React.FC<{
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        // Close all dropdowns if clicked outside
         setDropdownState((prevState: any) =>
           Object.keys(prevState).reduce(
             (acc: any, key) => {
@@ -146,7 +144,7 @@ const Tomt: React.FC<{
     }
 
     const day = String(dateObject.getDate()).padStart(2, "0");
-    const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
     const year = dateObject.getFullYear();
 
     return `${day}.${month}.${year}`;
@@ -334,9 +332,7 @@ const Tomt: React.FC<{
         lamdaDataFromApi={lamdaDataFromApi}
         askData={askData}
       />
-      {/* <SideSpaceContainer>
-        <LeadsBox isShow={true} />
-      </SideSpaceContainer> */}
+
       <div id="regulationDocument">
         <div
           className="border-b border-gray3 py-6 pb-8"
@@ -1735,8 +1731,7 @@ const Tomt: React.FC<{
                     setIsBuild(true);
                   } else {
                     handleNext();
-                    window.location.reload();
-                    router.push(`${router.asPath}&hasReload=true`);
+                    router.push(`${router.asPath}`);
                   }
                 }
               }}
@@ -1967,8 +1962,7 @@ const Tomt: React.FC<{
                 className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                 onClick={() => {
                   handleNext();
-                  window.location.reload();
-                  router.push(`${router.asPath}&hasReload=true`);
+                  router.push(`${router.asPath}`);
                 }}
               />
             </div>

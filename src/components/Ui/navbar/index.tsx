@@ -73,12 +73,12 @@ const Header = () => {
   }, []);
   const handleLogout = async () => {
     try {
-      await signOut(auth); // Firebase signOut method
+      await signOut(auth);
       localStorage.removeItem("min_tomt_login");
       localStorage.removeItem("I_plot_email");
       setLoginUser(false);
-      setUserName(null); // Reset the userName
-      setIsDropdownOpen(false); // Close the dropdown
+      setUserName(null);
+      setIsDropdownOpen(false);
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -207,7 +207,6 @@ const Header = () => {
         </SideSpaceContainer>
       </div>
 
-      {/* Side Drawer */}
       <div
         style={{
           transition: "transform 1s, box-shadow 1s",

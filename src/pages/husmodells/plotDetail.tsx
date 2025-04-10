@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Ic_generelt from "@/public/images/Ic_generelt.svg";
-// import Ic_tak from "@/public/images/Ic_tak.svg";
 import Ic_check_true from "@/public/images/Ic_check_true.svg";
 import Image from "next/image";
 import Ic_logo from "@/public/images/Ic_logo.svg";
@@ -12,7 +11,6 @@ import Ic_Superstructure from "@/public/images/Ic_Superstructure.svg";
 import Button from "@/components/common/button";
 import ContactForm from "@/components/Ui/stepperUi/contactForm";
 import { useAddress } from "@/context/addressContext";
-// import { useRouter } from "next/router";
 import Loader from "@/components/Loader";
 import GoogleMapComponent from "@/components/Ui/map";
 
@@ -44,8 +42,6 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
     },
   ];
   const { getAddress } = useAddress();
-
-  // const router = useRouter();
 
   const [askData, setAskData] = useState<any | null>(null);
   const { additionalData, loadingAdditionalData } = useAddress();
@@ -281,9 +277,6 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                         Kommune
                       </td>
                       <td className="text-right pb-[16px] text-black text-sm font-semibold w-full truncate max-w-[120px]">
-                        {/* {!loadingAdditionalData &&
-                          lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
-                            ?.kommune} */}
                         {!loadingAdditionalData && getAddress?.kommunenavn}
                       </td>
                     </tr>
@@ -528,14 +521,6 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
             <Button
               text="Tilbake"
               className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
-              // onClick={() => {
-              //   const { plot, ...restQuery } = router.query as any;
-              //   const updatedQuery = new URLSearchParams(restQuery).toString();
-
-              //   router.push(
-              //     `${router.pathname}${updatedQuery ? `?${updatedQuery}` : ""}`
-              //   );
-              // }}
             />
             <Button
               text="Se tilbud"

@@ -5,7 +5,6 @@ import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
 import Button from "@/components/common/button";
 import Loader from "@/components/Loader";
 import Link from "next/link";
-// import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
 import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -132,7 +131,6 @@ const Finansiering: React.FC<{
                   onClick={() => {
                     const currIndex = 0;
                     localStorage.setItem("currIndex", currIndex.toString());
-                    window.location.reload();
                     handlePrevious();
                   }}
                 >
@@ -144,7 +142,6 @@ const Finansiering: React.FC<{
                   onClick={() => {
                     const currIndex = 1;
                     localStorage.setItem("currIndex", currIndex.toString());
-                    window.location.reload();
                     handlePrevious();
                   }}
                 >
@@ -156,7 +153,6 @@ const Finansiering: React.FC<{
                   onClick={() => {
                     const currIndex = 2;
                     localStorage.setItem("currIndex", currIndex.toString());
-                    window.location.reload();
                     handlePrevious();
                   }}
                 >
@@ -168,7 +164,6 @@ const Finansiering: React.FC<{
                   onClick={() => {
                     const currIndex = 3;
                     localStorage.setItem("currIndex", currIndex.toString());
-                    window.location.reload();
                     handlePrevious();
                   }}
                 >
@@ -783,7 +778,6 @@ const Finansiering: React.FC<{
                   className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                   onClick={() => {
                     handlePrevious();
-                    window.location.reload();
                   }}
                 />
                 <Button
@@ -791,7 +785,6 @@ const Finansiering: React.FC<{
                   className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                   onClick={() => {
                     handleNext();
-                    window.location.reload();
                   }}
                 />
               </div>

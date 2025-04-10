@@ -109,7 +109,6 @@ const TomtBakenPropertyDetail: React.FC = () => {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        // Close all dropdowns if clicked outside
         setDropdownState((prevState: any) =>
           Object.keys(prevState).reduce(
             (acc: any, key) => {
@@ -150,7 +149,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
     }
 
     const day = String(dateObject.getDate()).padStart(2, "0");
-    const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
     const year = dateObject.getFullYear();
 
     return `${day}.${month}.${year}`;

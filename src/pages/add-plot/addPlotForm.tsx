@@ -122,28 +122,6 @@ const AddPlotForm = () => {
   const router = useRouter();
   const { plotId } = router.query;
 
-  // const handleSubmit = async (values: any) => {
-  //   if (userUID) {
-  //     try {
-  //       const userDocRef: any = doc(db, "users", userUID);
-
-  //       if (plotId) {
-  //         const plotDocRef = doc(userDocRef, "add_plot", String(plotId));
-  //         await updateDoc(plotDocRef, values);
-  //         toast.success("Plot updated successfully.", {
-  //           position: "top-right",
-  //         });
-  //       } else {
-  //         const propertyDb = collection(userDocRef, "add_plot");
-  //         await addDoc(propertyDb, values);
-  //         toast.success("Plot added successfully.", { position: "top-right" });
-  //       }
-  //     } catch (error) {
-  //       console.error("Error handling plot submission:", error);
-  //     }
-  //   }
-  // };
-
   const handleSubmit = async (values: any) => {
     if (userUID) {
       const userDocRef: any = doc(db, "users", userUID);
@@ -266,7 +244,6 @@ const AddPlotForm = () => {
         validateForm,
       }) => {
         const fileInputRef = useRef<HTMLInputElement>(null);
-        // const [preview, setPreview] = useState<string | null>(null);
         const [adresseValue, setAddressValue] = useState("");
         const plotImageInputRef = useRef<HTMLInputElement>(null);
         const plotLocationInputRef = useRef<HTMLInputElement>(null);
@@ -1083,24 +1060,9 @@ const AddPlotForm = () => {
                       {values.map_image ? (
                         <>
                           <div className="bg-[#EFF1F5] w-full h-[350px] rounded-[8px] overflow-hidden mt-2 relative">
-                            {/* <Image
-                              src={preview}
-                              alt="Preview"
-                              width={200}
-                              height={200}
-                              className="rounded-md"
-                            /> */}
                             <GoogleMapComponent
                               coordinates={values.map_image}
                             />
-                            {/* <div
-                              className="absolute top-3 right-3 cursor-pointer bg-white p-2 rounded-full"
-                              onClick={() => {
-                                setFieldValue("map_image", null);
-                              }}
-                            >
-                              <Image src={Ic_delete} alt="delete" />
-                            </div> */}
                           </div>
                         </>
                       ) : (
@@ -1126,7 +1088,6 @@ const AddPlotForm = () => {
                                 const file = event.target.files?.[0];
                                 if (file) {
                                   setFieldValue("map_image", file);
-                                  // setPreview(URL.createObjectURL(file));
                                 }
                               }}
                               name="map_image"
@@ -1576,7 +1537,6 @@ const AddPlotForm = () => {
                 className="border-2 border-primary text-primary sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
                 onClick={() => {
                   resetForm();
-                  window.location.reload();
                 }}
               />
               <Button

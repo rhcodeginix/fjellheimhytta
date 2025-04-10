@@ -18,7 +18,7 @@ interface StepperProps {
 const Stepper: React.FC<StepperProps> = ({
   steps,
   currIndex,
-  // setCurrIndex,
+  setCurrIndex,
   Style,
 }) => {
   useEffect(() => {
@@ -27,12 +27,12 @@ const Stepper: React.FC<StepperProps> = ({
     }
   }, [currIndex]);
 
-  // const handleStepClick = (index: number) => {
-  //   if (index <= currIndex) {
-  //     setCurrIndex(index);
-  //   }
-  //   localStorage.setItem("currIndex", index.toString());
-  // };
+  const handleStepClick = (index: number) => {
+    if (index <= currIndex) {
+      setCurrIndex(index);
+    }
+    localStorage.setItem("currIndex", index.toString());
+  };
 
   return (
     <>
@@ -45,14 +45,14 @@ const Stepper: React.FC<StepperProps> = ({
                 {steps.map((step, index) => (
                   <div
                     key={index}
-                    className={`screen-indicator-span ${
+                    className={`screen-indicator-span cursor-pointer ${
                       index < currIndex
                         ? "completed"
                         : index === currIndex
                           ? "current"
                           : ""
                     }`}
-                    // onClick={() => handleStepClick(index)}
+                    onClick={() => handleStepClick(index)}
                     style={{
                       color: index === currIndex ? "#2a343e" : "",
                     }}
@@ -61,7 +61,6 @@ const Stepper: React.FC<StepperProps> = ({
                       className="flex items-center gap-1.5 md:gap-2 px-1 md:px-2 bg-[#491C96]"
                       style={{ zIndex: 2 }}
                     >
-                      {/* <span className="screen-index">{index + 1}</span> */}
                       {index < currIndex ? (
                         <div className="w-6 h-6 bg-[#099250] flex items-center justify-center rounded-full">
                           <Image src={Ic_Check_white} alt="Completed" />
