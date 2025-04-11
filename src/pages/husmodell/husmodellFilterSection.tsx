@@ -6,13 +6,13 @@ import { Slider, styled } from "@mui/material";
 import Button from "@/components/common/button";
 
 const CustomSlider = styled(Slider)({
-  color: "#6941C6",
+  color: "#DF761F",
   height: 9,
   padding: 0,
   "& .MuiSlider-thumb": {
     height: 24,
     width: 24,
-    backgroundColor: "#6941C6",
+    backgroundColor: "#DF761F",
     border: "6px solid #fff",
   },
   "& .MuiSlider-rail": {
@@ -105,7 +105,7 @@ const HusmodellFilterSection: React.FC<{
 
   return (
     <>
-      <div className="sticky top-[86px] bg-[#F9F5FF] rounded-[12px]">
+      <div className="sticky top-[86px] bg-[#F5F3F2] rounded-[12px]">
         <div className="p-6 flex items-center justify-between gap-3 border-b border-[#7D89B04D]">
           <h4 className="text-darkBlack font-medium text-base md:text-lg lg:text-xl desktop:text-2xl">
             Filter
@@ -489,7 +489,7 @@ const HusmodellFilterSection: React.FC<{
 
                     <Button
                       text="Save"
-                      className="border border-[#6941C6] bg-[#6941C6] text-white md:text-sm rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative desktop:px-4 desktop:py-2"
+                      className="border border-[#DF761F] bg-[#DF761F] text-white md:text-sm rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative desktop:px-4 desktop:py-2"
                       type="button"
                       onClick={() => {
                         setFormData((prev: any) => ({

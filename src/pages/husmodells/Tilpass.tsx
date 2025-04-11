@@ -180,12 +180,12 @@ const Tilpass: React.FC<any> = ({
           <div className="bg-lightPurple2 py-4">
             <SideSpaceContainer>
               <div className="flex items-center gap-1 mb-6">
-                <Link href={"/"} className="text-[#7839EE] text-sm font-medium">
+                <Link href={"/"} className="text-[#DF761F] text-sm font-medium">
                   Hjem
                 </Link>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
                 <div
-                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
+                  className="text-[#DF761F] text-sm font-medium cursor-pointer"
                   onClick={() => {
                     const currIndex = 0;
                     localStorage.setItem("currIndex", currIndex.toString());
@@ -222,7 +222,7 @@ const Tilpass: React.FC<any> = ({
                         key={index}
                         className={`p-4 cursor-pointer border-2 font-medium rounded-lg flex items-start gap-2 ${
                           selectedTab === index
-                            ? "border-[#6927DA]"
+                            ? "border-primary"
                             : "border-transparent"
                         }`}
                         onClick={() => setSelectedTab(index)}
@@ -234,8 +234,8 @@ const Tilpass: React.FC<any> = ({
                         <div
                           className={`w-6 h-6 rounded-full flex items-center justify-center text-xs mt-1 ${
                             selectedTab === index
-                              ? "bg-[#00359E] text-white"
-                              : "bg-[#ECE9FE] text-darkBlack"
+                              ? "bg-[#AB5E1D] text-white"
+                              : "bg-lightPurple2 text-darkBlack"
                           }`}
                         >
                           {index + 1}
@@ -260,7 +260,7 @@ const Tilpass: React.FC<any> = ({
                       {selectedTab < Huskonfigurator.length - 1 && (
                         <Button
                           text="Skip this step"
-                          className={`border-2 border-[#7839EE] text-[#7839EE] sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
+                          className={`border-2 border-[#DF761F] text-[#DF761F] sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
                           onClick={() => {
                             setSelectedTab(selectedTab + 1);
                           }}
@@ -277,7 +277,7 @@ const Tilpass: React.FC<any> = ({
                                   key={catIndex}
                                   className={`py-2 px-3 text-sm rounded-lg cursor-pointer ${
                                     selectedCategory === catIndex
-                                      ? "bg-white text-[#7839EE] font-medium shadow-shadow4"
+                                      ? "bg-white text-[#DF761F] font-medium shadow-shadow4"
                                       : "bg-transparent text-black"
                                   }`}
                                   onClick={() => setSelectedCategory(catIndex)}
@@ -371,9 +371,9 @@ const Tilpass: React.FC<any> = ({
                                     </div>
                                     <Button
                                       text={isSelected ? "Valgt" : "Velg"}
-                                      className={`border-2 text-[#7839EE] ${
+                                      className={`border-2 text-[#DF761F] ${
                                         isSelected
-                                          ? "border-[#7839EE] bg-[#ECE9FE]"
+                                          ? "border-[#DF761F] bg-lightPurple2"
                                           : "border-[#B9C0D4]"
                                       } sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
                                       onClick={() =>
@@ -416,7 +416,7 @@ const Tilpass: React.FC<any> = ({
               <div className="flex justify-end gap-4 items-center">
                 <Button
                   text="Tilbake"
-                  className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+                  className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                   onClick={() => {
                     handlePrevious();
                     const currIndex = 0;

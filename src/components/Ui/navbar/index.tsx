@@ -122,19 +122,19 @@ const Header = () => {
                   href={""}
                   className="text-base text-secondary font-medium"
                 >
-                  Priser
+                  Ferdighusprodusenter
                 </Link>
                 <Link
                   href={""}
                   className="text-base text-secondary font-medium"
                 >
-                  Referanser
+                  Finansiering
                 </Link>
                 <Link
                   href={""}
                   className="text-base text-secondary font-medium"
                 >
-                  Kontakt
+                  Om oss
                 </Link>
               </div>
 
@@ -237,13 +237,13 @@ const Header = () => {
               Hvordan fungerer MinTomt?
             </Link>
             <Link href={""} className="text-base text-secondary font-medium">
-              Priser
+              Ferdighusprodusenter
             </Link>
             <Link href={""} className="text-base text-secondary font-medium">
-              Referanser
+              Finansiering
             </Link>
             <Link href={""} className="text-base text-secondary font-medium">
-              Kontakt
+              Om oss
             </Link>
           </div>
         </div>

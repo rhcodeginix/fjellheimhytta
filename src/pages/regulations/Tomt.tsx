@@ -315,7 +315,7 @@ const Tomt: React.FC<{
       <div className="bg-lightPurple2 py-4">
         <SideSpaceContainer>
           <div className="flex items-center gap-1 mb-6">
-            <Link href={"/"} className="text-[#7839EE] text-sm font-medium">
+            <Link href={"/"} className="text-[#DF761F] text-sm font-medium">
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
@@ -358,7 +358,7 @@ const Tomt: React.FC<{
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-4 py-2 text-base transition-colors duration-300 flex items-center gap-2 ${
                     activeTab === tab.id
-                      ? "bg-white font-medium text-[#7839EE]"
+                      ? "bg-white font-medium text-[#DF761F]"
                       : "text-black"
                   }`}
                 >
@@ -1213,7 +1213,7 @@ const Tomt: React.FC<{
                       onClick={() => setPlotActiveTab(tab.id)}
                       className={`px-4 py-2 text-base transition-colors duration-300 flex items-center gap-2 ${
                         PlotActiveTab === tab.id
-                          ? "bg-white font-medium text-[#7839EE]"
+                          ? "bg-white font-medium text-[#DF761F]"
                           : "text-black"
                       }`}
                     >
@@ -1716,7 +1716,7 @@ const Tomt: React.FC<{
           <div className="flex justify-end gap-4 items-center">
             <Button
               text="Tilbake"
-              className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+              className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               path="/"
             />
             <Button

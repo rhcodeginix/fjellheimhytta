@@ -1223,7 +1223,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-4 py-2 text-darkBlack border-b-[3px] text-lg transition-colors duration-300 ${
                     activeTab === tab.id
-                      ? "border-[#6941C6] font-semibold"
+                      ? "border-[#DF761F] font-semibold"
                       : "border-transparent"
                   }`}
                 >

@@ -37,7 +37,7 @@ const Stepper: React.FC<StepperProps> = ({
   return (
     <>
       <>
-        <div className="py-3 bg-[#491C96]">
+        <div className="py-3 bg-[#1E1E1E]">
           <SideSpaceContainer>
             <div className="stepper_main overFlowScrollHidden">
               <div className="stepper-wrapper">
@@ -58,7 +58,7 @@ const Stepper: React.FC<StepperProps> = ({
                     }}
                   >
                     <div
-                      className="flex items-center gap-1.5 md:gap-2 px-1 md:px-2 bg-[#491C96]"
+                      className="flex items-center gap-1.5 md:gap-2 px-1 md:px-2 bg-[#1E1E1E]"
                       style={{ zIndex: 2 }}
                     >
                       {index < currIndex ? (

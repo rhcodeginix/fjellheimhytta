@@ -392,7 +392,7 @@ const Belop: React.FC = () => {
       <div className="bg-lightPurple2 py-4">
         <SideSpaceContainer>
           <div className="flex items-center gap-1">
-            <Link href={"/"} className="text-[#7839EE] text-sm font-medium">
+            <Link href={"/"} className="text-[#DF761F] text-sm font-medium">
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
@@ -449,7 +449,7 @@ const Belop: React.FC = () => {
           <div className="flex justify-end items-center gap-6">
             <Button
               text="Tilbake"
-              className="border-2 border-[#6941C6] bg-white text-[#6941C6] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
+              className="border-2 border-[#DF761F] bg-white text-[#DF761F] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
               onClick={() => router.push("/")}
             />
           </div>

@@ -169,7 +169,7 @@ const BelopProperty: React.FC<{
                               bad
                             </span>
                           </div>
-                          <div className="border-l-2 border-[#7F56D9] h-[12px] mx-4"></div>
+                          <div className="border-l-2 border-[#DF761F] h-[12px] mx-4"></div>
                           <div className="text-darkBlack text-xs md:text-sm font-semibold">
                             {
                               property?.plot?.additionalData?.answer
@@ -237,7 +237,7 @@ const BelopProperty: React.FC<{
                           </div>
                           <Button
                             text="Utforsk"
-                            className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            className="border border-[#DF761F] bg-[#DF761F] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
                               router.push(
                                 `${router.asPath}&propertyId=${property?.plot?.id}&husodellId=${property?.house?.id}&emptyPlot=true`

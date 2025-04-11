@@ -131,12 +131,12 @@ const Oppsummering: React.FC<{
       <div className="bg-lightPurple2 py-4">
         <SideSpaceContainer>
           <div className="flex items-center gap-1 mb-6">
-            <Link href={"/"} className="text-[#7839EE] text-sm font-medium">
+            <Link href={"/"} className="text-[#DF761F] text-sm font-medium">
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              className="text-[#DF761F] text-sm font-medium cursor-pointer"
               onClick={() => {
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -149,7 +149,7 @@ const Oppsummering: React.FC<{
             {!homePage && (
               <>
                 <div
-                  className="text-[#7839EE] text-sm font-medium cursor-pointer"
+                  className="text-[#DF761F] text-sm font-medium cursor-pointer"
                   onClick={() => {
                     delete updatedQuery.propertyId;
                     delete updatedQuery.husodellId;
@@ -175,7 +175,7 @@ const Oppsummering: React.FC<{
               </>
             )}
             <div
-              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              className="text-[#DF761F] text-sm font-medium cursor-pointer"
               onClick={() => {
                 const currIndex = 2;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -186,7 +186,7 @@ const Oppsummering: React.FC<{
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              className="text-[#DF761F] text-sm font-medium cursor-pointer"
               onClick={() => {
                 const currIndex = 3;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -197,7 +197,7 @@ const Oppsummering: React.FC<{
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              className="text-[#DF761F] text-sm font-medium cursor-pointer"
               onClick={() => {
                 const currIndex = 4;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -208,7 +208,7 @@ const Oppsummering: React.FC<{
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-[#7839EE] text-sm font-medium cursor-pointer"
+              className="text-[#DF761F] text-sm font-medium cursor-pointer"
               onClick={() => {
                 const currIndex = 5;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -383,7 +383,7 @@ const Oppsummering: React.FC<{
 
                                 <div className="text-secondary2 text-sm">
                                   Jeg samtykker til
-                                  <span className="text-[#7839EE] font-medium">
+                                  <span className="text-[#DF761F] font-medium">
                                     {" "}
                                     deling av data
                                   </span>{" "}
@@ -448,7 +448,7 @@ const Oppsummering: React.FC<{
                                     </p>
                                   )}
                               </div>
-                              <p className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[40px] font-medium flex items-center justify-center px-5 cursor-pointer">
+                              <p className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[40px] font-medium flex items-center justify-center px-5 cursor-pointer">
                                 Legg til
                               </p>
                             </div>
@@ -563,7 +563,7 @@ const Oppsummering: React.FC<{
 
                                   <div className="text-secondary2 text-sm">
                                     Jeg samtykker til{" "}
-                                    <span className="text-[#7839EE] font-bold">
+                                    <span className="text-[#DF761F] font-bold">
                                       deling av data
                                     </span>{" "}
                                     med{" "}
@@ -580,7 +580,7 @@ const Oppsummering: React.FC<{
                               </div>
                               <Button
                                 text="Send inn lånesøknad"
-                                className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
+                                className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
                                 type="submit"
                               />
                             </div>
@@ -656,7 +656,7 @@ const Oppsummering: React.FC<{
                           ></span>
                           <div className="text-secondary2 text-sm">
                             Jeg samtykker i å{" "}
-                            <span className="font-bold text-[#7839EE]">
+                            <span className="font-bold text-[#DF761F]">
                               dele data
                             </span>{" "}
                             med{" "}
@@ -710,7 +710,7 @@ const Oppsummering: React.FC<{
           <div className="flex justify-end gap-4 items-center">
             <Button
               text="Tilbake"
-              className="border-2 border-[#6927DA] text-[#6927DA] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+              className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
               }}

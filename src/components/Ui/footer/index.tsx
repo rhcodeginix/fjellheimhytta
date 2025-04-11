@@ -45,29 +45,23 @@ const Footer = () => {
                   href={""}
                   className="text-sm md:text-base text-white font-medium"
                 >
-                  Priser
+                  Ferdighusprodusenter
                 </Link>
                 <Link
                   href={""}
                   className="text-sm md:text-base text-white font-medium"
                 >
-                  Referanser
+                  Finansiering
                 </Link>
                 <Link
                   href={""}
                   className="text-sm md:text-base text-white font-medium"
                 >
-                  Kontakt
-                </Link>
-                <Link
-                  href={""}
-                  className="text-sm md:text-base text-white font-medium"
-                >
-                  Logg inn
+                  Om oss
                 </Link>
               </div>
               <p className="text-xs md:text-sm text-white font-medium desktop:text-end">
-                © 2024 iPlot AS. All rights reserved.
+                © 2025 iPlot AS. All rights reserved.
               </p>
             </div>
           </div>

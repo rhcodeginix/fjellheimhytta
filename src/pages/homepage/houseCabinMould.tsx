@@ -11,7 +11,7 @@ import Image from "next/image";
 const HouseCabinMould = () => {
   return (
     <>
-      <div className="relative" style={{ zIndex: 9 }}>
+      <div className="relative pb-[120px]" style={{ zIndex: 9 }}>
         <SideSpaceContainer>
           <div className="flex flex-col gap-5 md:gap-8 items-center justify-center">
             <h3 className="text-darkBlack font-semibold text-lg md:text-[24px] desktop:leading-[120%]">

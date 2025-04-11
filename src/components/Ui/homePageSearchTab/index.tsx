@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import BeløpTab from "./beløp";
 import AdresseTab from "./adresse";
 import HusmodellTab from "./husmodell";
-import Image from "next/image";
-import Img_main_bg from "@/public/images/Img_main_bg.png";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
 import {
@@ -19,14 +17,31 @@ import Loading from "@/components/Loading";
 import { useRouter } from "next/router";
 import { formatPrice } from "@/pages/belop/belopProperty";
 import dynamic from "next/dynamic";
+import { Banknote, Building2, FileUser } from "lucide-react";
 const GoogleMapComponent = dynamic(() => import("../map"), {
   ssr: false,
 });
 
 const tabs = [
-  { id: "beløp", label: ["Start med", "beløp"] },
-  { id: "adresse", label: ["Start med", "adresse"] },
-  { id: "husmodell", label: ["Start med", "husmodell"] },
+  {
+    id: "beløp",
+    label: ["Start med", "beløp"],
+    description: "Vet du hvor mye du vil bruke på tomt og",
+    description2: "hytte?",
+    icon: <Banknote />,
+  },
+  {
+    id: "adresse",
+    label: ["Start med", "adresse"],
+    description: "Har du egen tomt eller bare vil se en konkret adresse?",
+    icon: <FileUser />,
+  },
+  {
+    id: "husmodell",
+    label: ["Start med", "husmodell"],
+    description: "Vet du hvor mye du vil bruke på tomt og",
+    icon: <Building2 />,
+  },
 ];
 const HomePageSearchTab: React.FC = () => {
   const router = useRouter();
@@ -152,6 +167,9 @@ const HomePageSearchTab: React.FC = () => {
 
   return (
     <>
+      <h4 className="text-black text-lg font-bold mb-5 text-center">
+        Hvordan vil du starte boligreisen?
+      </h4>
       <div className="relative pb-[40px] md:pb-[52px] lg:pb-[60px]">
         <SideSpaceContainer>
           <div
@@ -164,15 +182,38 @@ const HomePageSearchTab: React.FC = () => {
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  className={`py-2 px-3 text-xs md:text-sm font-base rounded-lg transition-colors duration-200 ${
-                    activeTab === tab.id
-                      ? "text-blue bg-white"
-                      : "text-[#30374F]"
+                  className={`py-2 px-3 rounded-lg transition-colors duration-200 flex items-start gap-3 ${
+                    activeTab === tab.id ? "bg-white" : ""
                   }`}
                   onClick={() => setActiveTab(tab.id)}
                 >
-                  {tab.label[0]}{" "}
-                  <span className="font-semibold">{tab.label[1]}</span>
+                  <div
+                    className={`h-6 w-6 ${
+                      activeTab === tab.id
+                        ? "text-blue bg-white"
+                        : "text-[#30374F]"
+                    }`}
+                  >
+                    {tab.icon}
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <div
+                      className={`text-xs md:text-sm font-base ${
+                        activeTab === tab.id
+                          ? "text-blue bg-white"
+                          : "text-[#30374F]"
+                      }`}
+                    >
+                      {tab.label[0]}{" "}
+                      <span className="font-semibold">{tab.label[1]}</span>
+                    </div>
+                    <div
+                      className={`mt-1 text-secondary text-xs w-48 text-left`}
+                    >
+                      {tab.description}{" "}
+                      <span className="text-[#D10000]">{tab.description2}</span>
+                    </div>
+                  </div>
                 </button>
               ))}
             </div>
@@ -182,17 +223,6 @@ const HomePageSearchTab: React.FC = () => {
               {activeTab === "adresse" && <AdresseTab />}
               {activeTab === "husmodell" && <HusmodellTab />}
             </div>
-          </div>
-          <div
-            className="absolute bottom-[-94px] left-0 hidden lg:block w-full"
-            style={{ zIndex: -9 }}
-          >
-            <Image
-              src={Img_main_bg}
-              alt="image"
-              className="w-full"
-              fetchPriority="auto"
-            />
           </div>
         </SideSpaceContainer>
       </div>
@@ -389,8 +419,8 @@ const HomePageSearchTab: React.FC = () => {
                           </h6>
                         </div>
                         <Button
-                          text="Utforsk"
-                          className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                          text="Se detaljer"
+                          className="border-2 border-[#DF761F] bg-white text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                           onClick={() => {
                             router.push(
                               `regulations?propertyId=${property?.plot?.id}&husodellId=${property?.house?.id}&emptyPlot=true&homePage=true`
@@ -485,8 +515,8 @@ const HomePageSearchTab: React.FC = () => {
                           </h6>
                         </div>
                         <Button
-                          text="Utforsk"
-                          className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                          text="Se detaljer"
+                          className="border-2 border-[#DF761F] bg-white text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                         />
                       </div>
                     </div>
@@ -573,8 +603,8 @@ const HomePageSearchTab: React.FC = () => {
                           </h6>
                         </div>
                         <Button
-                          text="Utforsk"
-                          className="border border-[#6941C6] bg-[#6941C6] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                          text="Se detaljer"
+                          className="border-2 border-[#DF761F] bg-white text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                           onClick={() => {
                             router.push(
                               `husmodells?husodellId=${property?.id}&&city=${name}`

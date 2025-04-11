@@ -34,7 +34,7 @@ const shoerOfOptions = [
 ];
 
 const CustomSlider = styled(Slider)({
-  color: "#7F56D9",
+  color: "#DF761F",
   height: 8,
   padding: 0,
   "& .MuiSlider-thumb": {
