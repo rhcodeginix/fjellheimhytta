@@ -74,9 +74,6 @@ const Register = () => {
               "0px 8px 8px -4px #10182808, 0px 20px 24px -4px #10182814",
           }}
         >
-          <Link href={"/"}>
-            <Image src={Ic_logo} alt="logo" fetchPriority="auto" />
-          </Link>
           <Formik
             initialValues={{ email: "", password: "", name: "" }}
             validationSchema={validationSchema}
@@ -143,7 +140,7 @@ const Register = () => {
                 <div className="flex justify-end mt-6">
                   <Button
                     text="Send inn"
-                    className="border border-primary bg-white text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
+                    className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
                     type="submit"
                   />
                 </div>
