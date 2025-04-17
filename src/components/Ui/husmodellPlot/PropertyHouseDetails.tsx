@@ -135,7 +135,8 @@ const PropertyHouseDetails: React.FC<{
             </h4>
 
             <p className="text-secondary text-sm mb-2">
-              + tomtepris ({formatCurrency(husPris.toLocaleString("nb-NO"))})
+              Inkludert tomtepris (
+              {formatCurrency(husPris.toLocaleString("nb-NO"))})
             </p>
           </div>
         </div>

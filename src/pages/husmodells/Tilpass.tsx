@@ -212,7 +212,7 @@ const Tilpass: React.FC<any> = ({
           <div className="py-8">
             <SideSpaceContainer>
               <h3 className="text-darkBlack text-2xl font-semibold mb-[22px]">
-                La oss begynne å tilpasse drømmehuset ditt
+                Her gjør du dine tilpassninger:
               </h3>
               {Huskonfigurator?.length > 0 ? (
                 <div className="flex gap-6 relative">
