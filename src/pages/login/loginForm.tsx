@@ -3,7 +3,6 @@ import Button from "@/components/common/button";
 import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
-import Ic_logo from "@/public/images/Ic_logo.svg";
 import Img_login_google from "@/public/images/Img_login_google.svg";
 import { auth, db } from "@/config/firebaseConfig";
 import Image from "next/image";
@@ -152,16 +151,17 @@ const LoginForm: React.FC<{
   return (
     <div className="relative w-full max-w-[490px]">
       <div
-        className="mx-4 bg-white p-7 w-full"
+        className="bg-white p-4 md:p-8 w-full rounded-lg"
         style={{
           boxShadow: "0px 8px 8px -4px #10182808, 0px 20px 24px -4px #10182814",
         }}
       >
-        <div className="flex justify-center mb-10">
-          <Link href={"/"}>
-            <Image src={Ic_logo} alt="logo" fetchPriority="high" />
-          </Link>
-        </div>
+        <h3 className="text-darkBlack text-xl md:text-2xl desktop:text-[30px] font-semibold mb-1.5 md:mb-3 text-center">
+          Logg in på din konto
+        </h3>
+        <p className="text-secondary text-sm md:text-base mb-4 md:mb-8 text-center">
+          Velkommen tilbake! Vennligst oppgi dine detaljer.
+        </p>
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={validationSchema}
@@ -217,7 +217,7 @@ const LoginForm: React.FC<{
             </Form>
           )}
         </Formik>
-        <div className="flex items-center justify-center text-[#4F4F4F] mt-3">
+        <div className="flex items-center justify-center text-[#4F4F4F] mt-3 text-sm md:text-base">
           Didn’t Registered?{" "}
           <Link href={"/register"} className="text-black font-semibold">
             &nbsp;Register Here
@@ -225,10 +225,13 @@ const LoginForm: React.FC<{
         </div>
         <div
           onClick={signInWithGoogle}
-          className="text-black bg-[#F8F6F4] border border-gray rounded-[8px] p-2 mt-6 flex gap-2 justify-center items-center font-semibold cursor-pointer"
+          className="text-black border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 mt-4 md:mt-6 flex gap-2 justify-center items-center cursor-pointer text-sm md:text-base"
+          style={{
+            boxShadow: "0px 1px 2px 0px #1018280D",
+          }}
         >
           <Image src={Img_login_google} alt="google" fetchPriority="high" />
-          Continue with login
+          Logg inn med Google
         </div>
       </div>
       {loading && (

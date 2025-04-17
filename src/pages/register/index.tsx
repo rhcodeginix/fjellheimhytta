@@ -10,6 +10,10 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { toast } from "react-hot-toast";
 import Loader from "@/components/Loader";
+import Ic_logo from "@/public/images/Ic_logo.svg";
+import Img_login_bg from "@/public/images/Img_login_bg.png";
+import Image from "next/image";
+import SideSpaceContainer from "@/components/common/sideSpace";
 
 const Register = () => {
   const router = useRouter();
@@ -64,9 +68,24 @@ const Register = () => {
 
   return (
     <div className="relative">
+      <div
+        className="border-b border-gray3 py-5 fixed top-0 w-full"
+        style={{ zIndex: 99999 }}
+      >
+        <SideSpaceContainer>
+          <Link href={"/"}>
+            <Image
+              src={Ic_logo}
+              alt="logo"
+              className="w-[90px] lg:w-auto"
+              fetchPriority="auto"
+            />
+          </Link>
+        </SideSpaceContainer>
+      </div>
       <div className="w-full h-screen flex items-center justify-center">
         <div
-          className="w-full mx-4 max-w-[490px] bg-white p-7"
+          className="w-full mx-4 max-w-[490px] bg-white p-4 md:p-8"
           style={{
             boxShadow:
               "0px 8px 8px -4px #10182808, 0px 20px 24px -4px #10182814",
@@ -145,7 +164,7 @@ const Register = () => {
               </Form>
             )}
           </Formik>
-          <div className="flex items-center justify-center text-[#4F4F4F] mt-3">
+          <div className="flex items-center justify-center text-[#4F4F4F] mt-3 text-sm md:text-base">
             You already have account?{" "}
             <Link href={"/login"} className="text-black font-semibold">
               &nbsp;Login Here
@@ -158,6 +177,12 @@ const Register = () => {
           <Loader />
         </div>
       )}
+      <div
+        className="absolute bottom-36 md:bottom-12 w-full"
+        style={{ zIndex: -99 }}
+      >
+        <Image src={Img_login_bg} alt="image" className="w-full" />
+      </div>
     </div>
   );
 };

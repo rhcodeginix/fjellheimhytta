@@ -17,7 +17,10 @@ import Loading from "@/components/Loading";
 import { useRouter } from "next/router";
 import { formatPrice } from "@/pages/belop/belopProperty";
 import dynamic from "next/dynamic";
-import { Banknote, Building2, FileUser } from "lucide-react";
+import { FileUser } from "lucide-react";
+import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
+
 const GoogleMapComponent = dynamic(() => import("../map"), {
   ssr: false,
 });
@@ -28,7 +31,7 @@ const tabs = [
     label: ["Start med", "beløp"],
     description: "Vet du hvor mye du vil bruke på tomt og",
     description2: "hytte?",
-    icon: <Banknote />,
+    icon: <PaymentsOutlinedIcon />,
   },
   {
     id: "adresse",
@@ -40,7 +43,7 @@ const tabs = [
     id: "husmodell",
     label: ["Start med", "husmodell"],
     description: "Vet du hvor mye du vil bruke på tomt og",
-    icon: <Building2 />,
+    icon: <MapsHomeWorkIcon />,
   },
 ];
 const HomePageSearchTab: React.FC = () => {
@@ -173,49 +176,53 @@ const HomePageSearchTab: React.FC = () => {
       <div className="relative pb-[40px] md:pb-[52px] lg:pb-[60px]">
         <SideSpaceContainer>
           <div
-            className="w-full flex flex-col justify-center items-center relative laptop:px-16"
+            className="w-full relative laptop:px-16"
             style={{
               zIndex: 999,
             }}
           >
-            <div className="flex justify-center gap-2 items-center border border-gray3 mb-6 overflow-x-auto bg-gray3 p-[6px] rounded-lg">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  className={`py-2 px-3 rounded-lg transition-colors duration-200 flex items-start gap-3 ${
-                    activeTab === tab.id ? "bg-white" : ""
-                  }`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  <div
-                    className={`h-6 w-6 ${
-                      activeTab === tab.id
-                        ? "text-blue bg-white"
-                        : "text-[#30374F]"
+            <div className="flex flex-col lg:justify-center lg:items-center">
+              <div className="flex lg:justify-center gap-2 lg:items-center border border-gray3 mb-6 overflow-x-auto bg-gray3 p-[6px] rounded-lg overFlowScrollHidden">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    className={`py-2 px-3 rounded-lg transition-colors duration-200 flex items-center md:items-start gap-3 ${
+                      activeTab === tab.id ? "bg-white" : ""
                     }`}
+                    onClick={() => setActiveTab(tab.id)}
                   >
-                    {tab.icon}
-                  </div>
-                  <div className="flex flex-col items-start">
                     <div
-                      className={`text-xs md:text-sm font-base ${
+                      className={`h-6 w-6 ${
                         activeTab === tab.id
                           ? "text-blue bg-white"
                           : "text-[#30374F]"
                       }`}
                     >
-                      {tab.label[0]}{" "}
-                      <span className="font-semibold">{tab.label[1]}</span>
+                      {tab.icon}
                     </div>
-                    <div
-                      className={`mt-1 text-secondary text-xs w-48 text-left`}
-                    >
-                      {tab.description}{" "}
-                      <span className="text-[#D10000]">{tab.description2}</span>
+                    <div className="flex flex-col items-start">
+                      <div
+                        className={`text-xs md:text-sm whitespace-nowrap font-base ${
+                          activeTab === tab.id
+                            ? "text-blue bg-white"
+                            : "text-[#30374F]"
+                        }`}
+                      >
+                        {tab.label[0]}{" "}
+                        <span className="font-semibold">{tab.label[1]}</span>
+                      </div>
+                      <div
+                        className={`mt-1 text-secondary text-xs w-48 text-left hidden md:block`}
+                      >
+                        {tab.description}{" "}
+                        <span className="font-semibold">
+                          {tab.description2}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="w-full">

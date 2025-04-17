@@ -66,16 +66,15 @@ const BeløpTab = () => {
         }}
       >
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[100px]">
-          <div className="relative min-w-[15%] w-auto h-full" ref={dropdownRef}>
+          <div className="relative min-w-[24%] w-auto h-full" ref={dropdownRef}>
             <div
               className={`bg-[#F4F3F1] py-3 px-2 lg:py-4 lg:px-5 desktop:px-8 h-full flex flex-col justify-center rounded-l-[98px] overflow-hidden`}
             >
               <div className="text-darkBlack2 mb-2 text-lg font-bold">
-                Jeg vil
+                Jeg vil bygge
               </div>
               <div className="text-sm font-medium">
-                <span className="text-primary">bygge</span>{" "}
-                <span className="text-[#D10000]">hytte</span>
+                <span className="text-black">hytte</span>
               </div>
             </div>
           </div>
@@ -84,7 +83,7 @@ const BeløpTab = () => {
             <div className="w-[92%]">
               <div className="text-[#30374F] mb-2 text-sm">
                 Hvor mye vil du bruke på både tomt og{" "}
-                <span className="text-[#D10000]">hytte?</span>
+                <span className="font-semibold">hytte?</span>
               </div>
               <input
                 ref={kartInputRef}

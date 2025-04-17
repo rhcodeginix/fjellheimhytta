@@ -1743,21 +1743,21 @@ const Tomt: React.FC<{
       {isPopupOpen && !loginUser && (
         <div className="fixed top-0 left-0 flex justify-center items-center h-full w-full">
           <div
-            className="bg-white p-8 rounded-[8px] w-[787px]"
+            className="bg-white mx-4 p-4 md:p-8 rounded-[8px] w-full max-w-[787px]"
             style={{
               boxShadow:
                 "0px 8px 8px -4px rgba(16, 24, 40, 0.031), 0px 20px 24px -4px rgba(16, 24, 40, 0.078)",
             }}
           >
-            <h2 className="text-black text-[24px] font-semibold mb-2 text-center">
+            <h2 className="text-black text-lg md:text-xl desktop:text-2xl font-semibold mb-2 text-center">
               Registrer deg
             </h2>
-            <p className="text-secondary text-base text-center mb-2">
+            <p className="text-secondary text-xs md:text-sm desktop:text-base text-center mb-2">
               Logg inn med{" "}
               <span className="font-semibold text-black">Vipps</span> for å få
               se{" "}
               <span className="font-semibold text-black">
-                alle bestemmelser og finne <br />
+                alle bestemmelser og finne <br className="hidden sm:block" />
                 boliger som passer på denne eiendommen
               </span>
             </p>
@@ -1769,7 +1769,7 @@ const Tomt: React.FC<{
               {({ values, setFieldValue, errors, touched }) => (
                 <Form>
                   <div className="flex items-center justify-center flex-col">
-                    <label className="flex items-center gap-[12px] container w-max">
+                    <label className="flex items-center gap-[12px] container sm:w-max">
                       <Field
                         type="checkbox"
                         name="terms_condition"
@@ -1784,7 +1784,7 @@ const Tomt: React.FC<{
                       />
                       <span className="checkmark checkmark_primary"></span>
 
-                      <div className="text-secondary text-base">
+                      <div className="text-secondary text-xs md:text-sm desktop:text-base">
                         Jeg aksepterer{" "}
                         <span className="text-primary">Vilkårene</span> og har
                         lest{" "}
@@ -1836,44 +1836,46 @@ const Tomt: React.FC<{
           }}
         >
           <div
-            className="bg-white rounded-[8px] w-[80%] relative max-h-[80%] overflow-y-auto"
+            className="bg-white rounded-[8px] w-[90%] laptop:w-[80%] relative max-h-[90%] sm:max-h-[80%] overflow-y-auto"
             style={{
               boxShadow:
                 "0px 8px 8px -4px rgba(16, 24, 40, 0.031), 0px 20px 24px -4px rgba(16, 24, 40, 0.078)",
             }}
             ref={popup}
           >
-            <h2 className="text-black text-[24px] font-semibold mb-6 text-center pt-6 px-6">
+            <h2 className="text-black text-lg md:text-xl desktop:text-2xl font-semibold mb-4 md:mb-6 text-center pt-4 md:pt-6 px-4 md:px-6">
               Hva vil du bygge?
             </h2>
-            <div className="grid grid-cols-3 gap-6 mb-[40px] px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mb-4 md:mb-6 desktop:mb-[40px] px-4 md:px-6">
               {buildOption.map((build: any, index: any) => {
                 return (
                   <div
                     key={index}
                     onClick={() => setSelectedBuildIndex(index)}
-                    className={`rounded-[8px] p-5 flex flex-col gap-4 cursor-pointer border-2 ${
+                    className={`rounded-[8px] p-3 md:p-5 flex flex-col gap-2 md:gap-4 cursor-pointer border-2 ${
                       selectedBuildIndex === index
                         ? "border-primary bg-lightPurple"
                         : "border-gray bg-gray3"
                     }`}
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-[60px] h-[60px] rounded-full bg-lightPurple customShadow flex items-center justify-center">
+                    <div className="flex items-center gap-2 md:gap-4">
+                      <div className="w-[40px] md:w-[60px] h-[40px] md:h-[60px] rounded-full bg-lightPurple customShadow flex items-center justify-center">
                         <Image
                           fetchPriority="auto"
                           src={build.icon}
                           alt="garaje"
                         />
                       </div>
-                      <h5 className="text-black text-lg font-semibold">
+                      <h5 className="text-black text-sm md:text-base desktop:text-lg font-semibold">
                         {build.name}
                       </h5>
                     </div>
                     <div className="flex flex-col gap-[2px]">
                       <div className="flex items-center gap-1">
-                        <p className="text-grayText text-sm">BYA Inntil:</p>
-                        <h6 className="text-black font-medium">
+                        <p className="text-grayText text-xs md:text-sm">
+                          BYA Inntil:
+                        </p>
+                        <h6 className="text-black font-medium text-sm md:text-base">
                           {(() => {
                             const data =
                               CadastreDataFromApi?.buildingsApi?.response?.items?.map(
@@ -1906,7 +1908,7 @@ const Tomt: React.FC<{
                           })()}
                         </h6>
                       </div>
-                      <div className="text-grayText text-sm font-bold">
+                      <div className="text-grayText text-xs sm:text-sm font-bold">
                         Du har{" "}
                         {(() => {
                           const data =
@@ -1945,13 +1947,13 @@ const Tomt: React.FC<{
                     </div>
                     <Button
                       text="Velg"
-                      className="border-2 border-primary bg-primary text-white sm:text-base w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[40px]"
+                      className="border-2 border-primary bg-primary text-white text-sm sm:text-base w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[40px]"
                     />
                   </div>
                 );
               })}
             </div>
-            <div className="flex items-center gap-6 justify-end sticky bottom-0 bg-white px-6 py-4 shadow-shadow1">
+            <div className="flex items-center gap-6 justify-end sticky bottom-0 bg-white px-4 md:px-6 py-4 shadow-shadow1">
               <Button
                 text="Tilbake"
                 className="border-2 border-primary text-primary sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[40px]"
