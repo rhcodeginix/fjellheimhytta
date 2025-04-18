@@ -170,7 +170,7 @@ const HomePageSearchTab: React.FC = () => {
 
   return (
     <>
-      <h4 className="text-black text-lg font-bold mb-5 text-center">
+      <h4 className="text-black text-sm md:text-base desktop:text-lg font-bold mb-5 text-center">
         Hvordan vil du starte boligreisen?
       </h4>
       <div className="relative pb-[40px] md:pb-[52px] lg:pb-[60px]">

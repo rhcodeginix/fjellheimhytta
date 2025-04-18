@@ -68,12 +68,12 @@ const BeløpTab = () => {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[100px]">
           <div className="relative min-w-[24%] w-auto h-full" ref={dropdownRef}>
             <div
-              className={`bg-[#F4F3F1] py-3 px-2 lg:py-4 lg:px-5 desktop:px-8 h-full flex flex-col justify-center rounded-l-[98px] overflow-hidden`}
+              className={`bg-[#F4F3F1] py-3 px-2 lg:py-4 lg:px-5 desktop:px-8 h-full flex flex-col justify-center lg:rounded-l-[98px] overflow-hidden`}
             >
-              <div className="text-darkBlack2 mb-2 text-lg font-bold">
+              <div className="text-darkBlack2 mb-2 text-sm text:base desktop:text-lg font-bold">
                 Jeg vil bygge
               </div>
-              <div className="text-sm font-medium">
+              <div className="text-xs md:text-sm font-medium">
                 <span className="text-black">hytte</span>
               </div>
             </div>
@@ -81,15 +81,14 @@ const BeløpTab = () => {
 
           <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
             <div className="w-[92%]">
-              <div className="text-[#30374F] mb-2 text-sm">
-                Hvor mye vil du bruke på både tomt og{" "}
-                <span className="font-semibold">hytte?</span>
+              <div className="text-[#30374F] mb-2 text-xs md:text-sm">
+                Hvor mye vil du bruke totalt for både tomt og bolig?
               </div>
               <input
                 ref={kartInputRef}
-                className={`focus:outline-none text-black text-base desktop:text-lg font-bold bg-transparent w-full
+                className={`focus:outline-none text-black text-sm md:text-base desktop:text-lg font-medium bg-transparent w-full
                   ${errors.amount ? "border border-red-500" : ""}`}
-                placeholder="Fyll inn NOK"
+                placeholder="Fyll inn beløp i NOK"
                 onChange={handleKartInputChange}
                 value={formData?.amount}
                 type="text"
@@ -111,8 +110,10 @@ const BeløpTab = () => {
           )}
         </div>
 
+        <div className="border-t border-gray3 w-full lg:hidden"></div>
+
         <button
-          className={`p-3 lg:px-5 lg:py-4 cursor-pointer flex justify-center items-center bg-primary rounded-[40px] transition-all duration-300 ease-out lg:h-[56px] my-[22px] mx-6 gap-2 ${
+          className={`p-3 lg:px-5 lg:py-4 cursor-pointer flex justify-center items-center bg-primary rounded-[40px] transition-all duration-300 ease-out h-[40px] lg:h-[56px] my-4 md:my-[22px] mx-4 md:mx-6 gap-2 ${
             !formData?.amount ? "opacity-50 cursor-not-allowed" : ""
           }`}
           type="submit"
