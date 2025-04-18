@@ -36,7 +36,7 @@ const Welcome = () => {
         >
           <div className="flex flex-col items-center justify-center gap-3 mb-5">
             <Image src={Ic_logo} alt="logo" fetchPriority="auto" />
-            <h2 className="text-2xl font-semibold">Welcome MinTomt</h2>
+            <h2 className="text-2xl font-semibold">Welcome Fiellheimhytta</h2>
           </div>
 
           <Formik
