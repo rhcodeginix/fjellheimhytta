@@ -391,7 +391,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
               fetchPriority="auto"
               src={Ic_logo}
               alt="logo"
-              className="w-[100px] lg:w-auto"
+              className="w-[120px] sm:w-[160px] lg:w-auto"
             />
           </SideSpaceContainer>
         </div>

@@ -94,8 +94,8 @@ const Header = () => {
         style={{ zIndex: 9999 }}
       >
         <SideSpaceContainer>
-          <div className="py-[12px] md:py-[20px] flex justify-between gap-[32px] items-center">
-            <div className="flex items-center gap-3">
+          <div className="py-[12px] md:py-[20px] flex justify-between gap-3 md:gap-[32px] items-center">
+            <div className="flex items-center gap-2">
               <Image
                 src={Ic_menu}
                 alt="menu"
@@ -107,35 +107,35 @@ const Header = () => {
                 <Image
                   src={Ic_logo}
                   alt="logo"
-                  className="w-[90px] lg:w-auto"
+                  className="w-[120px] sm:w-[160px] lg:w-auto"
                   id="logo"
                   fetchPriority="auto"
                 />
               </Link>
             </div>
             <div className="items-center justify-between flex lg:flex-grow">
-              <div className="items-center gap-10 hidden lg:flex">
+              <div className="items-center gap-4 desktop:gap-10 hidden lg:flex">
                 <Link
                   href={""}
-                  className="text-base text-secondary font-medium"
+                  className="text-sm desktop:text-base text-secondary font-medium"
                 >
                   Hvordan fungerer MinTomt?
                 </Link>
                 <Link
                   href={""}
-                  className="text-base text-secondary font-medium"
+                  className="text-sm desktop:text-base text-secondary font-medium"
                 >
                   Priser
                 </Link>
                 <Link
                   href={""}
-                  className="text-base text-secondary font-medium"
+                  className="text-sm desktop:text-base text-secondary font-medium"
                 >
                   Referanser
                 </Link>
                 <Link
                   href={""}
-                  className="text-base text-secondary font-medium"
+                  className="text-sm desktop:text-base text-secondary font-medium"
                 >
                   Kontakt
                 </Link>

@@ -77,7 +77,7 @@ const Register = () => {
             <Image
               src={Ic_logo}
               alt="logo"
-              className="w-[90px] lg:w-auto"
+              className="w-[120px] sm:w-[160px] lg:w-auto"
               fetchPriority="auto"
             />
           </Link>
