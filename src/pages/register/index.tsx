@@ -9,11 +9,11 @@ import Link from "next/link";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { toast } from "react-hot-toast";
-import Loader from "@/components/Loader";
 import Ic_logo from "@/public/images/Ic_logo.svg";
 import Img_login_bg from "@/public/images/Img_login_bg.png";
-import Image from "next/image";
+import Loader from "@/components/Loader";
 import SideSpaceContainer from "@/components/common/sideSpace";
+import Image from "next/image";
 
 const Register = () => {
   const router = useRouter();
@@ -83,7 +83,10 @@ const Register = () => {
           </Link>
         </SideSpaceContainer>
       </div>
-      <div className="w-full h-screen flex items-center justify-center">
+      <div
+        className="w-full h-screen flex items-center justify-center"
+        style={{ zIndex: 999 }}
+      >
         <div
           className="w-full mx-4 max-w-[490px] bg-white p-4 md:p-8"
           style={{

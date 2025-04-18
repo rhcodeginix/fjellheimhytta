@@ -36,30 +36,36 @@ const Footer = () => {
               </div>
             </div>
             <div>
-              <div className="sm:items-center gap-4 lg:gap-[38px] flex flex-col sm:flex-row mb-[12px]">
+              <div className="sm:items-center gap-y-2 gap-x-5 lg:gap-[38px] flex flex-wrap mb-6 md:mb-[12px]">
                 <Link
                   href={""}
                   className="text-sm md:text-base text-white font-medium"
                 >
-                  Hvordan fungerer MinTomt?
+                  Hvordan fungerer iPlot?
                 </Link>
                 <Link
                   href={""}
                   className="text-sm md:text-base text-white font-medium"
                 >
-                  Ferdighusprodusenter
+                  Priser
                 </Link>
                 <Link
                   href={""}
                   className="text-sm md:text-base text-white font-medium"
                 >
-                  Finansiering
+                  Referanser
                 </Link>
                 <Link
                   href={""}
                   className="text-sm md:text-base text-white font-medium"
                 >
-                  Om oss
+                  Kontakt
+                </Link>
+                <Link
+                  href={""}
+                  className="text-sm md:text-base text-white font-medium"
+                >
+                  Logg inn
                 </Link>
               </div>
               <p className="text-xs md:text-sm text-white font-medium text-center desktop:text-end">

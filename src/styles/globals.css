@@ -183,8 +183,8 @@ input::placeholder {
   min-width: 18% !important;
 }
 .screen-index {
-  background: #373737;
-  border: 1px solid #ab5e1d;
+  background: #111322;
+  border: 1px solid #df761f;
   height: 24px;
   width: 24px;
   border-radius: 50%;
@@ -325,7 +325,7 @@ td {
 }
 
 .checkmark.checkmark_primary {
-  border-color: #df761f;
+  border-color: #7f56d9;
 }
 
 .container .checkmark.checkmark_primary:after {
@@ -533,4 +533,8 @@ td {
 #chatbase-bubble-button,
 #chatbase-bubble-button {
   bottom: 5rem !important;
+}
+
+.filterDrawer {
+  z-index: 99999999999999999 !important;
 }

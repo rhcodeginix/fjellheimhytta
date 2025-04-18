@@ -34,7 +34,7 @@ const shoerOfOptions = [
 ];
 
 const CustomSlider = styled(Slider)({
-  color: "#DF761F",
+  color: "#7F56D9",
   height: 8,
   padding: 0,
   "& .MuiSlider-thumb": {
@@ -291,11 +291,11 @@ const AllPlot = () => {
                         Price{" "}
                         <span className="text-secondary">(byggekost)</span>
                       </div>
-                      <div className="mx-1">
+                      <div className="mx-2">
                         <CustomSlider
                           value={priceRange}
                           onChange={handlePriceRangeChange}
-                          valueLabelDisplay="auto"
+                          valueLabelDisplay="on"
                           aria-labelledby="range-slider"
                           min={1.1}
                           max={5.1}
@@ -317,11 +317,11 @@ const AllPlot = () => {
                         Størrelse{" "}
                         <span className="text-secondary">(bruksareal)</span>
                       </div>
-                      <div className="mx-1">
+                      <div className="mx-2">
                         <CustomSlider
                           value={sizeRange}
                           onChange={handleSizeRangeChange}
-                          valueLabelDisplay="auto"
+                          valueLabelDisplay="on"
                           aria-labelledby="range-slider"
                           min={0}
                           max={220}

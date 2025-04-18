@@ -14,10 +14,7 @@ const BeløpTab = () => {
   }>({
     amount: false,
   });
-
   const router = useRouter();
-
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const kartInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleKartInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,9 +46,8 @@ const BeløpTab = () => {
     }
 
     if (hasError) return;
-
     router.push(
-      `housemodell-plot?city=Agder&pris=${formData?.amount.replace(/\s+/g, "")}`
+      `housemodell-plot?pris=${formData?.amount.replace(/\s+/g, "")}`
     );
     const currIndex = 0;
     localStorage.setItem("currIndex", currIndex.toString());
@@ -66,7 +62,7 @@ const BeløpTab = () => {
         }}
       >
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[100px]">
-          <div className="relative min-w-[24%] w-auto h-full" ref={dropdownRef}>
+          <div className="relative min-w-[24%] w-auto h-full">
             <div
               className={`bg-[#F4F3F1] py-3 px-2 lg:py-4 lg:px-5 desktop:px-8 h-full flex flex-col justify-center lg:rounded-l-[98px] overflow-hidden`}
             >

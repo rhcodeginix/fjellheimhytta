@@ -68,10 +68,33 @@ const PlotProperty: React.FC<{
                 return (
                   <div
                     key={index}
-                    className="border border-gray3 rounded-[8px] p-5"
+                    className="border border-gray3 rounded-[8px] p-3 laptop:p-5 cursor-pointer"
                     style={{
                       boxShadow:
                         "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+                    }}
+                    onClick={() => {
+                      const router_query: any = { ...router.query };
+
+                      delete router_query.minRangePlot;
+                      delete router_query.maxRangePlot;
+                      delete router_query.plotId;
+                      delete router_query.leadId;
+
+                      if (property?.plot?.id) {
+                        router_query.plotId = property.plot.id;
+                      }
+
+                      router.push(
+                        {
+                          pathname: router.pathname,
+                          query: router_query,
+                        },
+                        undefined,
+                        { shallow: true }
+                      );
+
+                      handleNext();
                     }}
                   >
                     <div className="mb-2 md:mb-3 desktop:mb-4 flex items-start justify-between gap-3">
@@ -113,8 +136,8 @@ const PlotProperty: React.FC<{
                         className="cursor-pointer"
                       />
                     </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex gap-2 w-1/2">
+                    <div className="flex flex-col sm:flex-row items-center gap-3 laptop:gap-4">
+                      <div className="flex gap-2 w-full sm:w-1/2">
                         <div className="w-[63%] h-[160px] relative">
                           <img
                             src={property?.house?.Husdetaljer?.photo}
@@ -136,8 +159,8 @@ const PlotProperty: React.FC<{
                           />
                         </div>
                       </div>
-                      <div className="w-1/2">
-                        <div className="flex gap-3 items-center">
+                      <div className="w-full sm:w-1/2">
+                        <div className="flex gap-2 md:gap-3 lg:gap-1.5 laptop:gap-3 items-center">
                           <div className="text-darkBlack text-xs md:text-sm font-semibold">
                             {
                               property?.plot?.additionalData?.answer
@@ -162,8 +185,7 @@ const PlotProperty: React.FC<{
                               bad
                             </span>
                           </div>
-                          <div className="border-l-2 border-[#DF761F] h-[12px] mx-4"></div>
-                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold ml-auto">
                             {
                               property?.plot?.additionalData?.answer
                                 ?.bya_calculations?.input?.plot_size
@@ -212,7 +234,7 @@ const PlotProperty: React.FC<{
                             <p className="text-[#4A5578] text-xs md:text-sm mb-1">
                               Totalpris med tomt
                             </p>
-                            <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
+                            <h6 className="text-base font-semibold desktop:text-xl">
                               {formatPrice(
                                 (property?.house?.Husdetaljer?.pris
                                   ? Math.round(
@@ -230,7 +252,7 @@ const PlotProperty: React.FC<{
                           </div>
                           <Button
                             text="Utforsk"
-                            className="border border-[#DF761F] bg-[#DF761F] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
                               const router_query: any = { ...router.query };
 

@@ -140,7 +140,6 @@ const AdresseTab = () => {
               ))}
           </div>
         )}
-
         <div className="border-t border-gray3 w-full lg:hidden"></div>
 
         <button

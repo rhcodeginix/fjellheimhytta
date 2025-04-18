@@ -165,7 +165,7 @@ const HusmodellTab = () => {
                         className={`text-xs md:text-sm text-darkBlack px-3 md:px-4 py-2 md:py-[14px] cursor-pointer 
                           ${
                             formData?.Kommue === `${city.name} Kommune`
-                              ? "bg-[#F9F5FF] font-semibold"
+                              ? "bg-lightPurple2 font-semibold"
                               : "bg-white"
                           }`}
                       >

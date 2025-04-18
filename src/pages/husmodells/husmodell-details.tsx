@@ -39,14 +39,19 @@ const HusmodellDetail: React.FC<{
   return (
     <>
       <div className="relative">
-        <div className="bg-lightPurple2 py-4">
+        <div className="bg-lightBlue py-2 md:py-4">
           <SideSpaceContainer>
-            <div className="flex items-center gap-1 mb-6">
-              <Link href={"/"} className="text-[#DF761F] text-sm font-medium">
+            <div className="flex items-center flex-wrap gap-1 mb-4 md:mb-6">
+              <Link
+                href={"/"}
+                className="text-primary text-xs md:text-sm font-medium"
+              >
                 Hjem
               </Link>
               <Image src={Ic_breadcrumb_arrow} alt="arrow" />
-              <span className="text-secondary2 text-sm">Husmodell</span>
+              <span className="text-secondary2 text-xs md:text-sm">
+                Husmodell
+              </span>
             </div>
             <PropertyHouseDetails
               HouseModelData={HouseModelData}
@@ -66,7 +71,7 @@ const HusmodellDetail: React.FC<{
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-4 py-2 text-base transition-colors duration-300 flex items-center gap-2 ${
                     activeTab === tab.id
-                      ? "bg-white font-medium text-[#DF761F]"
+                      ? "bg-white font-medium text-primary"
                       : "text-black"
                   }`}
                 >
@@ -80,7 +85,7 @@ const HusmodellDetail: React.FC<{
           </div>
         </SideSpaceContainer>
         <div
-          className="sticky bottom-0 bg-white py-6"
+          className="sticky bottom-0 bg-white py-4 md:py-6"
           style={{
             boxShadow:
               "0px -4px 6px -2px #10182808, 0px -12px 16px -4px #10182814",

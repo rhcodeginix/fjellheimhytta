@@ -8,7 +8,6 @@ import Button from "@/components/common/button";
 import Loader from "@/components/Loader";
 import Link from "next/link";
 import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
-// import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
 import { formatCurrency } from "@/components/Ui/RegulationHusmodell/Illustrasjoner";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -21,8 +20,6 @@ const Tilpass: React.FC<{
   handleNext: any;
   lamdaDataFromApi: any;
   loadingLamdaData: any;
-  CadastreDataFromApi: any;
-  askData: any;
   HouseModelData: any;
   handlePrevious: any;
   supplierData: any;
@@ -30,9 +27,7 @@ const Tilpass: React.FC<{
 }> = ({
   handleNext,
   lamdaDataFromApi,
-  // askData,
   loadingLamdaData,
-  // CadastreDataFromApi,
   HouseModelData,
   handlePrevious,
   supplierData,
@@ -82,34 +77,32 @@ const Tilpass: React.FC<{
       const defaultSelectedProducts: any = {};
       const defaultSelectedProductsArray: any[] = [];
 
-      const selectedTab = Huskonfigurator.find(
-        (tabItem: any) => tabItem.isSelected
-      );
+      Huskonfigurator.forEach((selectedTab: any, index: number) => {
+        if (selectedTab.isSelected && selectedTab.Kategorinavn?.length > 0) {
+          selectedTab.Kategorinavn.forEach(
+            (categoryItem: any, categoryIndex: number) => {
+              if (categoryItem.produkter?.length > 0) {
+                const product = categoryItem.produkter[0];
+                const key = `${index}-${categoryIndex}`;
 
-      if (selectedTab && selectedTab.Kategorinavn?.length > 0) {
-        selectedTab.Kategorinavn.forEach(
-          (categoryItem: any, categoryIndex: number) => {
-            if (categoryItem.produkter?.length > 0) {
-              const product = categoryItem.produkter[0];
-              const key = `0-${categoryIndex}`;
+                defaultSelectedProducts[key] = {
+                  category: index,
+                  subCategory: categoryIndex,
+                  product,
+                  index: 0,
+                };
 
-              defaultSelectedProducts[key] = {
-                category: 0,
-                subCategory: categoryIndex,
-                product,
-                index: 0,
-              };
-
-              defaultSelectedProductsArray.push({
-                category: 0,
-                subCategory: categoryIndex,
-                product,
-                index: 1,
-              });
+                defaultSelectedProductsArray.push({
+                  category: index,
+                  subCategory: categoryIndex,
+                  product,
+                  index: 1,
+                });
+              }
             }
-          }
-        );
-      }
+          );
+        }
+      });
 
       setSelectedProducts(defaultSelectedProducts);
       setSelectedProductsArray(defaultSelectedProductsArray);
@@ -187,15 +180,18 @@ const Tilpass: React.FC<{
   }
   return (
     <div className="relative">
-      <div className="bg-lightPurple2 py-4">
+      <div className="bg-lightBlue py-2 md:py-4">
         <SideSpaceContainer>
-          <div className="flex items-center gap-1 mb-6">
-            <Link href={"/"} className="text-[#DF761F] text-sm font-medium">
+          <div className="flex items-center flex-wrap gap-1 mb-4 md:mb-6">
+            <Link
+              href={"/"}
+              className="text-primary text-xs md:text-sm font-medium"
+            >
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-[#DF761F] text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
               onClick={() => {
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -205,7 +201,7 @@ const Tilpass: React.FC<{
               Tomt og husmodell
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
-            <span className="text-secondary2 text-sm">Tilpass</span>
+            <span className="text-secondary2 text-xs md:text-sm">Tilpass</span>
           </div>
           <PropertyHouseDetails
             HouseModelData={HouseModelData}
@@ -215,24 +211,19 @@ const Tilpass: React.FC<{
           />
         </SideSpaceContainer>
       </div>
-      {/* <PropertyDetails
-        askData={askData}
-        CadastreDataFromApi={CadastreDataFromApi}
-        lamdaDataFromApi={lamdaDataFromApi}
-      /> */}
 
-      <div className="py-8">
+      <div className="py-5 md:py-8">
         <SideSpaceContainer>
-          <h3 className="text-darkBlack text-2xl font-semibold mb-[22px]">
+          <h3 className="text-darkBlack text-lg md:text-xl desktop:text-2xl font-semibold mb-[22px]">
             Her gjør du dine tilpassninger:
           </h3>
           {Huskonfigurator?.length > 0 ? (
-            <div className="flex gap-6 relative">
-              <div className="w-[27%] flex flex-col gap-3 min-h-max max-h-[calc(100vh-200px)] sticky top-[88px] overflow-y-auto overFlowYAuto">
+            <div className="flex flex-col md:flex-row gap-6 relative">
+              <div className="md:hidden flex gap-2 overflow-x-auto">
                 {Huskonfigurator.map((item: any, index: number) => (
                   <div
                     key={index}
-                    className={`p-4 cursor-pointer border-2 font-medium rounded-lg flex items-start gap-2 ${
+                    className={`p-3 cursor-pointer border-2 font-medium rounded-lg flex items-center gap-1 my-1 flex-none ${
                       selectedTab === index
                         ? "border-primary"
                         : "border-transparent"
@@ -243,20 +234,54 @@ const Tilpass: React.FC<{
                         "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
                     }}
                   >
-                    <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs mt-1 ${
-                        selectedTab === index
-                          ? "bg-[#AB5E1D] text-white"
-                          : "bg-lightPurple2 text-darkBlack"
-                      }`}
-                    >
-                      {index + 1}
+                    <div className="w-4 md:w-6 h-4 md:h-6">
+                      <div
+                        className={`w-4 md:w-6 h-4 md:h-6 rounded-full flex items-center justify-center text-xs ${
+                          selectedTab === index
+                            ? "bg-primary text-white"
+                            : "bg-lightPurple2 text-darkBlack"
+                        }`}
+                      >
+                        {index + 1}
+                      </div>
+                    </div>
+                    <div className="text-black text-xs md:text-sm font-medium">
+                      {item?.navn}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="w-full hidden md:w-[27%] md:flex flex-col gap-3 max-h-[calc(100vh-200px)] sticky top-[88px] overflow-y-auto overFlowYAuto">
+                {Huskonfigurator.map((item: any, index: number) => (
+                  <div
+                    key={index}
+                    className={`p-3 lg:p-4 cursor-pointer border-2 font-medium rounded-lg flex items-start gap-2 ${
+                      selectedTab === index
+                        ? "border-primary"
+                        : "border-transparent"
+                    }`}
+                    onClick={() => setSelectedTab(index)}
+                    style={{
+                      boxShadow:
+                        "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+                    }}
+                  >
+                    <div className="w-6 h-6">
+                      <div
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs mt-1 ${
+                          selectedTab === index
+                            ? "bg-primary text-white"
+                            : "bg-lightPurple2 text-darkBlack"
+                        }`}
+                      >
+                        {index + 1}
+                      </div>
                     </div>
                     <div>
                       <span className="text-black text-sm font-medium mb-2">
                         {item?.navn}
                       </span>
-                      <p className="text-secondary2 text-sm">
+                      <p className="text-secondary2 text-xs md:text-sm">
                         {item?.Beskrivelse}
                       </p>
                     </div>
@@ -264,15 +289,15 @@ const Tilpass: React.FC<{
                 ))}
               </div>
 
-              <div className="w-[73%] border h-max border-[#DCDFEA] rounded-lg overflow-hidden">
-                <div className="flex items-center justify-between gap-3 p-5 border-b border-[#DCDFEA]">
-                  <h3 className="text-darkBlack text-xl font-semibold">
+              <div className="w-full md:w-[73%] border h-max border-[#DCDFEA] rounded-lg overflow-hidden">
+                <div className="flex items-center justify-between gap-1.5 md:gap-3 p-3 md:p-5 border-b border-[#DCDFEA]">
+                  <h3 className="text-darkBlack text-base md:text-lg desktop:text-xl font-semibold one_line_elipse">
                     {Huskonfigurator[selectedTab]?.navn}
                   </h3>
                   {selectedTab < Huskonfigurator.length - 1 && (
                     <Button
                       text="Hopp over steget"
-                      className={`border-2 border-[#DF761F] text-[#DF761F] sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
+                      className={`border-2 border-primary text-primary text-xs sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
                       onClick={() => {
                         setSelectedTab(selectedTab + 1);
                       }}
@@ -281,15 +306,15 @@ const Tilpass: React.FC<{
                 </div>
                 {Huskonfigurator[selectedTab]?.Kategorinavn?.length > 0 ? (
                   <>
-                    <div className="bg-[#F9F9FB] border-[#EFF1F5] border rounded-lg m-6 p-[6px] flex items-center gap-2">
+                    <div className="bg-[#F9F9FB] border-[#EFF1F5] border rounded-lg m-3 md:m-6 p-[6px] flex items-center gap-1 md:gap-2 overflow-x-auto overFlowScrollHidden">
                       {Huskonfigurator[selectedTab]?.Kategorinavn.map(
                         (catItem: any, catIndex: number) => {
                           return (
                             <div
                               key={catIndex}
-                              className={`py-2 px-3 text-sm rounded-lg cursor-pointer ${
+                              className={`py-2 px-3 text-xs md:text-sm rounded-lg cursor-pointer whitespace-nowrap ${
                                 selectedCategory === catIndex
-                                  ? "bg-white text-[#DF761F] font-medium shadow-shadow4"
+                                  ? "bg-white text-primary font-medium shadow-shadow4"
                                   : "bg-transparent text-black"
                               }`}
                               onClick={() => setSelectedCategory(catIndex)}
@@ -300,7 +325,7 @@ const Tilpass: React.FC<{
                         }
                       )}
                     </div>
-                    <div className="grid grid-cols-3 big:grid-cols-4 gap-6 p-6 pt-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 big:grid-cols-4 gap-3 md:gap-4 desktop:gap-6 p-3 md:p-5 desktop:p-6 pt-0">
                       {Huskonfigurator[selectedTab]?.Kategorinavn[
                         selectedCategory
                       ]?.produkter?.length > 0 &&
@@ -308,6 +333,7 @@ const Tilpass: React.FC<{
                           selectedCategory
                         ]?.produkter.map((product: any, index: number) => {
                           const key = `${selectedTab}-${selectedCategory}`;
+
                           const isSelected =
                             selectedProducts[key]?.product?.Produktnavn ===
                               product.Produktnavn &&
@@ -365,7 +391,7 @@ const Tilpass: React.FC<{
                                   <Image src={Ic_info_circle} alt="icon" />
                                 </div>
                               </div>
-                              <p className="text-darkBlack text-sm two_line_elipse mb-3">
+                              <p className="text-darkBlack text-xs md:text-sm two_line_elipse mb-1.5 md:mb-3">
                                 {product?.Produktbeskrivelse}
                               </p>
                               <div className="flex items-center gap-2 justify-between">
@@ -373,7 +399,7 @@ const Tilpass: React.FC<{
                                   <span className="text-secondary2 text-xs mb-1">
                                     Pris fra:
                                   </span>
-                                  <h5 className="text-black font-medium text-base">
+                                  <h5 className="text-black font-medium text-sm md:text-base">
                                     {product?.IncludingOffer === true
                                       ? "Standard"
                                       : formatCurrency(product?.pris)}
@@ -381,11 +407,11 @@ const Tilpass: React.FC<{
                                 </div>
                                 <Button
                                   text={isSelected ? "Valgt" : "Velg"}
-                                  className={`border-2 text-[#DF761F] ${
+                                  className={`border-2 text-primary ${
                                     isSelected
-                                      ? "border-[#DF761F] bg-lightPurple2"
+                                      ? "border-primary bg-lightPurple2"
                                       : "border-[#B9C0D4]"
-                                  } sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
+                                  } text-xs sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
                                   onClick={() =>
                                     handleSelectProduct(
                                       product,
@@ -413,7 +439,7 @@ const Tilpass: React.FC<{
         </SideSpaceContainer>
       </div>
       <div
-        className="sticky bottom-0 bg-white py-6"
+        className="sticky bottom-0 bg-white py-4 md:py-6"
         style={{
           boxShadow:
             "0px -4px 6px -2px #10182808, 0px -12px 16px -4px #10182814",

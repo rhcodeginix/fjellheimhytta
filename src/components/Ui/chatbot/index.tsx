@@ -38,10 +38,11 @@ const Chatbot: React.FC = () => {
             boxShadow:
               "0px -4px 12px -2px #1018281A, 0px 12px 16px -4px #1018281F",
           }}
+          id="addPlot"
         >
           <button
             onClick={() => setIsVisible(false)}
-            className="absolute top-2 right-2 text-primary text-lg"
+            className="absolute top-2 right-2 text-primary text-xl"
           >
             ⨯
           </button>
@@ -52,7 +53,7 @@ const Chatbot: React.FC = () => {
           </h4>
           <Button
             text="Markedsfør tomten din nå"
-            className="border border-[#DF761F] bg-[#DF761F] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+            className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
             onClick={() => router.push("/add-plot")}
           />
         </div>

@@ -29,11 +29,10 @@ const LoginForm: React.FC<{
   const [newUser, setNewUser] = useState<any>(null);
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().required("Email is required"),
-
+    email: Yup.string().required("E-post is required"),
     password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
+      .min(6, "Passord must be at least 6 characters")
+      .required("Passord is required"),
   });
 
   const handleSubmit = async (values: any) => {
@@ -149,7 +148,7 @@ const LoginForm: React.FC<{
   };
 
   return (
-    <div className="relative w-full max-w-[490px]">
+    <div className="relative w-full max-w-[490px] mx-4">
       <div
         className="bg-white p-4 md:p-8 w-full rounded-lg"
         style={{
@@ -174,14 +173,14 @@ const LoginForm: React.FC<{
                   htmlFor="email"
                   className={`${errors.email && touched.email ? "text-red" : "text-black"} text-sm`}
                 >
-                  Email
+                  E-post
                 </label>
                 <Field
                   type="text"
                   name="email"
                   id="email"
                   className={`w-full p-2 rounded-md border ${errors.email && touched.email ? "border-red" : "border-gray"} focus-visible:border-gray focus-visible:outline-none focus:border-gray `}
-                  placeholder="Enter your email"
+                  placeholder="Enter your e-post"
                 />
                 {errors.email && touched.email && (
                   <div className="text-red text-sm">{errors.email}</div>
@@ -193,24 +192,24 @@ const LoginForm: React.FC<{
                   htmlFor="password"
                   className={`${errors.password && touched.password ? "text-red" : "text-black"} text-sm`}
                 >
-                  Password
+                  Passord
                 </label>
                 <Field
                   type="password"
                   name="password"
                   id="password"
                   className={`w-full p-2 rounded-md border ${errors.password && touched.password ? "border-red" : "border-gray"} focus-visible:border-gray focus-visible:outline-none focus:border-gray `}
-                  placeholder="Enter your password"
+                  placeholder="Enter your Passord"
                 />
                 {errors.password && touched.password && (
                   <div className="text-red text-sm">{errors.password}</div>
                 )}
               </div>
 
-              <div className="flex justify-end mt-6">
+              <div className="mt-6">
                 <Button
-                  text="Send inn"
-                  className="border border-primary bg-white text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
+                  text="Logg inn"
+                  className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
                   type="submit"
                 />
               </div>

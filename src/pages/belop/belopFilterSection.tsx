@@ -6,16 +6,15 @@ import { Slider, styled } from "@mui/material";
 import { useRouter } from "next/router";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
-import Button from "@/components/common/button";
 
 const CustomSlider = styled(Slider)({
-  color: "#DF761F",
+  color: "#6941C6",
   height: 9,
   padding: 0,
   "& .MuiSlider-thumb": {
     height: 24,
     width: 24,
-    backgroundColor: "#DF761F",
+    backgroundColor: "#6941C6",
     border: "6px solid #fff",
   },
   "& .MuiSlider-rail": {
@@ -61,18 +60,7 @@ const BelopFilterSection: React.FC<{
 }> = ({ setFormData, formData }) => {
   const router = useRouter();
   const [maxPrice, setMaxPrice] = useState(null);
-  const [maxPlotPrice, setMaxPlotPrice] = useState(
-    String(
-      new Intl.NumberFormat("no-NO").format(Number(formData?.maxRangeForPlot))
-    )
-  );
-  const [maxHousePrice, setMaxHousePrice] = useState(
-    String(
-      new Intl.NumberFormat("no-NO").format(
-        Number(formData?.maxRangeForHusmodell)
-      )
-    )
-  );
+
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
 
@@ -86,7 +74,7 @@ const BelopFilterSection: React.FC<{
     "Type husmodell",
     "Antall soverom",
     "Pris på tomt",
-    "Pris på husmodell",
+    "Husmodell",
   ]);
 
   const handleToggleAccordion = (type: string) => {
@@ -147,8 +135,8 @@ const BelopFilterSection: React.FC<{
 
   return (
     <>
-      <div className="sticky top-[86px] bg-[#F5F3F2] rounded-[12px]">
-        <div className="p-6 flex items-center justify-between gap-3 border-b border-[#7D89B04D]">
+      <div className="sticky top-[86px] bg-lightBlue rounded-[12px]">
+        <div className="p-4 laptop:p-6 flex items-center justify-between gap-3 border-b border-[#7D89B04D]">
           <h4 className="text-darkBlack font-medium text-base md:text-lg lg:text-xl desktop:text-2xl">
             Filter
           </h4>
@@ -177,7 +165,7 @@ const BelopFilterSection: React.FC<{
             Tilbakestill
           </h5>
         </div>
-        <div className="px-6 py-5 h-auto max-h-[600px] overflow-y-auto overFlowYAuto overflow-x-hidden">
+        <div className="p-4 laptop:px-6 laptop:py-5 h-auto lg:max-h-[600px] overflow-y-auto overFlowYAuto overflow-x-hidden">
           <div
             className="border border-gray3 rounded-[48px] p-1 pl-5 flex items-center justify-between gap-3 bg-white mb-5"
             style={{
@@ -208,7 +196,7 @@ const BelopFilterSection: React.FC<{
               </button>
             </div>
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4 lg:gap-6">
             <div
               className="w-full bg-white p-4 rounded-lg"
               style={{
@@ -231,7 +219,7 @@ const BelopFilterSection: React.FC<{
 
               {openIndex.includes("Område") && (
                 <>
-                  <div className="my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="my-2.5 md:my-4 border-t border-[#DCDFEA]"></div>
                   <div className="grid grid-cols-1 gap-x-8 gap-y-4">
                     {OmrådeArray.map((data: any, index: number) => {
                       return (
@@ -242,7 +230,7 @@ const BelopFilterSection: React.FC<{
                             key={index}
                           >
                             <span
-                              className={`text-darkBlack text-sm md:text-base ${formData?.Område.includes(data?.name) && "font-semibold"}`}
+                              className={`text-darkBlack text-sm laptop:text-base truncate ${formData?.Område.includes(data?.name) && "font-semibold"}`}
                             >
                               {data?.name}
                             </span>
@@ -327,7 +315,7 @@ const BelopFilterSection: React.FC<{
                                         key={komIndex}
                                       >
                                         <span
-                                          className={`text-darkBlack text-sm md:text-base ${formData?.SubOmråde.includes(kom.name) && "font-semibold"}`}
+                                          className={`text-darkBlack text-sm laptop:text-base ${formData?.SubOmråde.includes(kom.name) && "font-semibold"}`}
                                         >
                                           {kom.name}
                                         </span>
@@ -412,16 +400,16 @@ const BelopFilterSection: React.FC<{
 
               {openIndex.includes("Hustype") && (
                 <>
-                  <div className="my-4 border-t border-[#DCDFEA]"></div>
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                  <div className="my-2.5 md:my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-3 laptop:gap-x-8 laptop:gap-y-4">
                     {HustypeArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray_withPurple"
+                        className="container container_darkgray_withPurple truncate"
                         htmlFor={data?.name}
                         key={index}
                       >
                         <span
-                          className={`text-darkBlack text-sm md:text-base ${formData?.Hustype.includes(data?.name) && "font-semibold"}`}
+                          className={`text-darkBlack text-sm laptop:text-base truncate ${formData?.Hustype.includes(data?.name) && "font-semibold"}`}
                         >
                           {data?.name}
                         </span>
@@ -493,16 +481,16 @@ const BelopFilterSection: React.FC<{
 
               {openIndex.includes("Type husmodell") && (
                 <>
-                  <div className="my-4 border-t border-[#DCDFEA]"></div>
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                  <div className="my-2.5 md:my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-3 laptop:gap-x-8 laptop:gap-y-4">
                     {TypeHusmodellArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray_withPurple"
+                        className="container container_darkgray_withPurple truncate"
                         htmlFor={data?.name}
                         key={index}
                       >
                         <span
-                          className={`text-darkBlack text-sm md:text-base ${formData?.TypeHusmodell.includes(data?.name) && "font-semibold"}`}
+                          className={`text-darkBlack text-sm laptop:text-base truncate ${formData?.TypeHusmodell.includes(data?.name) && "font-semibold"}`}
                         >
                           {data?.name}
                         </span>
@@ -519,6 +507,24 @@ const BelopFilterSection: React.FC<{
                               updatedSet.has(data?.name)
                                 ? updatedSet.delete(data?.name)
                                 : updatedSet.add(data?.name);
+
+                              localStorage.setItem(
+                                "TypeHusmodell",
+                                JSON.stringify(Array.from(updatedSet))
+                              );
+                              setTimeout(() => {
+                                router.push(
+                                  {
+                                    pathname: router.pathname,
+                                    query: {
+                                      ...router.query,
+                                      TypeHusmodell: new Date().toISOString(),
+                                    },
+                                  },
+                                  undefined,
+                                  { shallow: true }
+                                );
+                              }, 2000);
                               return {
                                 ...prev,
                                 TypeHusmodell: Array.from(updatedSet),
@@ -559,16 +565,16 @@ const BelopFilterSection: React.FC<{
 
               {openIndex.includes("Antall soverom") && (
                 <>
-                  <div className="my-4 border-t border-[#DCDFEA]"></div>
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                  <div className="my-2.5 md:my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="grid grid-cols-2 gap-3 laptop:gap-x-8 laptop:gap-y-4">
                     {AntallSoveromArray.map((data: any, index: number) => (
                       <label
-                        className="container container_darkgray_withPurple"
+                        className="container container_darkgray_withPurple truncate"
                         htmlFor={data?.name}
                         key={index}
                       >
                         <span
-                          className={`text-darkBlack text-sm md:text-base ${formData?.AntallSoverom.includes(data?.name) && "font-semibold"}`}
+                          className={`text-darkBlack text-sm laptop:text-base truncate ${formData?.AntallSoverom.includes(data?.name) && "font-semibold"}`}
                         >
                           {data?.name}
                         </span>
@@ -643,8 +649,8 @@ const BelopFilterSection: React.FC<{
 
               {openIndex.includes("Pris på tomt") && (
                 <>
-                  <div className="my-4 border-t border-[#DCDFEA]"></div>
-                  <div className="mx-1">
+                  <div className="my-2.5 md:my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="mx-2">
                     <CustomSlider
                       value={[
                         formData?.minRangeForPlot,
@@ -670,7 +676,7 @@ const BelopFilterSection: React.FC<{
                           );
                         }, 2000);
                       }}
-                      valueLabelDisplay="auto"
+                      valueLabelDisplay="on"
                       aria-labelledby="range-slider"
                       min={formData?.minRangeForPlot}
                       step={100}
@@ -685,55 +691,6 @@ const BelopFilterSection: React.FC<{
                       {maxPrice} NOK
                     </div>
                   </div>
-                  <div className="flex justify-end mt-2 items-center gap-3">
-                    <input
-                      type="text"
-                      placeholder="Enter Pris"
-                      className="border border-gray2 rounded-lg px-3 py-2 focus-within:outline-none w-full"
-                      value={maxPlotPrice}
-                      onChange={(e: any) => {
-                        const rawValue = e.target.value.replace(/\D/g, "");
-
-                        if (rawValue) {
-                          const formattedValue = new Intl.NumberFormat(
-                            "no-NO"
-                          ).format(Number(rawValue));
-                          setMaxPlotPrice(formattedValue);
-                        } else {
-                          setMaxPlotPrice("");
-                        }
-                      }}
-                    />
-
-                    <Button
-                      text="Save"
-                      className="border border-[#DF761F] bg-[#DF761F] text-white md:text-sm rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative desktop:px-4 desktop:py-2"
-                      type="button"
-                      onClick={() => {
-                        setFormData((prev: any) => ({
-                          ...prev,
-                          maxRangeForPlot: Math.floor(
-                            Number(maxPlotPrice.replace(/\s+/g, ""))
-                          ),
-                        }));
-                        setTimeout(() => {
-                          router.push(
-                            {
-                              pathname: router.pathname,
-                              query: {
-                                ...router.query,
-                                maxRangePlot: Math.floor(
-                                  Number(maxPlotPrice.replace(/\s+/g, ""))
-                                ),
-                              },
-                            },
-                            undefined,
-                            { shallow: true }
-                          );
-                        }, 2000);
-                      }}
-                    />
-                  </div>
                 </>
               )}
             </div>
@@ -746,23 +703,23 @@ const BelopFilterSection: React.FC<{
             >
               <p
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
-                onClick={() => handleToggleAccordion("Pris på husmodell")}
+                onClick={() => handleToggleAccordion("Husmodell")}
               >
-                Pris på husmodell
+                Husmodell
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
                   className={
-                    openIndex.includes("Pris på husmodell") ? "rotate-180" : ""
+                    openIndex.includes("Husmodell") ? "rotate-180" : ""
                   }
                   fetchPriority="auto"
                 />
               </p>
 
-              {openIndex.includes("Pris på husmodell") && (
+              {openIndex.includes("Husmodell") && (
                 <>
-                  <div className="my-4 border-t border-[#DCDFEA]"></div>
-                  <div className="mx-1">
+                  <div className="my-2.5 md:my-4 border-t border-[#DCDFEA]"></div>
+                  <div className="mx-2">
                     <CustomSlider
                       value={[
                         formData?.minRangeForHusmodell,
@@ -788,7 +745,7 @@ const BelopFilterSection: React.FC<{
                           );
                         }, 2000);
                       }}
-                      valueLabelDisplay="auto"
+                      valueLabelDisplay="on"
                       aria-labelledby="range-slider"
                       min={formData?.minRangeForHusmodell}
                       max={Number(maxPrice)}
@@ -802,55 +759,6 @@ const BelopFilterSection: React.FC<{
                     <div className="text-grayText text-sm lg:text-base">
                       {maxPrice} NOK
                     </div>
-                  </div>
-                  <div className="flex justify-end mt-2 items-center gap-3">
-                    <input
-                      type="text"
-                      placeholder="Enter Pris"
-                      className="border border-gray2 rounded-lg px-3 py-2 focus-within:outline-none w-full"
-                      value={maxHousePrice}
-                      onChange={(e: any) => {
-                        const rawValue = e.target.value.replace(/\D/g, "");
-
-                        if (rawValue) {
-                          const formattedValue = new Intl.NumberFormat(
-                            "no-NO"
-                          ).format(Number(rawValue));
-                          setMaxHousePrice(formattedValue);
-                        } else {
-                          setMaxHousePrice("");
-                        }
-                      }}
-                    />
-
-                    <Button
-                      text="Save"
-                      className="border border-[#DF761F] bg-[#DF761F] text-white md:text-sm rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative desktop:px-4 desktop:py-2"
-                      type="button"
-                      onClick={() => {
-                        setFormData((prev: any) => ({
-                          ...prev,
-                          maxRangeForHusmodell: Math.floor(
-                            Number(maxHousePrice.replace(/\s+/g, ""))
-                          ),
-                        }));
-                        setTimeout(() => {
-                          router.push(
-                            {
-                              pathname: router.pathname,
-                              query: {
-                                ...router.query,
-                                maxRangeForHusmodell: Math.floor(
-                                  Number(maxHousePrice.replace(/\s+/g, ""))
-                                ),
-                              },
-                            },
-                            undefined,
-                            { shallow: true }
-                          );
-                        }, 2000);
-                      }}
-                    />
                   </div>
                 </>
               )}
