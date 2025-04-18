@@ -18,7 +18,7 @@ const OurPartners = () => {
       >
         <SideSpaceContainer className="relative">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 sm:items-center justify-between">
-            <h3 className="text-white font-semibold text-lg md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px] leading-[44.8px]">
+            <h3 className="text-white font-semibold text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
               Our partners
             </h3>
             <div className="flex items-center gap-5 md:gap-12 desktop:gap-[80px] overflow-x-auto overFlowScrollHidden">
