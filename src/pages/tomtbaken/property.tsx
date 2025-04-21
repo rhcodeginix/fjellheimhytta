@@ -39,6 +39,7 @@ const TomtBakenProperty: React.FC<{
                               property?.lamdaDataFromApi?.coordinates
                                 ?.convertedCoordinates
                             }
+                            MAX_ZOOM={20}
                           />
                         )}
                       </div>

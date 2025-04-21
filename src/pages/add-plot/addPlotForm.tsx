@@ -1065,7 +1065,10 @@ const AddPlotForm = () => {
                               coordinates={values.map_image}
                             /> */}
                             {values?.map_image && (
-                              <NorkartMap coordinates={values?.map_image} />
+                              <NorkartMap
+                                coordinates={values?.map_image}
+                                MAX_ZOOM={20}
+                              />
                             )}
                           </div>
                         </>

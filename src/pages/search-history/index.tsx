@@ -84,6 +84,7 @@ const index = () => {
                             property?.lamdaDataFromApi?.coordinates
                               ?.convertedCoordinates
                           }
+                          MAX_ZOOM={20}
                         />
                       )}
                     </div>

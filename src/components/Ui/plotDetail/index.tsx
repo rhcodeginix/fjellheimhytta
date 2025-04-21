@@ -1025,6 +1025,7 @@ const PlotDetailPage: React.FC<{
                   coordinates={
                     lamdaDataFromApi?.coordinates?.convertedCoordinates
                   }
+                  MAX_ZOOM={18}
                 />
               )}
             </div>

@@ -249,6 +249,7 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
                       finalData?.plot?.lamdaDataFromApi?.coordinates
                         ?.convertedCoordinates
                     }
+                    MAX_ZOOM={20}
                   />
                 )}
               </div>

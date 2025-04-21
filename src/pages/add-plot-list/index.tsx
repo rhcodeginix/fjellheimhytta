@@ -63,7 +63,10 @@ const index = () => {
                     <div className="h-[300px] md:h-[350px] cursor-pointer">
                       {/* <GoogleMapComponent coordinates={property?.map_image} /> */}
                       {property?.map_image && (
-                        <NorkartMap coordinates={property?.map_image} />
+                        <NorkartMap
+                          coordinates={property?.map_image}
+                          MAX_ZOOM={20}
+                        />
                       )}
                     </div>
                     <h4 className="text-black font-medium text-base lg:text-lg">
