@@ -1,13 +1,14 @@
 import Loading from "@/components/Loading";
 import Image from "next/image";
 import Ic_wishlist_heart from "@/public/images/Ic_wishlist_heart.svg";
-import GoogleMapComponent from "@/components/Ui/map";
+// import GoogleMapComponent from "@/components/Ui/map";
 import Button from "@/components/common/button";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { formatPrice } from "@/pages/belop/belopProperty";
+import NorkartMap from "@/components/map";
 
 const PlotProperty: React.FC<{
   isLoading: any;
@@ -151,12 +152,21 @@ const PlotProperty: React.FC<{
                           />
                         </div>
                         <div className="w-[37%] rounded-[8px] overflow-hidden">
-                          <GoogleMapComponent
+                          {/* <GoogleMapComponent
                             coordinates={
                               property?.plot?.lamdaDataFromApi?.coordinates
                                 ?.convertedCoordinates
                             }
-                          />
+                          /> */}
+                          {property?.plot?.lamdaDataFromApi?.coordinates
+                            ?.convertedCoordinates && (
+                            <NorkartMap
+                              coordinates={
+                                property?.plot?.lamdaDataFromApi?.coordinates
+                                  ?.convertedCoordinates
+                              }
+                            />
+                          )}
                         </div>
                       </div>
                       <div className="w-full sm:w-1/2">

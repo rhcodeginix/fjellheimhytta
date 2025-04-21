@@ -538,3 +538,11 @@ td {
 .filterDrawer {
   z-index: 99999999999999999 !important;
 }
+
+.mapboxgl-canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+.mapboxgl-ctrl.mapboxgl-ctrl-scale {
+  display: none !important;
+}

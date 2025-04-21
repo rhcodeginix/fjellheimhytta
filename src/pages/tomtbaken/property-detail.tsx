@@ -22,12 +22,13 @@ import Loading from "@/components/Loading";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
-import GoogleMapComponent from "@/components/Ui/map";
+// import GoogleMapComponent from "@/components/Ui/map";
 import Eierinformasjon from "@/components/Ui/regulationChart/Eierinformasjon";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import PropertyDetail from "@/components/Ui/stepperUi/propertyDetail";
+import NorkartMap from "@/components/map";
 
 const TomtBakenPropertyDetail: React.FC = () => {
   const router = useRouter();
@@ -1205,11 +1206,18 @@ const TomtBakenPropertyDetail: React.FC = () => {
                   </div>
                 </div>
                 <div className="rounded-[12px] overflow-hidden w-[407px]">
-                  <GoogleMapComponent
+                  {/* <GoogleMapComponent
                     coordinates={
                       lamdaDataFromApi?.coordinates?.convertedCoordinates
                     }
-                  />
+                  /> */}
+                  {lamdaDataFromApi?.coordinates?.convertedCoordinates && (
+                    <NorkartMap
+                      coordinates={
+                        lamdaDataFromApi?.coordinates?.convertedCoordinates
+                      }
+                    />
+                  )}
                 </div>
               </div>
             </div>

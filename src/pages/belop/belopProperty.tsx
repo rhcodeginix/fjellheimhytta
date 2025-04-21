@@ -6,11 +6,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
+import NorkartMap from "@/components/map";
 
-const GoogleMapComponent = dynamic(() => import("../../components/Ui/map"), {
-  ssr: false,
-});
+// const GoogleMapComponent = dynamic(() => import("../../components/Ui/map"), {
+//   ssr: false,
+// });
 
 export function formatPrice(price: any) {
   const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -142,12 +143,21 @@ const BelopProperty: React.FC<{
                           />
                         </div>
                         <div className="w-[37%] rounded-[8px] overflow-hidden">
-                          <GoogleMapComponent
+                          {/* <GoogleMapComponent
                             coordinates={
                               property?.plot?.lamdaDataFromApi?.coordinates
                                 ?.convertedCoordinates
                             }
-                          />
+                          /> */}
+                          {property?.plot?.lamdaDataFromApi?.coordinates
+                            ?.convertedCoordinates && (
+                            <NorkartMap
+                              coordinates={
+                                property?.plot?.lamdaDataFromApi?.coordinates
+                                  ?.convertedCoordinates
+                              }
+                            />
+                          )}
                         </div>
                       </div>
                       <div className="w-full sm:w-1/2">

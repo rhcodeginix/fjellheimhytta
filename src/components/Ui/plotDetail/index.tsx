@@ -12,10 +12,11 @@ import Loading from "@/components/Loading";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
 import Eierinformasjon from "@/components/Ui/regulationChart/Eierinformasjon";
 import { Building, ClipboardList, FileText, FileUser } from "lucide-react";
-import dynamic from "next/dynamic";
-const GoogleMapComponent = dynamic(() => import("@/components/Ui/map"), {
-  ssr: false,
-});
+// import dynamic from "next/dynamic";
+import NorkartMap from "@/components/map";
+// const GoogleMapComponent = dynamic(() => import("@/components/Ui/map"), {
+//   ssr: false,
+// });
 
 const PlotDetailPage: React.FC<{
   loadingAdditionalData: any;
@@ -1014,11 +1015,18 @@ const PlotDetailPage: React.FC<{
               </div>
             </div>
             <div className="rounded-lg sm:rounded-[12px] overflow-hidden w-full h-[300px] desktop:h-auto desktop:w-[407px]">
-              <GoogleMapComponent
+              {/* <GoogleMapComponent
                 coordinates={
                   lamdaDataFromApi?.coordinates?.convertedCoordinates
                 }
-              />
+              /> */}
+              {lamdaDataFromApi?.coordinates?.convertedCoordinates && (
+                <NorkartMap
+                  coordinates={
+                    lamdaDataFromApi?.coordinates?.convertedCoordinates
+                  }
+                />
+              )}
             </div>
           </div>
         </div>

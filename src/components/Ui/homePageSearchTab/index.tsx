@@ -16,14 +16,15 @@ import { db } from "@/config/firebaseConfig";
 import Loading from "@/components/Loading";
 import { useRouter } from "next/router";
 import { formatPrice } from "@/pages/belop/belopProperty";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 import { FileUser } from "lucide-react";
+import NorkartMap from "@/components/map";
 
-const GoogleMapComponent = dynamic(() => import("../map"), {
-  ssr: false,
-});
+// const GoogleMapComponent = dynamic(() => import("../map"), {
+//   ssr: false,
+// });
 
 const tabs = [
   {
@@ -349,12 +350,21 @@ const HomePageSearchTab: React.FC = () => {
                           />
                         </div>
                         <div className="w-[37%] rounded-[8px] overflow-hidden h-full">
-                          <GoogleMapComponent
+                          {/* <GoogleMapComponent
                             coordinates={
                               property?.plot?.lamdaDataFromApi?.coordinates
                                 ?.convertedCoordinates
                             }
-                          />
+                          /> */}
+                          {property?.plot?.lamdaDataFromApi?.coordinates
+                            ?.convertedCoordinates && (
+                            <NorkartMap
+                              coordinates={
+                                property?.plot?.lamdaDataFromApi?.coordinates
+                                  ?.convertedCoordinates
+                              }
+                            />
+                          )}
                         </div>
                       </div>
                       <h5 className="text-darkBlack font-medium text-sm md:text-base mb-2">
@@ -505,12 +515,21 @@ const HomePageSearchTab: React.FC = () => {
                       </p>
                       <div className="relative mb-3 desktop:mb-4">
                         <div className="w-full h-[200px] md:h-[234px] rounded-[8px] overflow-hidden">
-                          <GoogleMapComponent
+                          {/* <GoogleMapComponent
                             coordinates={
                               property?.lamdaDataFromApi?.coordinates
                                 ?.convertedCoordinates
                             }
-                          />
+                          /> */}
+                          {property?.lamdaDataFromApi?.coordinates
+                            ?.convertedCoordinates && (
+                            <NorkartMap
+                              coordinates={
+                                property?.lamdaDataFromApi?.coordinates
+                                  ?.convertedCoordinates
+                              }
+                            />
+                          )}
                         </div>
                       </div>
                       <div className="flex gap-3 items-center">

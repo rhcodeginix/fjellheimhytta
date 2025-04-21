@@ -1,5 +1,6 @@
 import Loading from "@/components/Loading";
-import GoogleMapComponent from "@/components/Ui/map";
+import NorkartMap from "@/components/map";
+// import GoogleMapComponent from "@/components/Ui/map";
 import Link from "next/link";
 
 const TomtBakenProperty: React.FC<{
@@ -25,12 +26,21 @@ const TomtBakenProperty: React.FC<{
                   <div className="flex flex-col cursor-pointer relative z-40">
                     <div>
                       <div className="h-[300px] md:h-[350px] cursor-pointer mb-2">
-                        <GoogleMapComponent
+                        {/* <GoogleMapComponent
                           coordinates={
                             property?.lamdaDataFromApi?.coordinates
                               ?.convertedCoordinates
                           }
-                        />
+                        /> */}
+                        {property?.lamdaDataFromApi?.coordinates
+                          ?.convertedCoordinates && (
+                          <NorkartMap
+                            coordinates={
+                              property?.lamdaDataFromApi?.coordinates
+                                ?.convertedCoordinates
+                            }
+                          />
+                        )}
                       </div>
                       <h3 className="text-black text-lg font-medium mb-2">
                         {
