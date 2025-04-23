@@ -116,7 +116,7 @@ const PropertyDetailPage: React.FC<{
         let plotCollectionRef;
 
         if (isEmptyPlot === "true") {
-          plotCollectionRef = collection(db, "empty_plot");
+          plotCollectionRef = collection(db, "cabin_plot");
         } else {
           plotCollectionRef = collection(db, "plot_building");
         }

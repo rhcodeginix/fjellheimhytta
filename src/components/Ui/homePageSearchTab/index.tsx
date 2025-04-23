@@ -109,7 +109,7 @@ const HomePageSearchTab: React.FC = () => {
             plotPromises.push(
               getDocs(
                 query(
-                  collection(db, "empty_plot"),
+                  collection(db, "cabin_plot"),
                   where(
                     "lamdaDataFromApi.searchParameters.kommunenummer",
                     "in",

@@ -181,7 +181,7 @@ const Belop: React.FC = () => {
   //       for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
   //         const chunk = kommuneNumbers.slice(i, i + chunkSize);
   //         const q = query(
-  //           collection(db, "empty_plot"),
+  //           collection(db, "cabin_plot"),
   //           where(
   //             "lamdaDataFromApi.searchParameters.kommunenummer",
   //             "in",
@@ -418,7 +418,7 @@ const Belop: React.FC = () => {
             constraints.push(limit(20));
           }
 
-          const q = query(collection(db, "empty_plot"), ...constraints);
+          const q = query(collection(db, "cabin_plot"), ...constraints);
           plotChunks.push(getDocs(q));
         }
 

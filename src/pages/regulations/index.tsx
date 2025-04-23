@@ -144,7 +144,7 @@ const Regulations = () => {
                   property?.CadastreDataFromApi?.buildingsApi?.response?.items
                     .length === 0
                 ) {
-                  const EmptyPlotDb = collection(db, "empty_plot");
+                  const EmptyPlotDb = collection(db, "cabin_plot");
 
                   const existingEmptyPlot = query(
                     EmptyPlotDb,
@@ -171,7 +171,7 @@ const Regulations = () => {
                   );
 
                   if (anyBuildingHasStatus) {
-                    const EmptyPlotDb = collection(db, "empty_plot");
+                    const EmptyPlotDb = collection(db, "cabin_plot");
                     const existingEmptyPlot = query(
                       EmptyPlotDb,
                       where("lamdaDataFromApi.propertyId", "==", propertyId)
@@ -200,7 +200,7 @@ const Regulations = () => {
 
             // const propertyId = property?.lamdaDataFromApi?.propertyId;
 
-            // const EmptyPlotDb = collection(db, "empty_plot");
+            // const EmptyPlotDb = collection(db, "cabin_plot");
             // const existingEmptyPlot = query(
             //   EmptyPlotDb,
             //   where("lamdaDataFromApi.propertyId", "==", propertyId)
@@ -355,7 +355,7 @@ const Regulations = () => {
 
           const isEmptyPlot =
             !CadastreDataResponse?.apis?.buildingsApi?.response?.items?.length;
-          const collectionName = isEmptyPlot ? "empty_plot" : "plot_building";
+          const collectionName = isEmptyPlot ? "cabin_plot" : "plot_building";
           queryParams.set("empty", isEmptyPlot ? "true" : "false");
 
           const collectionRef = collection(db, collectionName);
@@ -435,7 +435,7 @@ const Regulations = () => {
       const fetchProperty = async () => {
         let propertiesCollectionRef: any;
         if (emptyPlot) {
-          propertiesCollectionRef = doc(db, "empty_plot", String(propertyId));
+          propertiesCollectionRef = doc(db, "cabin_plot", String(propertyId));
         } else {
           propertiesCollectionRef = collection(
             db,
@@ -486,7 +486,7 @@ const Regulations = () => {
           const isEmptyPlot =
             !foundProperty?.CadastreDataFromApi?.apis?.buildingsApi?.response
               ?.items?.length;
-          const collectionName = isEmptyPlot ? "empty_plot" : "plot_building";
+          const collectionName = isEmptyPlot ? "cabin_plot" : "plot_building";
           queryParams.set("empty", isEmptyPlot ? "true" : "false");
 
           const collectionRef = collection(db, collectionName);
@@ -649,7 +649,7 @@ const Regulations = () => {
         property?.CadastreDataFromApi?.buildingsApi?.response?.items.length ===
           0
       ) {
-        const EmptyPlotDb = collection(db, "empty_plot");
+        const EmptyPlotDb = collection(db, "cabin_plot");
 
         const existingEmptyPlot = query(
           EmptyPlotDb,
@@ -672,7 +672,7 @@ const Regulations = () => {
         });
 
         if (anyBuildingHasStatus) {
-          const EmptyPlotDb = collection(db, "empty_plot");
+          const EmptyPlotDb = collection(db, "cabin_plot");
           const existingEmptyPlot = query(
             EmptyPlotDb,
             where("lamdaDataFromApi.propertyId", "==", propertyId)

@@ -68,7 +68,7 @@ const Tilbud: React.FC<{
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let plotCollectionRef = collection(db, "empty_plot");
+        let plotCollectionRef = collection(db, "cabin_plot");
 
         const plotDocRef = doc(plotCollectionRef, String(plotId));
         const plotDocSnap = await getDoc(plotDocRef);
@@ -128,7 +128,7 @@ const Tilbud: React.FC<{
       queryParams.delete("leadId");
 
       try {
-        const plotDocSnap = await getDoc(doc(db, "empty_plot", plotId));
+        const plotDocSnap = await getDoc(doc(db, "cabin_plot", plotId));
         const husmodellDocSnap = await getDoc(
           doc(db, "house_model", husmodellId)
         );

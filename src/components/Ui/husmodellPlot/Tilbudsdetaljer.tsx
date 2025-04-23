@@ -40,7 +40,7 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
 
         if (isEmptyPlot && !plotId) {
           if (isEmptyPlot === "true") {
-            plotCollectionRef = collection(db, "empty_plot");
+            plotCollectionRef = collection(db, "cabin_plot");
           } else {
             plotCollectionRef = collection(db, "plot_building");
           }
@@ -69,7 +69,7 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
           }
         } else {
           if (isNumericPlotId) {
-            plotCollectionRef = collection(db, "empty_plot");
+            plotCollectionRef = collection(db, "cabin_plot");
 
             const allLeadsQuery = query(plotCollectionRef);
             const allLeadsSnapshot = await getDocs(allLeadsQuery);
@@ -94,7 +94,7 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
               return;
             }
           } else {
-            plotCollectionRef = doc(db, "empty_plot", String(plotId));
+            plotCollectionRef = doc(db, "cabin_plot", String(plotId));
           }
         }
 

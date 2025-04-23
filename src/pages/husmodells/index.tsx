@@ -147,7 +147,7 @@ const HusmodellDetail = () => {
       setLoading(true);
 
       const fetchProperty = async () => {
-        const plotDocRef = doc(db, "empty_plot", String(plotId));
+        const plotDocRef = doc(db, "cabin_plot", String(plotId));
 
         try {
           const plotDocSnap = await getDoc(plotDocRef);

@@ -36,7 +36,7 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
 
         if (isEmptyPlot && !plotId) {
           if (isEmptyPlot === "true") {
-            plotCollectionRef = collection(db, "empty_plot");
+            plotCollectionRef = collection(db, "cabin_plot");
           } else {
             plotCollectionRef = collection(db, "plot_building");
           }
@@ -64,7 +64,7 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
             return;
           }
         } else {
-          plotCollectionRef = doc(db, "empty_plot", String(plotId));
+          plotCollectionRef = doc(db, "cabin_plot", String(plotId));
         }
 
         let plotDocSnap;

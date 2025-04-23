@@ -104,7 +104,7 @@ const HusmodellPlot = () => {
       const fetchProperty = async () => {
         let propertiesCollectionRef: any;
         if (emptyPlot) {
-          propertiesCollectionRef = doc(db, "empty_plot", String(propertyId));
+          propertiesCollectionRef = doc(db, "cabin_plot", String(propertyId));
         } else {
           propertiesCollectionRef = collection(
             db,
@@ -154,7 +154,7 @@ const HusmodellPlot = () => {
           const isEmptyPlot =
             !foundProperty?.CadastreDataFromApi?.apis?.buildingsApi?.response
               ?.items?.length;
-          const collectionName = isEmptyPlot ? "empty_plot" : "plot_building";
+          const collectionName = isEmptyPlot ? "cabin_plot" : "plot_building";
           queryParams.set("empty", isEmptyPlot ? "true" : "false");
 
           const collectionRef = collection(db, collectionName);
@@ -310,7 +310,7 @@ const HusmodellPlot = () => {
       queryParams.delete("leadId");
 
       try {
-        let plotCollectionRef = collection(db, "empty_plot");
+        let plotCollectionRef = collection(db, "cabin_plot");
         const plotDocRef = doc(plotCollectionRef, String(propertyId));
         const plotDocSnap = await getDoc(plotDocRef);
 

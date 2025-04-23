@@ -54,7 +54,7 @@ const TomtBaken: React.FC = () => {
 
         if (kommuneNumbers.length === 0) return setHouseModelProperty([]);
 
-        const [plotsRef] = [collection(db, "empty_plot")];
+        const [plotsRef] = [collection(db, "cabin_plot")];
 
         const allPlots: any = [];
         const chunkSize = 10;

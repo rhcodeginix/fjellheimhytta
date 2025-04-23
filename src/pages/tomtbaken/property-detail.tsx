@@ -62,7 +62,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
 
       const fetchProperty = async () => {
         try {
-          const plotDocRef = doc(db, "empty_plot", String(propertyId));
+          const plotDocRef = doc(db, "cabin_plot", String(propertyId));
           const docSnap = await getDoc(plotDocRef);
 
           if (docSnap.exists()) {

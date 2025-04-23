@@ -155,7 +155,7 @@ const Plots: React.FC<{
           },
         ];
 
-        const plotsRef = collection(db, "empty_plot");
+        const plotsRef = collection(db, "cabin_plot");
         const chunkSize = 10;
         const allPlots: any[] = [];
 

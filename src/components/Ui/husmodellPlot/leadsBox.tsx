@@ -75,7 +75,7 @@ const LeadsBox: React.FC<{ col?: any; isShow?: any }> = ({ col, isShow }) => {
       queryParams.delete("leadId");
 
       try {
-        let plotCollectionRef = collection(db, "empty_plot");
+        let plotCollectionRef = collection(db, "cabin_plot");
         const plotDocRef = doc(plotCollectionRef, String(propertyId));
         const plotDocSnap = await getDoc(plotDocRef);
 

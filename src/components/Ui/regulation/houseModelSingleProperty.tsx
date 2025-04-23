@@ -83,7 +83,7 @@ const HouseModelSingleProperty: React.FC<{
       try {
         let plotCollectionRef = collection(
           db,
-          isEmptyPlot === "true" ? "empty_plot" : "plot_building"
+          isEmptyPlot === "true" ? "cabin_plot" : "plot_building"
         );
 
         const allLeadsSnapshot = await getDocs(query(plotCollectionRef));
