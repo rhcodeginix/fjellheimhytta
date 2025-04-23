@@ -12,12 +12,7 @@ const PropertyHouseDetails: React.FC<{
   lamdaDataFromApi: any;
   supplierData: any;
   pris?: any;
-}> = ({
-  HouseModelData,
-  lamdaDataFromApi,
-  supplierData,
-  // pris,
-}) => {
+}> = ({ HouseModelData, lamdaDataFromApi, supplierData, pris }) => {
   const router = useRouter();
   const leadId = router.query["leadId"];
   const Husdetaljer = HouseModelData?.Husdetaljer;
@@ -56,40 +51,40 @@ const PropertyHouseDetails: React.FC<{
     })();
   }, [leadId, equityAmount]);
   const husPris = Number(Husdetaljer?.pris?.replace(/\s/g, "")) || 0;
-  // const extraPris = Number(pris) || 0;
+  const extraPris = Number(pris) || 0;
 
-  const Byggekostnader = HouseModelData?.Prisliste?.Byggekostnader;
+  // const Byggekostnader = HouseModelData?.Prisliste?.Byggekostnader;
 
-  const Tomtekost = HouseModelData?.Prisliste?.Tomtekost;
+  // const Tomtekost = HouseModelData?.Prisliste?.Tomtekost;
 
-  const totalPrisOfTomtekost = Tomtekost
-    ? Tomtekost.reduce((acc: any, prod: any) => {
-        const numericValue = prod.pris
-          ?.replace(/\s/g, "")
-          .replace(/\./g, "")
-          .replace(",", ".");
-        return acc + (numericValue ? parseFloat(numericValue) : 0);
-      }, 0)
-    : 0;
+  // const totalPrisOfTomtekost = Tomtekost
+  //   ? Tomtekost.reduce((acc: any, prod: any) => {
+  //       const numericValue = prod.pris
+  //         ?.replace(/\s/g, "")
+  //         .replace(/\./g, "")
+  //         .replace(",", ".");
+  //       return acc + (numericValue ? parseFloat(numericValue) : 0);
+  //     }, 0)
+  //   : 0;
 
-  const totalPrisOfByggekostnader = Byggekostnader
-    ? Byggekostnader.reduce((acc: any, prod: any) => {
-        const numericValue = prod.pris
-          ?.replace(/\s/g, "")
-          .replace(/\./g, "")
-          .replace(",", ".");
-        return (
-          acc + (numericValue ? parseFloat(numericValue) : 0) + totalCustPris
-        );
-      }, 0)
-    : 0;
+  // const totalPrisOfByggekostnader = Byggekostnader
+  //   ? Byggekostnader.reduce((acc: any, prod: any) => {
+  //       const numericValue = prod.pris
+  //         ?.replace(/\s/g, "")
+  //         .replace(/\./g, "")
+  //         .replace(",", ".");
+  //       return (
+  //         acc + (numericValue ? parseFloat(numericValue) : 0) + totalCustPris
+  //       );
+  //     }, 0)
+  //   : 0;
 
-  const formattedNumber = (
-    totalPrisOfTomtekost + totalPrisOfByggekostnader
-  ).toLocaleString("nb-NO");
+  // const formattedNumber = (
+  //   totalPrisOfTomtekost + totalPrisOfByggekostnader
+  // ).toLocaleString("nb-NO");
 
-  // const totalPrice =
-  //   Number(totalCustPris) + Number(husPris) + Number(extraPris);
+  const totalPrice =
+    Number(totalCustPris) + Number(husPris) + Number(extraPris);
 
   return (
     <>
@@ -170,12 +165,12 @@ const PropertyHouseDetails: React.FC<{
               Din pris med tilvalg
             </p>
             <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
-              {formatCurrency(formattedNumber.toLocaleString("nb-NO"))}
+              {formatCurrency(totalPrice.toLocaleString("nb-NO"))}
             </h4>
 
             <p className="text-secondary text-xs md:text-sm">
               Inkludert tomtepris (
-              {formatCurrency(husPris.toLocaleString("nb-NO"))})
+              {formatCurrency(pris.toLocaleString("nb-NO"))})
             </p>
           </div>
         </div>

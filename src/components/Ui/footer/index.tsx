@@ -7,7 +7,7 @@ import Link from "next/link";
 const Footer = () => {
   return (
     <>
-      <div className="bg-navyBlue">
+      <div className="bg-primary">
         <SideSpaceContainer>
           <div className="pt-[40px] md:pt-[52px] lg:pt-[80px] pb-[24px] md:pb-[36px] lg:pb-[48px] flex flex-col desktop:flex-row desktop:items-end gap-6 justify-between">
             <div>
@@ -18,19 +18,19 @@ const Footer = () => {
                 fetchPriority="auto"
               />
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 md:gap-5 lg:gap-6 sm:items-end">
-                <span className="text-white font-medium text-sm md:text-base">
-                  <span className="font-bold">Plot AS</span> - 834 632 772 -
+                <span className="text-black font-medium text-sm md:text-base">
+                  <span className="font-bold">Iplot AS</span> <br /> 834 632 772
                   <br />
                   Sokkabekkveien 81, 3478
                   <br className="hidden sm:block" />
                   Nærsnes
                 </span>
                 <div className="flex gap-6 sm:items-end">
-                  <span className="text-white font-medium text-sm md:text-base">
-                    481 79760
+                  <span className="text-black font-medium text-sm md:text-base">
+                    +47 48 17 97 60
                   </span>
-                  <span className="text-white font-medium text-sm md:text-base">
-                    hei@iplot.no
+                  <span className="text-black font-medium text-sm md:text-base">
+                    hei@mintomt.no
                   </span>
                 </div>
               </div>
@@ -39,37 +39,31 @@ const Footer = () => {
               <div className="sm:items-center gap-y-2 gap-x-5 lg:gap-[38px] flex flex-wrap mb-6 md:mb-[12px]">
                 <Link
                   href={""}
-                  className="text-sm md:text-base text-white font-medium"
+                  className="text-sm md:text-base text-black font-medium"
                 >
-                  Hvordan fungerer iPlot?
+                  Hvordan fungerer <span className="font-bold">MinTomt</span>?
                 </Link>
                 <Link
                   href={""}
-                  className="text-sm md:text-base text-white font-medium"
+                  className="text-sm md:text-base text-black font-medium"
                 >
-                  Priser
+                  Ferdighusprodusenter
                 </Link>
                 <Link
                   href={""}
-                  className="text-sm md:text-base text-white font-medium"
+                  className="text-sm md:text-base text-black font-medium"
                 >
-                  Referanser
+                  Finansiering
                 </Link>
                 <Link
                   href={""}
-                  className="text-sm md:text-base text-white font-medium"
+                  className="text-sm md:text-base text-black font-medium"
                 >
-                  Kontakt
-                </Link>
-                <Link
-                  href={""}
-                  className="text-sm md:text-base text-white font-medium"
-                >
-                  Logg inn
+                  Om oss
                 </Link>
               </div>
-              <p className="text-xs md:text-sm text-white font-medium text-center desktop:text-end">
-                © 2024 iPlot AS. All rights reserved.
+              <p className="text-xs md:text-sm text-black font-medium text-center desktop:text-end">
+                © 2025 iPlot AS. All rights reserved.
               </p>
             </div>
           </div>

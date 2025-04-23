@@ -98,6 +98,34 @@ const Finansiering: React.FC<{
     }
   };
 
+  const Byggekostnader = HouseModelData?.Prisliste?.Byggekostnader;
+
+  const Tomtekost = HouseModelData?.Prisliste?.Tomtekost;
+
+  const totalPrisOfTomtekost = Tomtekost
+    ? Tomtekost.reduce((acc: any, prod: any) => {
+        const numericValue = prod.pris
+          ?.replace(/\s/g, "")
+          .replace(/\./g, "")
+          .replace(",", ".");
+        return acc + (numericValue ? parseFloat(numericValue) : 0);
+      }, 0)
+    : 0;
+  const formattedNumber = totalPrisOfTomtekost;
+
+  const totalPrisOfByggekostnader = Byggekostnader
+    ? Byggekostnader.reduce((acc: any, prod: any) => {
+        const numericValue = prod.pris
+          ?.replace(/\s/g, "")
+          .replace(/\./g, "")
+          .replace(",", ".");
+        return (
+          acc + (numericValue ? parseFloat(numericValue) : 0) + totalCustPris
+        );
+      }, 0)
+    : 0;
+  const formattedNumberOfByggekostnader = totalPrisOfByggekostnader;
+
   return (
     <div className="relative">
       {loading ? (
@@ -246,10 +274,8 @@ const Finansiering: React.FC<{
                                 <h4 className="text-black text-sm md:text-base desktop:text-xl font-semibold whitespace-nowrap">
                                   {formatCurrency(
                                     (
-                                      totalCustPris +
-                                      Number(
-                                        Husdetaljer?.pris?.replace(/\s/g, "")
-                                      )
+                                      formattedNumber +
+                                      formattedNumberOfByggekostnader
                                     ).toLocaleString("nb-NO")
                                   )}
                                 </h4>

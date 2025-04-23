@@ -99,6 +99,24 @@ const HusmodellDetail = () => {
   }, [currIndex]);
 
   useEffect(() => {
+    if (currIndex < 3) {
+      const { plotId, ...restQuery } = router.query;
+
+      if (plotId) {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: restQuery,
+          },
+          undefined,
+          { shallow: true }
+        );
+      }
+      setPris(0);
+    }
+  }, [currIndex, router]);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
       if (user) {
         try {

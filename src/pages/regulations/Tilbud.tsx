@@ -300,8 +300,10 @@ const Tilbud: React.FC<{
                   <h6 className="text-xs md:text-base font-semibold desktop:text-lg">
                     {formatCurrency(
                       (
-                        totalCustPris +
-                        Number(Husdetaljer?.pris?.replace(/\s/g, ""))
+                        (isNaN(totalCustPris) ? 0 : totalCustPris) +
+                        (Husdetaljer?.pris
+                          ? Number(Husdetaljer.pris.replace(/\s/g, ""))
+                          : 0)
                       ).toLocaleString("nb-NO")
                     )}
                   </h6>

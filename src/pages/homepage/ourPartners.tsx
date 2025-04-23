@@ -9,7 +9,7 @@ const OurPartners = () => {
   return (
     <>
       <div
-        className="py-[44px] md:py-[58px] desktop:py-[80px] overflow-hidden bg-purple"
+        className="py-[44px] md:py-[58px] desktop:py-[80px] overflow-hidden bg-[#000000]"
         style={{
           backgroundImage: `url(${Img_our_partners.src})`,
           backgroundRepeat: "no-repeat",
@@ -19,7 +19,7 @@ const OurPartners = () => {
         <SideSpaceContainer className="relative">
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 sm:items-center justify-between">
             <h3 className="text-white font-semibold text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px]">
-              Our partners
+              Samarbeidspartnere:
             </h3>
             <div className="flex items-center gap-5 md:gap-12 desktop:gap-[80px] overflow-x-auto overFlowScrollHidden">
               <Image

@@ -421,9 +421,10 @@ const Oppsummering: React.FC<{
                                 } else {
                                   return formatCurrency(
                                     (
-                                      totalCustPris +
+                                      Number(totalCustPris || 0) +
                                       Number(
-                                        Husdetaljer?.pris?.replace(/\s/g, "")
+                                        Husdetaljer?.pris?.replace(/\s/g, "") ||
+                                          0
                                       ) +
                                       Number(pris || 0)
                                     ).toLocaleString("nb-NO")
