@@ -295,10 +295,8 @@ const Finansiering: React.FC<{
                             </p>
                             <h4 className="text-black text-sm md:text-base desktop:text-xl font-semibold whitespace-nowrap">
                               {formatCurrency(
-                                (
-                                  formattedNumber +
+                                formattedNumber +
                                   formattedNumberOfByggekostnader
-                                ).toLocaleString("nb-NO")
                               )}
                             </h4>
                           </div>
@@ -344,19 +342,14 @@ const Finansiering: React.FC<{
                                 if (values.equityAmount) {
                                   const totalData: any =
                                     Number(data) - Number(values.equityAmount);
-                                  const finalData = new Intl.NumberFormat(
-                                    "nb-NO"
-                                  ).format(totalData);
 
-                                  return formatCurrency(finalData);
+                                  return formatCurrency(totalData);
                                 } else {
                                   return formatCurrency(
-                                    (
-                                      totalCustPris +
+                                    totalCustPris +
                                       Number(
                                         Husdetaljer?.pris?.replace(/\s/g, "")
                                       )
-                                    ).toLocaleString("nb-NO")
                                   );
                                 }
                               })()}
@@ -386,19 +379,14 @@ const Finansiering: React.FC<{
                                 if (values.equityAmount) {
                                   const totalData: any =
                                     Number(data) - Number(values.equityAmount);
-                                  const finalData = new Intl.NumberFormat(
-                                    "nb-NO"
-                                  ).format(totalData);
 
-                                  return formatCurrency(finalData);
+                                  return formatCurrency(totalData);
                                 } else {
                                   return formatCurrency(
-                                    (
-                                      totalCustPris +
+                                    totalCustPris +
                                       Number(
                                         Husdetaljer?.pris?.replace(/\s/g, "")
                                       )
-                                    ).toLocaleString("nb-NO")
                                   );
                                 }
                               })()}{" "}

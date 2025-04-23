@@ -295,10 +295,8 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
                     </p>
                     <h6 className="text-xs md:text-base font-semibold">
                       {formatCurrency(
-                        (
-                          totalCustPris +
+                        totalCustPris +
                           Number(husmodellData?.pris?.replace(/\s/g, ""))
-                        ).toLocaleString("nb-NO")
                       )}
                     </h6>
                   </div>
@@ -378,11 +376,9 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
                   </p>
                   <h3 className="text-black font-semibold text-base md:text-lg desktop:text-xl text-center">
                     {formatCurrency(
-                      (
-                        totalCustPris +
+                      totalCustPris +
                         Number(husmodellData?.pris?.replace(/\s/g, "")) +
                         Number(finalData?.plot?.pris || 0)
-                      ).toLocaleString("nb-NO")
                     )}
                   </h3>
                 </div>

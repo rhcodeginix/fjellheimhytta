@@ -258,10 +258,8 @@ const Tilbud: React.FC<{
                   </p>
                   <h6 className="text-xs md:text-base font-semibold desktop:text-lg">
                     {formatCurrency(
-                      (
-                        (Number(totalCustPris) || 0) +
+                      (Number(totalCustPris) || 0) +
                         Number(Husdetaljer?.pris?.replace(/\s/g, "") || 0)
-                      ).toLocaleString("nb-NO")
                     )}
                   </h6>
                 </div>
@@ -322,11 +320,9 @@ const Tilbud: React.FC<{
                   </p>
                   <h4 className="text-center font-semibold text-lg md:text-lg desktop:text-2xl text-black mb-2">
                     {formatCurrency(
-                      (
-                        (Number(totalCustPris) || 0) +
+                      (Number(totalCustPris) || 0) +
                         Number(Husdetaljer?.pris?.replace(/\s/g, "") || 0) +
                         Number(pris || 0)
-                      ).toLocaleString("nb-NO")
                     )}
                   </h4>
                   <div className="text-secondary text-sm md:text-base text-center">
@@ -455,11 +451,7 @@ const Tilbud: React.FC<{
                         </h4>
                         <div className="text-black font-medium text-xs md:text-sm">
                           {totalCustPris
-                            ? formatCurrency(
-                                (Number(totalCustPris) || 0).toLocaleString(
-                                  "nb-NO"
-                                )
-                              )
+                            ? formatCurrency(Number(totalCustPris) || 0)
                             : 0}
                         </div>
                       </div>
@@ -480,11 +472,9 @@ const Tilbud: React.FC<{
                     </h4>
                     <div className="text-black font-medium text-xs md:text-sm">
                       {formatCurrency(
-                        (
-                          (Number(totalCustPris) || 0) +
+                        (Number(totalCustPris) || 0) +
                           Number(Husdetaljer?.pris?.replace(/\s/g, "") || 0) +
                           Number(pris || 0)
-                        ).toLocaleString("nb-NO")
                       )}
                     </div>
                   </div>

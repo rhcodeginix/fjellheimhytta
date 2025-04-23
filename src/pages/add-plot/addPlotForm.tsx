@@ -1128,7 +1128,7 @@ const AddPlotForm = () => {
                           }
                         }}
                       >
-                        <div className="border border-dashed border-[#6941C6] rounded-[8px] py-5 flex flex-col gap-[10px] justify-center items-center">
+                        <div className="border border-dashed border-primary rounded-[8px] py-5 flex flex-col gap-[10px] justify-center items-center">
                           <div className="gap-3 flex items-center">
                             <Button
                               text="Velg"
@@ -1445,7 +1445,7 @@ const AddPlotForm = () => {
                             }
                           }}
                         >
-                          <div className="border border-dashed border-[#6941C6] rounded-[8px] py-5 flex flex-col gap-[10px] justify-center items-center">
+                          <div className="border border-dashed border-primary rounded-[8px] py-5 flex flex-col gap-[10px] justify-center items-center">
                             <div className="gap-3 flex items-center">
                               <Button
                                 text="Velg"

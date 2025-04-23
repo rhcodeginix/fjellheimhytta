@@ -81,10 +81,9 @@ const PropertyHouseDetails: React.FC<{
 
   // const formattedNumber = (
   //   totalPrisOfTomtekost + totalPrisOfByggekostnader
-  // ).toLocaleString("nb-NO");
+  // );
 
-  const totalPrice =
-    Number(totalCustPris) + Number(husPris) + Number(extraPris);
+  const totalPrice = totalCustPris + husPris + extraPris;
 
   return (
     <>
@@ -155,9 +154,7 @@ const PropertyHouseDetails: React.FC<{
               Dine tillegg
             </p>
             <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
-              {totalCustPris
-                ? formatCurrency(totalCustPris.toLocaleString("nb-NO"))
-                : "0 NOK"}
+              {totalCustPris ? formatCurrency(totalCustPris) : "0 NOK"}
             </h4>
           </div>
           <div>
@@ -165,12 +162,11 @@ const PropertyHouseDetails: React.FC<{
               Din pris med tilvalg
             </p>
             <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
-              {formatCurrency(totalPrice.toLocaleString("nb-NO"))}
+              {formatCurrency(totalPrice)}
             </h4>
 
             <p className="text-secondary text-xs md:text-sm">
-              Inkludert tomtepris (
-              {formatCurrency(pris.toLocaleString("nb-NO"))})
+              Inkludert tomtepris ({formatCurrency(pris)})
             </p>
           </div>
         </div>
