@@ -299,8 +299,8 @@ const Finansiering: React.FC<{
                             <h4 className="text-black text-sm md:text-base desktop:text-xl font-semibold whitespace-nowrap">
                               {(() => {
                                 const data: any =
-                                  totalCustPris +
-                                  Number(Husdetaljer?.pris?.replace(/\s/g, ""));
+                                  formattedNumber +
+                                  formattedNumberOfByggekostnader;
 
                                 if (values.equityAmount) {
                                   const totalData: any =
@@ -309,10 +309,8 @@ const Finansiering: React.FC<{
                                   return formatCurrency(totalData);
                                 } else {
                                   return formatCurrency(
-                                    totalCustPris +
-                                      Number(
-                                        Husdetaljer?.pris?.replace(/\s/g, "")
-                                      )
+                                    formattedNumber +
+                                      formattedNumberOfByggekostnader
                                   );
                                 }
                               })()}

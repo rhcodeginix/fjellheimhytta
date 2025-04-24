@@ -1601,7 +1601,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
                                       </span>
                                     </div>
                                     <div className="text-grayText text-sm">
-                                      Bruksareal:{" "}
+                                      BRA-i (internt bruksareal):{" "}
                                       <span className="text-black font-medium text-base">
                                         {item?.totalFloorSpace} m<sup>2</sup>
                                       </span>
@@ -1642,7 +1642,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
                                       </span>
                                     </div>
                                     <div className="text-grayText text-sm">
-                                      Bebygd areal (BYA):{" "}
+                                      BRA-e (eksternt bruksareal):{" "}
                                       <span className="text-black font-medium text-base">
                                         {item?.builtUpArea} m<sup>2</sup>
                                       </span>

@@ -1379,7 +1379,7 @@ const PlotDetailPage: React.FC<{
                                   </span>
                                 </div>
                                 <div className="text-grayText text-xs md:text-sm">
-                                  Bruksareal:{" "}
+                                  BRA-i (internt bruksareal):{" "}
                                   <span className="text-black font-medium text-sm md:text-base">
                                     {item?.totalFloorSpace} m<sup>2</sup>
                                   </span>
@@ -1419,7 +1419,7 @@ const PlotDetailPage: React.FC<{
                                   </span>
                                 </div>
                                 <div className="text-grayText text-xs md:text-sm">
-                                  Bebygd areal (BYA):{" "}
+                                  BRA-e (eksternt bruksareal):{" "}
                                   <span className="text-black font-medium text-sm md:text-base">
                                     {item?.builtUpArea} m<sup>2</sup>
                                   </span>
