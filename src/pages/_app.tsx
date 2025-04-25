@@ -36,18 +36,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-{/*       {router.pathname === "/welcome" ? (
-        <>
-          <Component {...pageProps} />
-          <Toaster
-            toastOptions={{
-              style: {
-                zIndex: 9999999999,
-              },
-            }}
-          />
-        </>
-      ) : ( */}
         <CustomizeHouseProvider>
           <UserLayout>
             <Component {...pageProps} />
@@ -60,7 +48,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             />
           </UserLayout>
         </CustomizeHouseProvider>
-{/*       )} */}
     </>
   );
 }
