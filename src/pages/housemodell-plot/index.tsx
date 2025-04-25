@@ -117,6 +117,7 @@ const HusmodellPlot = () => {
             return;
           }
 
+          setLoading(true);
           const property = {
             lamdaDataFromApi: foundProperty?.lamdaDataFromApi,
             additionalData: foundProperty?.additionalData,
@@ -189,6 +190,7 @@ const HusmodellPlot = () => {
             pathname: router.pathname,
             query: Object.fromEntries(queryParams),
           });
+          setLoading(true);
 
           if (foundProperty) {
             setAdditionalData(foundProperty?.additionalData);
