@@ -126,16 +126,6 @@ const Tilpass: React.FC<any> = ({
     }
   }, []);
 
-  useEffect(() => {
-    if (selectedProductsArray) {
-      localStorage.setItem(
-        "customizeHouse",
-        JSON.stringify(selectedProductsArray)
-      );
-      updateCustomizeHouse(selectedProductsArray);
-    }
-  }, [selectedProductsArray]);
-
   const handleSelectProduct = (
     product: any,
     categoryIndex: number,
@@ -165,6 +155,16 @@ const Tilpass: React.FC<any> = ({
       ];
     });
   };
+
+  useEffect(() => {
+    if (selectedProductsArray) {
+      localStorage.setItem(
+        "customizeHouse",
+        JSON.stringify(selectedProductsArray)
+      );
+      updateCustomizeHouse(selectedProductsArray);
+    }
+  }, [selectedProductsArray]);
   if (loading) {
     <Loader />;
   }

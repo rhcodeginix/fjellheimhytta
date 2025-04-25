@@ -179,9 +179,25 @@ const Plots: React.FC<{
           });
         }
 
-        const filteredPlots = allPlots.filter(
-          (plot) => plot.pris >= minRangePlot && plot.pris <= maxRangePlot
-        );
+        const filteredPlots = allPlots.filter((plot) => {
+          let numericValue = 0;
+
+          if (typeof plot.pris === "string") {
+            numericValue = parseInt(
+              plot.pris.replace(/\s/g, "").replace("kr", ""),
+              10
+            );
+          } else if (typeof plot.pris === "number") {
+            numericValue = plot.pris;
+          } else {
+            numericValue = 0;
+          }
+
+          return (
+            numericValue >= minRangePlot &&
+            (maxRangePlot !== 10000000 ? numericValue <= maxRangePlot : true)
+          );
+        });
 
         const combinedData: any = filteredPlots.flatMap((plot) =>
           allHusmodell.map((house) => ({ plot, house }))

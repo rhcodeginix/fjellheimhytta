@@ -148,7 +148,7 @@ const Regulations = () => {
 
                   const existingEmptyPlot = query(
                     EmptyPlotDb,
-                    where("lamdaDataFromApi.propertyId", "==", propertyId)
+                    where("id", "==", propertyId)
                   );
                   const EmptyPlotShot = await getDocs(existingEmptyPlot);
 
@@ -174,7 +174,7 @@ const Regulations = () => {
                     const EmptyPlotDb = collection(db, "cabin_plot");
                     const existingEmptyPlot = query(
                       EmptyPlotDb,
-                      where("lamdaDataFromApi.propertyId", "==", propertyId)
+                      where("id", "==", propertyId)
                     );
                     const EmptyPlotShot = await getDocs(existingEmptyPlot);
 
@@ -361,7 +361,9 @@ const Regulations = () => {
           const collectionRef = collection(db, collectionName);
           const existingQuery = query(
             collectionRef,
-            where("lamdaDataFromApi.propertyId", "==", propertyId)
+            isEmptyPlot
+              ? where("id", "==", propertyId)
+              : where("lamdaDataFromApi.propertyId", "==", propertyId)
           );
           const querySnapshot = await getDocs(existingQuery);
 
@@ -492,7 +494,9 @@ const Regulations = () => {
           const collectionRef = collection(db, collectionName);
           const existingQuery = query(
             collectionRef,
-            where("lamdaDataFromApi.propertyId", "==", propertyId)
+            isEmptyPlot
+              ? where("id", "==", propertyId)
+              : where("lamdaDataFromApi.propertyId", "==", propertyId)
           );
           const querySnapshot = await getDocs(existingQuery);
 
@@ -653,7 +657,7 @@ const Regulations = () => {
 
         const existingEmptyPlot = query(
           EmptyPlotDb,
-          where("lamdaDataFromApi.propertyId", "==", propertyId)
+          where("id", "==", propertyId)
         );
         const EmptyPlotShot = await getDocs(existingEmptyPlot);
 
@@ -675,7 +679,7 @@ const Regulations = () => {
           const EmptyPlotDb = collection(db, "cabin_plot");
           const existingEmptyPlot = query(
             EmptyPlotDb,
-            where("lamdaDataFromApi.propertyId", "==", propertyId)
+            where("id", "==", propertyId)
           );
           const EmptyPlotShot = await getDocs(existingEmptyPlot);
 

@@ -10,6 +10,19 @@ import { db } from "@/config/firebaseConfig";
 import { formatPrice } from "@/pages/belop/belopProperty";
 import NorkartMap from "@/components/map";
 
+export function convertCurrencyFormat(input: any) {
+  const numberPart = String(input).replace(/\s+/g, "").replace("kr", "");
+
+  const formatted = parseInt(numberPart, 10).toLocaleString("no-NO", {
+    style: "decimal",
+    minimumFractionDigits: 0,
+    useGrouping: false,
+  });
+
+  const nokFormat = formatted.replace(/(\d)(?=(\d{3})+$)/g, "$1.") + " NOK";
+  return nokFormat;
+}
+
 const PlotProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;
@@ -235,7 +248,9 @@ const PlotProperty: React.FC<{
                             </p>
                             <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
                               {property?.plot?.pris
-                                ? formatPrice(Math.round(property?.plot?.pris))
+                                ? property?.plot?.pris === 0
+                                  ? "0 NOK"
+                                  : convertCurrencyFormat(property?.plot?.pris)
                                 : "0 NOK"}
                             </h6>
                           </div>
@@ -255,8 +270,17 @@ const PlotProperty: React.FC<{
                                       )
                                     )
                                   : 0) +
-                                  (property?.plot?.pris
-                                    ? Math.round(property?.plot?.pris)
+                                  (property?.plot
+                                    ? property?.plot?.pris === 0
+                                      ? 0
+                                      : typeof property?.plot?.pris === "string"
+                                        ? parseInt(
+                                            property?.plot?.pris
+                                              .replace(/\s/g, "")
+                                              .replace("kr", ""),
+                                            10
+                                          )
+                                        : 0
                                     : 0)
                               )}
                             </h6>

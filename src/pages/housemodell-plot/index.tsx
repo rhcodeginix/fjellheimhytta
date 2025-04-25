@@ -43,7 +43,7 @@ const HusmodellPlot = () => {
   const [HouseModelData, setHouseModelData] = useState<any>(null);
 
   const router = useRouter();
-  const { propertyId, emptyPlot, husodellId } = router.query;
+  const { propertyId, husodellId } = router.query;
   const [loading, setLoading] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [additionalData, setAdditionalData] = useState<any | undefined>(null);
@@ -102,51 +102,26 @@ const HusmodellPlot = () => {
       setLoading(true);
 
       const fetchProperty = async () => {
-        let propertiesCollectionRef: any;
-        if (emptyPlot) {
-          propertiesCollectionRef = doc(db, "cabin_plot", String(propertyId));
-        } else {
-          propertiesCollectionRef = collection(
-            db,
-            "users",
-            userUID,
-            "property"
-          );
-        }
         try {
-          let foundProperty: any;
-          if (emptyPlot) {
-            const plotDocSnap: any = await getDoc(propertiesCollectionRef);
-            if (plotDocSnap.exists()) {
-              const fetchedProperties = {
-                propertyId: plotDocSnap.id,
-                ...plotDocSnap.data(),
-              };
-              foundProperty = fetchedProperties;
-            } else {
-              console.error(
-                "No property found in empty_plot with the given ID."
-              );
-              return;
-            }
-          } else {
-            const propertiesSnapshot = await getDocs(propertiesCollectionRef);
-            const fetchedProperties = propertiesSnapshot.docs.map(
-              (doc: any) => ({
-                propertyId: doc.id,
-                ...doc.data(),
-              })
-            );
-            foundProperty = fetchedProperties.find(
-              (property: any) => property.propertyId === propertyId
-            );
+          const plotDocSnap: any = await getDocs(collection(db, "cabin_plot"));
+
+          const foundProperty =
+            plotDocSnap.docs
+              .find((docSnap: any) => docSnap.id === String(propertyId))
+              ?.data() || null;
+
+          if (!foundProperty) {
+            console.error("No property found with the given ID.");
+            setShowErrorPopup(true);
+            setLoading(false);
+            return;
           }
 
           const property = {
             lamdaDataFromApi: foundProperty?.lamdaDataFromApi,
             additionalData: foundProperty?.additionalData,
             CadastreDataFromApi: foundProperty?.CadastreDataFromApi,
-            pris: null,
+            pris: foundProperty?.pris ? foundProperty?.pris : 0,
           };
           const queryParams = new URLSearchParams(window.location.search);
           queryParams.delete("empty");
@@ -160,7 +135,9 @@ const HusmodellPlot = () => {
           const collectionRef = collection(db, collectionName);
           const existingQuery = query(
             collectionRef,
-            where("lamdaDataFromApi.propertyId", "==", propertyId)
+            isEmptyPlot
+              ? where("id", "==", propertyId)
+              : where("lamdaDataFromApi.propertyId", "==", propertyId)
           );
           const querySnapshot = await getDocs(existingQuery);
 
@@ -217,7 +194,7 @@ const HusmodellPlot = () => {
             setAdditionalData(foundProperty?.additionalData);
             setLamdaDataFromApi(foundProperty?.lamdaDataFromApi);
             setCadastreDataFromApi(foundProperty?.CadastreDataFromApi);
-            setPris(foundProperty?.pris | 0);
+            setPris(foundProperty?.pris ? foundProperty?.pris : 0);
           } else {
             console.error("No property found with the given ID.");
           }

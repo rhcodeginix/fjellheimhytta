@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 // import dynamic from "next/dynamic";
 import NorkartMap from "@/components/map";
+import { convertCurrencyFormat } from "@/components/Ui/Husmodell/plot/plotProperty";
 
 // const GoogleMapComponent = dynamic(() => import("../../components/Ui/map"), {
 //   ssr: false,
@@ -226,7 +227,9 @@ const BelopProperty: React.FC<{
                             </p>
                             <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
                               {property?.plot?.pris
-                                ? formatPrice(Math.round(property?.plot?.pris))
+                                ? property?.plot?.pris === 0
+                                  ? "0 NOK"
+                                  : convertCurrencyFormat(property?.plot?.pris)
                                 : "0 NOK"}
                             </h6>
                           </div>
@@ -246,8 +249,17 @@ const BelopProperty: React.FC<{
                                       )
                                     )
                                   : 0) +
-                                  (property?.plot?.pris
-                                    ? Math.round(property?.plot?.pris)
+                                  (property?.plot
+                                    ? property?.plot?.pris === 0
+                                      ? 0
+                                      : typeof property?.plot?.pris === "string"
+                                        ? parseInt(
+                                            property?.plot?.pris
+                                              .replace(/\s/g, "")
+                                              .replace("kr", ""),
+                                            10
+                                          )
+                                        : 0
                                     : 0)
                               )}
                             </h6>

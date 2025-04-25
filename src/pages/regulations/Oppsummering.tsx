@@ -58,11 +58,13 @@ const Oppsummering: React.FC<{
     }
   }, []);
 
-  const totalCustPris = custHouse?.reduce(
-    (sum: any, item: any) =>
-      sum + Number(item?.product?.pris.replace(/\s/g, "")),
-    0
-  );
+  const totalCustPris = custHouse
+    ? custHouse?.reduce(
+        (sum: any, item: any) =>
+          sum + Number(item?.product?.pris.replace(/\s/g, "")),
+        0
+      )
+    : 0;
   const validationSchema = Yup.object().shape({
     equityAmount: Yup.number()
       .typeError("Must be a number")

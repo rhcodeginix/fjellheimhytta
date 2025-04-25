@@ -6,6 +6,7 @@ import { db } from "@/config/firebaseConfig";
 import { useRouter } from "next/router";
 import { formatCurrency } from "../RegulationHusmodell/Illustrasjoner";
 import { useCustomizeHouse } from "@/context/selectHouseContext";
+import { convertCurrencyFormat } from "../Husmodell/plot/plotProperty";
 
 const PropertyHouseDetails: React.FC<{
   HouseModelData: any;
@@ -51,37 +52,11 @@ const PropertyHouseDetails: React.FC<{
     })();
   }, [leadId, equityAmount]);
   const husPris = Number(Husdetaljer?.pris?.replace(/\s/g, "")) || 0;
-  const extraPris = Number(pris) || 0;
-
-  // const Byggekostnader = HouseModelData?.Prisliste?.Byggekostnader;
-
-  // const Tomtekost = HouseModelData?.Prisliste?.Tomtekost;
-
-  // const totalPrisOfTomtekost = Tomtekost
-  //   ? Tomtekost.reduce((acc: any, prod: any) => {
-  //       const numericValue = prod.pris
-  //         ?.replace(/\s/g, "")
-  //         .replace(/\./g, "")
-  //         .replace(",", ".");
-  //       return acc + (numericValue ? parseFloat(numericValue) : 0);
-  //     }, 0)
-  //   : 0;
-
-  // const totalPrisOfByggekostnader = Byggekostnader
-  //   ? Byggekostnader.reduce((acc: any, prod: any) => {
-  //       const numericValue = prod.pris
-  //         ?.replace(/\s/g, "")
-  //         .replace(/\./g, "")
-  //         .replace(",", ".");
-  //       return (
-  //         acc + (numericValue ? parseFloat(numericValue) : 0) + totalCustPris
-  //       );
-  //     }, 0)
-  //   : 0;
-
-  // const formattedNumber = (
-  //   totalPrisOfTomtekost + totalPrisOfByggekostnader
-  // );
+  const extraPris = pris
+    ? pris === 0
+      ? 0
+      : parseInt(pris.replace(/\s/g, "").replace("kr", ""), 10)
+    : 0;
 
   const totalPrice = totalCustPris + husPris + extraPris;
 
@@ -166,7 +141,13 @@ const PropertyHouseDetails: React.FC<{
             </h4>
 
             <p className="text-secondary text-xs md:text-sm">
-              Inkludert tomtepris ({formatCurrency(pris)})
+              Inkludert tomtepris (
+              {pris
+                ? pris === 0
+                  ? "0 NOK"
+                  : convertCurrencyFormat(pris)
+                : "0 NOK"}
+              )
             </p>
           </div>
         </div>

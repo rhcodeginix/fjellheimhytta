@@ -12,10 +12,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 // import GoogleMapComponent from "@/components/Ui/map";
-import { formatPrice } from "../belop/belopProperty";
 import { addDaysToDate } from "@/components/Ui/stepperUi/productDetailWithPrice";
 import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
 import NorkartMap from "@/components/map";
+import { convertCurrencyFormat } from "@/components/Ui/Husmodell/plot/plotProperty";
 
 const Tilbud: React.FC<{
   handleNext: any;
@@ -64,11 +64,13 @@ const Tilbud: React.FC<{
     }
   }, []);
 
-  const totalCustPris = custHouse?.reduce(
-    (sum: any, item: any) =>
-      sum + Number(item?.product?.pris.replace(/\s/g, "")),
-    0
-  );
+  const totalCustPris = custHouse
+    ? custHouse?.reduce(
+        (sum: any, item: any) =>
+          sum + Number(item?.product?.pris.replace(/\s/g, "")),
+        0
+      )
+    : 0;
 
   const [updatedArray, setUpdatedArray] = useState([]);
 
@@ -290,7 +292,13 @@ const Tilbud: React.FC<{
                     Pris for <span className="font-semibold">Tomt</span>
                   </p>
                   <h6 className="text-xs md:text-base font-semibold desktop:text-lg">
-                    {Husdetaljer?.pris ? formatPrice(pris) : "0 NOK"}
+                    {Husdetaljer?.pris
+                      ? pris
+                        ? pris === 0
+                          ? "0 NOK"
+                          : convertCurrencyFormat(pris)
+                        : "0 NOK"
+                      : "0 NOK"}
                   </h6>
                 </div>
                 <div className="flex items-center justify-between gap-1 sm:gap-2 mb-4">

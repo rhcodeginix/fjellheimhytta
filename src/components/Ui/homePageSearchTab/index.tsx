@@ -21,6 +21,7 @@ import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 import { FileUser } from "lucide-react";
 import NorkartMap from "@/components/map";
+import { convertCurrencyFormat } from "../Husmodell/plot/plotProperty";
 
 // const GoogleMapComponent = dynamic(() => import("../map"), {
 //   ssr: false,
@@ -425,7 +426,9 @@ const HomePageSearchTab: React.FC = () => {
                           </p>
                           <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
                             {property?.plot?.pris
-                              ? formatPrice(Math.round(property?.plot?.pris))
+                              ? property?.plot?.pris === 0
+                                ? "0 NOK"
+                                : convertCurrencyFormat(property?.plot?.pris)
                               : "0 NOK"}
                           </h6>
                         </div>
@@ -445,8 +448,17 @@ const HomePageSearchTab: React.FC = () => {
                                     )
                                   )
                                 : 0) +
-                                (property?.plot?.pris
-                                  ? Math.round(property?.plot?.pris)
+                                (property?.plot
+                                  ? property?.plot?.pris === 0
+                                    ? 0
+                                    : typeof property?.plot?.pris === "string"
+                                      ? parseInt(
+                                          property?.plot?.pris
+                                            .replace(/\s/g, "")
+                                            .replace("kr", ""),
+                                          10
+                                        )
+                                      : 0
                                   : 0)
                             )}
                           </h6>

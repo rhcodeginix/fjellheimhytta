@@ -5,8 +5,8 @@ import { db } from "@/config/firebaseConfig";
 import Loader from "@/components/Loader";
 import { formatCurrency } from "../RegulationHusmodell/Illustrasjoner";
 // import GoogleMapComponent from "../map";
-import { formatPrice } from "@/pages/belop/belopProperty";
 import NorkartMap from "@/components/map";
+import { convertCurrencyFormat } from "../Husmodell/plot/plotProperty";
 
 export function addDaysToDate(dateString: any, days: any) {
   let date = new Date(dateString);
@@ -184,11 +184,13 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
     }
   }, []);
 
-  const totalCustPris = custHouse?.reduce(
-    (sum: any, item: any) =>
-      sum + Number(item?.product?.pris.replace(/\s/g, "")),
-    0
-  );
+  const totalCustPris = custHouse
+    ? custHouse?.reduce(
+        (sum: any, item: any) =>
+          sum + Number(item?.product?.pris.replace(/\s/g, "")),
+        0
+      )
+    : 0;
   return (
     <>
       {loading ? (
@@ -335,9 +337,9 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
                     </p>
                     <h6 className="text-xs md:text-base font-semibold">
                       {finalData?.plot?.pris
-                        ? formatPrice(
-                            finalData?.plot?.pris.toLocaleString("nb-NO")
-                          )
+                        ? finalData?.plot?.pris === 0
+                          ? "0 NOK"
+                          : convertCurrencyFormat(finalData?.plot?.pris)
                         : "0 NOK"}
                     </h6>
                   </div>
@@ -378,7 +380,20 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
                     {formatCurrency(
                       totalCustPris +
                         Number(husmodellData?.pris?.replace(/\s/g, "")) +
-                        Number(finalData?.plot?.pris || 0)
+                        Number(
+                          finalData?.plot
+                            ? finalData?.plot?.pris === 0
+                              ? 0
+                              : typeof finalData?.plot?.pris === "string"
+                                ? parseInt(
+                                    finalData?.plot?.pris
+                                      .replace(/\s/g, "")
+                                      .replace("kr", ""),
+                                    10
+                                  )
+                                : 0
+                            : 0
+                        )
                     )}
                   </h3>
                 </div>

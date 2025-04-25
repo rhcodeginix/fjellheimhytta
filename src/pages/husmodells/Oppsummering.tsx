@@ -55,11 +55,13 @@ const Oppsummering: React.FC<{
     }
   }, []);
 
-  const totalCustPris = custHouse?.reduce(
-    (sum: any, item: any) =>
-      sum + Number(item?.product?.pris.replace(/\s/g, "")),
-    0
-  );
+  const totalCustPris = custHouse
+    ? custHouse?.reduce(
+        (sum: any, item: any) =>
+          sum + Number(item?.product?.pris.replace(/\s/g, "")),
+        0
+      )
+    : 0;
   const validationSchema = Yup.object().shape({
     equityAmount: Yup.number()
       .typeError("Must be a number")
@@ -368,7 +370,16 @@ const Oppsummering: React.FC<{
                                   Number(
                                     Husdetaljer?.pris?.replace(/\s/g, "")
                                   ) +
-                                  Number(pris || 0)
+                                  (pris === 0
+                                    ? 0
+                                    : typeof pris === "string"
+                                      ? parseInt(
+                                          pris
+                                            .replace(/\s/g, "")
+                                            .replace("kr", ""),
+                                          10
+                                        )
+                                      : 0)
                               )}
                             </h4>
                           </div>
@@ -412,7 +423,16 @@ const Oppsummering: React.FC<{
                                   Number(
                                     Husdetaljer?.pris?.replace(/\s/g, "")
                                   ) +
-                                  Number(pris || 0);
+                                  (pris === 0
+                                    ? 0
+                                    : typeof pris === "string"
+                                      ? parseInt(
+                                          pris
+                                            .replace(/\s/g, "")
+                                            .replace("kr", ""),
+                                          10
+                                        )
+                                      : 0);
 
                                 if (values.equityAmount) {
                                   const totalData: any =
@@ -425,7 +445,16 @@ const Oppsummering: React.FC<{
                                       Number(
                                         Husdetaljer?.pris?.replace(/\s/g, "")
                                       ) +
-                                      Number(pris || 0)
+                                      (pris === 0
+                                        ? 0
+                                        : typeof pris === "string"
+                                          ? parseInt(
+                                              pris
+                                                .replace(/\s/g, "")
+                                                .replace("kr", ""),
+                                              10
+                                            )
+                                          : 0)
                                   );
                                 }
                               })()}

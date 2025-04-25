@@ -143,7 +143,18 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
 
   const total = (
     Number(husmodellData?.pris?.replace(/\s/g, "")) +
-    Number(plotData?.pris || 0)
+    Number(
+      plotData?.plot
+        ? plotData?.plot?.pris === 0
+          ? 0
+          : typeof plotData?.plot?.pris === "string"
+            ? parseInt(
+                plotData?.plot?.pris.replace(/\s/g, "").replace("kr", ""),
+                10
+              )
+            : 0
+        : 0
+    )
   ).toLocaleString("nb-NO");
 
   return (

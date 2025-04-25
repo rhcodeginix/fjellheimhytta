@@ -61,221 +61,6 @@ const Belop: React.FC = () => {
     indexOfLastItem
   );
 
-  // useEffect(() => {
-  //   const fetchProperty = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const queryParams = new URLSearchParams(window.location.search);
-  //       const db = getFirestore();
-
-  //       const queryPrice = queryParams.get("pris");
-  //       const maxRangePlot = queryParams.get("maxRangePlot");
-  //       const maxRangeHusmodell = queryParams.get("maxRangeHusmodell");
-
-  //       const [
-  //         cityFormLocalStorage,
-  //         subCityFormLocalStorage,
-  //         soveromFormLocalStorage,
-  //         HustypeFormLocalStorage,
-  //         TypeHusmodellFormLocalStorage,
-  //       ] = [
-  //         JSON.parse(localStorage.getItem("city") || "[]"),
-  //         JSON.parse(localStorage.getItem("subcity") || "[]"),
-  //         JSON.parse(localStorage.getItem("soverom") || "[]"),
-  //         JSON.parse(localStorage.getItem("Hustype") || "[]"),
-  //         JSON.parse(localStorage.getItem("TypeHusmodell") || "[]"),
-  //       ];
-
-  //       const soveromValues = soveromFormLocalStorage.map((item: string) =>
-  //         parseInt(item.replace(" Soverom", ""), 10)
-  //       );
-
-  //       const citiesSnapshot = await getDocs(collection(db, "cities"));
-  //       const fetchedCities = citiesSnapshot.docs.map((doc) => ({
-  //         propertyId: doc.id,
-  //         ...doc.data(),
-  //       }));
-
-  //       const citiesToUse =
-  //         cityFormLocalStorage.length > 0
-  //           ? cityFormLocalStorage
-  //           : fetchedCities.map((city: any) => city.name);
-
-  //       const matchedCities = fetchedCities.filter((property: any) =>
-  //         citiesToUse.includes(property.name)
-  //       );
-
-  //       setFormData((prev) => ({
-  //         ...prev,
-  //         Område: citiesToUse,
-  //         SubOmråde: subCityFormLocalStorage,
-  //         AntallSoverom: soveromFormLocalStorage,
-  //         Hustype: HustypeFormLocalStorage,
-  //         TypeHusmodell: TypeHusmodellFormLocalStorage,
-  //       }));
-
-  //       if (!matchedCities.length) {
-  //         setHouseModelProperty([]);
-  //         return;
-  //       }
-
-  //       let kommuneNumbers: number[] = [];
-
-  //       if (subCityFormLocalStorage.length > 0) {
-  //         matchedCities.forEach((property: any) => {
-  //           const matched = property.kommunerList?.filter((k: any) =>
-  //             subCityFormLocalStorage.includes(k.name)
-  //           );
-  //           if (matched?.length) {
-  //             kommuneNumbers.push(
-  //               ...matched.map((k: any) => parseInt(k.number, 10))
-  //             );
-  //           } else {
-  //             kommuneNumbers.push(
-  //               ...Object.values(property?.kommunenummer || {}).map(
-  //                 (val: any) =>
-  //                   parseInt(
-  //                     (typeof val === "string"
-  //                       ? val.replace(/"/g, "")
-  //                       : val
-  //                     ).toString(),
-  //                     10
-  //                   )
-  //               )
-  //             );
-  //           }
-  //         });
-  //       } else {
-  //         kommuneNumbers = matchedCities.flatMap((property: any) =>
-  //           Object.values(property?.kommunenummer || {}).map((val: any) =>
-  //             parseInt(
-  //               (typeof val === "string"
-  //                 ? val.replace(/"/g, "")
-  //                 : val
-  //               ).toString(),
-  //               10
-  //             )
-  //           )
-  //         );
-  //       }
-
-  //       kommuneNumbers = kommuneNumbers.filter((num) => !isNaN(num));
-  //       if (!kommuneNumbers.length) {
-  //         setHouseModelProperty([]);
-  //         return;
-  //       }
-
-  //       const husmodellQuery = query(
-  //         collection(db, "house_model"),
-  //         where(
-  //           "Husdetaljer.Leverandører",
-  //           "==",
-  //           "065f9498-6cdb-469b-8601-bb31114d7c95"
-  //         )
-  //       );
-
-  //       const husmodellPromise = getDocs(husmodellQuery);
-  //       const plotChunks = [];
-
-  //       const chunkSize = 10;
-  //       for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
-  //         const chunk = kommuneNumbers.slice(i, i + chunkSize);
-  //         const q = query(
-  //           collection(db, "cabin_plot"),
-  //           where(
-  //             "lamdaDataFromApi.searchParameters.kommunenummer",
-  //             "in",
-  //             chunk
-  //           )
-  //         );
-  //         plotChunks.push(getDocs(q));
-  //       }
-
-  //       const [husmodellSnapshot, ...plotSnapshots] = await Promise.all([
-  //         husmodellPromise,
-  //         ...plotChunks,
-  //       ]);
-
-  //       const allHusmodell = husmodellSnapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       }));
-
-  //       const allPlots = plotSnapshots.flatMap((snapshot) =>
-  //         snapshot.docs
-  //           .map((doc) => ({ id: doc.id, ...doc.data() }))
-  //           .filter(
-  //             (data: any) => data?.CadastreDataFromApi?.presentationAddressApi
-  //           )
-  //       );
-
-  //       const filteredHusmodell = queryPrice
-  //         ? allHusmodell.filter((plot: any) => {
-  //             const price = parseInt(
-  //               plot?.Husdetaljer?.pris.replace(/\s/g, ""),
-  //               10
-  //             );
-  //             const maxPrice = maxRangeHusmodell
-  //               ? parseInt(maxRangeHusmodell)
-  //               : parseInt(queryPrice.replace(/\s/g, ""), 10) * 0.4;
-
-  //             const boligtype = plot?.Husdetaljer?.VelgBoligtype;
-  //             const egenskaper =
-  //               plot?.Husdetaljer?.VelgEgenskaperBoligtype || [];
-  //             const hasTypeFilter = formData.TypeHusmodell.length > 0;
-  //             const hasEgenskaper = egenskaper.length > 0;
-
-  //             const matchesBoligtype =
-  //               (!hasTypeFilter ||
-  //                 formData.TypeHusmodell.includes(boligtype)) &&
-  //               hasEgenskaper;
-  //             const matchesEgenskaper =
-  //               !hasTypeFilter ||
-  //               egenskaper.some((item: string) =>
-  //                 formData.TypeHusmodell.includes(item)
-  //               );
-
-  //             return (
-  //               price <= maxPrice &&
-  //               (soveromValues.length > 0
-  //                 ? soveromValues.includes(plot?.Husdetaljer?.Soverom)
-  //                 : true) &&
-  //               (HustypeFormLocalStorage.length > 0
-  //                 ? HustypeFormLocalStorage.map((item: any) =>
-  //                     item.toLowerCase()
-  //                   ).includes(plot?.Husdetaljer?.TypeObjekt?.toLowerCase())
-  //                 : true) &&
-  //               (matchesBoligtype || matchesEgenskaper)
-  //             );
-  //           })
-  //         : allHusmodell;
-
-  //       const filteredPlots = queryPrice
-  //         ? allPlots.filter(
-  //             (plot: any) =>
-  //               plot.pris <=
-  //               (maxRangePlot
-  //                 ? parseInt(maxRangePlot, 10)
-  //                 : parseInt(queryPrice, 10) * 0.6)
-  //           )
-  //         : allPlots;
-
-  //       const combinedData: any = filteredPlots.flatMap((plot: any) =>
-  //         filteredHusmodell.map((house) => ({ plot, house }))
-  //       );
-
-  //       setHouseModelProperty(combinedData);
-  //     } catch (error) {
-  //       console.error("Error fetching properties:", error);
-  //       setHouseModelProperty([]);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   fetchProperty();
-  // }, [router.asPath]);
-
   useEffect(() => {
     const fetchProperty = async () => {
       setIsLoading(true);
@@ -482,13 +267,26 @@ const Belop: React.FC = () => {
           : allHusmodell;
 
         const filteredPlots = queryPrice
-          ? allPlots.filter(
-              (plot: any) =>
-                plot.pris <=
+          ? allPlots.filter((plot: any) => {
+              let numericValue = 0;
+
+              if (typeof plot.pris === "string") {
+                numericValue = parseInt(
+                  plot.pris.replace(/\s/g, "").replace("kr", ""),
+                  10
+                );
+              } else if (typeof plot.pris === "number") {
+                numericValue = plot.pris;
+              } else {
+                numericValue = 0;
+              }
+              return (
+                numericValue <=
                 (maxRangePlot
                   ? parseInt(maxRangePlot, 10)
                   : parseInt(queryPrice, 10) * 0.6)
-            )
+              );
+            })
           : allPlots;
 
         const combinedData: any = filteredPlots.flatMap((plot: any) =>
@@ -632,6 +430,7 @@ const Belop: React.FC = () => {
           style={{
             boxShadow:
               "0px -4px 6px -2px #10182808, 0px -12px 16px -4px #10182814",
+            zIndex: 999999,
           }}
         >
           <div className="flex justify-end items-center gap-6">

@@ -161,7 +161,7 @@ const HusmodellDetail = () => {
               setAdditionalData(fetchedProperties?.additionalData);
               setLamdaDataFromApi(fetchedProperties?.lamdaDataFromApi);
               setCadastreDataFromApi(fetchedProperties?.CadastreDataFromApi);
-              setPris(fetchedProperties?.pris | 0);
+              setPris(fetchedProperties?.pris ? fetchedProperties?.pris : 0);
             } else {
               console.error("No property found with the given ID.");
             }

@@ -53,11 +53,13 @@ const Finansiering: React.FC<{
     }
   }, []);
 
-  const totalCustPris = custHouse?.reduce(
-    (sum: any, item: any) =>
-      sum + Number(item?.product?.pris.replace(/\s/g, "")),
-    0
-  );
+  const totalCustPris = custHouse
+    ? custHouse?.reduce(
+        (sum: any, item: any) =>
+          sum + Number(item?.product?.pris.replace(/\s/g, "")),
+        0
+      )
+    : 0;
 
   const router = useRouter();
 
