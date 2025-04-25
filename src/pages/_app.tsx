@@ -60,8 +60,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             />
           </UserLayout>
         </CustomizeHouseProvider>
-{/*       )}
-    </> */}
+{/*       )} */}
+    </>
   );
 }
 
