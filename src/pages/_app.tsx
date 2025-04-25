@@ -12,18 +12,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!sessionStorage.getItem("min_tomt_welcome")) {
-      sessionStorage.removeItem("min_tomt_welcome");
-    }
-
-    const hasAccess = sessionStorage.getItem("min_tomt_welcome") === "true";
-
-    if (!hasAccess) {
-      router.push("/welcome");
-    }
-  }, []);
-
-  useEffect(() => {
     const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
 
     if (isLoggedIn && publicRoutes.includes(router.pathname)) {

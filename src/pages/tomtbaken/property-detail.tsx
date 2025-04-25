@@ -1493,7 +1493,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="relative w-1/2">
+                            {/* <div className="relative w-1/2">
                               <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-black text-2xl font-semibold">
                                   Kommuneplan for Asker
@@ -1527,7 +1527,7 @@ const TomtBakenPropertyDetail: React.FC = () => {
                                     )
                                   )}
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                         )}
                       </div>
