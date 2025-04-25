@@ -260,13 +260,13 @@ const HomePageSearchTab: React.FC = () => {
                     className="border border-[#ECE9FE] bg-white rounded-[50px] text-xs md:text-sm py-[7px] px-3 cursor-pointer"
                     onClick={() => {
                       router.push(
-                        `tomtbaken?city=${`${city.name} (${city?.total_entries})`}`
+                        `tomtbaken?city=${`${city.name} (${city?.cabin_total_entry})`}`
                       );
                     }}
                   >
                     <span className="text-[#30374F]">{city?.name}</span>{" "}
                     <span className="text-secondary2">
-                      ({city?.total_entries})
+                      ({city?.cabin_total_entry})
                     </span>
                   </div>
                 ))}

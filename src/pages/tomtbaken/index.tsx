@@ -33,7 +33,7 @@ const TomtBaken: React.FC = () => {
         const filterProperty: any = cityQuery
           ? fetchedCities.find(
               (property: any) =>
-                `${property.name} (${property.total_entries})` === cityQuery
+                `${property.name} (${property.cabin_total_entry})` === cityQuery
             )
           : null;
 
