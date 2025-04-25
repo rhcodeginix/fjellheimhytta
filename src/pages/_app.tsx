@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      {router.pathname === "/welcome" ? (
+{/*       {router.pathname === "/welcome" ? (
         <>
           <Component {...pageProps} />
           <Toaster
@@ -47,7 +47,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             }}
           />
         </>
-      ) : (
+      ) : ( */}
         <CustomizeHouseProvider>
           <UserLayout>
             <Component {...pageProps} />
@@ -60,8 +60,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             />
           </UserLayout>
         </CustomizeHouseProvider>
-      )}
-    </>
+{/*       )}
+    </> */}
   );
 }
 
