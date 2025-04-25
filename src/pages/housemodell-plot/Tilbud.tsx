@@ -330,7 +330,14 @@ const Tilbud: React.FC<{
                     {formatCurrency(
                       (Number(totalCustPris) || 0) +
                         Number(Husdetaljer?.pris?.replace(/\s/g, "") || 0) +
-                        Number(pris || 0)
+                        (pris === 0
+                          ? 0
+                          : typeof pris === "string"
+                            ? parseInt(
+                                pris.replace(/\s/g, "").replace("kr", ""),
+                                10
+                              )
+                            : 0)
                     )}
                   </h4>
                   <div className="text-secondary text-sm md:text-base text-center">
@@ -482,7 +489,14 @@ const Tilbud: React.FC<{
                       {formatCurrency(
                         (Number(totalCustPris) || 0) +
                           Number(Husdetaljer?.pris?.replace(/\s/g, "") || 0) +
-                          Number(pris || 0)
+                          (pris === 0
+                            ? 0
+                            : typeof pris === "string"
+                              ? parseInt(
+                                  pris.replace(/\s/g, "").replace("kr", ""),
+                                  10
+                                )
+                              : 0)
                       )}
                     </div>
                   </div>

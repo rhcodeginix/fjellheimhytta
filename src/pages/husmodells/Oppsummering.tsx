@@ -471,7 +471,16 @@ const Oppsummering: React.FC<{
                                   Number(
                                     Husdetaljer?.pris?.replace(/\s/g, "")
                                   ) +
-                                  Number(pris || 0);
+                                  (pris === 0
+                                    ? 0
+                                    : typeof pris === "string"
+                                      ? parseInt(
+                                          pris
+                                            .replace(/\s/g, "")
+                                            .replace("kr", ""),
+                                          10
+                                        )
+                                      : 0);
 
                                 if (values.equityAmount) {
                                   const totalData: any =
@@ -484,7 +493,16 @@ const Oppsummering: React.FC<{
                                       Number(
                                         Husdetaljer?.pris?.replace(/\s/g, "")
                                       ) +
-                                      Number(pris || 0)
+                                      (pris === 0
+                                        ? 0
+                                        : typeof pris === "string"
+                                          ? parseInt(
+                                              pris
+                                                .replace(/\s/g, "")
+                                                .replace("kr", ""),
+                                              10
+                                            )
+                                          : 0)
                                   );
                                 }
                               })()}{" "}
