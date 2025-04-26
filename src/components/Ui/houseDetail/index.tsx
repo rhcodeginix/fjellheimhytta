@@ -7,6 +7,9 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import Loader from "@/components/Loader";
+import Modal from "@/components/common/modal";
+import Image from "next/image";
+import Ic_close from "@/public/images/Ic_close.svg";
 
 const HouseDetailPage: React.FC = () => {
   const router = useRouter();
@@ -97,6 +100,9 @@ const HouseDetailPage: React.FC = () => {
       document.body.style.overflow = "auto";
     };
   }, [isPopupOpen]);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
     <div className="relative">
@@ -267,8 +273,12 @@ const HouseDetailPage: React.FC = () => {
                         <img
                           src={item}
                           alt="map"
-                          className="w-full"
+                          className="w-full cursor-pointer"
                           key={index}
+                          onClick={() => {
+                            setSelectedImage(item);
+                            setIsOpen(true);
+                          }}
                         />
                       );
                     }
@@ -307,6 +317,26 @@ const HouseDetailPage: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {isOpen && (
+        <Modal isOpen={true} onClose={() => setIsPopupOpen(false)}>
+          <div className="bg-white p-6 rounded-lg max-w-4xl w-full relative">
+            <button
+              className="absolute top-3 right-3"
+              onClick={() => setIsOpen(false)}
+            >
+              <Image src={Ic_close} alt="close" />
+            </button>
+            {selectedImage && (
+              <img
+                src={selectedImage}
+                alt={selectedImage || "Image"}
+                className="max-w-full max-h-screen object-contain"
+              />
+            )}
+          </div>
+        </Modal>
       )}
     </div>
   );
