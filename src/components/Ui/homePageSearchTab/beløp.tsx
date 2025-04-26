@@ -62,18 +62,18 @@ const BeløpTab = () => {
         }}
       >
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[80px]">
-          <div className="relative min-w-[24%] w-auto h-full">
+          {/* <div className="relative min-w-[24%] w-auto h-full">
             <div
               className={`bg-[#F4F3F1] py-3 px-2 lg:py-4 lg:px-5 desktop:px-8 h-full flex flex-col justify-center lg:rounded-l-[98px] overflow-hidden`}
             >
-              <div className="text-darkBlack2 mb-2 text-sm text:base desktop:text-lg font-bold">
+               <div className="text-darkBlack2 mb-2 text-sm text:base desktop:text-lg font-bold">
                 Jeg vil bygge
               </div>
               <div className="text-xs md:text-sm font-medium">
                 <span className="text-black">hytte</span>
-              </div>
+              </div> 
             </div>
-          </div>
+          </div> */}
 
           <div className="w-full rounded-[12px] lg:rounded-[88px] py-3 px-2 lg:px-4 desktop:px-8 lg:items-center flex lg:justify-between relative">
             <div className="w-[92%]">
