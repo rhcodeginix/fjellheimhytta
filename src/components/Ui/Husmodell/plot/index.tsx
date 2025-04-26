@@ -287,7 +287,7 @@ const Plots: React.FC<{
                     disabled={currentPage === 1}
                     className="px-4 py-2 border rounded disabled:opacity-50"
                   >
-                    Previous
+                    Forrige
                   </button>
                   <span className="px-4 py-2">{currentPage}</span>
                   <button
@@ -305,7 +305,7 @@ const Plots: React.FC<{
                     }
                     className="px-4 py-2 border rounded disabled:opacity-50"
                   >
-                    Next
+                    Neste
                   </button>
                 </div>
               </div>
