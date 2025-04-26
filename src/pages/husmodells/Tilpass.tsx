@@ -218,11 +218,10 @@ const Tilpass: React.FC<any> = ({
                     {Huskonfigurator.map((item: any, index: number) => (
                       <div
                         key={index}
-                        className={`p-3 cursor-pointer border-2 font-medium rounded-lg flex items-center gap-1 my-1 flex-none ${
-                          selectedTab === index
-                            ? "border-primary"
-                            : "border-transparent"
-                        }`}
+                        className={`p-3 cursor-pointer border-2 font-medium rounded-lg flex items-center gap-1 my-1 flex-none ${selectedTab === index
+                          ? "border-primary"
+                          : "border-transparent"
+                          }`}
                         onClick={() => setSelectedTab(index)}
                         style={{
                           boxShadow:
@@ -231,11 +230,10 @@ const Tilpass: React.FC<any> = ({
                       >
                         <div className="w-4 md:w-6 h-4 md:h-6">
                           <div
-                            className={`w-4 md:w-6 h-4 md:h-6 rounded-full flex items-center justify-center text-xs ${
-                              selectedTab === index
-                                ? "bg-primary text-white"
-                                : "bg-lightPurple2 text-darkBlack"
-                            }`}
+                            className={`w-4 md:w-6 h-4 md:h-6 rounded-full flex items-center justify-center text-xs ${selectedTab === index
+                              ? "bg-primary text-white"
+                              : "bg-lightPurple2 text-darkBlack"
+                              }`}
                           >
                             {index + 1}
                           </div>
@@ -250,11 +248,10 @@ const Tilpass: React.FC<any> = ({
                     {Huskonfigurator.map((item: any, index: number) => (
                       <div
                         key={index}
-                        className={`p-3 lg:p-4 cursor-pointer border-2 font-medium rounded-lg flex items-start gap-2 ${
-                          selectedTab === index
-                            ? "border-primary"
-                            : "border-transparent"
-                        }`}
+                        className={`p-3 lg:p-4 cursor-pointer border-2 font-medium rounded-lg flex items-start gap-2 ${selectedTab === index
+                          ? "border-primary"
+                          : "border-transparent"
+                          }`}
                         onClick={() => setSelectedTab(index)}
                         style={{
                           boxShadow:
@@ -263,11 +260,10 @@ const Tilpass: React.FC<any> = ({
                       >
                         <div className="w-6 h-6">
                           <div
-                            className={`w-6 h-6 rounded-full flex items-center justify-center text-xs mt-1 ${
-                              selectedTab === index
-                                ? "bg-primary text-white"
-                                : "bg-lightPurple2 text-darkBlack"
-                            }`}
+                            className={`w-6 h-6 rounded-full flex items-center justify-center text-xs mt-1 ${selectedTab === index
+                              ? "bg-primary text-white"
+                              : "bg-lightPurple2 text-darkBlack"
+                              }`}
                           >
                             {index + 1}
                           </div>
@@ -307,11 +303,10 @@ const Tilpass: React.FC<any> = ({
                               return (
                                 <div
                                   key={catIndex}
-                                  className={`py-2 px-3 text-xs md:text-sm rounded-lg cursor-pointer whitespace-nowrap ${
-                                    selectedCategory === catIndex
-                                      ? "bg-white text-primary font-medium shadow-shadow4"
-                                      : "bg-transparent text-black"
-                                  }`}
+                                  className={`py-2 px-3 text-xs md:text-sm rounded-lg cursor-pointer whitespace-nowrap ${selectedCategory === catIndex
+                                    ? "bg-white text-primary font-medium shadow-shadow4"
+                                    : "bg-transparent text-black"
+                                    }`}
                                   onClick={() => setSelectedCategory(catIndex)}
                                 >
                                   {catItem?.navn}
@@ -331,14 +326,14 @@ const Tilpass: React.FC<any> = ({
 
                               const isSelected =
                                 selectedProducts[key]?.product?.Produktnavn ===
-                                  product.Produktnavn &&
+                                product.Produktnavn &&
                                 selectedProducts[key]?.product?.pris ===
-                                  product.pris &&
+                                product.pris &&
                                 selectedProducts[key]?.product
                                   ?.IncludingOffer === product.IncludingOffer &&
                                 selectedProducts[key]?.product
                                   ?.Produktbeskrivelse ===
-                                  product.Produktbeskrivelse;
+                                product.Produktbeskrivelse;
 
                               return (
                                 <div
@@ -356,9 +351,9 @@ const Tilpass: React.FC<any> = ({
                                         pagination={
                                           product?.Hovedbilde?.length > 1
                                             ? {
-                                                el: ".swiper-pagination",
-                                                clickable: false,
-                                              }
+                                              el: ".swiper-pagination",
+                                              clickable: false,
+                                            }
                                             : false
                                         }
                                         style={{ zIndex: 99 }}
@@ -409,11 +404,10 @@ const Tilpass: React.FC<any> = ({
                                     </div>
                                     <Button
                                       text={isSelected ? "Valgt" : "Velg"}
-                                      className={`border-2 text-primary ${
-                                        isSelected
-                                          ? "border-primary bg-lightPurple2"
-                                          : "border-[#B9C0D4]"
-                                      } text-xs sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
+                                      className={`border-2 text-primary ${isSelected
+                                        ? "border-primary bg-lightPurple2"
+                                        : "border-[#B9C0D4]"
+                                        } text-xs sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
                                       onClick={() =>
                                         handleSelectProduct(
                                           product,
@@ -474,16 +468,14 @@ const Tilpass: React.FC<any> = ({
         </>
       )}
       <div
-        className={`fixed inset-0 bg-black transition-opacity duration-300 ${
-          isDrawerOpen ? "opacity-40 visible" : "opacity-0 invisible"
-        }`}
+        className={`fixed inset-0 bg-black transition-opacity duration-300 ${isDrawerOpen ? "opacity-40 visible" : "opacity-0 invisible"
+          }`}
         style={{ zIndex: 999999 }}
         onClick={closeDrawer}
       ></div>
       <div
-        className={`fixed right-0 top-0 h-full w-1/2 bg-white shadow-lg transition-transform duration-700 transform z-[999999] ${
-          isDrawerOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed right-0 top-0 h-full w-1/2 bg-white shadow-lg transition-transform duration-700 transform z-[999999] ${isDrawerOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         {selectedDrawerProduct && (
           <div>
@@ -499,7 +491,7 @@ const Tilpass: React.FC<any> = ({
               <img
                 src={selectedDrawerProduct?.Hovedbilde[0]}
                 alt="image"
-                className="w-[254px] h-[161px] mb-6"
+                className="w-full h-auto mb-6"
               />
               <textarea
                 value={selectedDrawerProduct?.Produktbeskrivelse}

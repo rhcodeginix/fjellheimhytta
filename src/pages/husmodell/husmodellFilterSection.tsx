@@ -40,8 +40,8 @@ const CustomSlider = styled(Slider)({
 });
 type FormDataType = {
   address: string;
-  Eiendomstype: string[];
-  TypeHusmodell: string[];
+  // Eiendomstype: string[];
+  // TypeHusmodell: string[];
   AntallSoverom: string[];
   minRangeForHusmodell: number;
   maxRangeForHusmodell: number;
@@ -54,8 +54,8 @@ const HusmodellFilterSection: React.FC<{
   maxRangeData: number;
 }> = ({ setFormData, formData, maxRangeData }) => {
   const [openIndex, setOpenIndex] = useState<string[]>([
-    "Eiendomstype",
-    "Type husmodell",
+    // "Eiendomstype",
+    // "Type husmodell",
     "Antall soverom",
     "Tomtetype",
     "Husmodell",
@@ -68,20 +68,20 @@ const HusmodellFilterSection: React.FC<{
         : [...prevOpenIndex, type]
     );
   };
-  const EiendomstypeArray: any = [
-    { name: "Bolig", value: "Bolig" },
-    { name: "Hytte", value: "Hytte" },
-  ];
-  const TypeHusmodellArray: any = [
-    { name: "Funkis", value: "Funkis" },
-    { name: "Moderne", value: "Moderne" },
-    { name: "Herskapelig", value: "Herskapelig" },
-    { name: "Tradisjonelt", value: "Tradisjonelt" },
-    { name: "Tomannsbolig", value: "Tomannsbolig" },
-    { name: "Med utleiedel", value: "Med utleiedel" },
-    { name: "Ett plan", value: "Ett plan" },
-    { name: "Med garasje", value: "Med garasje" },
-  ];
+  // const EiendomstypeArray: any = [
+  //   { name: "Bolig", value: "Bolig" },
+  //   { name: "Hytte", value: "Hytte" },
+  // ];
+  // const TypeHusmodellArray: any = [
+  //   { name: "Funkis", value: "Funkis" },
+  //   { name: "Moderne", value: "Moderne" },
+  //   { name: "Herskapelig", value: "Herskapelig" },
+  //   { name: "Tradisjonelt", value: "Tradisjonelt" },
+  //   { name: "Tomannsbolig", value: "Tomannsbolig" },
+  //   { name: "Med utleiedel", value: "Med utleiedel" },
+  //   { name: "Ett plan", value: "Ett plan" },
+  //   { name: "Med garasje", value: "Med garasje" },
+  // ];
   const AntallSoveromArray: any = [
     { name: "1 Soverom", value: "1 Soverom" },
     { name: "2 Soverom", value: "2 Soverom" },
@@ -108,8 +108,8 @@ const HusmodellFilterSection: React.FC<{
               setFormData((prev: any) => ({
                 ...prev,
                 address: "",
-                Eiendomstype: [],
-                TypeHusmodell: [],
+                // Eiendomstype: [],
+                // TypeHusmodell: [],
                 AntallSoverom: [],
                 minRangeForHusmodell: 0,
                 Tomtetype: [],
@@ -152,7 +152,7 @@ const HusmodellFilterSection: React.FC<{
             </div>
           </div>
           <div className="flex flex-col gap-4 lg:gap-6">
-            <div
+            {/* <div
               className="w-full bg-white p-4 rounded-lg"
               style={{
                 boxShadow:
@@ -215,8 +215,8 @@ const HusmodellFilterSection: React.FC<{
                   </div>
                 </>
               )}
-            </div>
-            <div
+            </div> */}
+            {/* <div
               className="w-full bg-white p-4 rounded-lg"
               style={{
                 boxShadow:
@@ -279,7 +279,7 @@ const HusmodellFilterSection: React.FC<{
                   </div>
                 </>
               )}
-            </div>
+            </div> */}
             <div
               className="w-full bg-white p-4 rounded-lg"
               style={{
