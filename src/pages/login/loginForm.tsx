@@ -81,7 +81,7 @@ const LoginForm: React.FC<{
           uid: newUser.uid,
         });
 
-        toast.success("Google sign-in successful!", { position: "top-right" });
+        toast.success("GVellykket innlogging med Google", { position: "top-right" });
         localStorage.setItem("min_tomt_login", "true");
         localStorage.setItem("I_plot_email", newUser.email);
         if (path) {
@@ -114,7 +114,7 @@ const LoginForm: React.FC<{
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        toast.success("Google sign-in successfull!", { position: "top-right" });
+        toast.success("Vellykket innlogging med Google", { position: "top-right" });
         localStorage.setItem("min_tomt_login", "true");
         localStorage.setItem("I_plot_email", user?.email);
         if (path) {
@@ -134,7 +134,7 @@ const LoginForm: React.FC<{
           position: "top-right",
         });
       } else {
-        toast.error("Google sign-in failed. Please try again.", {
+        toast.error("Google-pålogging mislyktes. Vennligst prøv igjen.", {
           position: "top-right",
         });
       }
