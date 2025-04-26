@@ -210,7 +210,7 @@ const Tilpass: React.FC<any> = ({
           <div className="py-5 md:py-8">
             <SideSpaceContainer>
               <h3 className="text-darkBlack text-lg md:text-xl desktop:text-2xl font-semibold mb-[22px]">
-                Her gjør du dine tilpassninger:
+                Her gjør du dine tilpasninger:
               </h3>
               {Huskonfigurator?.length > 0 ? (
                 <div className="flex flex-col md:flex-row gap-6 relative">
