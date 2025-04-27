@@ -70,7 +70,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
     const month = String(dateObject.getMonth() + 1).padStart(2, "0");
     const year = dateObject.getFullYear();
 
-    return `${day}-${month}-${year}`;
+    return `${day}.${month}.${year}`;
   }
 
   return (
