@@ -61,7 +61,8 @@ const BeløpTab = () => {
           boxShadow: "0px 32px 82px -12px #10182812",
         }}
       >
-      {/* <div className="relative min-w-[24%] w-auto h-full">
+     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[80px]">
+          {/* <div className="relative min-w-[24%] w-auto h-full">
             <div
               className={`bg-[#F4F3F1] py-3 px-2 lg:py-4 lg:px-5 desktop:px-8 h-full flex flex-col justify-center lg:rounded-l-[98px] overflow-hidden`}
             >
