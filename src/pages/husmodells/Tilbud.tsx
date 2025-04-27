@@ -491,7 +491,7 @@ const Tilbud: React.FC<{
                       <div className="text-secondary text-sm md:text-base text-center">
                         Tilbudet gjelder til{" "}
                         <span className="text-[#101828] font-semibold">
-                          01.12.2024
+                          01.12.2025
                         </span>
                       </div>
                     </div>

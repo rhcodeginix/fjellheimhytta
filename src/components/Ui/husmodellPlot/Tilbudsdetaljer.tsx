@@ -403,7 +403,7 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
                 </div>
                 <div className="text-secondary text-sm md:text-base text-center">
                   Tilbudet er gyldig til{" "}
-                  <span className="font-semibold text-black">01.12.2024</span>
+                  <span className="font-semibold text-black">01.12.2025</span>
                 </div>
               </div>
             </div>

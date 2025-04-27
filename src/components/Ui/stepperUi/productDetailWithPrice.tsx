@@ -243,7 +243,7 @@ const PropertyDetailWithPrice: React.FC<any> = () => {
                 </h3>
                 <div className="text-secondary text-base text-center">
                   Tilbudet er gyldig til{" "}
-                  <span className="font-semibold text-black">01.12.2024</span>
+                  <span className="font-semibold text-black">01.12.2025</span>
                 </div>
               </div>
               <div className="bg-lightPurple p-3 rounded-b-[12px]">
