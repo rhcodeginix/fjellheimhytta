@@ -320,7 +320,7 @@ const PlotProperty: React.FC<{
               })
             ) : (
               <div className="text-center text-lg font-semibold text-gray-600">
-                No Property found!
+                Ingen treff. Du kan forsøke å endre i filteret
               </div>
             )}
           </div>

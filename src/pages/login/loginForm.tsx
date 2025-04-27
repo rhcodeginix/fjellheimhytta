@@ -31,8 +31,8 @@ const LoginForm: React.FC<{
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("E-post is required"),
     password: Yup.string()
-      .min(6, "Passord must be at least 6 characters")
-      .required("Passord is required"),
+      .min(6, "Passord må bestå av minst 6 tegn")
+      .required("Passord kreves"),
   });
 
   const handleSubmit = async (values: any) => {
@@ -45,7 +45,7 @@ const LoginForm: React.FC<{
       );
       const user: any = userCredential.user;
       localStorage.setItem("min_tomt_login", "true");
-      toast.success("Login successfully", { position: "top-right" });
+      toast.success("Logg på vellykket", { position: "top-right" });
       localStorage.setItem("I_plot_email", user.email);
       if (path) {
         setLoginPopup(false);
@@ -59,7 +59,7 @@ const LoginForm: React.FC<{
     } catch (error) {
       console.error("Error during sign-in", error);
       toast.error(
-        "Login failed. Please check your credentials or register if you don't have an account.",
+        "Logging mislyktes. Vennligst sjekk legitimasjonen din eller registrer deg hvis du ikke har en konto.",
         {
           position: "top-right",
         }
@@ -81,7 +81,7 @@ const LoginForm: React.FC<{
           uid: newUser.uid,
         });
 
-        toast.success("Google sign-in successful!", { position: "top-right" });
+        toast.success("Vellykket innlogging med Google", { position: "top-right" });
         localStorage.setItem("min_tomt_login", "true");
         localStorage.setItem("I_plot_email", newUser.email);
         if (path) {
@@ -95,7 +95,7 @@ const LoginForm: React.FC<{
         }
       } catch (error) {
         console.error("Error saving new user", error);
-        toast.error("Registration failed. Please try again.", {
+        toast.error("Registreringen mislyktes. Vennligst prøv igjen.", {
           position: "top-right",
         });
       } finally {
@@ -114,7 +114,7 @@ const LoginForm: React.FC<{
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        toast.success("Google sign-in successfull!", { position: "top-right" });
+        toast.success("Vellykket innlogging med Google", { position: "top-right" });
         localStorage.setItem("min_tomt_login", "true");
         localStorage.setItem("I_plot_email", user?.email);
         if (path) {
@@ -130,11 +130,11 @@ const LoginForm: React.FC<{
       }
     } catch (error: any) {
       if (error.code === "auth/popup-closed-by-user") {
-        toast.error("Google login popup was closed.", {
+        toast.error("Popup for Google-pålogging ble stengt.", {
           position: "top-right",
         });
       } else {
-        toast.error("Google sign-in failed. Please try again.", {
+        toast.error("Google-pålogging mislyktes. Vennligst prøv igjen", {
           position: "top-right",
         });
       }
@@ -199,7 +199,7 @@ const LoginForm: React.FC<{
                   name="password"
                   id="password"
                   className={`w-full p-2 rounded-md border ${errors.password && touched.password ? "border-red" : "border-gray"} focus-visible:border-gray focus-visible:outline-none focus:border-gray `}
-                  placeholder="Enter your Passord"
+                  placeholder="Skriv inn passordet ditt"
                 />
                 {errors.password && touched.password && (
                   <div className="text-red text-sm">{errors.password}</div>
@@ -219,7 +219,7 @@ const LoginForm: React.FC<{
         <div className="flex items-center justify-center text-[#4F4F4F] mt-3 text-sm md:text-base">
           Didn’t Registered?{" "}
           <Link href={"/register"} className="text-black font-semibold">
-            &nbsp;Register Here
+            &nbsp;Registrer deg her
           </Link>
         </div>
         <div
