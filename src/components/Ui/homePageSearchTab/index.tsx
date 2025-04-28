@@ -302,7 +302,7 @@ const HomePageSearchTab: React.FC = () => {
                       }}
                       onClick={() => {
                         router.push(
-                          `housemodell-plot?propertyId=${property?.plot?.id}&husodellId=${property?.house?.id}&emptyPlot=true&homePage=true`
+                          `housemodell-plot?propertyId=${property?.plot?.id}&husmodellId=${property?.house?.id}&emptyPlot=true&homePage=true`
                         );
                         const currIndex = 0;
                         localStorage.setItem("currIndex", currIndex.toString());
@@ -468,7 +468,7 @@ const HomePageSearchTab: React.FC = () => {
                           className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                           onClick={() => {
                             router.push(
-                              `housemodell-plot?propertyId=${property?.plot?.id}&husodellId=${property?.house?.id}&emptyPlot=true&homePage=true`
+                              `housemodell-plot?propertyId=${property?.plot?.id}&husmodellId=${property?.house?.id}&emptyPlot=true&homePage=true`
                             );
                             const currIndex = 0;
                             localStorage.setItem(
@@ -623,7 +623,7 @@ const HomePageSearchTab: React.FC = () => {
                       }}
                       onClick={() => {
                         router.push(
-                          `husmodells?husodellId=${property?.id}&city=Akershus`
+                          `husmodells?husmodellId=${property?.id}&city=Akershus`
                         );
                         const currIndex = 0;
                         localStorage.setItem("currIndex", currIndex.toString());
@@ -653,7 +653,7 @@ const HomePageSearchTab: React.FC = () => {
                         </div>
                         <div className="border-l border-[#EAECF0] h-[12px]"></div>
                         <div className="text-darkBlack text-xs md:text-sm font-semibold">
-                          {property?.Husdetaljer?.BebygdArealBYA}{" "}
+                          {property?.Husdetaljer?.BebygdAreal}{" "}
                           <span className="text-[#4A5578] font-normal">
                             BYA
                           </span>
@@ -686,7 +686,7 @@ const HomePageSearchTab: React.FC = () => {
                           className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                           onClick={() => {
                             router.push(
-                              `husmodells?husodellId=${property?.id}&city=Akershus`
+                              `husmodells?husmodellId=${property?.id}&city=Akershus`
                             );
                             const currIndex = 0;
                             localStorage.setItem(

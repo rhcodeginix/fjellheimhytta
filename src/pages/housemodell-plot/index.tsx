@@ -43,7 +43,7 @@ const HusmodellPlot = () => {
   const [HouseModelData, setHouseModelData] = useState<any>(null);
 
   const router = useRouter();
-  const { propertyId, husodellId } = router.query;
+  const { propertyId, husmodellId } = router.query;
   const [loading, setLoading] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [additionalData, setAdditionalData] = useState<any | undefined>(null);
@@ -218,7 +218,7 @@ const HusmodellPlot = () => {
       setLoading(true);
 
       try {
-        const husmodellDocRef = doc(db, "house_model", String(husodellId));
+        const husmodellDocRef = doc(db, "house_model", String(husmodellId));
         const husmodellDocSnap = await getDoc(husmodellDocRef);
 
         if (husmodellDocSnap.exists()) {
@@ -232,9 +232,10 @@ const HusmodellPlot = () => {
         setLoading(false);
       }
     };
-
-    fetchData();
-  }, [husodellId, isCall]);
+    if (husmodellId) {
+      fetchData();
+    }
+  }, [husmodellId, isCall]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
@@ -279,7 +280,7 @@ const HusmodellPlot = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user || !propertyId || !husodellId) {
+      if (!user || !propertyId || !husmodellId) {
         return;
       }
 
@@ -293,12 +294,12 @@ const HusmodellPlot = () => {
         const plotDocRef = doc(plotCollectionRef, String(propertyId));
         const plotDocSnap = await getDoc(plotDocRef);
 
-        const husmodellDocRef = doc(db, "house_model", String(husodellId));
+        const husmodellDocRef = doc(db, "house_model", String(husmodellId));
         const husmodellDocSnap = await getDoc(husmodellDocRef);
 
         const finalData = {
           plot: { id: propertyId, ...plotDocSnap.data() },
-          husmodell: { id: husodellId, ...husmodellDocSnap.data() },
+          husmodell: { id: husmodellId, ...husmodellDocSnap.data() },
         };
 
         const leadsCollectionRef = collection(db, "leads");
@@ -306,7 +307,7 @@ const HusmodellPlot = () => {
           query(
             leadsCollectionRef,
             where("finalData.plot.id", "==", propertyId),
-            where("finalData.husmodell.id", "==", husodellId)
+            where("finalData.husmodell.id", "==", husmodellId)
           )
         );
 
@@ -339,10 +340,10 @@ const HusmodellPlot = () => {
       }
     };
 
-    if (propertyId && husodellId) {
+    if (propertyId && husmodellId) {
       fetchData();
     }
-  }, [propertyId, husodellId, user]);
+  }, [propertyId, husmodellId, user]);
   const husmodellData = HouseModelData?.Husdetaljer;
   const [supplierData, setSupplierData] = useState<any>(null);
 
@@ -368,7 +369,9 @@ const HusmodellPlot = () => {
         console.error("Error fetching supplier data:", error);
       }
     };
-    getData();
+    if (husmodellData?.Leverandører) {
+      getData();
+    }
   }, [husmodellData?.Leverandører]);
   const steps = [
     {

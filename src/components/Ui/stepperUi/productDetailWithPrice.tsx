@@ -20,7 +20,7 @@ export function addDaysToDate(dateString: any, days: any) {
 
 const PropertyDetailWithPrice: React.FC<any> = () => {
   const router = useRouter();
-  const id = router.query["husodellId"];
+  const id = router.query["husmodellId"];
 
   const [finalData, setFinalData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);

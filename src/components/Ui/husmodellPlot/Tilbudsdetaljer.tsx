@@ -6,7 +6,6 @@ import Loader from "@/components/Loader";
 import { formatCurrency } from "../RegulationHusmodell/Illustrasjoner";
 // import GoogleMapComponent from "../map";
 import NorkartMap from "@/components/map";
-import { convertCurrencyFormat } from "../Husmodell/plot/plotProperty";
 
 export function addDaysToDate(dateString: any, days: any) {
   let date = new Date(dateString);
@@ -21,7 +20,7 @@ export function addDaysToDate(dateString: any, days: any) {
 
 const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
   const router = useRouter();
-  const id = router.query["husodellId"];
+  const id = router.query["husmodellId"];
 
   const [finalData, setFinalData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -95,6 +94,7 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
             }
           } else {
             plotCollectionRef = doc(db, "cabin_plot", String(plotId));
+            correctPlotId = plotId;
           }
         }
 
@@ -114,7 +114,12 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
         const husmodellDocRef = doc(db, "house_model", String(id));
         const husmodellDocSnap = await getDoc(husmodellDocRef);
 
-        if (plotDocSnap.exists() && husmodellDocSnap.exists()) {
+        if (
+          plotDocSnap.exists() &&
+          husmodellDocSnap.exists() &&
+          id &&
+          correctPlotId
+        ) {
           let plotData: any = plotDocSnap.data();
           let husmodellData = husmodellDocSnap.data();
           setFinalData({
@@ -131,7 +136,9 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
       }
     };
 
-    fetchData();
+    if (id) {
+      fetchData();
+    }
   }, [id]);
   const husmodellData = finalData?.husmodell?.Husdetaljer;
 
@@ -159,7 +166,9 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
         console.error("Error fetching supplier data:", error);
       }
     };
-    getData();
+    if (husmodellData?.Leverandører) {
+      getData();
+    }
   }, [husmodellData?.Leverandører]);
 
   const totalDays = [
@@ -318,47 +327,6 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
                       <div className="flex flex-col gap-1 w-max">
                         <p className="text-secondary text-sm whitespace-nowrap">
                           Estimert Innflytting
-                        </p>
-                        <h5 className="text-black text-sm font-semibold text-right whitespace-nowrap">
-                          {addDaysToDate(
-                            finalData?.husmodell?.createdAt,
-                            totalDays
-                          )}
-                        </h5>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div className="border-l border-[#DCDFEA] hidden sm:block lg:hidden desktop:block"></div>
-                <div className="w-full flex flex-col gap-2 md:gap-3">
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="text-[#4A5578] text-xs md:text-sm mb-1 truncate">
-                      Pris for <span className="font-semibold">Tomt</span>
-                    </p>
-                    <h6 className="text-xs md:text-base font-semibold">
-                      {finalData?.plot?.pris
-                        ? finalData?.plot?.pris === 0
-                          ? "0 NOK"
-                          : convertCurrencyFormat(finalData?.plot?.pris)
-                        : "0 NOK"}
-                    </h6>
-                  </div>
-                  {isRemove ? null : (
-                    <div className="flex items-center justify-between gap-1 mb-4">
-                      <div className="flex flex-col gap-1 w-max">
-                        <p className="text-secondary text-sm">
-                          Estimert start kjøpsprosess
-                        </p>
-                        <h5 className="text-black text-sm font-semibold whitespace-nowrap">
-                          {addDaysToDate(
-                            finalData?.husmodell?.createdAt,
-                            husmodellData?.appSubmitApprove
-                          )}
-                        </h5>
-                      </div>
-                      <div className="flex flex-col gap-1 w-max">
-                        <p className="text-secondary text-sm text-right">
-                          Estimert overtakelse
                         </p>
                         <h5 className="text-black text-sm font-semibold text-right whitespace-nowrap">
                           {addDaysToDate(

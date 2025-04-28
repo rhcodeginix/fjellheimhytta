@@ -124,7 +124,7 @@ const Tomt: React.FC<{
                   className="text-primary text-xs md:text-sm font-medium"
                   onClick={() => {
                     delete updatedQuery.propertyId;
-                    delete updatedQuery.husodellId;
+                    delete updatedQuery.husmodellId;
                     delete updatedQuery.leadId;
                     delete updatedQuery.emptyPlot;
                     delete updatedQuery.empty;
@@ -241,7 +241,7 @@ const Tomt: React.FC<{
               className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 delete updatedQuery.propertyId;
-                delete updatedQuery.husodellId;
+                delete updatedQuery.husmodellId;
                 delete updatedQuery.leadId;
                 delete updatedQuery.emptyPlot;
                 delete updatedQuery.empty;

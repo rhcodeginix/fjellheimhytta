@@ -68,7 +68,7 @@ const HouseModelSingleProperty: React.FC<{
 
   const [activeTab, setActiveTab] = useState<string>(tabs[1].id);
 
-  const id = router.query["husodellId"];
+  const id = router.query["husmodellId"];
   const plotId = router.query["plotId"];
 
   useEffect(() => {
@@ -155,7 +155,9 @@ const HouseModelSingleProperty: React.FC<{
       }
     };
 
-    fetchData();
+    if (plotId && id && user) {
+      fetchData();
+    }
   }, [plotId, id, user]);
 
   if (loadingLamdaData) {
@@ -189,7 +191,7 @@ const HouseModelSingleProperty: React.FC<{
                   className="text-primary text-xs md:text-sm font-medium cursor-pointer"
                   onClick={() => {
                     delete updatedQuery.propertyId;
-                    delete updatedQuery.husodellId;
+                    delete updatedQuery.husmodellId;
                     delete updatedQuery.leadId;
                     delete updatedQuery.emptyPlot;
 
@@ -304,15 +306,13 @@ const HouseModelSingleProperty: React.FC<{
               className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 delete updatedQuery.propertyId;
-                delete updatedQuery.husodellId;
-                delete updatedQuery.leadId;
-                delete updatedQuery.emptyPlot;
-                delete updatedQuery.empty;
+                delete updatedQuery.plotId;
+                delete updatedQuery.husmodellId;
 
                 router.replace({ pathname, query: updatedQuery }, undefined, {
                   shallow: true,
                 });
-                const currIndex = 0;
+                const currIndex = 1;
                 localStorage.setItem("currIndex", currIndex.toString());
               }}
             />
