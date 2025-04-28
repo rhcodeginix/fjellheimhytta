@@ -233,7 +233,7 @@ const Belop: React.FC = () => {
               );
               const maxPrice = maxRangeHusmodell
                 ? parseInt(maxRangeHusmodell)
-                : parseInt(queryPrice.replace(/\s/g, ""), 10) * 0.2;
+                : parseInt(queryPrice.replace(/\s/g, ""), 10) * 0.8;
 
               const boligtype = plot?.Husdetaljer?.VelgBoligtype;
               const egenskaper =
@@ -284,7 +284,7 @@ const Belop: React.FC = () => {
                 numericValue <=
                 (maxRangePlot
                   ? parseInt(maxRangePlot, 10)
-                  : parseInt(queryPrice, 10) * 0.8)
+                  : parseInt(queryPrice, 10) * 0.2)
               );
             })
           : allPlots;
