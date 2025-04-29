@@ -93,10 +93,22 @@ const HomePageSearchTab: React.FC = () => {
 
         const houseModelSnapshot = await getDocs(husmodellQuery);
 
-        const houseModels = houseModelSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const houseModels = houseModelSnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .sort((a: any, b: any) => {
+            const priceA = parseInt(
+              a?.Husdetaljer?.pris?.replace(/\s/g, "") || "0",
+              10
+            );
+            const priceB = parseInt(
+              b?.Husdetaljer?.pris?.replace(/\s/g, "") || "0",
+              10
+            );
+            return priceA - priceB;
+          });
 
         const filteredHouseModels = houseModels.filter((house: any) =>
           house?.Husdetaljer?.pris
