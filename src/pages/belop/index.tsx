@@ -167,6 +167,7 @@ const Belop: React.FC = () => {
 
         const husmodellQuery = query(
           collection(db, "house_model"),
+          where("Husdetaljer.TilgjengeligBolig", "==", "Ja"),
           where(
             "Husdetaljer.Leverandører",
             "==",

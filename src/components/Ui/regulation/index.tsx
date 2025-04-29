@@ -53,6 +53,7 @@ const HusmodellPropertyPage: React.FC<{
       try {
         const husmodellQuery = query(
           collection(db, "house_model"),
+          where("Husdetaljer.TilgjengeligBolig", "==", "Ja"),
           where(
             "Husdetaljer.Leverandører",
             "==",
@@ -90,6 +91,7 @@ const HusmodellPropertyPage: React.FC<{
       try {
         const q = query(
           collection(db, "house_model"),
+          where("Husdetaljer.TilgjengeligBolig", "==", "Ja"),
           where(
             "Husdetaljer.Leverandører",
             "==",
