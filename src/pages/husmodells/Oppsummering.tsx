@@ -62,17 +62,22 @@ const Oppsummering: React.FC<{
         0
       )
     : 0;
+
+  const [skipSharingDataValidation, setSkipSharingDataValidation] =
+    useState(false);
   const validationSchema = Yup.object().shape({
     equityAmount: Yup.number()
       .typeError("Must be a number")
       .min(1, "Amount must be greater than 0")
       .optional(),
-    sharingData: Yup.boolean()
-      .oneOf([true], "You must accept the sharing data")
-      .required("Påkrevd"),
-    Isopt: Yup.boolean()
-      .oneOf([true], "You must accept this")
-      .required("Påkrevd"),
+    sharingData: skipSharingDataValidation
+      ? Yup.boolean().notRequired()
+      : Yup.boolean()
+          .oneOf([true], "You must accept the sharing data")
+          .required("Påkrevd"),
+    Isopt: skipSharingDataValidation
+      ? Yup.boolean().notRequired()
+      : Yup.boolean().oneOf([true], "You must accept this").required("Påkrevd"),
   });
 
   const router = useRouter();
@@ -81,6 +86,7 @@ const Oppsummering: React.FC<{
 
   const handleSubmit = async (values: any) => {
     const bankValue = values;
+    setSkipSharingDataValidation(false);
 
     try {
       if (leadId) {
@@ -407,7 +413,17 @@ const Oppsummering: React.FC<{
                                     </p>
                                   )}
                               </div>
-                              <p className="border-2 border-primary text-primary text-sm sm:text-base rounded-[40px] w-max h-[40px] font-medium flex items-center justify-center px-3 md:px-5 cursor-pointer">
+                              <p
+                                className="border-2 border-primary text-primary text-sm sm:text-base rounded-[40px] w-max h-[40px] font-medium flex items-center justify-center px-3 md:px-5 cursor-pointer"
+                                onClick={() => {
+                                  setSkipSharingDataValidation(true);
+                                  setTimeout(() => {
+                                    document
+                                      .querySelector("form")
+                                      ?.requestSubmit();
+                                  }, 0);
+                                }}
+                              >
                                 Legg til
                               </p>
                             </div>

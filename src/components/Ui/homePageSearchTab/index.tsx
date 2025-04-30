@@ -43,7 +43,7 @@ const tabs = [
   },
   {
     id: "husmodell",
-    label: ["Start med", "husmodell"],
+    label: ["Velg", "hyttemodell"],
     description: "Vet du hvor mye du vil bruke på tomt og",
     icon: <MapsHomeWorkIcon />,
   },
