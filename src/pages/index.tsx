@@ -22,6 +22,8 @@ import {
 import { auth, db } from "@/config/firebaseConfig";
 
 const index = () => {
+    const router = useRouter();
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
