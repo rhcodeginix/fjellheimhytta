@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export const VIPPS_CONFIG = {
-  clientId: "b2017e3c-4ca5-440d-93aa-f695711ccc91",
+  clientId: "4a0aa1b1-00f1-4f64-a458-e8b2f47386f3",
   redirectUri: "https://fjellheimhytta.mintomt.no",
   scope: "openid name phoneNumber address email birthDate",
-  apiSubscriptionKey: "73f0a1f14f2a4d73937831a1117bc513",
+  apiSubscriptionKey: "ae44421e7dad472292635ce6df2ed534",
   authEndpoint: "https://api.vipps.no/access-management-1.0/access/oauth2/auth",
   tokenEndpoint:
     "https://api.vipps.no/access-management-1.0/access/oauth2/token",
