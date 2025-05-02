@@ -7,9 +7,9 @@ import { Slider, styled } from "@mui/material";
 import HouseModelAllProperty from "@/components/Ui/Husmodell/allProperty";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import * as Yup from "yup";
-import { Formik, Form, Field } from "formik";
-import Ic_vapp from "@/public/images/Ic_vapp.svg";
+import { Formik, Form } from "formik";
 import { useRouter } from "next/router";
+import VippsButton from "@/components/vipps";
 
 const bedroomOptions = [
   "1+ soverom",
@@ -128,10 +128,7 @@ const AllPlot = () => {
     terms_condition: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
 
-  const [isLoginChecked, setIsLoginChecked] = useState(false);
-  const handleLoginCheckboxChange = () => {
-    setIsLoginChecked(!isLoginChecked);
-  };
+
 
   const { loginUser, setLoginUser } = useUserLayoutContext();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -422,46 +419,12 @@ const AllPlot = () => {
               validationSchema={validationLoginSchema}
               onSubmit={handleLoginSubmit}
             >
-              {({ values, setFieldValue, errors, touched }) => (
+               {({  }) => (
                 <Form>
                   <div className="flex items-center justify-center flex-col">
-                    <label className="flex items-center gap-[12px] container sm:w-max">
-                      <Field
-                        type="checkbox"
-                        name="terms_condition"
-                        checked={isLoginChecked}
-                        onChange={() => {
-                          setFieldValue(
-                            "terms_condition",
-                            !values.terms_condition
-                          );
-                          handleLoginCheckboxChange();
-                        }}
-                      />
-                      <span className="checkmark checkmark_primary"></span>
-
-                      <div className="text-secondary text-xs md:text-sm desktop:text-base">
-                        Jeg aksepterer{" "}
-                        <span className="text-primary">Vilkårene</span> og har
-                        lest{" "}
-                        <span className="text-primary">
-                          Personvernerklæringen
-                        </span>
-                      </div>
-                    </label>
-                    {errors.terms_condition && touched.terms_condition && (
-                      <div className="text-red text-sm">
-                        {errors.terms_condition}
-                      </div>
-                    )}
+                   
                     <div className="flex justify-end mt-6">
-                      <button
-                        className="
-                            text-sm md:text-base lg:py-[10px] py-[4px] px-2 md:px-[10px] lg:px-[18px] h-[36px] md:h-[40px] lg:h-[44px] flex items-center gap-[12px] justify-center border border-primary bg-primary text-white sm:text-base rounded-[8px] w-max font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                      >
-                        Fortsett med{" "}
-                        <Image fetchPriority="auto" src={Ic_vapp} alt="logo" />
-                      </button>
+                    <VippsButton/>
                     </div>
                   </div>
                 </Form>

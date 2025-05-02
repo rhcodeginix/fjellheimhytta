@@ -1,6 +1,6 @@
 import React from "react";
 import { getVippsLoginUrl } from "@/utils/vippsAuth";
-import Ic_vipps from "@/public/images/Ic_vipps.svg";
+import Ic_vapp from "@/public/images/Ic_vapp.svg";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 
@@ -32,15 +32,16 @@ const VippsButton = () => {
 
   return (
     <div
-      onClick={handleVippsLogin}
-      className="text-black border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 mt-4 md:mt-6 flex gap-2 justify-center items-center cursor-pointer text-sm md:text-base"
-      style={{
-        boxShadow: "0px 1px 2px 0px #1018280D",
-      }}
-    >
-      <Image src={Ic_vipps} alt="google" fetchPriority="high" />
-      Logg inn med Vipps
-    </div>
+    onClick={handleVippsLogin}
+    className="text-white border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 flex gap-2 justify-center items-center cursor-pointer text-sm md:text-base"
+    style={{
+      backgroundColor: "#FF5C22", // Vipps background color
+      boxShadow: "0px 1px 2px 0px #1018280D",
+    }}
+  >
+    Fortsett med
+    <Image fetchPriority="auto" src={Ic_vapp} alt="logo" />
+  </div>
   );
 };
 
