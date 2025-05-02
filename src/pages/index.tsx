@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import MainSection from "./homepage/mainSection";
 import HowItWorks from "./homepage/howItWorks";
 import OurPartners from "./homepage/ourPartners";
