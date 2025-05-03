@@ -1775,8 +1775,8 @@ const TomtBakenPropertyDetail: React.FC = () => {
             </Formik>
             <p className="text-secondary text-sm md:text-base mt-[46px] text-center">
               Når du går videre, aksepterer du <br /> våre vilkår for{" "}
-              <a className="underline" target="__blank" href="https://www.mintomt.no/vilkaar-personvern/brukervilkaar">bruk</a> og{" "}
-              <a className="underline" target="__blank" href="https://www.mintomt.no/vilkaar-personvern/personvaern">personvern</a>
+              <a className="underline" target="__blank" href="https://fjellheimhytta.mintomt.no/vilkaar-personvern/brukervilkaar">bruk</a> og{" "}
+              <a className="underline" target="__blank" href="https://fjellheimhytta.mintomt.no/vilkaar-personvern/personvaern">personvern</a>
             </p>
           </div>
         </div>
