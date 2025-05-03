@@ -88,28 +88,28 @@ const Header = () => {
       console.error("Error logging out:", error);
     }
   };
-   const handleVippsLogin = () => {
-     try {
-       const vippsUrl = getVippsLoginUrl();
-       console.log("Redirecting to Vipps login:", vippsUrl);
- 
-       toast({
-         title: "Redirecting to Vipps",
-         description: `You'll be redirected to Vipps login page (${new URL(vippsUrl).origin}). Redirect URL: ${new URL(vippsUrl).searchParams.get("redirect_uri")}`,
-       });
- 
-       setTimeout(() => {
-         window.location.href = vippsUrl;
-       }, 800);
-     } catch (error) {
-       console.error("Failed to initiate Vipps login:", error);
-       toast({
-         title: "Login Error",
-         description: "Could not connect to Vipps. Please try again.",
-         variant: "destructive",
-       });
-     }
-   };
+  const handleVippsLogin = () => {
+    try {
+      const vippsUrl = getVippsLoginUrl();
+      console.log("Redirecting to Vipps login:", vippsUrl);
+
+      toast({
+        title: "Redirecting to Vipps",
+        description: `You'll be redirected to Vipps login page (${new URL(vippsUrl).origin}). Redirect URL: ${new URL(vippsUrl).searchParams.get("redirect_uri")}`,
+      });
+
+      setTimeout(() => {
+        window.location.href = vippsUrl;
+      }, 800);
+    } catch (error) {
+      console.error("Failed to initiate Vipps login:", error);
+      toast({
+        title: "Login Error",
+        description: "Could not connect to Vipps. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <>
@@ -241,18 +241,17 @@ const Header = () => {
                   )}
                 </div>
               ) : (
-               
                 <div
-  onClick={handleVippsLogin}
-  className="text-white border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 flex gap-2 justify-center items-center cursor-pointer text-sm md:text-base"
-  style={{
-    backgroundColor: "#FF5C22", // Vipps background color
-    boxShadow: "0px 1px 2px 0px #1018280D",
-  }}
->
-  Fortsett med
-  <Image fetchPriority="auto" src={Ic_vapp} alt="logo" />
-</div>
+                  onClick={handleVippsLogin}
+                  className="text-white border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 flex gap-2 justify-center items-center cursor-pointer text-xs sm:text-sm md:text-base"
+                  style={{
+                    backgroundColor: "#FF5C22",
+                    boxShadow: "0px 1px 2px 0px #1018280D",
+                  }}
+                >
+                  Fortsett med
+                  <Image fetchPriority="auto" src={Ic_vapp} alt="logo" className="w-[40px] md:w-auto" />
+                </div>
               )}
             </div>
           </div>

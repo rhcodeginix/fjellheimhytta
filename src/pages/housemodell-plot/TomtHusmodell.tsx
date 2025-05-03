@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import Tomt from "./Tomt";
 import Belop from "../belop";
 import VippsButton from "@/components/vipps";
+import Img_vipps_login from "@/public/images/Img_vipps_login.png";
+import Image from "next/image";
 
 const TomtHusmodell: React.FC<{
   loginUser: any;
@@ -47,8 +49,6 @@ const TomtHusmodell: React.FC<{
   const validationLoginSchema = Yup.object().shape({
     terms_condition: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
-
-
 
   const handleLoginSubmit = async () => {
     setIsPopupOpen(false);
@@ -116,34 +116,36 @@ const TomtHusmodell: React.FC<{
                 "0px 8px 8px -4px rgba(16, 24, 40, 0.031), 0px 20px 24px -4px rgba(16, 24, 40, 0.078)",
             }}
           >
-            <h2 className="text-black text-lg md:text-xl desktop:text-2xl font-semibold mb-2 text-center">
-              Registrer deg
+            <div className="flex justify-center w-full mb-[46px]">
+              <Image src={Img_vipps_login} alt="vipps login" />
+            </div>
+            <h2 className="text-black text-[24px] md:text-[32px] desktop:text-[40px] font-extrabold mb-2 text-center">
+              Din <span className="text-primary">Min</span>Tomt-profil
             </h2>
-            <p className="text-secondary text-xs md:text-sm desktop:text-base text-center mb-2">
-              Logg inn med{" "}
-              <span className="font-semibold text-black">Vipps</span> for å få
-              se{" "}
-              <span className="font-semibold text-black">
-                alle bestemmelser og finne <br className="hidden sm:block" />
-                boliger som passer på denne eiendommen
-              </span>
+            <p className="text-black text-xs md:text-sm desktop:text-base text-center mb-4">
+              Logg inn for å få tilgang til alt{" "}
+              <span className="font-bold">MinTomt</span> har å by på.
             </p>
             <Formik
               initialValues={{ terms_condition: false }}
               validationSchema={validationLoginSchema}
               onSubmit={handleLoginSubmit}
             >
-              {({  }) => (
+              {({}) => (
                 <Form>
                   <div className="flex items-center justify-center flex-col">
-                   
-                    <div className="flex justify-end mt-6">
-                    <VippsButton/>
+                    <div className="flex justify-end">
+                      <VippsButton />
                     </div>
                   </div>
                 </Form>
               )}
             </Formik>
+            <p className="text-secondary text-sm md:text-base mt-[46px] text-center">
+              Når du går videre, aksepterer du <br /> våre vilkår for{" "}
+              <span className="underline">bruk</span> og
+              <span className="underline">personvern</span>
+            </p>
           </div>
         </div>
       )}
