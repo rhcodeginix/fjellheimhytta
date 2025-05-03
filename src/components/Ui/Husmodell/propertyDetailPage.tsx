@@ -417,8 +417,8 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
             </Formik>
             <p className="text-secondary text-sm md:text-base mt-[46px] text-center">
               Når du går videre, aksepterer du <br /> våre vilkår for{" "}
-              <span className="underline">bruk</span> og{" "}
-              <span className="underline">personvern</span>
+              <a className="underline" target="__blank" href="https://www.mintomt.no/vilkaar-personvern/brukervilkaar">bruk</a> og{" "}
+              <a className="underline" target="__blank" href="https://www.mintomt.no/vilkaar-personvern/personvaern">personvern</a>
             </p>
           </div>
         </div>
