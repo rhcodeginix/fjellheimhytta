@@ -19,123 +19,82 @@ const Personvaern = () => {
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <span className="text-secondary2 text-xs md:text-sm">
-              Personvaern
+              Personvernerklæring
             </span>
           </div>
           <h3 className="text-black font-semibold text-lg md:text-2xl desktop:text-[30px]">
-            Personvaern
+            Personvernerklæring
           </h3>
         </SideSpaceContainer>
       </div>
       <div className="pt-8 pb-32">
         <SideSpaceContainer>
-          <p className="text-secondary text-sm md:text-base desktop:text-lg mb-6">
-            Welcome to Mintomt. These Terms of Use (“Terms”) govern your access
-            to and use of our website{" "}
-            <a
-              href="https://www.mintomt.no"
-              className="underline text-primary font-medium"
-            >
-              https://www.mintomt.no
-            </a>{" "}
-            (“Site”). By accessing or using the Site, you agree to be bound by
-            these Terms. If you do not agree to these Terms, please do not use
-            the Site.
-          </p>
-          <div className="flex flex-col gap-4 md:gap-6">
-            <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4 md:gap-6 text-secondary text-sm md:text-base desktop:text-lg">
+            <p>
+              Denne personvernerklæringen forklarer hvordan MinTomt samler inn og behandler dine personopplysninger. Vi tar personvern på alvor og sørger for at dine data behandles i samsvar med gjeldende personvernlovgivning.
+            </p>
+            <div>
               <h4 className="text-black font-semibold text-base md:text-lg desktop:text-xl">
-                1. Acceptance of Terms
+                1. Hvem er behandlingsansvarlig?
               </h4>
-              <p className="text-secondary text-sm md:text-base desktop:text-lg">
-                By using this Site, you confirm that you are at least 18 years
-                old or accessing the Site under the supervision of a parent or
-                legal guardian.
+              <p>
+                MinTomt er behandlingsansvarlig for dine personopplysninger.
               </p>
             </div>
-            <div className="flex flex-col gap-2">
+            <div>
               <h4 className="text-black font-semibold text-base md:text-lg desktop:text-xl">
-                2. Use of the Site
+                2. Hvilke opplysninger samler vi inn?
               </h4>
-              <p className="text-secondary text-sm md:text-base desktop:text-lg">
-                You agree to use the Site only for lawful purposes and in
-                accordance with these Terms. You must not:
+              <p>
+                Vi samler inn følgende informasjon:
               </p>
               <ul className="list-disc pl-4">
-                <li className="text-secondary text-sm md:text-base desktop:text-lg">
-                  Violate any applicable local, national, or international laws
-                  or regulations.
-                </li>
-                <li className="text-secondary text-sm md:text-base desktop:text-lg">
-                  Transmit any unauthorized advertising or promotional materials
-                  (spam).
-                </li>
-                <li className="text-secondary text-sm md:text-base desktop:text-lg">
-                  Attempt to gain unauthorized access to the Site, other
-                  accounts, or systems.
-                </li>
+                <li>Navn</li>
+                <li>Adresse</li>
+                <li>Telefonnummer</li>
+                <li>E-postadresse</li>
+                <li>Eiendomsinformasjon</li>
               </ul>
             </div>
-            <div className="flex flex-col gap-2">
+            <div>
               <h4 className="text-black font-semibold text-base md:text-lg desktop:text-xl">
-                3. Intellectual Property
+                3. Hvordan bruker vi opplysningene dine?
               </h4>
-              <p className="text-secondary text-sm md:text-base desktop:text-lg">
-                All content on the Site, including text, images, logos, and
-                software, is the property of Mintomt or its licensors and is
-                protected by copyright and other laws. You may not reproduce,
-                distribute, or modify any content without prior written
-                permission.
+              <p>
+                Vi bruker personopplysningene dine til å levere tjenestene våre, gi deg kundeservice, forbedre våre tjenester, samt for administrative og juridiske formål.
               </p>
             </div>
-            <div className="flex flex-col gap-2">
+            <div>
               <h4 className="text-black font-semibold text-base md:text-lg desktop:text-xl">
-                4. User Accounts
+                4. Hvem deler vi opplysningene med?
               </h4>
-              <p className="text-secondary text-sm md:text-base desktop:text-lg">
-                If you create an account on our Site, you are responsible for
-                maintaining the confidentiality of your login information and
-                for all activities under your account.
+              <p>
+                Vi deler bare personopplysninger med tredjeparter når det er nødvendig for å tilby våre tjenester, eller når vi er lovpålagt å gjøre det.
               </p>
             </div>
-            <div className="flex flex-col gap-2">
+            <div>
               <h4 className="text-black font-semibold text-base md:text-lg desktop:text-xl">
-                5. Limitation of Liability
+                5. Hvor lenge lagres opplysningene?
               </h4>
-              <p className="text-secondary text-sm md:text-base desktop:text-lg">
-                We make no warranties or guarantees about the accuracy or
-                completeness of the Site’s content. To the fullest extent
-                permitted by law, we disclaim all liability for any loss or
-                damage arising from your use of the Site.
+              <p>
+                Vi lagrer dine personopplysninger så lenge det er nødvendig for formålet med behandlingen eller i henhold til lovpålagte krav.
               </p>
             </div>
-            <div className="flex flex-col gap-2">
+            <div>
               <h4 className="text-black font-semibold text-base md:text-lg desktop:text-xl">
-                6. Termination
+                6. Dine rettigheter
               </h4>
-              <p className="text-secondary text-sm md:text-base desktop:text-lg">
-                We may suspend or terminate your access to the Site at any time,
-                without notice, if we believe you have violated these Terms.
+              <p>
+                Du har rett til innsyn, retting og sletting av dine personopplysninger. Du kan også protestere mot behandlingen og be om dataportabilitet.
               </p>
             </div>
-            <div className="flex flex-col gap-2">
+            <div>
               <h4 className="text-black font-semibold text-base md:text-lg desktop:text-xl">
-                7. Changes to Terms
+                7. Kontakt oss
               </h4>
-              <p className="text-secondary text-sm md:text-base desktop:text-lg">
-                We reserve the right to update these Terms at any time. Changes
-                will be posted on this page, and your continued use of the Site
-                means you accept the updated Terms.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2">
-              <h4 className="text-black font-semibold text-base md:text-lg desktop:text-xl">
-                8. Contact
-              </h4>
-              <p className="text-secondary text-sm md:text-base desktop:text-lg">
-                If you have any questions about these Terms, please contact us
-                at: <br /> 📧 [Insert email address] <br /> 📞 [Insert phone
-                number]
+              <p>
+                Har du spørsmål om personvernerklæringen eller ønsker å utøve dine rettigheter? Kontakt oss på:
+                <br /> 📧 kontakt@mintomt.no
               </p>
             </div>
           </div>
