@@ -380,7 +380,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
         <div
           className="fixed top-0 left-0 flex justify-center items-center h-full w-full"
           style={{
-            zIndex: 9999,
+            zIndex: 999999,
           }}
         >
           <div
@@ -417,7 +417,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
             </Formik>
             <p className="text-secondary text-sm md:text-base mt-[46px] text-center">
               Når du går videre, aksepterer du <br /> våre vilkår for{" "}
-              <span className="underline">bruk</span> og
+              <span className="underline">bruk</span> og{" "}
               <span className="underline">personvern</span>
             </p>
           </div>
