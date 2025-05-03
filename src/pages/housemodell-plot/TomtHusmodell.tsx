@@ -108,7 +108,12 @@ const TomtHusmodell: React.FC<{
       )}
 
       {isPopupOpen && !loginUser && (
-        <div className="fixed top-0 left-0 flex justify-center items-center h-full w-full">
+        <div
+          className="fixed top-0 left-0 flex justify-center items-center h-full w-full"
+          style={{
+            zIndex: 9999,
+          }}
+        >
           <div
             className="bg-white mx-4 p-4 md:p-8 rounded-[8px] w-full max-w-[787px]"
             style={{
