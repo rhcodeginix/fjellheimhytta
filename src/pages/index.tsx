@@ -22,7 +22,7 @@ import {
 import { auth, db } from "@/config/firebaseConfig";
 
 const index = () => {
-    const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -115,6 +115,7 @@ const index = () => {
                   loginType: "vipps",
                   name: userName,
                   createdAt: new Date(),
+                  address: user.address,
                 });
                 await signInWithEmailAndPassword(auth, userEmail, userUid);
                 localStorage.setItem("min_tomt_login", "true");
