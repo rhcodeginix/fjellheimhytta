@@ -266,7 +266,7 @@ const BelopProperty: React.FC<{
                           </div>
                           <Button
                             text="Utforsk"
-                            className="border border-primary bg-primary text-white text-sm md:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white text-sm md:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
                               router.push(
                                 `${router.asPath}&propertyId=${property?.plot?.id}&husmodellId=${property?.house?.id}&emptyPlot=true`

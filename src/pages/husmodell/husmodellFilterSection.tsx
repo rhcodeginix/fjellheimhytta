@@ -140,7 +140,7 @@ const HusmodellFilterSection: React.FC<{
             />
             <div>
               <button
-                className={`p-1.5 lg:p-[10px] cursor-pointer flex justify-center items-center bg-primary rounded-full gap-[10px] transition-all duration-300 ease-out h-[32px] w-[32px] lg:h-[40px] lg:w-[40px]`}
+                className={`p-1.5 lg:p-[10px] cursor-pointer flex justify-center items-center bg-primary border border-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] rounded-full gap-[10px] transition-all duration-300 ease-out h-[32px] w-[32px] lg:h-[40px] lg:w-[40px]`}
               >
                 <Image
                   src={Ic_search}

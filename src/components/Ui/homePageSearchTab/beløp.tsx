@@ -61,7 +61,7 @@ const BeløpTab = () => {
           boxShadow: "0px 32px 82px -12px #10182812",
         }}
       >
-     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[80px]">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full lg:w-11/12 lg:h-[80px]">
           {/* <div className="relative min-w-[24%] w-auto h-full">
             <div
               className={`bg-[#F4F3F1] py-3 px-2 lg:py-4 lg:px-5 desktop:px-8 h-full flex flex-col justify-center lg:rounded-l-[98px] overflow-hidden`}
@@ -109,7 +109,7 @@ const BeløpTab = () => {
         <div className="border-t border-gray3 w-full lg:hidden"></div>
 
         <button
-          className={`p-3 lg:px-5 lg:py-4 cursor-pointer flex justify-center items-center bg-primary rounded-[40px] transition-all duration-300 ease-out h-[40px] lg:h-[56px] m-4 gap-2 ${
+          className={`p-3 lg:px-5 lg:py-4 cursor-pointer flex justify-center items-center bg-primary border border-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] rounded-[40px] transition-all duration-300 ease-out h-[40px] lg:h-[56px] m-4 gap-2 ${
             !formData?.amount ? "opacity-50 cursor-not-allowed" : ""
           }`}
           type="submit"

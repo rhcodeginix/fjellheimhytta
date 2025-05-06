@@ -325,7 +325,7 @@ const Plots: React.FC<{
             <div className="flex justify-end gap-4 items-center">
               <Button
                 text="Tilbake"
-                className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+                className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                 onClick={() => {
                   handlePrevious();
                 }}

@@ -297,7 +297,7 @@ const Tilpass: React.FC<{
                   {selectedTab < Huskonfigurator.length - 1 && (
                     <Button
                       text="Hopp over steget"
-                      className={`border-2 border-primary text-primary text-xs sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
+                      className={`border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] text-xs sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
                       onClick={() => {
                         setSelectedTab(selectedTab + 1);
                       }}
@@ -484,7 +484,7 @@ const Tilpass: React.FC<{
           <div className="flex justify-end gap-4 items-center">
             <Button
               text="Tilbake"
-              className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+              className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
                 const currIndex = 0;
@@ -493,7 +493,7 @@ const Tilpass: React.FC<{
             />
             <Button
               text="Neste: Tilbud"
-              className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+              className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 handleNext();
               }}

@@ -53,7 +53,7 @@ const Chatbot: React.FC = () => {
           </h4>
           <Button
             text="Markedsfør tomten din nå"
-            className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+            className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
             onClick={() => router.push("/add-plot")}
           />
         </div>

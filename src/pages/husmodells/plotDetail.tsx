@@ -507,7 +507,7 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
                     </div>
                     <Button
                       text="Utforsk boliger"
-                      className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
+                      className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative"
                       path=""
                     />
                   </div>
@@ -529,11 +529,11 @@ const PlotDetail: React.FC<any> = ({ handleNext, lamdaDataFromApi }) => {
           <div className="flex justify-end gap-4 items-center">
             <Button
               text="Tilbake"
-              className="border-2 border-primary text-primary sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+              className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
             />
             <Button
               text="Se tilbud"
-              className="border border-primary bg-primary text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+              className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 handleNext();
               }}
