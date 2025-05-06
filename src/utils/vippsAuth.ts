@@ -1,15 +1,16 @@
 import axios from "axios";
 
 export const VIPPS_CONFIG = {
-  clientId: '4a0aa1b1-00f1-4f64-a458-e8b2f47386f3',
-  redirectUri: 'https://fjellheimhytta.mintomt.no/',
-  scope: 'openid name phoneNumber address email birthDate',
-  apiSubscriptionKey: 'ae44421e7dad472292635ce6df2ed534',
-  apiSubscriptionKeySecondary: 'd15b342674824d70bca599a5bd46beef',
-  authEndpoint: 'https://api.vipps.no/access-management-1.0/access/oauth2/auth',
-  tokenEndpoint: 'https://api.vipps.no/access-management-1.0/access/oauth2/token',
-  userInfoEndpoint: 'https://api.vipps.no/vipps-userinfo-api/userinfo',
-  clientSecret: 'OX28Q~8HnD1e6OpJmVEKn.R3i0e2HpfC_V4MNcW8'
+  clientId: "4a0aa1b1-00f1-4f64-a458-e8b2f47386f3",
+  redirectUri: "https://fjellheimhytta.mintomt.no/",
+  scope: "openid name phoneNumber address email birthDate",
+  apiSubscriptionKey: "ae44421e7dad472292635ce6df2ed534",
+  apiSubscriptionKeySecondary: "d15b342674824d70bca599a5bd46beef",
+  authEndpoint: "https://api.vipps.no/access-management-1.0/access/oauth2/auth",
+  tokenEndpoint:
+    "https://api.vipps.no/access-management-1.0/access/oauth2/token",
+  userInfoEndpoint: "https://api.vipps.no/vipps-userinfo-api/userinfo",
+  clientSecret: "OX28Q~8HnD1e6OpJmVEKn.R3i0e2HpfC_V4MNcW8",
 };
 
 export const generateState = (): string => {
@@ -21,62 +22,56 @@ export const generateState = (): string => {
 
 export const storeState = (state: string): void => {
   try {
-    localStorage.setItem('vippsAuthState', state);
-    console.log('State stored successfully:', state);
+    localStorage.setItem("vippsAuthState", state);
+    console.log("State stored successfully:", state);
   } catch (error) {
-    console.error('Failed to store state in localStorage:', error);
+    console.error("Failed to store state in localStorage:", error);
   }
 };
 
 export const getVippsLoginUrl = (): string => {
   const state = generateState();
   storeState(state);
-  
+
   // Build URL with parameters directly
   const authUrl = new URL(VIPPS_CONFIG.authEndpoint);
-  authUrl.searchParams.append('client_id', VIPPS_CONFIG.clientId);
-  authUrl.searchParams.append('redirect_uri', VIPPS_CONFIG.redirectUri);
-  authUrl.searchParams.append('response_type', 'code');
-  authUrl.searchParams.append('scope', VIPPS_CONFIG.scope);
-  authUrl.searchParams.append('state', state);
-  
+  authUrl.searchParams.append("client_id", VIPPS_CONFIG.clientId);
+  authUrl.searchParams.append("redirect_uri", VIPPS_CONFIG.redirectUri);
+  authUrl.searchParams.append("response_type", "code");
+  authUrl.searchParams.append("scope", VIPPS_CONFIG.scope);
+  authUrl.searchParams.append("state", state);
+
   const fullUrl = authUrl.toString();
-  
-  console.log('=== Vipps Login URL Generation ===');
-  console.log('Generated state:', state);
-  console.log('Redirecting to:', fullUrl);
-  console.log('URL parameters:', {
+
+  console.log("=== Vipps Login URL Generation ===");
+  console.log("Generated state:", state);
+  console.log("Redirecting to:", fullUrl);
+  console.log("URL parameters:", {
     clientId: VIPPS_CONFIG.clientId,
     redirectUri: VIPPS_CONFIG.redirectUri,
-    responseType: 'code',
+    responseType: "code",
     scope: VIPPS_CONFIG.scope,
-    state: state
+    state: state,
   });
 
   // Check if state was properly stored
-  const verifyState = localStorage.getItem('vippsAuthState');
-  console.log('Verifying state was stored:', verifyState);
-  
+  const verifyState = localStorage.getItem("vippsAuthState");
+  console.log("Verifying state was stored:", verifyState);
+
   return fullUrl;
 };
 
-// Parse hash or search parameters from URL
 export const parseUrlParams = (url: string): URLSearchParams => {
   try {
-    console.log('Parsing URL parameters from:', url);
     const parsedUrl = new URL(url);
-    
-    // Check for hash parameters (e.g. #code=xyz)
+
     if (parsedUrl.hash) {
-      console.log('Found hash parameters:', parsedUrl.hash);
       return new URLSearchParams(parsedUrl.hash.substring(1));
     }
-    
-    // Check for query parameters (e.g. ?code=xyz)
-    console.log('Using query parameters:', parsedUrl.search);
+
     return new URLSearchParams(parsedUrl.search);
   } catch (error) {
-    console.error('Error parsing URL parameters:', error);
+    console.error("Error parsing URL parameters:", error);
     return new URLSearchParams();
   }
 };
@@ -151,5 +146,3 @@ export const logoutVipps = (): void => {
   localStorage.removeItem("vippsAuthState");
   localStorage.removeItem("vippsUserInfo");
 };
-
-
