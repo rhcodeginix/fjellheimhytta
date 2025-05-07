@@ -20,8 +20,10 @@ import {
   doc,
   getDoc,
   getDocs,
+  increment,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import NameModal from "./nameModal";
@@ -80,6 +82,11 @@ const LoginForm: React.FC<{
       localStorage.setItem("min_tomt_login", "true");
       toast.success("Logg på vellykket", { position: "top-right" });
       localStorage.setItem("I_plot_email", user.email);
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, {
+        updatedAt: new Date(),
+        loginCount: increment(1),
+      });
       if (path) {
         setLoginPopup(false);
         router.push(path);
@@ -156,6 +163,10 @@ const LoginForm: React.FC<{
         });
         localStorage.setItem("min_tomt_login", "true");
         localStorage.setItem("I_plot_email", user?.email);
+        await updateDoc(userDocRef, {
+          updatedAt: new Date(),
+          loginCount: increment(1),
+        });
         if (path) {
           setLoginPopup(false);
           router.push(path);

@@ -15,8 +15,10 @@ import {
   doc,
   getDoc,
   getDocs,
+  increment,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { auth, db } from "@/config/firebaseConfig";
@@ -86,6 +88,12 @@ const index = () => {
               }
               await signInWithEmailAndPassword(auth, userEmail, userUid);
               localStorage.setItem("min_tomt_login", "true");
+              const userDocRef = doc(db, "users", userEmail);
+
+              await updateDoc(userDocRef, {
+                updatedAt: new Date(),
+                loginCount: increment(1),
+              });
               toast.success("Vipps login successfully", {
                 position: "top-right",
               });
@@ -122,6 +130,11 @@ const index = () => {
                 toast.success("Vipps login successfully", {
                   position: "top-right",
                 });
+
+                await updateDoc(userDocRef, {
+                  updatedAt: new Date(),
+                  loginCount: increment(1),
+                });
                 router.push("/");
                 localStorage.setItem("I_plot_email", user.email);
               }
@@ -150,6 +163,12 @@ const index = () => {
                     position: "top-right",
                   });
                   router.push("/");
+                  const userDocRef = doc(db, "users", userEmail);
+
+                  await updateDoc(userDocRef, {
+                    updatedAt: new Date(),
+                    loginCount: increment(1),
+                  });
                   localStorage.setItem("I_plot_email", user.email);
                 } catch (error) {
                   console.error("Login error:", error);
