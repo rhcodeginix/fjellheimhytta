@@ -5,7 +5,6 @@ import Illustrasjoner, {
 } from "../RegulationHusmodell/Illustrasjoner";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
-import { useUserLayoutContext } from "@/context/userLayoutContext";
 import Loader from "@/components/Loader";
 import Modal from "@/components/common/modal";
 import Image from "next/image";
@@ -23,9 +22,7 @@ const HouseDetailPage: React.FC = () => {
   const [finalData, setFinalData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const husmodellData = finalData?.Husdetaljer;
-  const [isCall, setIsCall] = useState(false);
 
-  const { loginUser, setLoginUser } = useUserLayoutContext();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
@@ -45,24 +42,10 @@ const HouseDetailPage: React.FC = () => {
       }
     };
 
-    if (id && isCall) {
+    if (id) {
       fetchData();
     }
-  }, [id, isCall]);
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("min_tomt_login") === "true";
-    if (isLoggedIn) {
-      setLoginUser(true);
-      setIsCall(true);
-    }
-  }, []);
-  useEffect(() => {
-    if (!loginUser) {
-      setIsPopupOpen(true);
-    } else {
-      setIsPopupOpen(false);
-    }
-  }, [loginUser]);
+  }, [id]);
 
   const [supplierData, setSupplierData] = useState<any>(null);
 

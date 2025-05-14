@@ -202,7 +202,7 @@ const HusmodellDetail = () => {
     if (husmodellId) {
       fetchData();
     }
-  }, [husmodellId, isCall, user]);
+  }, [husmodellId, isCall]);
   const husmodellData = HouseModelData?.Husdetaljer;
   const [supplierData, setSupplierData] = useState<any>(null);
 
@@ -261,6 +261,10 @@ const HusmodellDetail = () => {
           lamdaDataFromApi={lamdaDataFromApi}
           supplierData={supplierData}
           pris={pris}
+          loginUser={loginUser}
+          isPopupOpen={isPopupOpen}
+          setIsPopupOpen={setIsPopupOpen}
+          setIsCall={setIsCall}
         />
       ),
     },
