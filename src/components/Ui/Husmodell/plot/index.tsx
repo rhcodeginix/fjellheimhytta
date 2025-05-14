@@ -6,6 +6,7 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  limit,
   query,
   where,
 } from "firebase/firestore";
@@ -16,6 +17,7 @@ import PlotProperty from "./plotProperty";
 import { Settings2, X } from "lucide-react";
 import { Drawer } from "@mui/material";
 import Loading from "@/components/Loading";
+import { db } from "@/config/firebaseConfig";
 
 const Plots: React.FC<{
   handlePrevious: any;
@@ -68,142 +70,300 @@ const Plots: React.FC<{
         const maxRangePlot = Number(
           queryParams.get("maxRangePlot") || Infinity
         );
+
         const husmodellId = queryParams.get("husmodellId");
         const cityQuery = queryParams.get("city");
+        if (cityQuery) {
+          const db = getFirestore();
+          const citiesCollectionRef = collection(db, "cities");
 
-        const db = getFirestore();
-        const citiesCollectionRef = collection(db, "cities");
-
-        const cityFormLocalStorage: string[] = JSON.parse(
-          localStorage.getItem("city") || "[]"
-        );
-        const subCityFormLocalStorage: string[] = JSON.parse(
-          localStorage.getItem("subcity") || "[]"
-        );
-
-        const cleanedCities =
-          cityQuery?.split(",").map((city) => city.trim()) || [];
-
-        const citiesToUse =
-          cityFormLocalStorage.length > 0
-            ? cityFormLocalStorage
-            : cleanedCities;
-
-        setFormData((prev) => ({
-          ...prev,
-          Område: citiesToUse,
-          SubOmråde:
-            subCityFormLocalStorage.length > 0 ? subCityFormLocalStorage : [],
-        }));
-        const citiesSnapshot = await getDocs(citiesCollectionRef);
-        const allCities = citiesSnapshot.docs.map((doc) => ({
-          propertyId: doc.id,
-          ...doc.data(),
-        }));
-
-        const matchedCities = allCities.filter((property: any) =>
-          citiesToUse.includes(property.name)
-        );
-
-        if (!matchedCities.length) {
-          setHouseModelProperty([]);
-          return;
-        }
-
-        const kommuneNumbers: number[] = matchedCities
-          .flatMap((city: any) => {
-            if (subCityFormLocalStorage.length > 0) {
-              const matched =
-                city.kommunerList?.filter((k: any) =>
-                  subCityFormLocalStorage.includes(k.name)
-                ) || [];
-
-              if (matched.length > 0) {
-                return matched.map((k: any) => parseInt(k.number, 10));
-              }
-            }
-
-            return Object.values(city.kommunenummer).map((val: any) =>
-              parseInt(
-                typeof val === "string"
-                  ? val.replace(/"/g, "")
-                  : val.toString(),
-                10
-              )
-            );
-          })
-          .filter((num: any) => !isNaN(num));
-
-        if (!kommuneNumbers.length) {
-          setHouseModelProperty([]);
-          return;
-        }
-
-        const husmodellDocRef = doc(db, "house_model", String(husmodellId));
-        const husmodellSnap = await getDoc(husmodellDocRef);
-
-        if (!husmodellSnap.exists()) {
-          console.error("No such house model document!");
-          setHouseModelProperty([]);
-          return;
-        }
-
-        const allHusmodell = [
-          {
-            propertyId: husmodellSnap.id,
-            ...husmodellSnap.data(),
-          },
-        ];
-
-        const plotsRef = collection(db, "cabin_plot");
-        const chunkSize = 10;
-        const allPlots: any[] = [];
-
-        for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
-          const chunk = kommuneNumbers.slice(i, i + chunkSize);
-          const q = query(
-            plotsRef,
-            where(
-              "lamdaDataFromApi.searchParameters.kommunenummer",
-              "in",
-              chunk
-            )
+          const cityFormLocalStorage: string[] = JSON.parse(
+            localStorage.getItem("city") || "[]"
           );
-          const querySnapshot = await getDocs(q);
+          const subCityFormLocalStorage: string[] = JSON.parse(
+            localStorage.getItem("subcity") || "[]"
+          );
 
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            if (data?.CadastreDataFromApi?.presentationAddressApi) {
-              allPlots.push({ id: doc.id, ...data });
-            }
-          });
-        }
+          const cleanedCities =
+            cityQuery?.split(",").map((city) => city.trim()) || [];
 
-        const filteredPlots = allPlots.filter((plot) => {
-          let numericValue = 0;
+          const citiesToUse =
+            cityFormLocalStorage.length > 0
+              ? cityFormLocalStorage
+              : cleanedCities;
 
-          if (typeof plot.pris === "string") {
-            numericValue = parseInt(
-              plot.pris.replace(/\s/g, "").replace("kr", ""),
-              10
-            );
-          } else if (typeof plot.pris === "number") {
-            numericValue = plot.pris;
-          } else {
-            numericValue = 0;
+          setFormData((prev) => ({
+            ...prev,
+            Område: citiesToUse,
+            SubOmråde:
+              subCityFormLocalStorage.length > 0 ? subCityFormLocalStorage : [],
+          }));
+          const citiesSnapshot = await getDocs(citiesCollectionRef);
+          const allCities = citiesSnapshot.docs.map((doc) => ({
+            propertyId: doc.id,
+            ...doc.data(),
+          }));
+
+          const matchedCities = allCities.filter((property: any) =>
+            citiesToUse.includes(property.name)
+          );
+
+          if (!matchedCities.length) {
+            setHouseModelProperty([]);
+            return;
           }
 
-          return (
-            numericValue >= minRangePlot &&
-            (maxRangePlot !== 10000000 ? numericValue <= maxRangePlot : true)
+          const kommuneNumbers: number[] = matchedCities
+            .flatMap((city: any) => {
+              if (subCityFormLocalStorage.length > 0) {
+                const matched =
+                  city.kommunerList?.filter((k: any) =>
+                    subCityFormLocalStorage.includes(k.name)
+                  ) || [];
+
+                if (matched.length > 0) {
+                  return matched.map((k: any) => parseInt(k.number, 10));
+                }
+              }
+
+              return Object.values(city.kommunenummer).map((val: any) =>
+                parseInt(
+                  typeof val === "string"
+                    ? val.replace(/"/g, "")
+                    : val.toString(),
+                  10
+                )
+              );
+            })
+            .filter((num: any) => !isNaN(num));
+
+          if (!kommuneNumbers.length) {
+            setHouseModelProperty([]);
+            return;
+          }
+
+          const husmodellDocRef = doc(db, "house_model", String(husmodellId));
+          const husmodellSnap = await getDoc(husmodellDocRef);
+
+          if (!husmodellSnap.exists()) {
+            console.error("No such house model document!");
+            setHouseModelProperty([]);
+            return;
+          }
+
+          const allHusmodell = [
+            {
+              propertyId: husmodellSnap.id,
+              ...husmodellSnap.data(),
+            },
+          ];
+
+          const plotsRef = collection(db, "cabin_plot");
+          const chunkSize = 10;
+          const allPlots: any[] = [];
+
+          for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
+            const chunk = kommuneNumbers.slice(i, i + chunkSize);
+            const q = query(
+              plotsRef,
+              where(
+                "lamdaDataFromApi.searchParameters.kommunenummer",
+                "in",
+                chunk
+              )
+            );
+            const querySnapshot = await getDocs(q);
+
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              if (data?.CadastreDataFromApi?.presentationAddressApi) {
+                allPlots.push({ id: doc.id, ...data });
+              }
+            });
+          }
+
+          const filteredPlots = allPlots.filter((plot) => {
+            let numericValue = 0;
+
+            if (typeof plot.pris === "string") {
+              numericValue = parseInt(
+                plot.pris.replace(/\s/g, "").replace("kr", ""),
+                10
+              );
+            } else if (typeof plot.pris === "number") {
+              numericValue = plot.pris;
+            } else {
+              numericValue = 0;
+            }
+
+            return (
+              numericValue >= minRangePlot &&
+              (maxRangePlot !== 10000000 ? numericValue <= maxRangePlot : true)
+            );
+          });
+
+          const combinedData: any = filteredPlots.flatMap((plot) =>
+            allHusmodell.map((house) => ({ plot, house }))
           );
-        });
 
-        const combinedData: any = filteredPlots.flatMap((plot) =>
-          allHusmodell.map((house) => ({ plot, house }))
-        );
+          setHouseModelProperty(combinedData);
+        } else {
+          const [cityFormLocalStorage, subCityFormLocalStorage] = [
+            JSON.parse(localStorage.getItem("city") || "[]"),
+            JSON.parse(localStorage.getItem("subcity") || "[]"),
+          ];
+          const citiesSnapshot = await getDocs(collection(db, "cities"));
+          const fetchedCities = citiesSnapshot.docs.map((doc) => ({
+            propertyId: doc.id,
+            ...doc.data(),
+          }));
 
-        setHouseModelProperty(combinedData);
+          const citiesToUse =
+            cityFormLocalStorage.length > 0
+              ? cityFormLocalStorage
+              : fetchedCities.map((city: any) => city.name);
+
+          const matchedCities = fetchedCities.filter((property: any) =>
+            citiesToUse.includes(property.name)
+          );
+
+          setFormData((prev) => ({
+            ...prev,
+            Område: cityFormLocalStorage || 0,
+            SubOmråde: subCityFormLocalStorage,
+          }));
+
+          if (!matchedCities.length) {
+            setHouseModelProperty([]);
+            return;
+          }
+
+          let kommuneNumbers: number[] = [];
+
+          if (subCityFormLocalStorage.length > 0) {
+            matchedCities.forEach((property: any) => {
+              const matched = property.kommunerList?.filter((k: any) =>
+                subCityFormLocalStorage.includes(k.name)
+              );
+              if (matched?.length) {
+                kommuneNumbers.push(
+                  ...matched.map((k: any) => parseInt(k.number, 10))
+                );
+              } else {
+                kommuneNumbers.push(
+                  ...Object.values(property?.kommunenummer || {}).map(
+                    (val: any) =>
+                      parseInt(
+                        (typeof val === "string"
+                          ? val.replace(/"/g, "")
+                          : val
+                        ).toString(),
+                        10
+                      )
+                  )
+                );
+              }
+            });
+          } else {
+            kommuneNumbers = matchedCities.flatMap((property: any) =>
+              Object.values(property?.kommunenummer || {}).map((val: any) =>
+                parseInt(
+                  (typeof val === "string"
+                    ? val.replace(/"/g, "")
+                    : val
+                  ).toString(),
+                  10
+                )
+              )
+            );
+          }
+
+          kommuneNumbers = kommuneNumbers.filter((num) => !isNaN(num));
+          if (!kommuneNumbers.length) {
+            setHouseModelProperty([]);
+            return;
+          }
+
+          const plotChunks = [];
+
+          const chunkSize = 10;
+
+          for (let i = 0; i < kommuneNumbers.length; i += chunkSize) {
+            const chunk = kommuneNumbers.slice(i, i + chunkSize);
+
+            const shouldLimitResults =
+              cityFormLocalStorage.length === 0 &&
+              subCityFormLocalStorage.length === 0 &&
+              !maxRangePlot;
+
+            const constraints: any = [
+              where(
+                "lamdaDataFromApi.searchParameters.kommunenummer",
+                "in",
+                chunk
+              ),
+            ];
+
+            if (shouldLimitResults) {
+              constraints.push(limit(20));
+            }
+
+            const q = query(collection(db, "cabin_plot"), ...constraints);
+            plotChunks.push(getDocs(q));
+          }
+
+          const husmodellDocRef = doc(db, "house_model", String(husmodellId));
+          const husmodellSnap = await getDoc(husmodellDocRef);
+
+          if (!husmodellSnap.exists()) {
+            console.error("No such house model document!");
+            setHouseModelProperty([]);
+            return;
+          }
+
+          const allHusmodell = [
+            {
+              propertyId: husmodellSnap.id,
+              ...husmodellSnap.data(),
+            },
+          ];
+
+          const [...plotSnapshots] = await Promise.all([...plotChunks]);
+
+          const allPlots = plotSnapshots.flatMap((snapshot) =>
+            snapshot.docs
+              .map((doc) => ({ id: doc.id, ...doc.data() }))
+              .filter(
+                (data: any) => data?.CadastreDataFromApi?.presentationAddressApi
+              )
+          );
+
+          const filteredPlots = allPlots.filter((plot: any) => {
+            let numericValue = 0;
+
+            if (typeof plot.pris === "string") {
+              numericValue = parseInt(
+                plot.pris.replace(/\s/g, "").replace("kr", ""),
+                10
+              );
+            } else if (typeof plot.pris === "number") {
+              numericValue = plot.pris;
+            } else {
+              numericValue = 0;
+            }
+
+            return (
+              numericValue >= minRangePlot &&
+              (maxRangePlot !== 10000000 ? numericValue <= maxRangePlot : true)
+            );
+          });
+
+          const combinedData: any = filteredPlots.flatMap((plot: any) =>
+            allHusmodell.map((house) => ({ plot, house }))
+          );
+
+          setHouseModelProperty(combinedData);
+        }
       } catch (error) {
         console.error("Error fetching properties:", error);
         setHouseModelProperty([]);
