@@ -38,7 +38,7 @@ const Tomt: React.FC<any> = ({
                 handlePrevious();
               }}
             >
-              Husmodell
+              Hyttemodell
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div

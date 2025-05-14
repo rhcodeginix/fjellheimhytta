@@ -44,7 +44,7 @@ const HusmodellDetail: React.FC<{
               </Link>
               <Image src={Ic_breadcrumb_arrow} alt="arrow" />
               <span className="text-secondary2 text-xs md:text-sm">
-                Husmodell
+                Hyttemodell
               </span>
             </div>
             <PropertyHouseDetails

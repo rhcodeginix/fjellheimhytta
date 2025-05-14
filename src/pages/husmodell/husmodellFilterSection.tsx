@@ -227,7 +227,7 @@ const HusmodellFilterSection: React.FC<{
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Type husmodell")}
               >
-                Type husmodell
+                Type hyttemodell
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
@@ -417,7 +417,7 @@ const HusmodellFilterSection: React.FC<{
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Husmodell")}
               >
-                Husmodell
+                Hyttemodell
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"

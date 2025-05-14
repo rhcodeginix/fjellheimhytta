@@ -192,7 +192,7 @@ const Tilpass: React.FC<any> = ({
                     handlePrevious();
                   }}
                 >
-                  Husmodell
+                  Hyttemodell
                 </div>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
                 <span className="text-secondary2 text-xs md:text-sm">

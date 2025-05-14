@@ -198,7 +198,7 @@ const Tilpass: React.FC<{
                 handlePrevious();
               }}
             >
-              Tomt og husmodell
+              Tomt og hyttemodell
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <span className="text-secondary2 text-xs md:text-sm">Tilpass</span>

@@ -234,7 +234,7 @@ const HusmodellDetail = () => {
   }, [husmodellData?.Leverandører]);
   const steps = [
     {
-      name: "Husmodell",
+      name: "Hyttemodell",
       component: (
         <Husmodell
           handleNext={handleNext}

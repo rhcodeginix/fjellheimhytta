@@ -134,13 +134,13 @@ const Tomt: React.FC<{
                     );
                   }}
                 >
-                  Start med tomt og husmodell
+                  Start med tomt og hyttemodell
                 </Link>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
               </>
             )}
             <span className="text-secondary2 text-xs md:text-sm">
-              Husmodell og tomt
+              Hyttemodell og tomt
             </span>
           </div>
           <PropertyHouseDetails
