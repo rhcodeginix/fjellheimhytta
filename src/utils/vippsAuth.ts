@@ -23,7 +23,6 @@ export const generateState = (): string => {
 export const storeState = (state: string): void => {
   try {
     localStorage.setItem("vippsAuthState", state);
-    console.log("State stored successfully:", state);
   } catch (error) {
     console.error("Failed to store state in localStorage:", error);
   }
@@ -33,7 +32,6 @@ export const getVippsLoginUrl = (): string => {
   const state = generateState();
   storeState(state);
 
-  // Build URL with parameters directly
   const authUrl = new URL(VIPPS_CONFIG.authEndpoint);
   authUrl.searchParams.append("client_id", VIPPS_CONFIG.clientId);
   authUrl.searchParams.append("redirect_uri", VIPPS_CONFIG.redirectUri);
@@ -42,21 +40,6 @@ export const getVippsLoginUrl = (): string => {
   authUrl.searchParams.append("state", state);
 
   const fullUrl = authUrl.toString();
-
-  console.log("=== Vipps Login URL Generation ===");
-  console.log("Generated state:", state);
-  console.log("Redirecting to:", fullUrl);
-  console.log("URL parameters:", {
-    clientId: VIPPS_CONFIG.clientId,
-    redirectUri: VIPPS_CONFIG.redirectUri,
-    responseType: "code",
-    scope: VIPPS_CONFIG.scope,
-    state: state,
-  });
-
-  // Check if state was properly stored
-  const verifyState = localStorage.getItem("vippsAuthState");
-  console.log("Verifying state was stored:", verifyState);
 
   return fullUrl;
 };

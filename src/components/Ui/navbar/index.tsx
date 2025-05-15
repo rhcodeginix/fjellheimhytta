@@ -91,7 +91,6 @@ const Header = () => {
   const handleVippsLogin = () => {
     try {
       const vippsUrl = getVippsLoginUrl();
-      console.log("Redirecting to Vipps login:", vippsUrl);
 
       toast({
         title: "Redirecting to Vipps",
@@ -250,7 +249,12 @@ const Header = () => {
                   }}
                 >
                   Fortsett med
-                  <Image fetchPriority="auto" src={Ic_vapp} alt="logo" className="w-[40px] md:w-auto" />
+                  <Image
+                    fetchPriority="auto"
+                    src={Ic_vapp}
+                    alt="logo"
+                    className="w-[40px] md:w-auto"
+                  />
                 </div>
               )}
             </div>

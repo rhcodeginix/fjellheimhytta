@@ -71,11 +71,12 @@ const HusmodellProperty: React.FC<{
                         "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
                     }}
                     onClick={() => {
-                      const hasQuery = router.asPath.includes('?');
-                      const separator = hasQuery ? '&' : '?';
-                      console.log(separator);
-                      
-                      router.push(`${router.asPath}${separator}husmodellId=${property?.id}`);
+                      const hasQuery = router.asPath.includes("?");
+                      const separator = hasQuery ? "&" : "?";
+
+                      router.push(
+                        `${router.asPath}${separator}husmodellId=${property?.id}`
+                      );
                     }}
                   >
                     <div className="mb-2 md:mb-3 desktop:mb-4 flex items-start justify-between gap-3">
@@ -169,12 +170,13 @@ const HusmodellProperty: React.FC<{
                             text="Utforsk"
                             className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
-                              const hasQuery = router.asPath.includes('?');
-                              const separator = hasQuery ? '&' : '?';
-                              
-                              router.push(`${router.asPath}${separator}husmodellId=${property?.id}`);
+                              const hasQuery = router.asPath.includes("?");
+                              const separator = hasQuery ? "&" : "?";
+
+                              router.push(
+                                `${router.asPath}${separator}husmodellId=${property?.id}`
+                              );
                             }}
-                            
                           />
                         </div>
                       </div>
