@@ -1,4 +1,3 @@
-import Loading from "@/components/Loading";
 import Image from "next/image";
 import Ic_wishlist_heart from "@/public/images/Ic_wishlist_heart.svg";
 import Button from "@/components/common/button";
@@ -7,6 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { formatPrice } from "../belop/belopProperty";
 import { useRouter } from "next/router";
+import { Skeleton } from "@mui/material";
 
 const HusmodellProperty: React.FC<{
   isLoading: any;
@@ -53,7 +53,7 @@ const HusmodellProperty: React.FC<{
       <div>
         {isLoading ? (
           <div className="relative">
-            <Loading />
+            <Skeleton variant="rounded" width="100%" height="400px" />
           </div>
         ) : (
           <div className="flex flex-col gap-4 lg:gap-6 desktop:gap-8">

@@ -5,10 +5,11 @@ import Illustrasjoner, {
 } from "../RegulationHusmodell/Illustrasjoner";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
-import Loader from "@/components/Loader";
+// import Loader from "@/components/Loader";
 import Modal from "@/components/common/modal";
 import Image from "next/image";
 import Ic_close from "@/public/images/Ic_close.svg";
+import { Skeleton } from "@mui/material";
 
 const HouseDetailPage: React.FC = () => {
   const router = useRouter();
@@ -94,7 +95,12 @@ const HouseDetailPage: React.FC = () => {
   return (
     <div className="relative">
       {loading ? (
-        <Loader />
+        <Skeleton
+          variant="rounded"
+          width="100%"
+          height="400px"
+          // className="m-10"
+        />
       ) : (
         <div>
           <Illustrasjoner />

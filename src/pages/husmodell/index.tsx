@@ -34,12 +34,6 @@ const HusmodellPropertyPage: React.FC = () => {
     }
   }, []);
 
-  // const [kommune, setKommune] = useState<any>(null);
-  // useEffect(() => {
-  //   const queryParams = new URLSearchParams(window.location.search);
-  //   const cityQuery = queryParams.get("Kommue");
-  //   setKommune(cityQuery);
-  // }, []);
   useEffect(() => {
     const fetchMaxPrice = async () => {
       try {
