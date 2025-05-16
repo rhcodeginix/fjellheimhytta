@@ -1,10 +1,10 @@
-import Button from "@/components/common/button";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+// import Button from "@/components/common/button";
+// import { useRouter } from "next/router";
+import React from "react";
 const Chatbot: React.FC = () => {
-  const router = useRouter();
+  // const router = useRouter();
   // const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const [isVisible, setIsVisible] = useState(true);
+  // const [isVisible, setIsVisible] = useState(true);
 
   // useEffect(() => {
   //   const script = document.createElement("script");
@@ -30,7 +30,7 @@ const Chatbot: React.FC = () => {
 
   return (
     <>
-      {router.pathname !== "/add-plot" && isVisible && (
+      {/* {router.pathname !== "/add-plot" && isVisible && (
         <div
           className="fixed bottom-[12px] left-[12px] bg-white w-[240px] sm:w-[284px] border-gray3 rounded-[12px] p-4"
           style={{
@@ -57,7 +57,7 @@ const Chatbot: React.FC = () => {
             onClick={() => router.push("/add-plot")}
           />
         </div>
-      )}
+      )} */}
     </>
   );
 };
