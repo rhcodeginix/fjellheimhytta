@@ -207,6 +207,7 @@ const Tilpass: React.FC<{
             HouseModelData={HouseModelData}
             lamdaDataFromApi={lamdaDataFromApi}
             supplierData={supplierData}
+            loading={loadingLamdaData}
             pris={pris}
           />
         </SideSpaceContainer>

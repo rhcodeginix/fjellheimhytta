@@ -297,6 +297,7 @@ const Tilbud: React.FC<{
                 lamdaDataFromApi={lamdaDataFromApi}
                 supplierData={supplierData}
                 pris={pris}
+                loading={loading}
               />
             </SideSpaceContainer>
           </div>

@@ -7,7 +7,6 @@ import Ic_chevron_up from "@/public/images/Ic_chevron_up.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import Modal from "@/components/common/modal";
 import Ic_download_primary from "@/public/images/Ic_download.svg";
-// import Loader from "@/components/Loader";
 import { useRouter } from "next/router";
 import { File } from "lucide-react";
 import FileInfo from "@/components/FileInfo";
@@ -17,7 +16,6 @@ import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Skeleton } from "@mui/material";
 
 export function formatCurrency(nokValue: number | string) {
   const number =
@@ -53,9 +51,9 @@ const handleDownload = async (filePath: string) => {
   }
 };
 
-const Illustrasjoner: React.FC = () => {
+const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
   const [finalData, setFinalData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
   const textareaRef = useRef<any>(null);
   const husmodellData = finalData?.Husdetaljer;
   const router = useRouter();
@@ -81,7 +79,7 @@ const Illustrasjoner: React.FC = () => {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
@@ -117,13 +115,10 @@ const Illustrasjoner: React.FC = () => {
   return (
     <div className="relative">
       {loading ? (
-        // <Loader />
-        <Skeleton
-          variant="rounded"
-          width="100%"
-          height="400px"
-          // className="m-10"
-        />
+        <div
+          className="w-full h-[400px] rounded-md custom-shimmer"
+          style={{ borderRadius: "8px" }}
+        ></div>
       ) : (
         <>
           <div className="border border-[#DCDFEA] rounded-lg overflow-hidden">

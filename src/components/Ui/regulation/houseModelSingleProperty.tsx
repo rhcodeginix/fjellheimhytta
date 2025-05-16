@@ -218,6 +218,7 @@ const HouseModelSingleProperty: React.FC<{
             HouseModelData={HouseModelData}
             lamdaDataFromApi={lamdaDataFromApi}
             supplierData={supplierData}
+            loading={loadingLamdaData}
           />
         </SideSpaceContainer>
       </div>

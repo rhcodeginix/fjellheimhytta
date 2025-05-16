@@ -217,6 +217,7 @@ const TomtHouseDetails: React.FC<{
           </div>
           <PropertyHouseDetails
             HouseModelData={HouseModelData}
+            loading={loadingLamdaData}
             lamdaDataFromApi={lamdaDataFromApi}
             supplierData={supplierData}
           />

@@ -240,7 +240,7 @@ const PropertyDetailPage: React.FC<{
         <>
           <SideSpaceContainer>
             <div className="pt-[24px] pb-[86px]">
-              <Illustrasjoner />
+              <Illustrasjoner loading={loading} />
               <div className="w-full flex gap-[60px] mt-8">
                 <div className="w-[43%]">
                   <h4 className="text-black mb-6 font-semibold text-2xl">

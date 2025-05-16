@@ -7,7 +7,6 @@ import Image from "next/image";
 import HouseDetailsection from "@/components/Ui/houseDetail/houseDetailSection";
 import HouseDetailPage from "@/components/Ui/houseDetail";
 import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
-import { Skeleton } from "@mui/material";
 import { useRouter } from "next/router";
 
 const HusmodellDetail: React.FC<{
@@ -27,16 +26,6 @@ const HusmodellDetail: React.FC<{
 }) => {
   const router = useRouter();
 
-  if (loading) {
-    return (
-      <Skeleton
-        variant="rounded"
-        width="100%"
-        height="400px"
-        // className="m-10"
-      />
-    );
-  }
   return (
     <>
       <div className="relative">
@@ -59,6 +48,7 @@ const HusmodellDetail: React.FC<{
               lamdaDataFromApi={lamdaDataFromApi}
               supplierData={supplierData}
               pris={pris}
+              loading={loading}
             />
           </SideSpaceContainer>
         </div>

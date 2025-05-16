@@ -9,7 +9,6 @@ import { db } from "@/config/firebaseConfig";
 import Modal from "@/components/common/modal";
 import Image from "next/image";
 import Ic_close from "@/public/images/Ic_close.svg";
-import { Skeleton } from "@mui/material";
 
 const HouseDetailPage: React.FC = () => {
   const router = useRouter();
@@ -95,15 +94,13 @@ const HouseDetailPage: React.FC = () => {
   return (
     <div className="relative">
       {loading ? (
-        <Skeleton
-          variant="rounded"
-          width="100%"
-          height="400px"
-          // className="m-10"
-        />
+        <div
+          className="w-full h-[400px] rounded-md custom-shimmer"
+          style={{ borderRadius: "8px" }}
+        ></div>
       ) : (
         <div>
-          <Illustrasjoner />
+          <Illustrasjoner loading={loading} />
           <div className="w-full flex flex-col lg:flex-row gap-5 md:gap-6 lg:gap-10 desktop:gap-[60px] mt-8">
             <div className="w-full lg:w-[43%]">
               <h4 className="text-black mb-4 md:mb-6 font-semibold text-lg md:text-xl desktop:text-2xl">
