@@ -219,18 +219,18 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                         </tr>
                         <tr>
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                            L x B:
+                            Lengde
                           </td>
                           <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                            {husmodellData?.LB}
+                            {husmodellData?.Lengde}
                           </td>
                         </tr>
                         <tr>
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
-                            Soverom
+                            Bredde
                           </td>
                           <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
-                            {husmodellData?.Soverom}
+                            {husmodellData?.Bredde}
                           </td>
                         </tr>
                       </tbody>
