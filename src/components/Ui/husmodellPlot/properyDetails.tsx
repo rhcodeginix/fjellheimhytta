@@ -6,7 +6,8 @@ const PropertyDetails: React.FC<{
   CadastreDataFromApi: any;
   lamdaDataFromApi: any;
   askData: any;
-}> = ({ CadastreDataFromApi, lamdaDataFromApi, askData }) => {
+  HouseModelData?: any;
+}> = ({ CadastreDataFromApi, lamdaDataFromApi, askData, HouseModelData }) => {
   return (
     <>
       <div
@@ -137,9 +138,8 @@ const PropertyDetails: React.FC<{
                   Boligen kan ha en
                 </p>
                 <p className="text-black text-sm lg:text-base font-semibold">
-                  Grunnflate på{" "}
-                  {askData?.bya_calculations?.results?.available_building_area}{" "}
-                  m<sup>2</sup>
+                  Grunnflate på {HouseModelData?.Husdetaljer?.BebygdAreal} m
+                  <sup>2</sup>
                 </p>
                 <p className="text-black text-xs lg:text-sm">
                   Tilgjengelig{" "}

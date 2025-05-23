@@ -205,6 +205,7 @@ const Tilbud: React.FC<{
           askData={askData}
           CadastreDataFromApi={CadastreDataFromApi}
           lamdaDataFromApi={lamdaDataFromApi}
+          HouseModelData={HouseModelData}
         />
       </div>
 

@@ -111,6 +111,19 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
     setPopupMode("gallery");
     setIsPopupOpen(true);
   };
+  const popup = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (popup.current && !popup.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="relative">
@@ -236,7 +249,10 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
       )}
       {isPopupOpen && (
         <Modal isOpen={true} onClose={() => setIsPopupOpen(false)}>
-          <div className="bg-white p-2 md:p-6 rounded-lg max-w-[300px] sm:max-w-[500px] md:max-w-[700px] lg:max-w-4xl mx-4 w-full relative">
+          <div
+            className="bg-white p-2 md:p-6 rounded-lg max-w-[300px] sm:max-w-[500px] md:max-w-[700px] lg:max-w-4xl mx-4 w-full relative"
+            ref={popup}
+          >
             <button
               className="absolute top-3 right-0 md:right-3"
               onClick={() => setIsPopupOpen(false)}
