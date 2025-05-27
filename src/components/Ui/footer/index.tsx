@@ -2,7 +2,7 @@ import React from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Ic_logo from "@/public/images/Ic_logo_footer.svg";
 import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -36,7 +36,7 @@ const Footer = () => {
               </div>
             </div>
             <div>
-              <div className="sm:items-center gap-y-2 gap-x-5 lg:gap-[38px] flex flex-wrap mb-6 md:mb-[12px]">
+              {/* <div className="sm:items-center gap-y-2 gap-x-5 lg:gap-[38px] flex flex-wrap mb-6 md:mb-[12px]">
                 <Link
                   href={""}
                   className="text-sm md:text-base text-black font-medium"
@@ -61,7 +61,7 @@ const Footer = () => {
                 >
                   Om oss
                 </Link>
-              </div>
+              </div> */}
               <p className="text-xs md:text-sm text-black font-medium text-center desktop:text-end">
                 © 2025 iPlot AS. All rights reserved.
               </p>

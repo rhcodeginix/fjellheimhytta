@@ -14,8 +14,8 @@ const HusmodellPropertyPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     address: "",
-    Eiendomstype: [] as string[],
-    TypeHusmodell: [] as string[],
+    // Eiendomstype: [] as string[],
+    // TypeHusmodell: [] as string[],
     AntallSoverom: [] as string[],
     minRangeForHusmodell: 0,
     maxRangeForHusmodell: maxRangeData,
@@ -127,14 +127,14 @@ const HusmodellPropertyPage: React.FC = () => {
               10
             );
 
-            const boligtype = houseDetails?.VelgBoligtype;
-            const egenskaper = houseDetails?.VelgEgenskaperBoligtype || [];
-            const hasEgenskaper = egenskaper.length > 0;
+            // const boligtype = houseDetails?.VelgBoligtype;
+            // const egenskaper = houseDetails?.VelgEgenskaperBoligtype || [];
+            // const hasEgenskaper = egenskaper.length > 0;
 
             const hasBedroomFilter = formData.AntallSoverom.length > 0;
             const hasMinPriceFilter = formData.minRangeForHusmodell !== 0;
             const hasMaxPriceFilter = formData.maxRangeForHusmodell !== 0;
-            const hasTypeFilter = formData.TypeHusmodell.length > 0;
+            // const hasTypeFilter = formData.TypeHusmodell.length > 0;
 
             const matchesBedrooms =
               !hasBedroomFilter || soveromValues.includes(houseDetails.Soverom);
@@ -142,20 +142,18 @@ const HusmodellPropertyPage: React.FC = () => {
               !hasMinPriceFilter || housePrice >= formData.minRangeForHusmodell;
             const matchesMaxPrice =
               !hasMaxPriceFilter || housePrice <= formData.maxRangeForHusmodell;
-            const matchesBoligtype =
-              (!hasTypeFilter || formData.TypeHusmodell.includes(boligtype)) &&
-              hasEgenskaper;
-            const matchesEgenskaper =
-              !hasTypeFilter ||
-              egenskaper.some((item: string) =>
-                formData.TypeHusmodell.includes(item)
-              );
+            // const matchesBoligtype =
+            //   (!hasTypeFilter || formData.TypeHusmodell.includes(boligtype)) &&
+            //   hasEgenskaper;
+            // const matchesEgenskaper =
+            //   !hasTypeFilter ||
+            //   egenskaper.some((item: string) =>
+            //     formData.TypeHusmodell.includes(item)
+            //   );
 
             return (
-              matchesBedrooms &&
-              matchesMinPrice &&
-              matchesMaxPrice &&
-              (matchesBoligtype || matchesEgenskaper)
+              matchesBedrooms && matchesMinPrice && matchesMaxPrice
+              // && (matchesBoligtype || matchesEgenskaper)
             );
           }) || data;
 
