@@ -5,13 +5,13 @@ import { useState } from "react";
 import { Slider, styled } from "@mui/material";
 
 const CustomSlider = styled(Slider)({
-  color: "#6941C6",
+  color: "#DF761F",
   height: 9,
   padding: 0,
   "& .MuiSlider-thumb": {
     height: 24,
     width: 24,
-    backgroundColor: "#6941C6",
+    backgroundColor: "#DF761F",
     border: "6px solid #fff",
   },
   "& .MuiSlider-rail": {
@@ -44,7 +44,7 @@ type FormDataType = {
   AntallSoverom: string[];
   minRangeForHusmodell: number;
   maxRangeForHusmodell: number;
-  Tomtetype: string[];
+  // Tomtetype: string[];
 };
 
 const HusmodellFilterSection: React.FC<{
@@ -55,7 +55,7 @@ const HusmodellFilterSection: React.FC<{
   const [openIndex, setOpenIndex] = useState<string[]>([
     // "Type husmodell",
     "Antall soverom",
-    "Tomtetype",
+    // "Tomtetype",
     "Husmodell",
   ]);
 
@@ -85,13 +85,11 @@ const HusmodellFilterSection: React.FC<{
     { name: "2 Soverom", value: "2 Soverom" },
     { name: "3 Soverom", value: "3 Soverom" },
     { name: "4 Soverom", value: "4 Soverom" },
-    { name: "5 Soverom", value: "5 Soverom" },
-    { name: "6 Soverom", value: "6 Soverom" },
   ];
-  const TomtetypeArray: any = [
-    { name: "Flat tomt", value: "Flat tomt" },
-    { name: "Skrånet", value: "Skrånet" },
-  ];
+  // const TomtetypeArray: any = [
+  //   { name: "Flat tomt", value: "Flat tomt" },
+  //   { name: "Skrånet", value: "Skrånet" },
+  // ];
 
   return (
     <>
@@ -110,7 +108,7 @@ const HusmodellFilterSection: React.FC<{
                 // TypeHusmodell: [],
                 AntallSoverom: [],
                 minRangeForHusmodell: 0,
-                Tomtetype: [],
+                // Tomtetype: [],
                 maxRangeForHusmodell: maxRangeData,
               }));
             }}
@@ -342,7 +340,7 @@ const HusmodellFilterSection: React.FC<{
                 </>
               )}
             </div>
-            <div
+            {/* <div
               className="w-full bg-white p-4 rounded-lg"
               style={{
                 boxShadow:
@@ -403,7 +401,7 @@ const HusmodellFilterSection: React.FC<{
                   </div>
                 </>
               )}
-            </div>
+            </div> */}
             <div
               className="w-full bg-white p-4 rounded-lg"
               style={{
@@ -415,7 +413,7 @@ const HusmodellFilterSection: React.FC<{
                 className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Husmodell")}
               >
-                Hyttemodell
+                Pris
                 <Image
                   src={Ic_chevron_down}
                   alt="arrow"
@@ -451,10 +449,10 @@ const HusmodellFilterSection: React.FC<{
                   </div>
                   <div className="flex items-center justify-between h-[30px] mt-2">
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData?.minRangeForHusmodell} NOK
+                      {formData?.minRangeForHusmodell}
                     </div>
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData?.maxRangeForHusmodell} NOK
+                      {formData?.maxRangeForHusmodell}
                     </div>
                   </div>
                 </>

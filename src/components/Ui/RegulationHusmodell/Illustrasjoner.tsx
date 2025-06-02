@@ -3,8 +3,8 @@ import Image from "next/image";
 import Ic_close from "@/public/images/Ic_close.svg";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
-import Ic_chevron_up from "@/public/images/Ic_chevron_up.svg";
-import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
+// import Ic_chevron_up from "@/public/images/Ic_chevron_up.svg";
+// import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import Modal from "@/components/common/modal";
 import Ic_download_primary from "@/public/images/Ic_download.svg";
 import { useRouter } from "next/router";
@@ -17,16 +17,33 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-export function formatCurrency(nokValue: number | string) {
-  const number =
-    typeof nokValue === "string"
-      ? Number(nokValue.replace(/\s/g, ""))
-      : Number(nokValue);
+// export function formatCurrency(value: number | string) {
+//   const number =
+//     typeof value === "string"
+//       ? Number(value.replace(/\s/g, ""))
+//       : Number(value);
 
-  return (
-    new Intl.NumberFormat("de-DE", { style: "decimal" }).format(number) + " NOK"
-  );
+//   return (
+//     new Intl.NumberFormat("de-DE", { style: "decimal" }).format(number) + " NOK"
+//   );
+// }
+export function formatCurrency(value: number | string) {
+  const number =
+    typeof value === "string"
+      ? Number(value.replace(/\s/g, "").replace(/kr/i, ""))
+      : value;
+
+  if (isNaN(Number(number))) return value;
+
+  const formatted = new Intl.NumberFormat("no-NO", {
+    style: "decimal",
+    useGrouping: true,
+    minimumFractionDigits: 0,
+  }).format(number);
+
+  return `kr ${formatted}`;
 }
+
 const handleDownload = async (filePath: string) => {
   try {
     if (!filePath) {
@@ -93,9 +110,9 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
   const [popupMode, setPopupMode] = useState<"single" | "gallery">("single");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const toggleAccordion = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleAccordion = () => {
+  //   setIsOpen(!isOpen);
+  // };
   const images = finalData?.Husdetaljer?.photo3D || [];
 
   const displayedImages = images.slice(0, 6);
@@ -135,7 +152,7 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
       ) : (
         <>
           <div className="border border-[#DCDFEA] rounded-lg overflow-hidden">
-            <button
+            {/* <button
               className={`bg-white flex justify-between items-center w-full p-2 sm:p-3 md:p-5 duration-1000 ${isOpen ? "active" : ""}`}
               onClick={toggleAccordion}
             >
@@ -160,9 +177,9 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
                   />
                 )}
               </div>
-            </button>
+            </button> */}
             <div
-              className={`overflow-hidden max-h-0 ${isOpen ? "p-4 md:p-5 border-t border-[#DCDFEA]" : ""}`}
+              className={`overflow-hidden max-h-0 ${isOpen ? "p-4 md:p-5" : ""}`}
               style={{
                 maxHeight: isOpen ? "max-content" : "0",
                 transition: "max-height 0.2s ease-out",

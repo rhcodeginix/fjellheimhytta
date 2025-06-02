@@ -10,17 +10,31 @@ import { db } from "@/config/firebaseConfig";
 import { formatPrice } from "@/pages/belop/belopProperty";
 import NorkartMap from "@/components/map";
 
-export function convertCurrencyFormat(input: any) {
-  const numberPart = String(input).replace(/\s+/g, "").replace("kr", "");
+// export function convertCurrencyFormat(input: any) {
+//   const numberPart = String(input).replace(/\s+/g, "").replace("kr", "");
 
-  const formatted = parseInt(numberPart, 10).toLocaleString("no-NO", {
+//   const formatted = parseInt(numberPart, 10).toLocaleString("no-NO", {
+//     style: "decimal",
+//     minimumFractionDigits: 0,
+//     useGrouping: false,
+//   });
+
+//   const nokFormat = formatted.replace(/(\d)(?=(\d{3})+$)/g, "$1.") + " NOK";
+//   return nokFormat;
+// }
+export function convertCurrencyFormat(input: any) {
+  const numberPart = String(input).replace(/\s+/g, "").replace(/kr/i, "");
+
+  const parsed = parseInt(numberPart, 10);
+  if (isNaN(parsed)) return input;
+
+  const formatted = parsed.toLocaleString("no-NO", {
     style: "decimal",
+    useGrouping: true,
     minimumFractionDigits: 0,
-    useGrouping: false,
   });
 
-  const nokFormat = formatted.replace(/(\d)(?=(\d{3})+$)/g, "$1.") + " NOK";
-  return nokFormat;
+  return `kr ${formatted}`;
 }
 
 const PlotProperty: React.FC<{
@@ -238,7 +252,7 @@ const PlotProperty: React.FC<{
                                       )
                                     )
                                   )
-                                : "0 NOK"}
+                                : "kr 0"}
                             </h6>
                           </div>
                           <div className="w-1/2">
@@ -249,9 +263,9 @@ const PlotProperty: React.FC<{
                             <h6 className="text-xs md:text-sm font-semibold desktop:text-base">
                               {property?.plot?.pris
                                 ? property?.plot?.pris === 0
-                                  ? "0 NOK"
+                                  ? "kr 0"
                                   : convertCurrencyFormat(property?.plot?.pris)
-                                : "0 NOK"}
+                                : "kr 0"}
                             </h6>
                           </div>
                         </div>

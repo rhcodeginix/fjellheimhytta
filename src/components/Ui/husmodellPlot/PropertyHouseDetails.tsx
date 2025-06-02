@@ -18,12 +18,12 @@ const PropertyHouseDetails: React.FC<{
   const router = useRouter();
   const leadId = router.query["leadId"];
   const Husdetaljer = HouseModelData?.Husdetaljer;
-  const [kommune, setKommune] = useState<any>(null);
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const cityQuery = queryParams.get("Kommue");
-    setKommune(cityQuery);
-  }, []);
+  // const [kommune, setKommune] = useState<any>(null);
+  // useEffect(() => {
+  //   const queryParams = new URLSearchParams(window.location.search);
+  //   const cityQuery = queryParams.get("Kommue");
+  //   setKommune(cityQuery);
+  // }, []);
   const [equityAmount, setEquityAmount] = useState<any>(null);
 
   const { customizeHouse: custHouse } = useCustomizeHouse();
@@ -95,7 +95,7 @@ const PropertyHouseDetails: React.FC<{
                 <span className="font-bold">
                   {HouseModelData?.Husdetaljer?.husmodell_name}
                 </span>{" "}
-                fra{" "}
+                {/* fra{" "}
                 <span className="font-bold">{supplierData?.company_name}</span>{" "}
                 bygget i{" "}
                 <span className="font-bold">
@@ -103,7 +103,7 @@ const PropertyHouseDetails: React.FC<{
                     lamdaDataFromApi?.eiendomsInformasjon?.kommune_info
                       ?.kommune}{" "}
                   Kommune
-                </span>
+                </span> */}
               </h4>
             )}
             {loading && lamdaDataFromApi ? (
@@ -170,7 +170,7 @@ const PropertyHouseDetails: React.FC<{
                 Dine tillegg
               </p>
               <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
-                {totalCustPris ? formatCurrency(totalCustPris) : "0 NOK"}
+                {totalCustPris ? formatCurrency(totalCustPris) : "kr 0"}
               </h4>
             </div>
             <div>
@@ -185,9 +185,9 @@ const PropertyHouseDetails: React.FC<{
                 Inkludert tomtepris (
                 {pris
                   ? pris === 0
-                    ? "0 NOK"
+                    ? "kr 0"
                     : convertCurrencyFormat(pris)
-                  : "0 NOK"}
+                  : "kr 0"}
                 )
               </p>
             </div>

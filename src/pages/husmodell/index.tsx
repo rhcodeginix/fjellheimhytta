@@ -2,7 +2,7 @@ import SideSpaceContainer from "@/components/common/sideSpace";
 import { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
-import Button from "@/components/common/button";
+// import Button from "@/components/common/button";
 import HusmodellFilterSection from "./husmodellFilterSection";
 import HusmodellProperty from "./HusmodellProperty";
 import { Settings2, X } from "lucide-react";
@@ -19,7 +19,6 @@ const HusmodellPropertyPage: React.FC = () => {
     AntallSoverom: [] as string[],
     minRangeForHusmodell: 0,
     maxRangeForHusmodell: maxRangeData,
-    Tomtetype: [] as string[],
   });
   const [total, setTotal] = useState();
 
@@ -32,7 +31,7 @@ const HusmodellPropertyPage: React.FC = () => {
         maxRangeForHusmodell: parseInt(storedMaxPrice, 10),
       }));
     }
-  }, []);
+  }, [maxRangeData]);
 
   useEffect(() => {
     const fetchMaxPrice = async () => {
@@ -55,12 +54,10 @@ const HusmodellPropertyPage: React.FC = () => {
           }))
           .sort((a: any, b: any) => {
             const priceA = parseInt(
-              a?.Husdetaljer?.pris?.replace(/\s/g, "") || "0",
-              10
+              a?.Husdetaljer?.pris?.replace(/\s/g, "") || "0"
             );
             const priceB = parseInt(
-              b?.Husdetaljer?.pris?.replace(/\s/g, "") || "0",
-              10
+              b?.Husdetaljer?.pris?.replace(/\s/g, "") || "0"
             );
             return priceA - priceB;
           });
@@ -105,12 +102,10 @@ const HusmodellPropertyPage: React.FC = () => {
           }))
           .sort((a: any, b: any) => {
             const priceA = parseInt(
-              a?.Husdetaljer?.pris?.replace(/\s/g, "") || "0",
-              10
+              a?.Husdetaljer?.pris?.replace(/\s/g, "") || "0"
             );
             const priceB = parseInt(
-              b?.Husdetaljer?.pris?.replace(/\s/g, "") || "0",
-              10
+              b?.Husdetaljer?.pris?.replace(/\s/g, "") || "0"
             );
             return priceA - priceB;
           });
@@ -123,8 +118,7 @@ const HusmodellPropertyPage: React.FC = () => {
           data.filter((house: any) => {
             const houseDetails = house?.Husdetaljer || {};
             const housePrice = parseInt(
-              houseDetails?.pris?.replace(/\s/g, "") || "0",
-              10
+              houseDetails?.pris?.replace(/\s/g, "") || "0"
             );
 
             // const boligtype = houseDetails?.VelgBoligtype;
@@ -230,7 +224,7 @@ const HusmodellPropertyPage: React.FC = () => {
             </div>
           </div>
         </SideSpaceContainer>
-        <div
+        {/* <div
           className="sticky bottom-0 bg-white py-4"
           style={{
             boxShadow:
@@ -246,7 +240,7 @@ const HusmodellPropertyPage: React.FC = () => {
               />
             </div>
           </SideSpaceContainer>
-        </div>
+        </div> */}
       </div>
 
       <Drawer

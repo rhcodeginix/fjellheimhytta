@@ -452,9 +452,9 @@ const Tilbud: React.FC<{
                         <div className="text-black font-medium text-xs md:text-sm">
                           {pris
                             ? pris === 0
-                              ? "0 NOK"
+                              ? "kr 0"
                               : convertCurrencyFormat(pris)
-                            : "0 NOK"}
+                            : "kr 0"}
                         </div>
                       </div>
                     </div>
