@@ -13,7 +13,7 @@ const Personvaern = () => {
           <div className="flex items-center flex-wrap gap-1 mb-4 md:mb-6">
             <Link
               href={"/"}
-              className="text-primary text-xs md:text-sm font-medium"
+              className="text-primary text-xs md:text-sm font-bold"
             >
               Hjem
             </Link>

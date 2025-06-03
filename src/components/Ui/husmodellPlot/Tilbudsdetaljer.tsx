@@ -339,7 +339,7 @@ const Tilbudsdetaljer: React.FC<{ isRemove?: any }> = ({ isRemove }) => {
                   )}
                 </div>
               </div>
-              <div className="bg-[#FFF4EA] p-2 md:p-3 rounded-lg flex flex-col md:flex-row items-center justify-between gap-1">
+              <div className="bg-[#F4F3F1] p-2 md:p-3 rounded-lg flex flex-col md:flex-row items-center justify-between gap-1">
                 <div className="flex items-center gap-1">
                   <p className="text-xs md:text-sm text-secondary text-center">
                     Tilbudpris

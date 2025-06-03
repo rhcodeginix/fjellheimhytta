@@ -57,7 +57,7 @@ const HusmodellProperty: React.FC<{
             <Loading />
           </div>
         ) : (
-          <div className="flex flex-col gap-4 lg:gap-6 desktop:gap-8">
+          <div className="flex flex-col gap-4 lg:gap-4 desktop:gap-5">
             {HouseModelProperty && HouseModelProperty.length > 0 ? (
               HouseModelProperty.map((property: any, index: any) => {
                 const supplierId = property?.Husdetaljer?.Leverandører;
@@ -66,10 +66,9 @@ const HusmodellProperty: React.FC<{
                 return (
                   <div
                     key={index}
-                    className="border border-gray3 rounded-[8px] p-3 md:p-5 cursor-pointer"
+                    className="border border-lightPurple rounded-[8px] p-3 md:p-5 cursor-pointer"
                     style={{
-                      boxShadow:
-                        "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+                      boxShadow: "0px 24px 48px -12px #1018282E",
                     }}
                     onClick={() => {
                       router.push(
@@ -167,7 +166,7 @@ const HusmodellProperty: React.FC<{
                           </div>
                           <Button
                             text="Utforsk"
-                            className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                             onClick={() => {
                               router.push(
                                 `${router.asPath}&husmodellId=${property?.id}`

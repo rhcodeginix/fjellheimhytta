@@ -7,6 +7,9 @@ import HusmodellFilterSection from "./husmodellFilterSection";
 import HusmodellProperty from "./HusmodellProperty";
 import { Settings2, X } from "lucide-react";
 import { Drawer } from "@mui/material";
+import Link from "next/link";
+import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
+import Image from "next/image";
 
 const HusmodellPropertyPage: React.FC = () => {
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
@@ -185,6 +188,22 @@ const HusmodellPropertyPage: React.FC = () => {
 
   return (
     <>
+      <div className="bg-lightBlue py-2 md:py-4">
+        <SideSpaceContainer>
+          <div className="flex items-center flex-wrap gap-1">
+            <Link
+              href={"/"}
+              className="text-primary text-xs md:text-sm font-bold"
+            >
+              Hjem
+            </Link>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <span className="text-secondary2 text-xs md:text-sm">
+              Start med tomt og husmodell
+            </span>
+          </div>
+        </SideSpaceContainer>
+      </div>
       <div className="relative pt-5 lg:pt-8">
         <SideSpaceContainer>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-2 md:gap-3 lg:gap-4 mb-6 lg:mb-[40px]">
@@ -192,9 +211,13 @@ const HusmodellPropertyPage: React.FC = () => {
               Se våre hyttemodeller:
             </h3>
             {!isLoading && (
-              <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">
-                <span className="font-bold">{HouseModelProperty.length}</span>{" "}
-                treff i <span className="font-bold">{total}</span> annonser
+              <p className="text-primary text-sm md:text-base desktop:text-xl font-light">
+                <span className="font-medium text-darkBlack">
+                  {HouseModelProperty.length}
+                </span>{" "}
+                treff i{" "}
+                <span className="font-medium text-darkBlack">{total}</span>{" "}
+                annonser
               </p>
             )}
           </div>
@@ -235,14 +258,13 @@ const HusmodellPropertyPage: React.FC = () => {
             <div className="flex justify-end items-center gap-6">
               <Button
                 text="Tilbake"
-                className="border-2 border-primary bg-white text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
+                className="border-2 border-primary bg-white text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
                 path="/"
               />
             </div>
           </SideSpaceContainer>
         </div> */}
       </div>
-
       <Drawer
         anchor="bottom"
         open={openDrawer}

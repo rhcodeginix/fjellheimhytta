@@ -4,6 +4,7 @@ import SideSpaceContainer from "@/components/common/sideSpace";
 import Link from "next/link";
 import Image from "next/image";
 import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
+import SelectPlot from "./selectPlot";
 
 const Tomt: React.FC<any> = ({
   handleNext,
@@ -11,6 +12,8 @@ const Tomt: React.FC<any> = ({
   HouseModelData,
 }) => {
   const [hasMounted, setHasMounted] = useState(false);
+
+  const [isPlot, setIsPlot] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
@@ -25,13 +28,13 @@ const Tomt: React.FC<any> = ({
           <div className="flex items-center gap-1">
             <Link
               href={"/"}
-              className="text-primary text-xs md:text-sm font-medium"
+              className="text-primary text-xs md:text-sm font-bold"
             >
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -42,7 +45,7 @@ const Tomt: React.FC<any> = ({
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
                 handlePrevious();
               }}
@@ -54,11 +57,19 @@ const Tomt: React.FC<any> = ({
           </div>
         </SideSpaceContainer>
       </div>
-      <Plots
-        handleNext={handleNext}
-        handlePrevious={handlePrevious}
-        HouseModelData={HouseModelData}
-      />
+      {isPlot ? (
+        <Plots
+          handleNext={handleNext}
+          handlePrevious={handlePrevious}
+          HouseModelData={HouseModelData}
+        />
+      ) : (
+        <SelectPlot
+          HouseModelData={HouseModelData}
+          setIsPlot={setIsPlot}
+          handleNext={handleNext}
+        />
+      )}
     </div>
   );
 };

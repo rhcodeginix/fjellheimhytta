@@ -207,7 +207,7 @@ const Header = () => {
                   onClick={handleVippsLogin}
                   className="text-white border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 flex gap-2 justify-center items-center cursor-pointer text-xs sm:text-sm md:text-base"
                   style={{
-                    backgroundColor: "#FF5C22",
+                    backgroundColor: "#446A68",
                     boxShadow: "0px 1px 2px 0px #1018280D",
                   }}
                 >

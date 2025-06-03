@@ -637,7 +637,7 @@ const AddPlotForm = () => {
                         )}
 
                       <div
-                        className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary border border-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2`}
+                        className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary border border-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2`}
                       >
                         <Image
                           src={Ic_search}
@@ -841,7 +841,7 @@ const AddPlotForm = () => {
                           </div>
                         </div>
                         <div
-                          className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary border border-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2 ${
+                          className={`p-3 lg:p-5 cursor-pointer flex justify-center items-center bg-primary border border-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] rounded-full gap-[10px] transition-all duration-300 ease-out h-[48px] w-[48px] lg:h-[64px] lg:w-[64px] m-2 ${
                             !values.address2.Gårsnummer ||
                             !values.address2.kommune ||
                             !values.address2.Bruksnummer
@@ -1132,7 +1132,7 @@ const AddPlotForm = () => {
                           <div className="gap-3 flex items-center">
                             <Button
                               text="Velg"
-                              className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base w-max h-36px] font-semibold relative desktop:px-4 desktop:py-2 rounded-[40px]"
+                              className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base w-max h-36px] font-semibold relative desktop:px-4 desktop:py-2 rounded-[40px]"
                             />
                             <span className="text-darkBlack font-medium text-sm">
                               Dra & slipp for å laste opp
@@ -1449,7 +1449,7 @@ const AddPlotForm = () => {
                             <div className="gap-3 flex items-center">
                               <Button
                                 text="Velg"
-                                className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base w-max h-36px] font-semibold relative desktop:px-4 desktop:py-2 rounded-[40px]"
+                                className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base w-max h-36px] font-semibold relative desktop:px-4 desktop:py-2 rounded-[40px]"
                               />
                               <span className="text-darkBlack font-medium text-sm">
                                 Dra & slipp for å laste opp
@@ -1541,17 +1541,17 @@ const AddPlotForm = () => {
             <div className="flex items-center gap-6 justify-end sticky bottom-0 bg-white px-6 py-4 shadow-shadow1">
               <Button
                 text="Avbryt"
-                className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
+                className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[50px]"
                 onClick={() => {
                   resetForm();
                 }}
               />
               <Button
                 text="Forhåndsvis"
-                className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[40px]"
+                className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] rounded-[40px]"
               />
               <button
-                className={`flex items-center border py-[4px] px-4 border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] ${isValid ? "" : "opacity-50"}`}
+                className={`flex items-center border py-[4px] px-4 border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px] ${isValid ? "" : "opacity-50"}`}
                 type="submit"
                 disabled={!isValid}
               >

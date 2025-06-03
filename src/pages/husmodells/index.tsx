@@ -10,10 +10,20 @@ import Oppsummering from "./Oppsummering";
 import ErrorPopup from "@/components/Ui/error";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/config/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import Tilpass from "./Tilpass";
 import TomtHouseDetails from "./tomtDetail";
+import ApiUtils from "@/api";
 
 const HusmodellDetail = () => {
   const [currIndex, setCurrIndex] = useState(0);
@@ -28,7 +38,14 @@ const HusmodellDetail = () => {
     }
   }, [currIndex]);
   const router = useRouter();
-  const { plotId, husmodellId } = router.query;
+  const {
+    plotId,
+    husmodellId,
+    kommunenummer,
+    gardsnummer,
+    bruksnummer,
+    kommunenavn,
+  } = router.query;
   const [lamdaDataFromApi, setLamdaDataFromApi] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
@@ -178,6 +195,138 @@ const HusmodellDetail = () => {
       fetchProperty();
     }
   }, [plotId, db, userUID, isCall, user]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      if (!(kommunenummer && gardsnummer && bruksnummer)) return;
+
+      const lamdaApiData = { kommunenummer, gardsnummer, bruksnummer };
+
+      try {
+        const response = await ApiUtils.LamdaApi(lamdaApiData);
+        const cleanAnswer = response.body.replace(/```json|```/g, "").trim();
+        const data = JSON.parse(cleanAnswer);
+        const CadastreDataResponse =
+          await ApiUtils.fetchCadastreData(lamdaApiData);
+
+        setLamdaDataFromApi(data);
+        if (CadastreDataResponse && CadastreDataResponse?.apis) {
+          setCadastreDataFromApi(CadastreDataResponse?.apis);
+        }
+
+        if (
+          !cleanAnswer ||
+          data.message === "Request failed with status code 503" ||
+          !data.propertyId
+        ) {
+          setLoading(false);
+          setShowErrorPopup(true);
+          return;
+        }
+
+        const areaDetails =
+          data?.eiendomsInformasjon?.basisInformasjon?.areal_beregnet || "";
+        const regionName =
+          CadastreDataResponse?.presentationAddressApi?.response?.item
+            ?.municipality?.municipalityName;
+        const prompt = {
+          question: `Hva er tillatt gesims- og mønehøyde, maksimal BYA inkludert parkeringskrav i henhold til parkeringsnormen i ${kommunenavn || regionName} kommune, og er det tillatt å bygge en enebolig med flatt tak eller takterrasse i dette området i ${kommunenavn || regionName}, sone GB? Tomtestørrelse for denne eiendommen er ${areaDetails}.`,
+        };
+
+        try {
+          const additionalResponse = await ApiUtils.askApi(prompt);
+          setAdditionalData(additionalResponse);
+
+          const property = {
+            lamdaDataFromApi: data,
+            additionalData: additionalResponse,
+            CadastreDataFromApi: CadastreDataResponse.apis,
+            pris: null,
+          };
+          const propertyId = data.propertyId;
+          const queryParams = new URLSearchParams(window.location.search);
+          queryParams.set("plotId", propertyId);
+          queryParams.delete("empty");
+
+          const isEmptyPlot =
+            !CadastreDataResponse?.apis?.buildingsApi?.response?.items?.length;
+          const collectionName = isEmptyPlot ? "cabin_plot" : "plot_building";
+          queryParams.set("empty", isEmptyPlot ? "true" : "false");
+
+          const collectionRef = collection(db, collectionName);
+          const existingQuery = query(
+            collectionRef,
+            isEmptyPlot
+              ? where("id", "==", propertyId)
+              : where("lamdaDataFromApi.propertyId", "==", propertyId)
+          );
+          const querySnapshot = await getDocs(existingQuery);
+
+          let docId, plotData;
+          if (!querySnapshot.empty) {
+            const docSnap: any = querySnapshot.docs[0];
+            docId = docSnap.id;
+            plotData = docSnap.data();
+          } else {
+            const docRef = await addDoc(collectionRef, property);
+            docId = docRef.id;
+            plotData =
+              (await getDoc(doc(db, collectionName, docId))).data() || null;
+          }
+
+          const updatedPlotData = {
+            ...plotData,
+            view_count: (plotData?.view_count || 0) + 1,
+          };
+          await setDoc(doc(db, collectionName, docId), updatedPlotData, {
+            merge: true,
+          });
+
+          const viewerDocRef = doc(
+            db,
+            `${collectionName}/${docId}/viewer`,
+            user.uid
+          );
+          const viewerDocSnap = await getDoc(viewerDocRef);
+          let viewerViewCount = 1;
+
+          if (viewerDocSnap.exists()) {
+            const viewerData = viewerDocSnap.data();
+            viewerViewCount = (viewerData?.view_count || 0) + 1;
+          }
+
+          await setDoc(
+            viewerDocRef,
+            {
+              userId: user.uid,
+              name: user.name || "N/A",
+              last_updated_date: new Date().toISOString(),
+              view_count: viewerViewCount,
+            },
+            { merge: true }
+          );
+
+          router.replace({
+            pathname: router.pathname,
+            query: Object.fromEntries(queryParams),
+          });
+        } catch (error) {
+          console.error("Error fetching additional data from askApi:", error);
+          setShowErrorPopup(true);
+        } finally {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setShowErrorPopup(true);
+      }
+    };
+
+    if (isCall && user && kommunenummer && gardsnummer && bruksnummer) {
+      fetchData();
+    }
+  }, [kommunenummer, gardsnummer, bruksnummer, isCall, user, userUID]);
 
   useEffect(() => {
     const fetchData = async () => {

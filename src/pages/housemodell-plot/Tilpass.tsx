@@ -205,13 +205,13 @@ const Tilpass: React.FC<{
           <div className="flex items-center flex-wrap gap-1 mb-4 md:mb-6">
             <Link
               href={"/"}
-              className="text-primary text-xs md:text-sm font-medium"
+              className="text-primary text-xs md:text-sm font-bold"
             >
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -318,7 +318,7 @@ const Tilpass: React.FC<{
                   {selectedTab < Huskonfigurator.length - 1 && (
                     <Button
                       text="Hopp over steget"
-                      className={`border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] text-xs sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
+                      className={`border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] text-xs sm:text-sm md:text-sm rounded-[40px] w-max h-[36px] md:h-[36px] lg:h-[36px] font-semibold relative`}
                       onClick={() => {
                         setSelectedTab(selectedTab + 1);
                       }}
@@ -537,7 +537,7 @@ const Tilpass: React.FC<{
             <div className="flex justify-end gap-4 items-center">
               <Button
                 text="Tilbake"
-                className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+                className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
                 onClick={() => {
                   handlePrevious();
                   const currIndex = 0;
@@ -546,7 +546,7 @@ const Tilpass: React.FC<{
               />
               <Button
                 text="Neste: Tilbud"
-                className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                 onClick={() => {
                   handleNext();
                 }}

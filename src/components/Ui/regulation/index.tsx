@@ -212,13 +212,13 @@ const HusmodellPropertyPage: React.FC<{
           <div className="flex items-center flex-wrap gap-1 mb-4 md:mb-6">
             <Link
               href={"/"}
-              className="text-primary text-xs md:text-sm font-medium"
+              className="text-primary text-xs md:text-sm font-bold"
             >
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
                 handlePrevious();
                 const currIndex = 0;
@@ -300,7 +300,7 @@ const HusmodellPropertyPage: React.FC<{
           <div className="flex justify-end items-center gap-6">
             <Button
               text="Tilbake"
-              className="border-2 border-primary bg-white text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
+              className="border-2 border-primary bg-white text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold desktop:px-[20px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
                 const currIndex = 0;

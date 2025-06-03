@@ -8,13 +8,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 
 const CustomSlider = styled(Slider)({
-  color: "#DF761F",
+  color: "#446A68",
   height: 9,
   padding: 0,
   "& .MuiSlider-thumb": {
     height: 24,
     width: 24,
-    backgroundColor: "#DF761F",
+    backgroundColor: "#446A68",
     border: "6px solid #fff",
   },
   "& .MuiSlider-rail": {
@@ -140,7 +140,7 @@ const PlotFilterSection: React.FC<{
             />
             <div>
               <button
-                className={`p-1.5 lg:p-[10px] cursor-pointer flex justify-center items-center bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] rounded-[40px] gap-[10px] transition-all duration-300 ease-out h-[32px] w-[32px] lg:h-[40px] lg:w-[40px]`}
+                className={`p-1.5 lg:p-[10px] cursor-pointer flex justify-center items-center bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] rounded-[40px] gap-[10px] transition-all duration-300 ease-out h-[32px] w-[32px] lg:h-[40px] lg:w-[40px]`}
               >
                 <Image
                   src={Ic_search}
@@ -160,7 +160,7 @@ const PlotFilterSection: React.FC<{
               }}
             >
               <p
-                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-medium text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Område")}
               >
                 Område
@@ -342,7 +342,7 @@ const PlotFilterSection: React.FC<{
               }}
             >
               <p
-                className={`text-darkBlack font-semibold text-base lg:text-lg flex items-center justify-between cursor-pointer`}
+                className={`text-darkBlack font-medium text-base lg:text-lg flex items-center justify-between cursor-pointer`}
                 onClick={() => handleToggleAccordion("Pris på tomt")}
               >
                 Pris på tomt

@@ -233,7 +233,7 @@ const MatrikkelTab = () => {
         <div className="border-t border-gray3 w-full lg:hidden"></div>
 
         <button
-          className={`p-3 lg:px-5 lg:py-4 cursor-pointer flex justify-center items-center bg-primary border border-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] rounded-[40px] transition-all duration-300 ease-out h-[40px] lg:h-[56px] m-4 gap-2 ${
+          className={`p-3 lg:px-5 lg:py-4 cursor-pointer flex justify-center items-center bg-primary border border-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] rounded-[40px] transition-all duration-300 ease-out h-[40px] lg:h-[56px] m-4 gap-2 ${
             !formData?.Gårsnummer ||
             !formData?.kommune ||
             !formData?.Bruksnummer

@@ -34,7 +34,7 @@ const VippsButton = () => {
       onClick={handleVippsLogin}
       className="text-white border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 flex gap-2 justify-center items-center cursor-pointer text-sm md:text-base"
       style={{
-        backgroundColor: "#FF5C22", // Vipps background color
+        backgroundColor: "#446A68", // Vipps background color
         boxShadow: "0px 1px 2px 0px #1018280D",
       }}
     >

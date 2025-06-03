@@ -91,7 +91,7 @@ const NorkartMap: React.FC<{ coordinates: any; MAX_ZOOM: any }> = ({
           type: "line",
           source: "boundary",
           paint: {
-            "line-color": "#DF761F",
+            "line-color": "#446A68",
             "line-width": 3,
             "line-opacity": 0.85,
           },
@@ -101,7 +101,7 @@ const NorkartMap: React.FC<{ coordinates: any; MAX_ZOOM: any }> = ({
           type: "fill",
           source: "boundary",
           paint: {
-            "fill-color": "#DF761F",
+            "fill-color": "#446A68",
             "fill-opacity": 0.15,
           },
         });

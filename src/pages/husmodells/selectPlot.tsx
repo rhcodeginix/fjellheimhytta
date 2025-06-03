@@ -1,0 +1,188 @@
+import SideSpaceContainer from "@/components/common/sideSpace";
+import React, { useEffect, useRef, useState } from "react";
+import Img_No_plot from "@/public/images/Img_No_plot.png";
+import Img_already_plot from "@/public/images/Img_already_plot.png";
+import Ic_Search_purple from "@/public/images/Ic_Search_purple.svg";
+import Image from "next/image";
+import Button from "@/components/common/button";
+import ApiUtils from "@/api";
+import Ic_search_location from "@/public/images/Ic_search_location.svg";
+import { useAddress } from "@/context/addressContext";
+import { useRouter } from "next/router";
+
+const SelectPlot: React.FC<{
+  HouseModelData: any;
+  setIsPlot: any;
+  handleNext: any;
+}> = ({ HouseModelData, setIsPlot, handleNext }) => {
+  const { setStoreAddress } = useAddress();
+  const router = useRouter();
+
+  const [formData, setFormData] = useState({
+    address: "",
+  });
+  const [addressData, setAddressData] = useState<any>(null);
+
+  const kartInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleKartInputChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, address: value }));
+
+    if (value) {
+      try {
+        const response = await ApiUtils.getAddress(value);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+        setAddressData(json.adresser);
+      } catch (error: any) {
+        console.error(error?.message);
+      }
+    }
+  };
+
+  const { pathname, query: routequery } = router;
+  const updatedQuery = { ...routequery };
+
+  useEffect(() => {
+    if (updatedQuery.kommunenummer) delete updatedQuery.kommunenummer;
+    if (updatedQuery.bruksnummer) delete updatedQuery.bruksnummer;
+    if (updatedQuery.gardsnummer) delete updatedQuery.gardsnummer;
+    if (updatedQuery.kommunenavn) delete updatedQuery.kommunenavn;
+    if (updatedQuery.empty) delete updatedQuery.empty;
+    if (updatedQuery.leadId) delete updatedQuery.leadId;
+    delete updatedQuery.plotId;
+    router.replace({ pathname, query: updatedQuery }, undefined, {
+      shallow: true,
+    });
+  }, []);
+
+  return (
+    <div className="relative py-8">
+      <SideSpaceContainer>
+        <h3 className="text-darkBlack text-xl md:text-[24px] lg:text-[28px] desktop:text-[2rem] desktop:leading-[44.8px] font-medium mb-6 md:mb-[38px]">
+          Vet du hvor du vil bygge {HouseModelData?.Husdetaljer?.husmodell_name}
+          ?
+        </h3>
+        <div className="flex justify-center items-center flex-col gap-5 md:gap-8">
+          <div className="border border-[#DCDFEA] p-5 rounded-lg shadow-shadow1 max-w-[674px] w-full">
+            <h4 className="text-[#30374F] font-bold text-sm md:text-base desktop:text-lg mb-3 md:mb-4">
+              Ja, jeg har egen tomt
+            </h4>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <Image src={Img_already_plot} alt="plot" />
+              <div>
+                <h3 className="text-[#30374F] font-medium text-sm md:text-base mb-2">
+                  Jeg vil søk opp en adresse
+                </h3>
+                <p className="text-secondary2 text-xs md:text-sm mb-4 md:mb-6">
+                  Velg dette alternativet om du vet hvor du vil brygge{" "}
+                  <span className="font-bold">
+                    {HouseModelData?.Husdetaljer?.husmodell_name}.
+                  </span>
+                </p>
+                <div
+                  className="relative flex items-center gap-2 py-2.5 px-4 rounded-[48px]"
+                  style={{
+                    boxShadow:
+                      "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+                  }}
+                >
+                  <Image alt="search" src={Ic_Search_purple} />
+                  <input
+                    type="text"
+                    placeholder="Søk opp adressen"
+                    className="focus:outline-none w-full"
+                    ref={kartInputRef}
+                    onChange={handleKartInputChange}
+                    value={formData?.address}
+                  />
+                  {formData?.address &&
+                    addressData &&
+                    addressData.length > 0 && (
+                      <div
+                        className="absolute top-[45px] left-0 bg-white rounded-[8px] w-full h-auto max-h-[300px] overflow-y-auto overFlowYAuto"
+                        style={{
+                          zIndex: 999,
+                          boxShadow:
+                            "rgba(16, 24, 40, 0.09) 0px 4px 6px -2px, rgba(16, 24, 40, 0.09) 0px 12px 16px -4px",
+                        }}
+                      >
+                        {addressData &&
+                          addressData?.map((address: any, index: number) => (
+                            <div
+                              className="p-2 desktop:p-3 flex items-center gap-2 hover:bg-lightGreen cursor-pointer"
+                              key={index}
+                              onClick={() => {
+                                localStorage.setItem(
+                                  "IPlot_Address",
+                                  JSON.stringify(address)
+                                );
+                                setStoreAddress(address);
+                                handleNext();
+                                router.push(
+                                  `${router.asPath}&kommunenummer=${address.kommunenummer}&gardsnummer=${address.gardsnummer}&bruksnummer=${address.bruksnummer}&kommunenavn=${address.kommunenavn}`
+                                );
+                              }}
+                            >
+                              <Image
+                                src={Ic_search_location}
+                                alt="location"
+                                fetchPriority="auto"
+                                className="w-6 h-6 md:w-auto md:h-auto"
+                              />
+                              <div>
+                                <span className="text-secondary text-xs md:text-sm font-medium">
+                                  Adresse:
+                                </span>{" "}
+                                <span className="text-black font-medium text-sm md:text-base">
+                                  {`${address.adressetekst}  ${address.postnummer} ${address.poststed}` ||
+                                    "N/A"}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="border border-[#DCDFEA] p-5 rounded-lg shadow-shadow1 max-w-[674px] w-full">
+            <h4 className="text-[#30374F] font-bold text-sm md:text-base desktop:text-lg mb-3 md:mb-4">
+              Nei, jeg har ikke egen tomt
+            </h4>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <Image src={Img_No_plot} alt="plot" />
+              <div>
+                <h3 className="text-[#30374F] font-medium text-sm md:text-base mb-2">
+                  Jeg vil utforske <span className="font-bold">1.923</span>{" "}
+                  mulige hyttetomter
+                </h3>
+                <p className="text-secondary2 text-xs md:text-sm mb-4 md:mb-6">
+                  Velg dette alternativet om du ikke har egen tomt i dag og
+                  ønsker å utforske mulige tomter for å bygge{" "}
+                  <span className="font-bold">
+                    {HouseModelData?.Husdetaljer?.husmodell_name}.
+                  </span>
+                </p>
+                <Button
+                  text="Se tomter"
+                  className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                  onClick={() => setIsPlot(true)}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </SideSpaceContainer>
+    </div>
+  );
+};
+
+export default SelectPlot;

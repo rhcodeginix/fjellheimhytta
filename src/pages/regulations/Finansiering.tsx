@@ -141,13 +141,13 @@ const Finansiering: React.FC<{
           <div className="flex items-center flex-wrap gap-1">
             <Link
               href={"/"}
-              className="text-primary text-xs md:text-sm font-medium"
+              className="text-primary text-xs md:text-sm font-bold"
             >
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -160,7 +160,7 @@ const Finansiering: React.FC<{
             {!homePage && (
               <>
                 <div
-                  className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+                  className="text-primary text-xs md:text-sm font-bold cursor-pointer"
                   onClick={() => {
                     delete updatedQuery.propertyId;
                     delete updatedQuery.husmodellId;
@@ -186,7 +186,7 @@ const Finansiering: React.FC<{
               </>
             )}
             <div
-              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
                 const currIndex = 2;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -197,7 +197,7 @@ const Finansiering: React.FC<{
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
                 const currIndex = 3;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -208,7 +208,7 @@ const Finansiering: React.FC<{
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
                 const currIndex = 4;
                 localStorage.setItem("currIndex", currIndex.toString());
@@ -486,7 +486,7 @@ const Finansiering: React.FC<{
                                 </div>
                                 <Button
                                   text="Send inn lånesøknad"
-                                  className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
+                                  className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
                                   type="submit"
                                 />
                               </div>
@@ -535,7 +535,7 @@ const Finansiering: React.FC<{
                               {values.helpWithFinancing && (
                                 <Button
                                   text="Send inn lånesøknad"
-                                  className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
+                                  className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-medium desktop:px-[20px] relative desktop:py-[16px]"
                                   type="submit"
                                 />
                               )}
@@ -566,14 +566,14 @@ const Finansiering: React.FC<{
           <div className="flex justify-end gap-4 items-center">
             <Button
               text="Tilbake"
-              className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+              className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
                 handlePrevious();
               }}
             />
             <Button
               text="Neste: Oppsummering"
-              className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+              className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 handleNext();
               }}

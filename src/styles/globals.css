@@ -184,7 +184,7 @@ input::placeholder {
 }
 .screen-index {
   background: #111322;
-  border: 1px solid #df761f;
+  border: 1px solid #446A68;
   height: 24px;
   width: 24px;
   border-radius: 50%;
@@ -212,7 +212,7 @@ input::placeholder {
 .screen-indicator-span.current .screen-index {
   background-color: white;
   border: 1px solid white;
-  color: #df761f;
+  color: #446A68;
 }
 .screen-indicator-span.completed .screen-index {
   color: #099250;
@@ -329,7 +329,7 @@ td {
 }
 
 .container .checkmark.checkmark_primary:after {
-  border-color: #df761f;
+  border-color: #446A68;
 }
 .checkmark.checkmark_gray {
   margin: 0;
@@ -402,11 +402,11 @@ td {
 .container
   input[type="checkbox"]:checked
   ~ .checkmark.checkmark_darkgray_withPurple {
-  border-color: #df761f !important;
+  border-color: #446A68 !important;
 }
 
 .container .checkmark.checkmark_darkgray_withPurple:after {
-  border-color: #df761f;
+  border-color: #446A68;
   top: 2px;
 }
 .container .checkmark.checkmark_darkgray_withPurple:after {
@@ -525,7 +525,7 @@ td {
 }
 
 .custom-swiper .swiper-pagination-bullet-active {
-  background-color: #df761f;
+  background-color: #446A68;
   width: 24px;
   border-radius: 10px;
 }

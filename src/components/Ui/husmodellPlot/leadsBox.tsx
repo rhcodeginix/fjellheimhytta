@@ -224,7 +224,7 @@ const LeadsBox: React.FC<{ col?: any; isShow?: any }> = ({ col, isShow }) => {
       >
         {!isShow && (
           <div
-            className={`${!col ? "md:w-1/2" : "w-full"} bg-[#FFF4EA] rounded-[12px] p-4 md:p-5`}
+            className={`${!col ? "md:w-1/2" : "w-full"} bg-[#F4F3F1] rounded-[12px] p-4 md:p-5`}
           >
             <Formik
               initialValues={{
@@ -295,7 +295,7 @@ const LeadsBox: React.FC<{ col?: any; isShow?: any }> = ({ col, isShow }) => {
                         </div>
                         <Button
                           text="Kontakt meg"
-                          className={`border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative ${!values.sharingData ? "opacity-50 cursor-not-allowed" : ""}`}
+                          className={`border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative ${!values.sharingData ? "opacity-50 cursor-not-allowed" : ""}`}
                           type="submit"
                           disabled={!values.sharingData}
                         />
@@ -308,7 +308,7 @@ const LeadsBox: React.FC<{ col?: any; isShow?: any }> = ({ col, isShow }) => {
           </div>
         )}
         <div
-          className={`${!col ? "md:w-1/2" : "w-full"} bg-[#FFF4EA] rounded-[12px] p-4 md:p-5`}
+          className={`${!col ? "md:w-1/2" : "w-full"} bg-[#F4F3F1] rounded-[12px] p-4 md:p-5`}
         >
           <Formik
             initialValues={{ checkbox: false }}
@@ -374,7 +374,7 @@ const LeadsBox: React.FC<{ col?: any; isShow?: any }> = ({ col, isShow }) => {
                     <div>
                       <Button
                         text="Kontakt meg"
-                        className={`border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative ${!values.checkbox ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[40px] font-semibold relative ${!values.checkbox ? "opacity-50 cursor-not-allowed" : ""}`}
                         type="submit"
                         disabled={!values.checkbox}
                       />

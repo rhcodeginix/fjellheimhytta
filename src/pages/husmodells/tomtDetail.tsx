@@ -171,44 +171,59 @@ const TomtHouseDetails: React.FC<{
           <div className="flex items-center flex-wrap gap-1 mb-4 md:mb-6">
             <Link
               href={"/"}
-              className="text-primary text-xs md:text-sm font-medium"
+              className="text-primary text-xs md:text-sm font-bold"
             >
               Hjem
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <div
-              className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
                 const currIndex = 0;
                 localStorage.setItem("currIndex", currIndex.toString());
+                handlePrevious();
               }}
             >
-              Tomt
+              Hyttemodell
+            </div>
+            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
+            <div
+              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
+              onClick={() => {
+                const currIndex = 1;
+                localStorage.setItem("currIndex", currIndex.toString());
+                handlePrevious();
+              }}
+            >
+              Tilpass
             </div>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             {!homePage && (
               <>
                 <div
-                  className="text-primary text-xs md:text-sm font-medium cursor-pointer"
+                  className="text-primary text-xs md:text-sm font-bold cursor-pointer"
                   onClick={() => {
-                    delete updatedQuery.propertyId;
-                    delete updatedQuery.husmodellId;
-                    delete updatedQuery.leadId;
-                    delete updatedQuery.emptyPlot;
-
-                    router.push(
-                      {
-                        pathname: router.pathname,
-                        query: updatedQuery,
-                      },
-                      undefined,
-                      { shallow: true }
-                    );
-                    const currIndex = 1;
-                    localStorage.setItem("currIndex", currIndex.toString());
+                    if (updatedQuery.kommunenummer)
+                      delete updatedQuery.kommunenummer;
+                    if (updatedQuery.bruksnummer)
+                      delete updatedQuery.bruksnummer;
+                    if (updatedQuery.gardsnummer)
+                      delete updatedQuery.gardsnummer;
+                    if (updatedQuery.kommunenavn)
+                      delete updatedQuery.kommunenavn;
+                    if (updatedQuery.empty) delete updatedQuery.empty;
+                    if (updatedQuery.leadId) delete updatedQuery.leadId;
+                    delete updatedQuery.plotId;
+                    router
+                      .replace({ pathname, query: updatedQuery }, undefined, {
+                        shallow: true,
+                      })
+                      .then(() => {
+                        handlePrevious();
+                      });
                   }}
                 >
-                  Hva kan du bygge?
+                  Tomt
                 </div>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
               </>
@@ -306,34 +321,43 @@ const TomtHouseDetails: React.FC<{
           <div className="flex justify-end gap-4 items-center">
             <Button
               text="Tilbake"
-              className="border-2 border-primary text-primary hover:border-[#F5913E] hover:text-[#F5913E] focus:border-[#CD6107] focus:text-[#CD6107] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+              className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
               onClick={() => {
+                if (updatedQuery.kommunenummer)
+                  delete updatedQuery.kommunenummer;
+                if (updatedQuery.bruksnummer) delete updatedQuery.bruksnummer;
+                if (updatedQuery.gardsnummer) delete updatedQuery.gardsnummer;
+                if (updatedQuery.kommunenavn) delete updatedQuery.kommunenavn;
+                if (updatedQuery.empty) delete updatedQuery.empty;
+                if (updatedQuery.leadId) delete updatedQuery.leadId;
                 delete updatedQuery.plotId;
-
-                router.replace({ pathname, query: updatedQuery }, undefined, {
-                  shallow: true,
-                });
-                handlePrevious();
+                router
+                  .replace({ pathname, query: updatedQuery }, undefined, {
+                    shallow: true,
+                  })
+                  .then(() => {
+                    handlePrevious();
+                  });
               }}
             />
             <Button
-              text="Neste: Tilpass"
-              className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+              text="Neste: Tilbud"
+              className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 if (!loadingLamdaData && !loadingAdditionalData) {
                   handleNext();
                 }
               }}
             />
-            <Button
+            {/* <Button
               text={`Tilpass #${HouseModelData?.Husdetaljer?.husmodell_name} her`}
-              className="border border-primary bg-primary hover:bg-[#F5913E] hover:border-[#F5913E] focus:bg-[#CD6107] focus:border-[#CD6107] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+              className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 if (!loadingLamdaData && !loadingAdditionalData) {
                   handleNext();
                 }
               }}
-            />
+            /> */}
           </div>
         </SideSpaceContainer>
       </div>
