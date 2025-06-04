@@ -32,14 +32,18 @@ const VippsButton = () => {
   return (
     <div
       onClick={handleVippsLogin}
-      className="text-white border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 flex gap-2 justify-center items-center cursor-pointer text-sm md:text-base"
+      className="text-white border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 flex gap-2 justify-center items-center cursor-pointer text-sm md:text-base bg-primary"
       style={{
-        backgroundColor: "#446A68", // Vipps background color
         boxShadow: "0px 1px 2px 0px #1018280D",
       }}
     >
       Fortsett med
-      <Image fetchPriority="auto" src={Ic_vapp} alt="logo" />
+      <Image
+        fetchPriority="auto"
+        src={Ic_vapp}
+        alt="logo"
+        className="w-[45px] md:w-auto"
+      />
     </div>
   );
 };

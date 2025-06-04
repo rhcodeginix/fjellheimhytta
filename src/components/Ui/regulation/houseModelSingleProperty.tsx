@@ -319,16 +319,7 @@ const HouseModelSingleProperty: React.FC<{
               }}
             />
             <Button
-              text="Neste: Tilpass"
-              className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-              onClick={() => {
-                if (!loadingLamdaData && !loadingAdditionalData) {
-                  handleNext();
-                }
-              }}
-            />
-            <Button
-              text={`Tilpass #${HouseModelData?.Husdetaljer?.husmodell_name} her`}
+              text={`Tilpass ${HouseModelData?.Husdetaljer?.husmodell_name} her`}
               className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
               onClick={() => {
                 if (!loadingLamdaData && !loadingAdditionalData) {

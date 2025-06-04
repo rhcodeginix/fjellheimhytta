@@ -278,7 +278,7 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
             </button>
 
             {popupMode === "single" && selectedImage && (
-              <div className="flex justify-center items-center w-[400px] h-[400px] my-4 relative">
+              <div className="flex justify-center items-center w-full h-[400px] my-4 relative">
                 <button
                   className="absolute left-0 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 px-4 py-2 rounded-full"
                   onClick={() => {
@@ -294,7 +294,7 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
                 <img
                   src={selectedImage}
                   alt="Selected"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-fill"
                 />
 
                 <button

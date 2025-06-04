@@ -115,7 +115,15 @@ const Header = () => {
         <SideSpaceContainer>
           <div className="py-[12px] md:py-[20px] flex justify-between gap-3 md:gap-[32px] items-center">
             <div className="flex items-center gap-2">
-              <Link href={"/"} onClick={() => router.push("/")}>
+              <Link
+                href={"/husmodells"}
+                // onClick={() => router.push("/husmodells")}
+                onClick={() => {
+                  router.push("/husmodells");
+                  const currIndex = 0;
+                  localStorage.setItem("currIndex", currIndex.toString());
+                }}
+              >
                 <Image
                   src={Ic_logo}
                   alt="logo"
@@ -205,9 +213,8 @@ const Header = () => {
               ) : (
                 <div
                   onClick={handleVippsLogin}
-                  className="text-white border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 flex gap-2 justify-center items-center cursor-pointer text-xs sm:text-sm md:text-base"
+                  className="text-white border border-[#DCDFEA] rounded-[8px] py-[10px] px-4 flex gap-2 justify-center items-center cursor-pointer text-xs sm:text-sm md:text-base bg-primary"
                   style={{
-                    backgroundColor: "#446A68",
                     boxShadow: "0px 1px 2px 0px #1018280D",
                   }}
                 >

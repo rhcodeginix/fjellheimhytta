@@ -381,6 +381,13 @@ const HusmodellDetail = () => {
       getData();
     }
   }, [husmodellData?.Leverandører]);
+
+  useEffect(() => {
+    if (router.asPath === "/husmodells") {
+      setCurrIndex(0);
+    }
+  }, [router]);
+
   const steps = [
     {
       name: "Hyttemodell",
