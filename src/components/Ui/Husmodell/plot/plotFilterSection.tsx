@@ -6,6 +6,7 @@ import { Slider, styled } from "@mui/material";
 import { useRouter } from "next/router";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
+import { convertCurrencyFormat } from "./plotProperty";
 
 const CustomSlider = styled(Slider)({
   color: "#446A68",
@@ -396,10 +397,10 @@ const PlotFilterSection: React.FC<{
                   </div>
                   <div className="flex items-center justify-between h-[30px] mt-2">
                     <div className="text-grayText text-sm lg:text-base">
-                      kr {minPrice}
+                      {convertCurrencyFormat(minPrice)}
                     </div>
                     <div className="text-grayText text-sm lg:text-base">
-                      kr {maxPrice}
+                      {convertCurrencyFormat(maxPrice)}
                     </div>
                   </div>
                 </>

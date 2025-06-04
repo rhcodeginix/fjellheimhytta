@@ -271,14 +271,14 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
             ref={popup}
           >
             <button
-              className="absolute top-3 right-0 md:right-3"
+              className="absolute top-2 md:top-3 right-0 md:right-3"
               onClick={() => setIsPopupOpen(false)}
             >
               <Image src={Ic_close} alt="close" />
             </button>
 
             {popupMode === "single" && selectedImage && (
-              <div className="flex justify-center items-center w-full h-[400px] my-4 relative">
+              <div className="flex justify-center items-center w-full my-4 relative">
                 <button
                   className="absolute left-0 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 px-4 py-2 rounded-full"
                   onClick={() => {
@@ -291,11 +291,13 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
                   &lt;
                 </button>
 
-                <img
-                  src={selectedImage}
-                  alt="Selected"
-                  className="h-full w-full object-fill"
-                />
+                <div className="my-2">
+                  <img
+                    src={selectedImage}
+                    alt="Selected"
+                    className="h-auto w-full object-fill"
+                  />
+                </div>
 
                 <button
                   className="absolute right-0 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 px-4 py-2 rounded-full"

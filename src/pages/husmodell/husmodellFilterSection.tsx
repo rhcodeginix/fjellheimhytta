@@ -3,6 +3,7 @@ import Ic_search from "@/public/images/Ic_search.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import { useState } from "react";
 import { Slider, styled } from "@mui/material";
+import { convertCurrencyFormat } from "@/components/Ui/Husmodell/plot/plotProperty";
 
 const CustomSlider = styled(Slider)({
   color: "#446A68",
@@ -449,10 +450,10 @@ const HusmodellFilterSection: React.FC<{
                   </div>
                   <div className="flex items-center justify-between h-[30px] mt-2">
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData?.minRangeForHusmodell}
+                      {convertCurrencyFormat(formData?.minRangeForHusmodell)}
                     </div>
                     <div className="text-grayText text-sm lg:text-base">
-                      {formData?.maxRangeForHusmodell}
+                      {convertCurrencyFormat(formData?.maxRangeForHusmodell)}
                     </div>
                   </div>
                 </>

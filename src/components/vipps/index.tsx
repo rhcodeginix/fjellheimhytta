@@ -42,7 +42,7 @@ const VippsButton = () => {
         fetchPriority="auto"
         src={Ic_vapp}
         alt="logo"
-        className="w-[45px] md:w-auto"
+        // className="w-[50px] md:w-auto"
       />
     </div>
   );

@@ -10,6 +10,9 @@ const Tomt: React.FC<any> = ({
   handleNext,
   handlePrevious,
   HouseModelData,
+  setLamdaDataFromApi,
+  setCadastreDataFromApi,
+  setAdditionalData,
 }) => {
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -68,6 +71,9 @@ const Tomt: React.FC<any> = ({
           HouseModelData={HouseModelData}
           setIsPlot={setIsPlot}
           handleNext={handleNext}
+          setLamdaDataFromApi={setLamdaDataFromApi}
+          setCadastreDataFromApi={setCadastreDataFromApi}
+          setAdditionalData={setAdditionalData}
         />
       )}
     </div>

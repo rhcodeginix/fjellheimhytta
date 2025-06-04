@@ -11,6 +11,7 @@ import { Formik, Form } from "formik";
 import { useRouter } from "next/router";
 import Img_vipps_login from "@/public/images/Img_vipps_login.png";
 import VippsButton from "@/components/vipps";
+import { convertCurrencyFormat } from "@/components/Ui/Husmodell/plot/plotProperty";
 
 const bedroomOptions = [
   "1+ soverom",
@@ -300,10 +301,10 @@ const AllPlot = () => {
                       </div>
                       <div className="flex items-center justify-between h-[30px] mt-2">
                         <div className="border-gray2 border rounded-[8px] py-2 px-[14px] flex items-center justify-center text-secondary text-xs">
-                          {priceRange[0]} MNOK
+                          {convertCurrencyFormat(priceRange[0])}
                         </div>
                         <div className="border-gray2 border rounded-[8px] py-2 px-[14px] flex items-center justify-center text-secondary text-xs">
-                          {priceRange[1]} MNOK
+                          {convertCurrencyFormat(priceRange[1])}
                         </div>
                       </div>
                     </div>
@@ -433,8 +434,21 @@ const AllPlot = () => {
             </Formik>
             <p className="text-secondary text-sm md:text-base mt-[46px] text-center">
               Når du går videre, aksepterer du <br /> våre vilkår for{" "}
-              <a className="underline" target="__blank" href="https://fjellheimhytta.mintomt.no/vilkaar-personvern/brukervilkaar">bruk</a> og{" "}
-              <a className="underline" target="__blank" href="https://fjellheimhytta.mintomt.no/vilkaar-personvern/personvaern">personvern</a>
+              <a
+                className="underline"
+                target="__blank"
+                href="https://fjellheimhytta.mintomt.no/vilkaar-personvern/brukervilkaar"
+              >
+                bruk
+              </a>{" "}
+              og{" "}
+              <a
+                className="underline"
+                target="__blank"
+                href="https://fjellheimhytta.mintomt.no/vilkaar-personvern/personvaern"
+              >
+                personvern
+              </a>
             </p>
           </div>
         </div>

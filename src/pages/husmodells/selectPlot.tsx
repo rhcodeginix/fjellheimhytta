@@ -14,7 +14,17 @@ const SelectPlot: React.FC<{
   HouseModelData: any;
   setIsPlot: any;
   handleNext: any;
-}> = ({ HouseModelData, setIsPlot, handleNext }) => {
+  setLamdaDataFromApi: any;
+  setCadastreDataFromApi: any;
+  setAdditionalData: any;
+}> = ({
+  HouseModelData,
+  setIsPlot,
+  handleNext,
+  setLamdaDataFromApi,
+  setCadastreDataFromApi,
+  setAdditionalData,
+}) => {
   const { setStoreAddress } = useAddress();
   const router = useRouter();
 
@@ -46,21 +56,24 @@ const SelectPlot: React.FC<{
     }
   };
 
-  const { pathname, query: routequery } = router;
-  const updatedQuery = { ...routequery };
-
   useEffect(() => {
+    if (!router.isReady) return;
+    const { pathname, query } = router;
+    const updatedQuery = { ...query };
+
     if (updatedQuery.kommunenummer) delete updatedQuery.kommunenummer;
     if (updatedQuery.bruksnummer) delete updatedQuery.bruksnummer;
     if (updatedQuery.gardsnummer) delete updatedQuery.gardsnummer;
     if (updatedQuery.kommunenavn) delete updatedQuery.kommunenavn;
     if (updatedQuery.empty) delete updatedQuery.empty;
     if (updatedQuery.leadId) delete updatedQuery.leadId;
-    delete updatedQuery.plotId;
+    if (updatedQuery.plotId) delete updatedQuery.plotId;
+    if (updatedQuery.omrade) delete updatedQuery.omrade;
+    if (updatedQuery.hasReload) delete updatedQuery.hasReload;
     router.replace({ pathname, query: updatedQuery }, undefined, {
       shallow: true,
     });
-  }, []);
+  }, [router.isReady]);
 
   return (
     <div className="relative py-8">
@@ -119,6 +132,9 @@ const SelectPlot: React.FC<{
                               className="p-2 desktop:p-3 flex items-center gap-2 hover:bg-lightGreen cursor-pointer"
                               key={index}
                               onClick={() => {
+                                setLamdaDataFromApi(null);
+                                setCadastreDataFromApi(null);
+                                setAdditionalData(null);
                                 localStorage.setItem(
                                   "IPlot_Address",
                                   JSON.stringify(address)
@@ -137,9 +153,6 @@ const SelectPlot: React.FC<{
                                 className="w-6 h-6 md:w-auto md:h-auto"
                               />
                               <div>
-                                <span className="text-secondary text-xs md:text-sm font-medium">
-                                  Adresse:
-                                </span>{" "}
                                 <span className="text-black font-medium text-sm md:text-base">
                                   {`${address.adressetekst}  ${address.postnummer} ${address.poststed}` ||
                                     "N/A"}
@@ -174,7 +187,12 @@ const SelectPlot: React.FC<{
                 <Button
                   text="Se tomter"
                   className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-full h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                  onClick={() => setIsPlot(true)}
+                  onClick={() => {
+                    setIsPlot(true);
+                    setLamdaDataFromApi(null);
+                    setCadastreDataFromApi(null);
+                    setAdditionalData(null);
+                  }}
                 />
               </div>
             </div>

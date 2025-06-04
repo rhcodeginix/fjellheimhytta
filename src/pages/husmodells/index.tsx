@@ -210,11 +210,6 @@ const HusmodellDetail = () => {
         const CadastreDataResponse =
           await ApiUtils.fetchCadastreData(lamdaApiData);
 
-        setLamdaDataFromApi(data);
-        if (CadastreDataResponse && CadastreDataResponse?.apis) {
-          setCadastreDataFromApi(CadastreDataResponse?.apis);
-        }
-
         if (
           !cleanAnswer ||
           data.message === "Request failed with status code 503" ||
@@ -236,7 +231,6 @@ const HusmodellDetail = () => {
 
         try {
           const additionalResponse = await ApiUtils.askApi(prompt);
-          setAdditionalData(additionalResponse);
 
           const property = {
             lamdaDataFromApi: data,
@@ -311,6 +305,11 @@ const HusmodellDetail = () => {
             pathname: router.pathname,
             query: Object.fromEntries(queryParams),
           });
+          setLamdaDataFromApi(data);
+          if (CadastreDataResponse && CadastreDataResponse?.apis) {
+            setCadastreDataFromApi(CadastreDataResponse?.apis);
+          }
+          setAdditionalData(additionalResponse);
         } catch (error) {
           console.error("Error fetching additional data from askApi:", error);
           setShowErrorPopup(true);
@@ -431,6 +430,9 @@ const HusmodellDetail = () => {
           handleNext={handleNext}
           handlePrevious={handlePrevious}
           HouseModelData={HouseModelData}
+          setLamdaDataFromApi={setLamdaDataFromApi}
+          setCadastreDataFromApi={setCadastreDataFromApi}
+          setAdditionalData={setAdditionalData}
         />
       ),
     },
