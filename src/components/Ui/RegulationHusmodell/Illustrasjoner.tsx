@@ -105,7 +105,7 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
     }
   }, [id]);
 
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMode, setPopupMode] = useState<"single" | "gallery">("single");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -132,7 +132,7 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (popup.current && !popup.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        setIsPopupOpen(false);
       }
     };
 
@@ -179,17 +179,18 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
               </div>
             </button> */}
             <div
-              className={`overflow-hidden max-h-0 ${isOpen ? "p-4 md:p-5" : ""}`}
+              className={`overflow-hidden max-h-0 p-2 md:p-5`}
               style={{
-                maxHeight: isOpen ? "max-content" : "0",
+                // maxHeight: isOpen ? "max-content" : "0",
+                maxHeight: "max-content",
                 transition: "max-height 0.2s ease-out",
               }}
             >
               <div
-                className={`gap-4 lg:gap-6 flex flex-col desktop:flex-row ${displayedImages.length < 4 ? "md:h-[400px]" : "md:h-[500px]"}`}
+                className={`gap-2 md:gap-4 lg:gap-6 flex flex-col desktop:flex-row ${displayedImages.length < 4 ? "md:h-[400px]" : "md:h-[500px]"}`}
               >
                 <div
-                  className={`w-full ${
+                  className={`w-full h-full ${
                     husmodellData?.documents &&
                     husmodellData?.documents.length > 0
                       ? "desktop:w-2/3"
@@ -295,7 +296,7 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
                   <img
                     src={selectedImage}
                     alt="Selected"
-                    className="h-auto w-full object-fill"
+                    className="h-auto w-full object-fill max-h-[80vh]"
                   />
                 </div>
 

@@ -98,7 +98,8 @@ const Plots: React.FC<{
 
           setFormData((prev) => ({
             ...prev,
-            Område: citiesToUse,
+            // Område: citiesToUse,
+            Område: citiesToUse.length > 0 ? citiesToUse : prev.Område,
             SubOmråde:
               subCityFormLocalStorage.length > 0 ? subCityFormLocalStorage : [],
           }));
@@ -233,7 +234,11 @@ const Plots: React.FC<{
 
           setFormData((prev) => ({
             ...prev,
-            Område: cityFormLocalStorage || 0,
+            // Område: cityFormLocalStorage || 0,
+            Område:
+              cityFormLocalStorage.length > 0
+                ? cityFormLocalStorage
+                : prev.Område,
             SubOmråde: subCityFormLocalStorage,
           }));
 
@@ -244,8 +249,8 @@ const Plots: React.FC<{
 
           let kommuneNumbers: number[] = [];
 
-          if (subCityFormLocalStorage.length > 0) {
-            matchedCities.forEach((property: any) => {
+          matchedCities.forEach((property: any) => {
+            if (subCityFormLocalStorage.length > 0) {
               const matched = property.kommunerList?.filter((k: any) =>
                 subCityFormLocalStorage.includes(k.name)
               );
@@ -253,36 +258,22 @@ const Plots: React.FC<{
                 kommuneNumbers.push(
                   ...matched.map((k: any) => parseInt(k.number, 10))
                 );
-              } else {
-                kommuneNumbers.push(
-                  ...Object.values(property?.kommunenummer || {}).map(
-                    (val: any) =>
-                      parseInt(
-                        (typeof val === "string"
-                          ? val.replace(/"/g, "")
-                          : val
-                        ).toString(),
-                        10
-                      )
-                  )
-                );
               }
-            });
-          } else {
-            kommuneNumbers = matchedCities.flatMap((property: any) =>
-              Object.values(property?.kommunenummer || {}).map((val: any) =>
-                parseInt(
-                  (typeof val === "string"
-                    ? val.replace(/"/g, "")
-                    : val
-                  ).toString(),
-                  10
+            } else {
+              // Use all subkommuner under the city
+              kommuneNumbers.push(
+                ...(property.kommunerList || []).map((k: any) =>
+                  parseInt(k.number, 10)
                 )
-              )
-            );
-          }
+              );
+            }
+          });
 
-          kommuneNumbers = kommuneNumbers.filter((num) => !isNaN(num));
+          // kommuneNumbers = kommuneNumbers.filter((num) => !isNaN(num));
+          kommuneNumbers = [...new Set(kommuneNumbers)].filter(
+            (num) => !isNaN(num)
+          );
+
           if (!kommuneNumbers.length) {
             setHouseModelProperty([]);
             return;
@@ -412,7 +403,9 @@ const Plots: React.FC<{
             {!isLoading && (
               <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
-                treff i <span className="font-bold">{HouseModelProperty.length}</span> annonser
+                treff i{" "}
+                <span className="font-bold">{HouseModelProperty.length}</span>{" "}
+                annonser
               </p>
             )}
           </div>

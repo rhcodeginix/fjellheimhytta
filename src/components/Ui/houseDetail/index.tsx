@@ -114,8 +114,7 @@ const HouseDetailPage: React.FC = () => {
         ></div>
       ) : (
         <div>
-          <Illustrasjoner loading={loading} />
-          <div className="w-full flex flex-col lg:flex-row gap-5 md:gap-6 lg:gap-10 desktop:gap-[60px] mt-8">
+          <div className="w-full flex flex-col lg:flex-row gap-5 md:gap-6 lg:gap-10 desktop:gap-[60px]">
             <div className="w-full lg:w-[43%]">
               <h4 className="text-black mb-4 md:mb-6 font-semibold text-lg md:text-xl desktop:text-2xl">
                 {husmodellData?.husmodell_name}
@@ -300,6 +299,9 @@ const HouseDetailPage: React.FC = () => {
                   {husmodellData?.OmHusmodellen}
                 </p>
               </div>
+              <div className="mb-5 md:mb-[60px]">
+                <Illustrasjoner loading={loading} />
+              </div>
               <h2 className="text-black mb-4 md:mb-6 font-semibold text-lg md:text-xl desktop:text-2xl">
                 Film av {husmodellData?.husmodell_name}
               </h2>
@@ -362,7 +364,7 @@ const HouseDetailPage: React.FC = () => {
                   <img
                     src={selectedImage}
                     alt="Selected"
-                    className="h-auto w-full object-fill"
+                    className="h-auto w-full object-fill max-h-[80vh]"
                   />
                 </div>
 
