@@ -66,10 +66,10 @@ const HusmodellProperty: React.FC<{
                 return (
                   <div
                     key={index}
-                    className="border border-lightPurple rounded-[8px] p-3 md:p-5 cursor-pointer"
-                    style={{
-                      boxShadow: "0px 24px 48px -12px #1018282E",
-                    }}
+                    className="border border-lightPurple rounded-[8px] p-3 md:p-5 cursor-pointer shadow-shadow4 hover:shadow-shadow1"
+                    // style={{
+                    //   boxShadow: "0px 24px 48px -12px #1018282E",
+                    // }}
                     onClick={() => {
                       router.push(
                         `${router.asPath}&husmodellId=${property?.id}`
