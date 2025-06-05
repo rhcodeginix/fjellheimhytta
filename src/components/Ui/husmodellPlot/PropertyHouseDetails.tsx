@@ -90,7 +90,7 @@ const PropertyHouseDetails: React.FC<{
           <div className="flex flex-col items-start">
             {loading ? (
               <div
-                className="w-[400px] h-[20px] rounded-md custom-shimmer mb-2"
+                className="w-full sm:w-[400px] h-[20px] rounded-md custom-shimmer mb-2"
                 style={{ borderRadius: "8px" }}
               ></div>
             ) : (
