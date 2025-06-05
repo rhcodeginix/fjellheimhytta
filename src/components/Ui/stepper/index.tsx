@@ -69,7 +69,7 @@ const Stepper: React.FC<StepperProps> = ({
                       style={{ zIndex: 2 }}
                     >
                       {index < currIndex ? (
-                        <div className="w-6 h-6 bg-[#099250] flex items-center justify-center rounded-full">
+                        <div className="w-6 h-6 bg-primary flex items-center justify-center rounded-full">
                           <Image src={Ic_Check_white} alt="Completed" />
                         </div>
                       ) : (

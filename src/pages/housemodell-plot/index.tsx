@@ -373,6 +373,7 @@ const HusmodellPlot = () => {
       getData();
     }
   }, [husmodellData?.Leverandører]);
+
   const steps = [
     {
       name: "Tomt & husmodell",

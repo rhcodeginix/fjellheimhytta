@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Tomt from "./Tomt";
 import Tilbud from "./Tilbud";
 import Finansiering from "./Finansiering";
-import Oppsummering from "./Oppsummering";
+// import Oppsummering from "./Oppsummering";
 import ErrorPopup from "@/components/Ui/error";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/config/firebaseConfig";
@@ -22,7 +22,7 @@ import {
 } from "firebase/firestore";
 import { useUserLayoutContext } from "@/context/userLayoutContext";
 import Tilpass from "./Tilpass";
-import TomtHouseDetails from "./tomtDetail";
+// import TomtHouseDetails from "./tomtDetail";
 import ApiUtils from "@/api";
 
 const HusmodellDetail = () => {
@@ -117,7 +117,7 @@ const HusmodellDetail = () => {
   }, [currIndex]);
 
   useEffect(() => {
-    if (currIndex < 3) {
+    if (currIndex < 2) {
       const { plotId, ...restQuery } = router.query;
 
       if (plotId) {
@@ -433,21 +433,11 @@ const HusmodellDetail = () => {
           setLamdaDataFromApi={setLamdaDataFromApi}
           setCadastreDataFromApi={setCadastreDataFromApi}
           setAdditionalData={setAdditionalData}
-        />
-      ),
-    },
-    {
-      name: "Detaljer",
-      component: (
-        <TomtHouseDetails
-          handleNext={handleNext}
-          handlePrevious={handlePrevious}
           loadingAdditionalData={loading}
           loginUser={loginUser}
           loadingLamdaData={loading}
           supplierData={supplierData}
           CadastreDataFromApi={CadastreDataFromApi}
-          HouseModelData={HouseModelData}
           askData={askData}
           lamdaDataFromApi={lamdaDataFromApi}
           user={user}
@@ -485,22 +475,22 @@ const HusmodellDetail = () => {
         />
       ),
     },
-    {
-      name: "Oppsummering",
-      component: (
-        <Oppsummering
-          handleNext={handleNext}
-          lamdaDataFromApi={lamdaDataFromApi}
-          loading={loading}
-          CadastreDataFromApi={CadastreDataFromApi}
-          askData={askData}
-          HouseModelData={HouseModelData}
-          handlePrevious={handlePrevious}
-          supplierData={supplierData}
-          pris={pris}
-        />
-      ),
-    },
+    // {
+    //   name: "Oppsummering",
+    //   component: (
+    //     <Oppsummering
+    //       handleNext={handleNext}
+    //       lamdaDataFromApi={lamdaDataFromApi}
+    //       loading={loading}
+    //       CadastreDataFromApi={CadastreDataFromApi}
+    //       askData={askData}
+    //       HouseModelData={HouseModelData}
+    //       handlePrevious={handlePrevious}
+    //       supplierData={supplierData}
+    //       pris={pris}
+    //     />
+    //   ),
+    // },
   ];
   return (
     <>
@@ -508,7 +498,7 @@ const HusmodellDetail = () => {
         steps={steps}
         currIndex={currIndex}
         setCurrIndex={setCurrIndex}
-        Style="true"
+        // Style="true"
       />
       {showErrorPopup && <ErrorPopup />}
     </>

@@ -40,8 +40,12 @@ export function convertCurrencyFormat(input: any) {
 const PlotProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;
-  handleNext: any;
-}> = ({ HouseModelProperty, isLoading, handleNext }) => {
+  // handleNext: any;
+}> = ({
+  HouseModelProperty,
+  isLoading,
+  // handleNext
+}) => {
   const router = useRouter();
 
   const [supplierData, setSupplierData] = useState<{ [key: string]: any }>({});
@@ -103,13 +107,21 @@ const PlotProperty: React.FC<{
                     onClick={() => {
                       const router_query: any = { ...router.query };
 
-                      delete router_query.minRangePlot;
-                      delete router_query.maxRangePlot;
-                      delete router_query.plotId;
-                      delete router_query.leadId;
+                      [
+                        "minRangePlot",
+                        "maxRangePlot",
+                        "plotId",
+                        "leadId",
+                      ].forEach((key) => {
+                        if (router_query[key]) {
+                          delete router_query[key];
+                        }
+                      });
 
-                      if (property?.plot?.id) {
-                        router_query.plotId = property.plot.id;
+                      const plot = property?.plot;
+
+                      if (plot?.id) {
+                        router_query.plotId = plot.id;
                       }
 
                       router.push(
@@ -120,8 +132,6 @@ const PlotProperty: React.FC<{
                         undefined,
                         { shallow: true }
                       );
-
-                      handleNext();
                     }}
                   >
                     <div className="mb-2 md:mb-3 desktop:mb-4 flex items-start justify-between gap-3">
@@ -304,13 +314,21 @@ const PlotProperty: React.FC<{
                             onClick={() => {
                               const router_query: any = { ...router.query };
 
-                              delete router_query.minRangePlot;
-                              delete router_query.maxRangePlot;
-                              delete router_query.plotId;
-                              delete router_query.leadId;
+                              [
+                                "minRangePlot",
+                                "maxRangePlot",
+                                "plotId",
+                                "leadId",
+                              ].forEach((key) => {
+                                if (router_query[key]) {
+                                  delete router_query[key];
+                                }
+                              });
 
-                              if (property?.plot?.id) {
-                                router_query.plotId = property.plot.id;
+                              const plot = property?.plot;
+
+                              if (plot?.id) {
+                                router_query.plotId = plot.id;
                               }
 
                               router.push(
@@ -321,8 +339,6 @@ const PlotProperty: React.FC<{
                                 undefined,
                                 { shallow: true }
                               );
-
-                              handleNext();
                             }}
                           />
                         </div>

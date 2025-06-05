@@ -188,17 +188,6 @@ const Finansiering: React.FC<{
             <div
               className="text-primary text-xs md:text-sm font-bold cursor-pointer"
               onClick={() => {
-                const currIndex = 2;
-                localStorage.setItem("currIndex", currIndex.toString());
-                handlePrevious();
-              }}
-            >
-              Detaljer
-            </div>
-            <Image src={Ic_breadcrumb_arrow} alt="arrow" />
-            <div
-              className="text-primary text-xs md:text-sm font-bold cursor-pointer"
-              onClick={() => {
                 const currIndex = 3;
                 localStorage.setItem("currIndex", currIndex.toString());
                 handlePrevious();

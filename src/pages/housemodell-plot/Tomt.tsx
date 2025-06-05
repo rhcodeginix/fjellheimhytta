@@ -134,7 +134,7 @@ const Tomt: React.FC<{
                     );
                   }}
                 >
-                  Start med tomt og hyttemodell
+                  Start med hyttemodell
                 </Link>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
               </>

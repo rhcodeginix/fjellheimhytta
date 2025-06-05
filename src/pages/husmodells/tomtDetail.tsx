@@ -335,9 +335,9 @@ const TomtHouseDetails: React.FC<{
                   .replace({ pathname, query: updatedQuery }, undefined, {
                     shallow: true,
                   })
-                  .then(() => {
-                    handlePrevious();
-                  });
+                  // .then(() => {
+                  //   handlePrevious();
+                  // });
               }}
             />
             <Button

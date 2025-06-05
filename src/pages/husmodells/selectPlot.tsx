@@ -13,14 +13,14 @@ import { useRouter } from "next/router";
 const SelectPlot: React.FC<{
   HouseModelData: any;
   setIsPlot: any;
-  handleNext: any;
+  // handleNext: any;
   setLamdaDataFromApi: any;
   setCadastreDataFromApi: any;
   setAdditionalData: any;
 }> = ({
   HouseModelData,
   setIsPlot,
-  handleNext,
+  // handleNext,
   setLamdaDataFromApi,
   setCadastreDataFromApi,
   setAdditionalData,
@@ -94,7 +94,7 @@ const SelectPlot: React.FC<{
                   Jeg vil søk opp en adresse
                 </h3>
                 <p className="text-secondary2 text-xs md:text-sm mb-4 md:mb-6">
-                  Velg dette alternativet om du vet hvor du vil brygge{" "}
+                  Velg dette alternativet om du vet hvor du vil Bygge{" "}
                   <span className="font-bold">
                     {HouseModelData?.Husdetaljer?.husmodell_name}.
                   </span>
@@ -140,7 +140,7 @@ const SelectPlot: React.FC<{
                                   JSON.stringify(address)
                                 );
                                 setStoreAddress(address);
-                                handleNext();
+                                // handleNext();
                                 router.push(
                                   `${router.asPath}&kommunenummer=${address.kommunenummer}&gardsnummer=${address.gardsnummer}&bruksnummer=${address.bruksnummer}&kommunenavn=${address.kommunenavn}`
                                 );

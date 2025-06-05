@@ -18,6 +18,9 @@ const PropertyHouseDetails: React.FC<{
   const router = useRouter();
   const leadId = router.query["leadId"];
   const Husdetaljer = HouseModelData?.Husdetaljer;
+
+  const { plotId, kommunenummer, propertyId } = router.query;
+
   // const [kommune, setKommune] = useState<any>(null);
   // useEffect(() => {
   //   const queryParams = new URLSearchParams(window.location.search);
@@ -106,33 +109,36 @@ const PropertyHouseDetails: React.FC<{
                 </span> */}
               </h4>
             )}
-            {loading && lamdaDataFromApi ? (
+            {loading &&
+            lamdaDataFromApi &&
+            (plotId || propertyId || kommunenummer) ? (
               <div
                 className="w-[200px] h-[100px] rounded-md custom-shimmer mb-2"
                 style={{ borderRadius: "8px" }}
               ></div>
             ) : (
               <>
-                {lamdaDataFromApi && (
-                  <div className="flex items-center gap-4 mb-2">
-                    {lamdaDataFromApi?.searchParameters?.gardsnummer && (
-                      <div className="text-secondary text-xs md:text-sm lg:text-base">
-                        Gnr:{" "}
-                        <span className="text-black font-semibold">
-                          {lamdaDataFromApi.searchParameters.gardsnummer}
-                        </span>
-                      </div>
-                    )}
-                    {lamdaDataFromApi?.searchParameters?.bruksnummer && (
-                      <div className="text-secondary text-xs md:text-sm lg:text-base">
-                        Bnr:{" "}
-                        <span className="text-black font-semibold">
-                          {lamdaDataFromApi.searchParameters.bruksnummer}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                )}
+                {lamdaDataFromApi &&
+                  (plotId || propertyId || kommunenummer) && (
+                    <div className="flex items-center gap-4 mb-2">
+                      {lamdaDataFromApi?.searchParameters?.gardsnummer && (
+                        <div className="text-secondary text-xs md:text-sm lg:text-base">
+                          Gnr:{" "}
+                          <span className="text-black font-semibold">
+                            {lamdaDataFromApi.searchParameters.gardsnummer}
+                          </span>
+                        </div>
+                      )}
+                      {lamdaDataFromApi?.searchParameters?.bruksnummer && (
+                        <div className="text-secondary text-xs md:text-sm lg:text-base">
+                          Bnr:{" "}
+                          <span className="text-black font-semibold">
+                            {lamdaDataFromApi.searchParameters.bruksnummer}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
               </>
             )}
             {loading ? (
@@ -141,19 +147,24 @@ const PropertyHouseDetails: React.FC<{
                 style={{ borderRadius: "8px" }}
               ></div>
             ) : (
-              <div className="hidden md:flex items-center gap-1 sm:gap-2 rounded-[50px] bg-[#EDFCF2] py-2 px-3 whitespace-normal">
-                <Image
-                  src={Ic_Step_icon}
-                  alt="icon"
-                  className="w-4 sm:w-auto"
-                />
-                <div className="text-black text-xs md:text-sm lg:text-base whitespace-normal">
-                  <span className="font-bold">
-                    {HouseModelData?.Husdetaljer?.husmodell_name || "Modellen"}
-                  </span>{" "}
-                  er i samsvar med alle reguleringsbestemmelser.
-                </div>
-              </div>
+              <>
+                {(plotId || propertyId || kommunenummer) && (
+                  <div className="hidden md:flex items-center gap-1 sm:gap-2 rounded-[50px] bg-[#EDFCF2] py-2 px-3 whitespace-normal">
+                    <Image
+                      src={Ic_Step_icon}
+                      alt="icon"
+                      className="w-4 sm:w-auto"
+                    />
+                    <div className="text-black text-xs md:text-sm lg:text-base whitespace-normal">
+                      <span className="font-bold">
+                        {HouseModelData?.Husdetaljer?.husmodell_name ||
+                          "Modellen"}
+                      </span>{" "}
+                      er i samsvar med alle reguleringsbestemmelser.
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

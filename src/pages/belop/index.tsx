@@ -86,9 +86,11 @@ const Belop: React.FC = () => {
           JSON.parse(localStorage.getItem("TypeHusmodell") || "[]"),
         ];
 
-        const soveromValues = soveromFormLocalStorage.map((item: string) =>
-          parseInt(item.replace(" Soverom", ""), 10)
-        );
+        const soveromValues = formData?.AntallSoverom.flatMap((item: any) => {
+          const value = parseInt(item.replace(" Soverom", ""), 10);
+
+          return Array.from({ length: 10 - value + 1 }, (_, i) => value + i);
+        });
 
         const citiesSnapshot = await getDocs(collection(db, "cities"));
         const fetchedCities = citiesSnapshot.docs.map((doc) => ({
@@ -351,7 +353,7 @@ const Belop: React.FC = () => {
             </Link>
             <Image src={Ic_breadcrumb_arrow} alt="arrow" />
             <span className="text-secondary2 text-xs md:text-sm">
-              Start med tomt og husmodell
+              Start med hyttemodell
             </span>
           </div>
         </SideSpaceContainer>
@@ -374,7 +376,7 @@ const Belop: React.FC = () => {
             {!isLoading && (
               <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
-                treff i <span className="font-bold">2 206</span> Tomter
+                treff i <span className="font-bold">{HouseModelProperty.length}</span> Tomter
               </p>
             )}
           </div>

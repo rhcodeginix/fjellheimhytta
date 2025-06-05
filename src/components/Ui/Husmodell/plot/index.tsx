@@ -21,9 +21,13 @@ import { db } from "@/config/firebaseConfig";
 
 const Plots: React.FC<{
   handlePrevious: any;
-  handleNext: any;
+  // handleNext: any;
   HouseModelData: any;
-}> = ({ handlePrevious, handleNext, HouseModelData }) => {
+}> = ({
+  handlePrevious,
+  //  handleNext,
+  HouseModelData,
+}) => {
   const router: any = useRouter();
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -408,7 +412,7 @@ const Plots: React.FC<{
             {!isLoading && (
               <p className="text-darkBlack text-sm md:text-base desktop:text-xl font-light">
                 <span className="font-bold">{HouseModelProperty.length}</span>{" "}
-                treff i <span className="font-bold">2 206</span> annonser
+                treff i <span className="font-bold">{HouseModelProperty.length}</span> annonser
               </p>
             )}
           </div>
@@ -437,7 +441,7 @@ const Plots: React.FC<{
                 <PlotProperty
                   HouseModelProperty={currentPlots}
                   isLoading={isLoading}
-                  handleNext={handleNext}
+                  // handleNext={handleNext}
                 />
                 <div className="flex justify-center mt-6 space-x-2">
                   <button

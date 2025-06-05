@@ -21,7 +21,7 @@ import { addDaysToDate } from "@/components/Ui/stepperUi/productDetailWithPrice"
 import Link from "next/link";
 import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
 // import GoogleMapComponent from "@/components/Ui/map";
-import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
+// import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
 import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
 import NorkartMap from "@/components/map";
 import { convertCurrencyFormat } from "@/components/Ui/Husmodell/plot/plotProperty";
@@ -459,7 +459,7 @@ const Tilbud: React.FC<{
                       </div>
                     </div>
                   </div>
-                  <LeadsBox col={true} />
+                  {/* <LeadsBox col={true} /> */}
                 </div>
                 <div className="w-full desktop:w-[60%] border border-[#DCDFEA] rounded-lg overflow-hidden">
                   <div className="p-3 md:p-5 border-b w-full border-[#DCDFEA] text-darkBlack text-base md:text-lg lg:text-xl font-semibold">
@@ -652,7 +652,7 @@ const Tilbud: React.FC<{
                   }}
                 />
                 <Button
-                  text="Neste: Finansiering"
+                  text="Send til Fjellheimhytta"
                   className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                   onClick={() => {
                     handleNext();
