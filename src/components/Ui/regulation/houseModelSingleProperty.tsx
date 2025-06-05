@@ -47,6 +47,7 @@ const HouseModelSingleProperty: React.FC<{
   lamdaDataFromApi,
   askData,
   user,
+  handlePrevious,
 }) => {
   const router = useRouter();
   const { homePage } = router.query;
@@ -316,6 +317,7 @@ const HouseModelSingleProperty: React.FC<{
                 });
                 const currIndex = 1;
                 localStorage.setItem("currIndex", currIndex.toString());
+                handlePrevious();
               }}
             />
             <Button
