@@ -24,6 +24,7 @@ const Tilpass: React.FC<{
   HouseModelData: any;
   handlePrevious: any;
   supplierData: any;
+  CadastreDataFromApi: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -31,6 +32,7 @@ const Tilpass: React.FC<{
   HouseModelData,
   handlePrevious,
   supplierData,
+  CadastreDataFromApi,
 }) => {
   const router = useRouter();
   const { homePage } = router.query;
@@ -278,6 +280,7 @@ const Tilpass: React.FC<{
             HouseModelData={HouseModelData}
             lamdaDataFromApi={lamdaDataFromApi}
             loading={loadingLamdaData}
+            CadastreDataFromApi={CadastreDataFromApi}
             supplierData={supplierData}
           />
         </SideSpaceContainer>
@@ -464,7 +467,7 @@ const Tilpass: React.FC<{
                                           </SwiperSlide>
                                         )
                                       )}
-                                      <div className="swiper-pagination"></div>
+                                      {/* <div className="swiper-pagination"></div> */}
                                     </Swiper>
                                   )}
                                   <div

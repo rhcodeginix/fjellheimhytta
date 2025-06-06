@@ -161,7 +161,7 @@ const HusmodellDetail = () => {
     return () => unsubscribe();
   }, [isCall]);
   useEffect(() => {
-    if (plotId && userUID) {
+    if (plotId && userUID && !kommunenummer) {
       setLoading(true);
 
       const fetchProperty = async () => {
@@ -305,11 +305,13 @@ const HusmodellDetail = () => {
             pathname: router.pathname,
             query: Object.fromEntries(queryParams),
           });
-          setLamdaDataFromApi(data);
-          if (CadastreDataResponse && CadastreDataResponse?.apis) {
-            setCadastreDataFromApi(CadastreDataResponse?.apis);
+          if (additionalResponse) {
+            setLamdaDataFromApi(data);
+            if (CadastreDataResponse && CadastreDataResponse?.apis) {
+              setCadastreDataFromApi(CadastreDataResponse?.apis);
+            }
+            setAdditionalData(additionalResponse);
           }
-          setAdditionalData(additionalResponse);
         } catch (error) {
           console.error("Error fetching additional data from askApi:", error);
           setShowErrorPopup(true);

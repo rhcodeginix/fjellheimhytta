@@ -188,6 +188,7 @@ const Finansiering: React.FC<{
             <PropertyHouseDetails
               HouseModelData={HouseModelData}
               lamdaDataFromApi={lamdaDataFromApi}
+            CadastreDataFromApi={CadastreDataFromApi}
               supplierData={supplierData}
               pris={pris}
             />

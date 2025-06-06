@@ -192,6 +192,7 @@ const Oppsummering: React.FC<{
             HouseModelData={HouseModelData}
             lamdaDataFromApi={lamdaDataFromApi}
             supplierData={supplierData}
+            CadastreDataFromApi={CadastreDataFromApi}
             loading={loading}
             pris={pris}
           />

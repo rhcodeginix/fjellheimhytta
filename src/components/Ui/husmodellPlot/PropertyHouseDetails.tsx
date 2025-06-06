@@ -14,7 +14,15 @@ const PropertyHouseDetails: React.FC<{
   supplierData: any;
   pris?: any;
   loading: any;
-}> = ({ HouseModelData, lamdaDataFromApi, supplierData, pris, loading }) => {
+  CadastreDataFromApi?: any;
+}> = ({
+  HouseModelData,
+  lamdaDataFromApi,
+  supplierData,
+  pris,
+  loading,
+  CadastreDataFromApi,
+}) => {
   const router = useRouter();
   const leadId = router.query["leadId"];
   const Husdetaljer = HouseModelData?.Husdetaljer;
@@ -134,6 +142,21 @@ const PropertyHouseDetails: React.FC<{
                           Bnr:{" "}
                           <span className="text-black font-semibold">
                             {lamdaDataFromApi.searchParameters.bruksnummer}
+                          </span>
+                        </div>
+                      )}
+                      {CadastreDataFromApi?.presentationAddressApi?.response
+                        ?.item?.formatted && (
+                        <div className="text-secondary text-xs md:text-sm lg:text-base">
+                          <span className="text-black font-semibold">
+                            {
+                              CadastreDataFromApi.presentationAddressApi
+                                .response?.item?.formatted?.line1
+                            }
+                            {
+                              CadastreDataFromApi.presentationAddressApi
+                                .response?.item?.formatted?.line2
+                            }
                           </span>
                         </div>
                       )}

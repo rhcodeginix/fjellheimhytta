@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
 import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
-import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
+// import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
 import { Building2, House } from "lucide-react";
 import HouseDetailPage from "@/components/Ui/houseDetail";
 import {
@@ -234,6 +234,7 @@ const TomtHouseDetails: React.FC<{
             HouseModelData={HouseModelData}
             loading={loadingLamdaData}
             lamdaDataFromApi={lamdaDataFromApi}
+            CadastreDataFromApi={CadastreDataFromApi}
             supplierData={supplierData}
           />
         </SideSpaceContainer>
@@ -244,9 +245,9 @@ const TomtHouseDetails: React.FC<{
         lamdaDataFromApi={lamdaDataFromApi}
         HouseModelData={HouseModelData}
       />
-      <SideSpaceContainer>
+      {/* <SideSpaceContainer>
         <LeadsBox />
-      </SideSpaceContainer>
+      </SideSpaceContainer> */}
       <div id="regulationDocument">
         <div
           className="border-b border-gray3 py-6 pb-8"
@@ -331,13 +332,12 @@ const TomtHouseDetails: React.FC<{
                 if (updatedQuery.empty) delete updatedQuery.empty;
                 if (updatedQuery.leadId) delete updatedQuery.leadId;
                 delete updatedQuery.plotId;
-                router
-                  .replace({ pathname, query: updatedQuery }, undefined, {
-                    shallow: true,
-                  })
-                  // .then(() => {
-                  //   handlePrevious();
-                  // });
+                router.replace({ pathname, query: updatedQuery }, undefined, {
+                  shallow: true,
+                });
+                // .then(() => {
+                //   handlePrevious();
+                // });
               }}
             />
             <Button

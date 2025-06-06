@@ -441,7 +441,7 @@ const Tilpass: React.FC<{
                                           </SwiperSlide>
                                         )
                                       )}
-                                      <div className="swiper-pagination"></div>
+                                      {/* <div className="swiper-pagination"></div> */}
                                     </Swiper>
                                   )}
                                   <div

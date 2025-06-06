@@ -220,6 +220,7 @@ const HouseModelSingleProperty: React.FC<{
             lamdaDataFromApi={lamdaDataFromApi}
             supplierData={supplierData}
             loading={loadingLamdaData}
+            CadastreDataFromApi={CadastreDataFromApi}
           />
         </SideSpaceContainer>
       </div>

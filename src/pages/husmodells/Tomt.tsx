@@ -129,7 +129,7 @@ const Tomt: React.FC<{
             <SelectPlot
               HouseModelData={HouseModelData}
               setIsPlot={setIsPlot}
-              // handleNext={handleNext}
+              handleNext={handleNext}
               setLamdaDataFromApi={setLamdaDataFromApi}
               setCadastreDataFromApi={setCadastreDataFromApi}
               setAdditionalData={setAdditionalData}

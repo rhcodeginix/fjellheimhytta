@@ -210,6 +210,7 @@ const Oppsummering: React.FC<{
           <PropertyHouseDetails
             HouseModelData={HouseModelData}
             lamdaDataFromApi={lamdaDataFromApi}
+            CadastreDataFromApi={CadastreDataFromApi}
             loading={loadingLamdaData}
             supplierData={supplierData}
           />

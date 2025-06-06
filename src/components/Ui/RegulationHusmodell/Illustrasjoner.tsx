@@ -353,7 +353,7 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
                       />
                     </SwiperSlide>
                   ))}
-                  <div className="swiper-pagination"></div>
+                  {/* <div className="swiper-pagination"></div> */}
                 </Swiper>
               </div>
             )}
