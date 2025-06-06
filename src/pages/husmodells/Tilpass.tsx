@@ -84,7 +84,12 @@ const Tilpass: React.FC<any> = ({
         if (selectedTab.isSelected && selectedTab.Kategorinavn?.length > 0) {
           selectedTab.Kategorinavn.forEach(
             (categoryItem: any, categoryIndex: number) => {
-              if (categoryItem.produkter?.length > 0) {
+              console.log(categoryItem.isSelected);
+
+              if (
+                categoryItem?.isSelected === true &&
+                categoryItem.produkter?.length > 0
+              ) {
                 const product = categoryItem.produkter[0];
                 const key = `${index}-${categoryIndex}`;
 
