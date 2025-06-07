@@ -425,7 +425,7 @@ const PropertyDetailPage: React.FC<{
                     <Illustrasjoner loading={loading} />
                   </div>
                   <h2 className="text-black text-2xl font-semibold mb-4">
-                    Film av {husmodellData?.husmodell_name}
+                    {husmodellData?.TittelVideo}
                   </h2>
                   <div
                     style={{

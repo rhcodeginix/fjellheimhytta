@@ -295,7 +295,7 @@ const Husdetaljer: React.FC<{ husmodellData: any }> = ({ husmodellData }) => {
             ></textarea>
           </div>
           <h2 className="text-black text-2xl font-semibold mb-4">
-            Film av {husmodellData?.husmodell_name}
+            {husmodellData?.TittelVideo}
           </h2>
           <div
             style={{
