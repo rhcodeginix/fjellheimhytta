@@ -235,7 +235,7 @@ const PlotDetailPage: React.FC<{
                     />
                     {dropdownState.Tomteopplysninger && (
                       <div
-                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-48 dropdown-arrow"
                         style={{
                           boxShadow:
                             "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
@@ -245,8 +245,7 @@ const PlotDetailPage: React.FC<{
                         }}
                         ref={dropdownRef}
                       >
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the indo.
+                        Info kommer
                       </div>
                     )}
                   </div>
@@ -368,7 +367,7 @@ const PlotDetailPage: React.FC<{
                     />
                     {dropdownState.KommunaleData && (
                       <div
-                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-48 dropdown-arrow"
                         style={{
                           boxShadow:
                             "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
@@ -378,8 +377,7 @@ const PlotDetailPage: React.FC<{
                         }}
                         ref={dropdownRef}
                       >
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the indo.
+                        Info kommer
                       </div>
                     )}
                   </div>
@@ -467,7 +465,7 @@ const PlotDetailPage: React.FC<{
                     />
                     {dropdownState.Eiendomsstatus && (
                       <div
-                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-48 dropdown-arrow"
                         style={{
                           boxShadow:
                             "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
@@ -477,8 +475,7 @@ const PlotDetailPage: React.FC<{
                         }}
                         ref={dropdownRef}
                       >
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the indo.
+                        Info kommer
                       </div>
                     )}
                   </div>
@@ -614,7 +611,7 @@ const PlotDetailPage: React.FC<{
                     />
                     {dropdownState.Parkeringsinformasjon && (
                       <div
-                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-48 dropdown-arrow"
                         style={{
                           boxShadow:
                             "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
@@ -624,8 +621,7 @@ const PlotDetailPage: React.FC<{
                         }}
                         ref={dropdownRef}
                       >
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the indo.
+                        Info kommer
                       </div>
                     )}
                   </div>
@@ -726,7 +722,7 @@ const PlotDetailPage: React.FC<{
                     />
                     {dropdownState.YtterligereEiendomsforhold && (
                       <div
-                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-48 dropdown-arrow"
                         style={{
                           boxShadow:
                             "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
@@ -736,8 +732,7 @@ const PlotDetailPage: React.FC<{
                         }}
                         ref={dropdownRef}
                       >
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the indo.
+                        Info kommer
                       </div>
                     )}
                   </div>
@@ -873,7 +868,7 @@ const PlotDetailPage: React.FC<{
                     />
                     {dropdownState.SpesielleRegistreringer && (
                       <div
-                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-72 dropdown-arrow"
+                        className="flex flex-col gap-2 absolute text-grayText font-normal text-sm p-3 rounded-[8px] bg-white w-48 dropdown-arrow"
                         style={{
                           boxShadow:
                             "0px 4px 6px -2px #10182808, 0px 12px 16px -4px #10182814",
@@ -883,8 +878,7 @@ const PlotDetailPage: React.FC<{
                         }}
                         ref={dropdownRef}
                       >
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the indo.
+                        Info kommer
                       </div>
                     )}
                   </div>

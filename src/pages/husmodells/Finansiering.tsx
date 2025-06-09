@@ -168,7 +168,7 @@ const Finansiering: React.FC<{
                     handlePrevious();
                   }}
                 >
-                  Tomt og hyttemodell
+                  Hyttemodell
                 </div>
                 <Image src={Ic_breadcrumb_arrow} alt="arrow" />
                 <div

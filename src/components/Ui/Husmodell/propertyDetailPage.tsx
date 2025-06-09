@@ -196,7 +196,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             BRA total (bruksareal)
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {husmodellData?.BRATotal} m<sup>2</sup>
                           </td>
                         </tr>
@@ -204,7 +204,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             GUA (Gulvareal):
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {husmodellData?.PRom} m<sup>2</sup>
                           </td>
                         </tr>
@@ -212,7 +212,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             Bebygd Areal
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {husmodellData?.BebygdAreal} m<sup>2</sup>
                           </td>
                         </tr>
@@ -220,7 +220,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             Lengde
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {husmodellData?.Lengde}
                           </td>
                         </tr>
@@ -228,7 +228,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             Bredde
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {husmodellData?.Bredde}
                           </td>
                         </tr>
@@ -242,7 +242,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             Bad
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {husmodellData?.Bad}
                           </td>
                         </tr>
@@ -250,7 +250,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             Innvendig bod
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {husmodellData?.InnvendigBod}
                           </td>
                         </tr>
@@ -258,7 +258,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             Energimerking
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {husmodellData?.Energimerking}
                           </td>
                         </tr>
@@ -266,7 +266,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             Tilgjengelig bolig
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {husmodellData?.TilgjengeligBolig}
                           </td>
                         </tr>
@@ -274,7 +274,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
                           <td className="text-left pb-[16px] text-secondary text-sm whitespace-nowrap">
                             Tomtetype
                           </td>
-                          <td className="text-left pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
+                          <td className="text-right pb-[16px] text-black text-sm font-semibold whitespace-nowrap">
                             {Array.isArray(husmodellData?.Tomtetype)
                               ? husmodellData.Tomtetype.join(", ")
                               : husmodellData?.Tomtetype}
@@ -402,7 +402,7 @@ const PropertyDetailPage: React.FC<any> = ({ handleNext }) => {
             </h2>
             <p className="text-black text-xs md:text-sm desktop:text-base text-center mb-4">
               Logg inn for å få tilgang til alt{" "}
-              <span className="font-bold">MinTomt</span> har å by på.
+              <span className="font-bold">MinTomt x Fjellheimhytta</span> har å by på.
             </p>
             <Formik
               initialValues={{ terms_condition: false }}
