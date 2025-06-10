@@ -87,11 +87,11 @@ const index = () => {
               // }
               await signInWithEmailAndPassword(
                 auth,
-                "alvhole@hotmail.com",
-                "5CpATHnuwFglSzpOi1EZFrAjNmO2"
+                "abc@gmail.com",
+                "Abcd@123"
               );
               localStorage.setItem("min_tomt_login", "true");
-              const userDocRef = doc(db, "users", "alvhole@hotmail.com");
+              const userDocRef = doc(db, "users", "abc@gmail.com");
 
               await updateDoc(userDocRef, {
                 updatedAt: new Date(),
@@ -104,8 +104,8 @@ const index = () => {
               // router.push("/");
               const redirectPath = Cookies.get("vipps_redirect_old_path");
               if (redirectPath) {
-                window.location.assign(redirectPath); // full reload to the original route
                 Cookies.remove("vipps_redirect_old_path");
+                window.location.assign(redirectPath); // full reload to the original route
               } else {
                 router.push("/");
               }
