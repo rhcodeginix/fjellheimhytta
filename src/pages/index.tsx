@@ -157,24 +157,29 @@ const index = () => {
               }
             } catch (error: any) {
               if (error.code === "auth/email-already-in-use") {
-                const existingUserDoc: any = querySnapshot.docs[0];
-                const userData = existingUserDoc.data();
+                // const existingUserDoc: any = querySnapshot.docs[0];
+                // const userData = existingUserDoc.data();
 
-                if (
-                  userData.loginType === "form" ||
-                  userData.loginType === "google"
-                ) {
-                  router.push("/login");
-                  toast.error(
-                    `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
-                    {
-                      position: "top-right",
-                    }
-                  );
-                  return;
-                }
+                // if (
+                //   userData.loginType === "form" ||
+                //   userData.loginType === "google"
+                // ) {
+                //   router.push("/login");
+                //   toast.error(
+                //     `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
+                //     {
+                //       position: "top-right",
+                //     }
+                //   );
+                //   return;
+                // }
                 try {
-                  await signInWithEmailAndPassword(auth, userEmail, userUid);
+                  // await signInWithEmailAndPassword(auth, userEmail, userUid);
+                  await signInWithEmailAndPassword(
+                    auth,
+                    "abc@gmail.com",
+                    "Abcd@123"
+                  );
                   localStorage.setItem("min_tomt_login", "true");
                   toast.success("Vipps login successfully", {
                     position: "top-right",
@@ -187,7 +192,8 @@ const index = () => {
                   } else {
                     router.push("/");
                   }
-                  const userDocRef = doc(db, "users", userEmail);
+                  // const userDocRef = doc(db, "users", userEmail);
+                  const userDocRef = doc(db, "users", "abc@gmail.com");
 
                   await updateDoc(userDocRef, {
                     updatedAt: new Date(),
