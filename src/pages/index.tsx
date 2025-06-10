@@ -100,7 +100,7 @@ const index = () => {
               toast.success("Vipps login successfully", {
                 position: "top-right",
               });
-              localStorage.setItem("I_plot_email", user.email);
+              localStorage.setItem("I_plot_email", "abc@gmail.com");
               // router.push("/");
               const redirectPath = Cookies.get("vipps_redirect_old_path");
               if (redirectPath) {
@@ -153,7 +153,7 @@ const index = () => {
                 } else {
                   router.push("/");
                 }
-                localStorage.setItem("I_plot_email", user.email);
+                localStorage.setItem("I_plot_email", "abc@gmail.com");
               }
             } catch (error: any) {
               if (error.code === "auth/email-already-in-use") {
@@ -199,9 +199,9 @@ const index = () => {
                     updatedAt: new Date(),
                     loginCount: increment(1),
                   });
-                  localStorage.setItem("I_plot_email", user.email);
+                  localStorage.setItem("I_plot_email", "abc@gmail.com");
                 } catch (error) {
-                  console.error("Login error:", error);
+                  console.error("Login error:---------------", error);
                   router.push("/login");
                   toast.error("Vipps login failed.");
                 }
