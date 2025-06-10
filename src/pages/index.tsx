@@ -76,15 +76,7 @@ const index = () => {
                 userData.loginType === "form" ||
                 userData.loginType === "google"
               ) {
-                // router.push("/login");
-                const redirectPath = Cookies.get("vipps_redirect_old_path");
-                if (redirectPath) {
-                  Cookies.remove("vipps_redirect_old_path");
-                  window.location.assign(redirectPath); // full reload to the original route
-                } else {
-                  router.push("/");
-                }
-                localStorage.setItem("I_plot_email", "abc@gmail.com");
+                router.push("/login");
                 toast.error(
                   `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
                   {
@@ -107,8 +99,6 @@ const index = () => {
               localStorage.setItem("I_plot_email", user.email);
               // router.push("/");
               const redirectPath = Cookies.get("vipps_redirect_old_path");
-              console.log(redirectPath);
-
               if (redirectPath) {
                 Cookies.remove("vipps_redirect_old_path");
                 window.location.assign(redirectPath); // full reload to the original route
@@ -170,16 +160,7 @@ const index = () => {
                   userData.loginType === "form" ||
                   userData.loginType === "google"
                 ) {
-                  // router.push("/login");
-                  const redirectPath = Cookies.get("vipps_redirect_old_path");
-                  console.log(redirectPath);
-
-                  if (redirectPath) {
-                    Cookies.remove("vipps_redirect_old_path");
-                    window.location.assign(redirectPath); // full reload to the original route
-                  } else {
-                    router.push("/");
-                  }
+                  router.push("/login");
                   toast.error(
                     `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
                     {
