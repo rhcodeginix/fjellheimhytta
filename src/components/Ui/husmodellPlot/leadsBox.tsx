@@ -72,7 +72,7 @@ const LeadsBox: React.FC<{ col?: any; isShow?: any }> = ({ col, isShow }) => {
 
       const queryParams = new URLSearchParams(window.location.search);
       const isEmptyPlot = queryParams.get("empty");
-      queryParams.delete("leadId");
+      // queryParams.delete("leadId");
 
       try {
         let plotCollectionRef = collection(db, "cabin_plot");

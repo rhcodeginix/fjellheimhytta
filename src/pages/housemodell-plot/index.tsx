@@ -98,125 +98,7 @@ const HusmodellPlot = () => {
   }, [isCall]);
 
   useEffect(() => {
-    if (propertyId && userUID) {
-      setLoading(true);
-
-      const fetchProperty = async () => {
-        try {
-          const plotDocSnap: any = await getDocs(collection(db, "cabin_plot"));
-
-          const foundProperty =
-            plotDocSnap.docs
-              .find((docSnap: any) => docSnap.id === String(propertyId))
-              ?.data() || null;
-
-          if (!foundProperty) {
-            console.error("No property found with the given ID.");
-            setShowErrorPopup(true);
-            setLoading(false);
-            return;
-          }
-
-          setLoading(true);
-          const property = {
-            lamdaDataFromApi: foundProperty?.lamdaDataFromApi,
-            additionalData: foundProperty?.additionalData,
-            CadastreDataFromApi: foundProperty?.CadastreDataFromApi,
-            pris: foundProperty?.pris ? foundProperty?.pris : 0,
-          };
-          const queryParams = new URLSearchParams(window.location.search);
-          queryParams.delete("empty");
-
-          const isEmptyPlot =
-            !foundProperty?.CadastreDataFromApi?.apis?.buildingsApi?.response
-              ?.items?.length;
-          const collectionName = isEmptyPlot ? "cabin_plot" : "plot_building";
-          queryParams.set("empty", isEmptyPlot ? "true" : "false");
-
-          const collectionRef = collection(db, collectionName);
-          const existingQuery = query(
-            collectionRef,
-            isEmptyPlot
-              ? where("id", "==", propertyId)
-              : where("lamdaDataFromApi.propertyId", "==", propertyId)
-          );
-          const querySnapshot = await getDocs(existingQuery);
-
-          let docId, plotData;
-          if (!querySnapshot.empty) {
-            const docSnap: any = querySnapshot.docs[0];
-            docId = docSnap.id;
-            plotData = docSnap.data();
-          } else {
-            const docRef = await addDoc(collectionRef, property);
-            docId = docRef.id;
-            plotData =
-              (await getDoc(doc(db, collectionName, docId))).data() || null;
-          }
-
-          const updatedPlotData = {
-            ...plotData,
-            view_count: (plotData?.view_count || 0) + 1,
-          };
-          await setDoc(doc(db, collectionName, docId), updatedPlotData, {
-            merge: true,
-          });
-
-          const viewerDocRef = doc(
-            db,
-            `${collectionName}/${docId}/viewer`,
-            user.uid
-          );
-          const viewerDocSnap = await getDoc(viewerDocRef);
-          let viewerViewCount = 1;
-
-          if (viewerDocSnap.exists()) {
-            const viewerData = viewerDocSnap.data();
-            viewerViewCount = (viewerData?.view_count || 0) + 1;
-          }
-
-          await setDoc(
-            viewerDocRef,
-            {
-              userId: user.uid,
-              name: user.name || "N/A",
-              last_updated_date: new Date().toISOString(),
-              view_count: viewerViewCount,
-            },
-            { merge: true }
-          );
-
-          router.replace({
-            pathname: router.pathname,
-            query: Object.fromEntries(queryParams),
-          });
-          setLoading(true);
-
-          if (foundProperty) {
-            setAdditionalData(foundProperty?.additionalData);
-            setLamdaDataFromApi(foundProperty?.lamdaDataFromApi);
-            setCadastreDataFromApi(foundProperty?.CadastreDataFromApi);
-            setPris(foundProperty?.pris ? foundProperty?.pris : 0);
-          } else {
-            console.error("No property found with the given ID.");
-          }
-        } catch (error) {
-          console.error("Error fetching user's properties:", error);
-          setShowErrorPopup(true);
-        } finally {
-          setLoading(false);
-        }
-      };
-      if (user) {
-        fetchProperty();
-      }
-    }
-  }, [propertyId, userUID, db, user]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
+    const fetchProperty = async () => {
       try {
         const husmodellDocRef = doc(db, "house_model", String(husmodellId));
         const husmodellDocSnap = await getDoc(husmodellDocRef);
@@ -226,16 +108,141 @@ const HusmodellPlot = () => {
         } else {
           console.error("No document found for plot or husmodell ID.");
         }
+
+        const plotDocSnap: any = await getDocs(collection(db, "cabin_plot"));
+
+        const foundProperty =
+          plotDocSnap.docs
+            .find((docSnap: any) => docSnap.id === String(propertyId))
+            ?.data() || null;
+
+        if (!foundProperty) {
+          console.error("No property found with the given ID.");
+          setShowErrorPopup(true);
+          setLoading(false);
+          return;
+        }
+
+        setLoading(true);
+        const property = {
+          lamdaDataFromApi: foundProperty?.lamdaDataFromApi,
+          additionalData: foundProperty?.additionalData,
+          CadastreDataFromApi: foundProperty?.CadastreDataFromApi,
+          pris: foundProperty?.pris ? foundProperty?.pris : 0,
+        };
+        const queryParams = new URLSearchParams(window.location.search);
+        queryParams.delete("empty");
+
+        const isEmptyPlot =
+          !foundProperty?.CadastreDataFromApi?.apis?.buildingsApi?.response
+            ?.items?.length;
+        const collectionName = isEmptyPlot ? "cabin_plot" : "plot_building";
+        queryParams.set("empty", isEmptyPlot ? "true" : "false");
+
+        const collectionRef = collection(db, collectionName);
+        const existingQuery = query(
+          collectionRef,
+          isEmptyPlot
+            ? where("id", "==", propertyId)
+            : where("lamdaDataFromApi.propertyId", "==", propertyId)
+        );
+        const querySnapshot = await getDocs(existingQuery);
+
+        let docId, plotData;
+        if (!querySnapshot.empty) {
+          const docSnap: any = querySnapshot.docs[0];
+          docId = docSnap.id;
+          plotData = docSnap.data();
+        } else {
+          const docRef = await addDoc(collectionRef, property);
+          docId = docRef.id;
+          plotData =
+            (await getDoc(doc(db, collectionName, docId))).data() || null;
+        }
+
+        const updatedPlotData = {
+          ...plotData,
+          view_count: (plotData?.view_count || 0) + 1,
+        };
+        await setDoc(doc(db, collectionName, docId), updatedPlotData, {
+          merge: true,
+        });
+
+        const viewerDocRef = doc(
+          db,
+          `${collectionName}/${docId}/viewer`,
+          user.uid
+        );
+        const viewerDocSnap = await getDoc(viewerDocRef);
+        let viewerViewCount = 1;
+
+        if (viewerDocSnap.exists()) {
+          const viewerData = viewerDocSnap.data();
+          viewerViewCount = (viewerData?.view_count || 0) + 1;
+        }
+
+        await setDoc(
+          viewerDocRef,
+          {
+            userId: user.uid,
+            name: user.name || "N/A",
+            last_updated_date: new Date().toISOString(),
+            view_count: viewerViewCount,
+          },
+          { merge: true }
+        );
+
+        router.replace({
+          pathname: router.pathname,
+          query: Object.fromEntries(queryParams),
+        });
+        setLoading(true);
+
+        if (foundProperty) {
+          setAdditionalData(foundProperty?.additionalData);
+          setLamdaDataFromApi(foundProperty?.lamdaDataFromApi);
+          setCadastreDataFromApi(foundProperty?.CadastreDataFromApi);
+          setPris(foundProperty?.pris ? foundProperty?.pris : 0);
+        } else {
+          console.error("No property found with the given ID.");
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching user's properties:", error);
+        setShowErrorPopup(true);
       } finally {
         setLoading(false);
       }
     };
-    if (husmodellId) {
-      fetchData();
+    if (propertyId && userUID && husmodellId && isCall && user) {
+      setLoading(true);
+
+      fetchProperty();
     }
-  }, [husmodellId, isCall]);
+  }, [propertyId, userUID, db, user, husmodellId, isCall]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setLoading(true);
+
+  //     try {
+  //       const husmodellDocRef = doc(db, "house_model", String(husmodellId));
+  //       const husmodellDocSnap = await getDoc(husmodellDocRef);
+
+  //       if (husmodellDocSnap.exists()) {
+  //         setHouseModelData(husmodellDocSnap.data());
+  //       } else {
+  //         console.error("No document found for plot or husmodell ID.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   if (husmodellId) {
+  //     fetchData();
+  //   }
+  // }, [husmodellId, isCall]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
@@ -248,12 +255,27 @@ const HusmodellPlot = () => {
 
     return () => unsubscribe();
   }, []);
+  const [leadId, setLeadId] = useState<any | null>(null);
 
   const handleNext = () => {
     if (typeof currIndex === "number" && currIndex < steps.length - 1) {
       setCurrIndex(currIndex + 1);
     }
+    if (leadId) {
+      router.replace({
+        pathname: router.pathname,
+        query: { ...router.query, leadId: leadId },
+      });
+    }
   };
+  useEffect(() => {
+    if (leadId) {
+      router.replace({
+        pathname: router.pathname,
+        query: { ...router.query, leadId: leadId },
+      });
+    }
+  }, [leadId]);
   const handlePrevious = () => {
     if (typeof currIndex === "number" && currIndex > 0) {
       setCurrIndex(currIndex - 1);
@@ -312,10 +334,16 @@ const HusmodellPlot = () => {
         );
 
         if (!querySnapshot.empty) {
+          // router.replace({
+          //   pathname: router.pathname,
+          //   query: { ...router.query, leadId: querySnapshot.docs[0].id },
+          // });
+          queryParams.set("leadId", querySnapshot.docs[0].id);
           router.replace({
             pathname: router.pathname,
-            query: { ...router.query, leadId: querySnapshot.docs[0].id },
+            query: Object.fromEntries(queryParams),
           });
+          setLeadId(querySnapshot.docs[0].id);
           return;
         }
 
@@ -329,10 +357,16 @@ const HusmodellPlot = () => {
           IsEmptyPlot: isEmptyPlot === "true",
         });
 
+        // router.replace({
+        //   pathname: router.pathname,
+        //   query: { ...router.query, leadId: docRef.id },
+        // });
+        queryParams.set("leadId", docRef.id);
         router.replace({
           pathname: router.pathname,
-          query: { ...router.query, leadId: docRef.id },
+          query: Object.fromEntries(queryParams),
         });
+        setLeadId(docRef.id);
       } catch (error) {
         console.error("Firestore operation failed:", error);
       } finally {
