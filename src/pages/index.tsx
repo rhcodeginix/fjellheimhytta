@@ -69,8 +69,8 @@ const index = () => {
 
           if (!querySnapshot.empty) {
             try {
-              const existingUserDoc: any = querySnapshot.docs[0];
-              const userData = existingUserDoc.data();
+              // const existingUserDoc: any = querySnapshot.docs[0];
+              // const userData = existingUserDoc.data();
 
               // if (
               //   userData.loginType === "form" ||
@@ -104,8 +104,8 @@ const index = () => {
               // router.push("/");
               const redirectPath = Cookies.get("vipps_redirect_old_path");
               if (redirectPath) {
-                Cookies.remove("vipps_redirect_old_path");
                 window.location.assign(redirectPath); // full reload to the original route
+                Cookies.remove("vipps_redirect_old_path");
               } else {
                 router.push("/");
               }
