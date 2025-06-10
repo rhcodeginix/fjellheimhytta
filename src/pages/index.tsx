@@ -69,29 +69,33 @@ const index = () => {
 
           if (!querySnapshot.empty) {
             try {
-              // const existingUserDoc: any = querySnapshot.docs[0];
-              // const userData = existingUserDoc.data();
+              const existingUserDoc: any = querySnapshot.docs[0];
+              const userData = existingUserDoc.data();
 
-              // if (
-              //   userData.loginType === "form" ||
-              //   userData.loginType === "google"
-              // ) {
-              //   router.push("/login");
-              //   toast.error(
-              //     `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
-              //     {
-              //       position: "top-right",
-              //     }
-              //   );
-              //   return;
-              // }
-              await signInWithEmailAndPassword(
-                auth,
-                "abc@gmail.com",
-                "Abcd@123"
-              );
+              if (
+                userData.loginType === "form" ||
+                userData.loginType === "google"
+              ) {
+                // router.push("/login");
+                const redirectPath = Cookies.get("vipps_redirect_old_path");
+                if (redirectPath) {
+                  Cookies.remove("vipps_redirect_old_path");
+                  window.location.assign(redirectPath); // full reload to the original route
+                } else {
+                  router.push("/");
+                }
+                localStorage.setItem("I_plot_email", "abc@gmail.com");
+                toast.error(
+                  `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
+                  {
+                    position: "top-right",
+                  }
+                );
+                return;
+              }
+              await signInWithEmailAndPassword(auth, userEmail, userUid);
               localStorage.setItem("min_tomt_login", "true");
-              const userDocRef = doc(db, "users", "abc@gmail.com");
+              const userDocRef = doc(db, "users", userEmail);
 
               await updateDoc(userDocRef, {
                 updatedAt: new Date(),
@@ -100,9 +104,11 @@ const index = () => {
               toast.success("Vipps login successfully", {
                 position: "top-right",
               });
-              localStorage.setItem("I_plot_email", "abc@gmail.com");
+              localStorage.setItem("I_plot_email", user.email);
               // router.push("/");
               const redirectPath = Cookies.get("vipps_redirect_old_path");
+              console.log(redirectPath);
+
               if (redirectPath) {
                 Cookies.remove("vipps_redirect_old_path");
                 window.location.assign(redirectPath); // full reload to the original route
@@ -153,33 +159,37 @@ const index = () => {
                 } else {
                   router.push("/");
                 }
-                localStorage.setItem("I_plot_email", "abc@gmail.com");
+                localStorage.setItem("I_plot_email", user.email);
               }
             } catch (error: any) {
               if (error.code === "auth/email-already-in-use") {
-                // const existingUserDoc: any = querySnapshot.docs[0];
-                // const userData = existingUserDoc.data();
+                const existingUserDoc: any = querySnapshot.docs[0];
+                const userData = existingUserDoc.data();
 
-                // if (
-                //   userData.loginType === "form" ||
-                //   userData.loginType === "google"
-                // ) {
-                //   router.push("/login");
-                //   toast.error(
-                //     `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
-                //     {
-                //       position: "top-right",
-                //     }
-                //   );
-                //   return;
-                // }
-                try {
-                  // await signInWithEmailAndPassword(auth, userEmail, userUid);
-                  await signInWithEmailAndPassword(
-                    auth,
-                    "abc@gmail.com",
-                    "Abcd@123"
+                if (
+                  userData.loginType === "form" ||
+                  userData.loginType === "google"
+                ) {
+                  // router.push("/login");
+                  const redirectPath = Cookies.get("vipps_redirect_old_path");
+                  console.log(redirectPath);
+
+                  if (redirectPath) {
+                    Cookies.remove("vipps_redirect_old_path");
+                    window.location.assign(redirectPath); // full reload to the original route
+                  } else {
+                    router.push("/");
+                  }
+                  toast.error(
+                    `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
+                    {
+                      position: "top-right",
+                    }
                   );
+                  return;
+                }
+                try {
+                  await signInWithEmailAndPassword(auth, userEmail, userUid);
                   localStorage.setItem("min_tomt_login", "true");
                   toast.success("Vipps login successfully", {
                     position: "top-right",
@@ -192,16 +202,15 @@ const index = () => {
                   } else {
                     router.push("/");
                   }
-                  // const userDocRef = doc(db, "users", userEmail);
-                  const userDocRef = doc(db, "users", "abc@gmail.com");
+                  const userDocRef = doc(db, "users", userEmail);
 
                   await updateDoc(userDocRef, {
                     updatedAt: new Date(),
                     loginCount: increment(1),
                   });
-                  localStorage.setItem("I_plot_email", "abc@gmail.com");
+                  localStorage.setItem("I_plot_email", user.email);
                 } catch (error) {
-                  console.error("Login error:---------------", error);
+                  console.error("Login error:", error);
                   router.push("/login");
                   toast.error("Vipps login failed.");
                 }
