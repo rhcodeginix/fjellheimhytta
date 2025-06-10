@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
 import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
@@ -8,6 +8,17 @@ import HouseDetailsection from "@/components/Ui/houseDetail/houseDetailSection";
 import HouseDetailPage from "@/components/Ui/houseDetail";
 import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
 import { useRouter } from "next/router";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
 
 const HusmodellDetail: React.FC<{
   handleNext: any;
@@ -16,6 +27,7 @@ const HusmodellDetail: React.FC<{
   pris: any;
   lamdaDataFromApi: any;
   supplierData: any;
+  user: any;
 }> = ({
   handleNext,
   HouseModelData,
@@ -23,8 +35,88 @@ const HusmodellDetail: React.FC<{
   pris,
   lamdaDataFromApi,
   supplierData,
+  user,
 }) => {
   const router = useRouter();
+
+  const id = router.query["husmodellId"];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) return;
+
+      const queryParams = new URLSearchParams(window.location.search);
+      const currentLeadId = queryParams.get("leadId");
+      queryParams.delete("leadId");
+
+      try {
+        const [husmodellDocSnap] = await Promise.all([
+          getDoc(doc(db, "house_model", String(id))),
+        ]);
+
+        const finalData = {
+          husmodell: { id: String(id), ...husmodellDocSnap.data() },
+          plot: null,
+        };
+
+        // const leadsQuerySnapshot: any = await getDocs(
+        //   query(
+        //     collection(db, "leads"),
+        //     where("finalData.husmodell.id", "==", String(id)),
+        //     where("finalData.plot", "==", null)
+        //   )
+        // );
+
+        let leadsQueryRef = query(
+          collection(db, "leads"),
+          where("finalData.husmodell.id", "==", String(id)),
+          where("finalData.plot", "==", null)
+        );
+
+        if (user?.id) {
+          leadsQueryRef = query(leadsQueryRef, where("user.id", "==", user.id));
+        }
+
+        const leadsQuerySnapshot: any = await getDocs(leadsQueryRef);
+        if (!leadsQuerySnapshot.empty) {
+          const existingLeadId = leadsQuerySnapshot.docs[0].id;
+          await updateDoc(doc(db, "leads", existingLeadId), {
+            updatedAt: new Date(),
+          });
+
+          if (currentLeadId !== existingLeadId) {
+            queryParams.set("leadId", existingLeadId);
+            router.replace({
+              pathname: router.pathname,
+              query: Object.fromEntries(queryParams),
+            });
+          }
+          return;
+        }
+
+        const newDocRef = await addDoc(collection(db, "leads"), {
+          finalData,
+          ...(user && { user }),
+          Isopt: false,
+          IsoptForBank: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+
+        queryParams.set("leadId", newDocRef.id);
+        router.replace({
+          pathname: router.pathname,
+          query: Object.fromEntries(queryParams),
+        });
+      } catch (error) {
+        console.error("Firestore operation failed:", error);
+      }
+    };
+
+    if (id) {
+      fetchData();
+    }
+  }, [id, user]);
 
   return (
     <>

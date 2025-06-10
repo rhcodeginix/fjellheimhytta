@@ -576,9 +576,26 @@ const Finansiering: React.FC<{
             <Button
               text="Neste: Oppsummering"
               className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-              onClick={() => {
+              onClick={async () => {
                 handlePopup();
-                // handleNext();
+                try {
+                  if (leadId) {
+                    await updateDoc(doc(db, "leads", String(leadId)), {
+                      IsoptForBank: true,
+                      updatedAt: new Date(),
+                      Isopt: true,
+                    });
+                    toast.success("Lead Updated successfully.", {
+                      position: "top-right",
+                    });
+                  } else {
+                    toast.error("Lead id not found.", {
+                      position: "top-right",
+                    });
+                  }
+                } catch (error) {
+                  console.error("Firestore update operation failed:", error);
+                }
               }}
             />
           </div>

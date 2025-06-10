@@ -22,6 +22,17 @@ import VippsButton from "@/components/vipps";
 import Img_vipps_login from "@/public/images/Img_vipps_login.png";
 import { useRouter } from "next/router";
 import { convertCurrencyFormat } from "@/components/Ui/Husmodell/plot/plotProperty";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
 
 const Tilpass: React.FC<any> = ({
   handleNext,
@@ -35,6 +46,7 @@ const Tilpass: React.FC<any> = ({
   isPopupOpen,
   setIsPopupOpen,
   setIsCall,
+  user,
 }) => {
   const Huskonfigurator =
     HouseModelData?.Huskonfigurator?.hovedkategorinavn || [];
@@ -89,8 +101,6 @@ const Tilpass: React.FC<any> = ({
         if (selectedTab.isSelected && selectedTab.Kategorinavn?.length > 0) {
           selectedTab.Kategorinavn.forEach(
             (categoryItem: any, categoryIndex: number) => {
-              console.log(categoryItem.isSelected);
-
               if (
                 categoryItem?.isSelected === true &&
                 categoryItem.produkter?.length > 0
@@ -292,6 +302,76 @@ const Tilpass: React.FC<any> = ({
     : 0;
 
   const totalPrice = totalCustPris + husPris + extraPris;
+
+  const id = router.query["husmodellId"];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user || !id) return;
+
+      const queryParams = new URLSearchParams(window.location.search);
+      const currentLeadId = queryParams.get("leadId");
+      queryParams.delete("leadId");
+
+      try {
+        const [husmodellDocSnap] = await Promise.all([
+          getDoc(doc(db, "house_model", String(id))),
+        ]);
+
+        const finalData = {
+          husmodell: { id: String(id), ...husmodellDocSnap.data() },
+          plot: null,
+        };
+
+        const leadsQuerySnapshot: any = await getDocs(
+          query(
+            collection(db, "leads"),
+            where("finalData.husmodell.id", "==", String(id)),
+            where("finalData.plot", "==", null),
+            where("user.id", "==", user.id)
+          )
+        );
+
+        if (!leadsQuerySnapshot.empty) {
+          const existingLeadId = leadsQuerySnapshot.docs[0].id;
+          await updateDoc(doc(db, "leads", existingLeadId), {
+            updatedAt: new Date(),
+            ...(user && { user }),
+          });
+
+          if (currentLeadId !== existingLeadId) {
+            queryParams.set("leadId", existingLeadId);
+            router.replace({
+              pathname: router.pathname,
+              query: Object.fromEntries(queryParams),
+            });
+          }
+          return;
+        }
+
+        const newDocRef = await addDoc(collection(db, "leads"), {
+          finalData,
+          ...(user && { user }),
+          Isopt: false,
+          IsoptForBank: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+
+        queryParams.set("leadId", newDocRef.id);
+        router.replace({
+          pathname: router.pathname,
+          query: Object.fromEntries(queryParams),
+        });
+      } catch (error) {
+        console.error("Firestore operation failed:", error);
+      }
+    };
+
+    if (id && user) {
+      fetchData();
+    }
+  }, [id, user]);
 
   if (loading) {
     <Loader />;

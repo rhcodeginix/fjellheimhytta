@@ -404,6 +404,7 @@ const HusmodellDetail = () => {
           pris={pris}
           lamdaDataFromApi={lamdaDataFromApi}
           supplierData={supplierData}
+          user={user}
         />
       ),
     },
@@ -422,6 +423,7 @@ const HusmodellDetail = () => {
           isPopupOpen={isPopupOpen}
           setIsPopupOpen={setIsPopupOpen}
           setIsCall={setIsCall}
+          user={user}
         />
       ),
     },
