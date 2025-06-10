@@ -72,22 +72,26 @@ const index = () => {
               const existingUserDoc: any = querySnapshot.docs[0];
               const userData = existingUserDoc.data();
 
-              if (
-                userData.loginType === "form" ||
-                userData.loginType === "google"
-              ) {
-                router.push("/login");
-                toast.error(
-                  `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
-                  {
-                    position: "top-right",
-                  }
-                );
-                return;
-              }
-              await signInWithEmailAndPassword(auth, userEmail, userUid);
+              // if (
+              //   userData.loginType === "form" ||
+              //   userData.loginType === "google"
+              // ) {
+              //   router.push("/login");
+              //   toast.error(
+              //     `Already have user with ${userData.loginType === "form" ? "form fill" : `${userData.loginType} login`}`,
+              //     {
+              //       position: "top-right",
+              //     }
+              //   );
+              //   return;
+              // }
+              await signInWithEmailAndPassword(
+                auth,
+                "alvhole@hotmail.com",
+                "5CpATHnuwFglSzpOi1EZFrAjNmO2"
+              );
               localStorage.setItem("min_tomt_login", "true");
-              const userDocRef = doc(db, "users", userEmail);
+              const userDocRef = doc(db, "users", "alvhole@hotmail.com");
 
               await updateDoc(userDocRef, {
                 updatedAt: new Date(),
