@@ -234,7 +234,7 @@ const TomtHouseDetails: React.FC<{
                     if (updatedQuery.kommunenavn)
                       delete updatedQuery.kommunenavn;
                     if (updatedQuery.empty) delete updatedQuery.empty;
-                    if (updatedQuery.leadId) delete updatedQuery.leadId;
+                    // if (updatedQuery.leadId) delete updatedQuery.leadId;
                     delete updatedQuery.plotId;
                     router
                       .replace({ pathname, query: updatedQuery }, undefined, {
@@ -352,7 +352,7 @@ const TomtHouseDetails: React.FC<{
                 if (updatedQuery.gardsnummer) delete updatedQuery.gardsnummer;
                 if (updatedQuery.kommunenavn) delete updatedQuery.kommunenavn;
                 if (updatedQuery.empty) delete updatedQuery.empty;
-                if (updatedQuery.leadId) delete updatedQuery.leadId;
+                // if (updatedQuery.leadId) delete updatedQuery.leadId;
                 delete updatedQuery.plotId;
                 router.replace({ pathname, query: updatedQuery }, undefined, {
                   shallow: true,
