@@ -85,7 +85,11 @@ const index = () => {
                 );
                 return;
               }
+              console.log("-------------1");
+
               await signInWithEmailAndPassword(auth, userEmail, userUid);
+              console.log("-------------2");
+
               localStorage.setItem("min_tomt_login", "true");
               // const userDocRef = doc(db, "users", userUid);
 
@@ -93,6 +97,8 @@ const index = () => {
                 updatedAt: new Date(),
                 loginCount: increment(1),
               });
+              console.log("-------------3");
+
               toast.success("Vipps login successfully", {
                 position: "top-right",
               });
