@@ -87,12 +87,12 @@ const index = () => {
               }
               await signInWithEmailAndPassword(auth, userEmail, userUid);
               localStorage.setItem("min_tomt_login", "true");
-              const userDocRef = doc(db, "users", userUid);
+              // const userDocRef = doc(db, "users", userUid);
 
-              await updateDoc(userDocRef, {
-                updatedAt: new Date(),
-                loginCount: increment(1),
-              });
+              // await updateDoc(userDocRef, {
+              //   updatedAt: new Date(),
+              //   loginCount: increment(1),
+              // });
               toast.success("Vipps login successfully", {
                 position: "top-right",
               });
