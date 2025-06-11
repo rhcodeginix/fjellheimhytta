@@ -3,7 +3,7 @@ import MainSection from "./homepage/mainSection";
 import HowItWorks from "./homepage/howItWorks";
 import OurPartners from "./homepage/ourPartners";
 import Footer from "@/components/Ui/footer";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -23,9 +23,11 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "@/config/firebaseConfig";
 import Cookies from "js-cookie";
+import Loader from "@/components/Loader";
 
 const index = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -42,6 +44,7 @@ const index = () => {
 
     // Function to call your API with the code
     function callApi(code: any) {
+      setLoading(true);
       fetch(
         "https://9spebvryg9.execute-api.eu-north-1.amazonaws.com/prod/vipps",
         {
@@ -113,6 +116,8 @@ const index = () => {
               toast.error("Login failed.", {
                 position: "top-right",
               });
+            } finally {
+              setLoading(false);
             }
           } else {
             try {
@@ -209,6 +214,8 @@ const index = () => {
                   position: "top-right",
                 });
               }
+            } finally {
+              setLoading(false);
             }
           }
         })
@@ -222,12 +229,15 @@ const index = () => {
     }
   }, []);
   return (
-    <div className="relative">
-      <MainSection />
-      <HowItWorks />
-      <OurPartners />
-      <Footer />
-    </div>
+    <>
+      {loading && <Loader />}
+      <div className="relative">
+        <MainSection />
+        <HowItWorks />
+        <OurPartners />
+        <Footer />
+      </div>
+    </>
   );
 };
 
