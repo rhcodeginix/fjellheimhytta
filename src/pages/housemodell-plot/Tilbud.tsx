@@ -509,7 +509,7 @@ const Tilbud: React.FC<{
                 kontaktet av en hyttekonsulent
               </span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+            <div className="flex flex-row gap-4 sm:items-center">
               {" "}
               <Button
                 text="Tilbake"
