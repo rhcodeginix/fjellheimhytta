@@ -71,7 +71,7 @@ const index = () => {
             try {
               const existingUserDoc: any = querySnapshot.docs[0];
               const userData = existingUserDoc.data();
-
+              const userDocRef = existingUserDoc.ref;
               if (
                 userData.loginType === "form" ||
                 userData.loginType === "google"
@@ -89,10 +89,10 @@ const index = () => {
               localStorage.setItem("min_tomt_login", "true");
               // const userDocRef = doc(db, "users", userUid);
 
-              // await updateDoc(userDocRef, {
-              //   updatedAt: new Date(),
-              //   loginCount: increment(1),
-              // });
+              await updateDoc(userDocRef, {
+                updatedAt: new Date(),
+                loginCount: increment(1),
+              });
               toast.success("Vipps login successfully", {
                 position: "top-right",
               });
