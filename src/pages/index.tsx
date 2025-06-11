@@ -237,7 +237,7 @@ const index = () => {
         }}
       >
         {loading && <Loader />}
-      </div>{" "}
+      </div>
       <div className="relative">
         <MainSection />
         <HowItWorks />
