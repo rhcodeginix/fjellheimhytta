@@ -230,7 +230,14 @@ const index = () => {
   }, []);
   return (
     <>
-      {loading && <Loader />}
+      <div
+        className="relative"
+        style={{
+          zIndex: 99999,
+        }}
+      >
+        {loading && <Loader />}
+      </div>{" "}
       <div className="relative">
         <MainSection />
         <HowItWorks />
