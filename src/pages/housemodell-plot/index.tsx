@@ -109,12 +109,18 @@ const HusmodellPlot = () => {
           console.error("No document found for plot or husmodell ID.");
         }
 
-        const plotDocSnap: any = await getDocs(collection(db, "cabin_plot"));
+        // const plotDocSnap: any = await getDocs(collection(db, "cabin_plot"));
+        // console.log(plotDocSnap);
 
-        const foundProperty =
-          plotDocSnap.docs
-            .find((docSnap: any) => docSnap.id === String(propertyId))
-            ?.data() || null;
+        // const foundProperty =
+        //   plotDocSnap.docs
+        //     .find((docSnap: any) => docSnap.id === String(propertyId))
+        //     ?.data() || null;
+
+        const plotDocRef = doc(db, "cabin_plot", String(propertyId));
+
+        const plotDocSnap = await getDoc(plotDocRef);
+        const foundProperty = plotDocSnap.data() || null;
 
         if (!foundProperty) {
           console.error("No property found with the given ID.");
@@ -427,6 +433,9 @@ const HusmodellPlot = () => {
           HouseModelData={HouseModelData}
           supplierData={supplierData}
           pris={pris}
+          setAdditionalData={setAdditionalData}
+          setLamdaDataFromApi={setLamdaDataFromApi}
+          setCadastreDataFromApi={setCadastreDataFromApi}
         />
       ),
     },

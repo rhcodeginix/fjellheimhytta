@@ -27,6 +27,9 @@ const TomtHusmodell: React.FC<{
   HouseModelData: any;
   supplierData: any;
   pris: any;
+  setAdditionalData: any;
+  setLamdaDataFromApi: any;
+  setCadastreDataFromApi: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -42,6 +45,9 @@ const TomtHusmodell: React.FC<{
   HouseModelData,
   supplierData,
   pris,
+  setAdditionalData,
+  setLamdaDataFromApi,
+  setCadastreDataFromApi,
 }) => {
   const router = useRouter();
 
@@ -96,7 +102,11 @@ const TomtHusmodell: React.FC<{
           pris={pris}
         />
       ) : (
-        <Belop />
+        <Belop
+          setAdditionalData={setAdditionalData}
+          setLamdaDataFromApi={setLamdaDataFromApi}
+          setCadastreDataFromApi={setCadastreDataFromApi}
+        />
       )}
       {!loginUser && (
         <div

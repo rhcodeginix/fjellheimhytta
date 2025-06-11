@@ -2,9 +2,6 @@ import Loading from "@/components/Loading";
 import Image from "next/image";
 import Ic_wishlist_heart from "@/public/images/Ic_wishlist_heart.svg";
 import Button from "@/components/common/button";
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/config/firebaseConfig";
 import { useRouter } from "next/router";
 import { formatPrice } from "@/pages/belop/belopProperty";
 
@@ -13,42 +10,7 @@ const HusmodellProperty: React.FC<{
   HouseModelProperty: any;
   handleNext: any;
 }> = ({ HouseModelProperty, isLoading, handleNext }) => {
-  useEffect(() => {
-    const fetchSupplierDetails = async () => {
-      const supplierMap: { [key: string]: any } = {};
-
-      await Promise.all(
-        HouseModelProperty.map(async (property: any) => {
-          const supplierId = property?.Husdetaljer?.Leverandører;
-          if (supplierId && !supplierMap[supplierId]) {
-            supplierMap[supplierId] = await getData(supplierId);
-          }
-        })
-      );
-
-      setSupplierData(supplierMap);
-    };
-
-    fetchSupplierDetails();
-  }, [HouseModelProperty]);
-
   const router = useRouter();
-  const [supplierData, setSupplierData] = useState<{ [key: string]: any }>({});
-
-  const getData = async (supplierId: string) => {
-    try {
-      const supplierDocRef = doc(db, "suppliers", supplierId);
-      const docSnap: any = await getDoc(supplierDocRef);
-
-      if (docSnap.exists()) {
-        return docSnap.data();
-      } else {
-        console.error("No document found for ID:", supplierId);
-      }
-    } catch (error) {
-      console.error("Error fetching supplier data:", error);
-    }
-  };
   return (
     <>
       <div>
@@ -60,16 +22,10 @@ const HusmodellProperty: React.FC<{
           <div className="flex flex-col gap-4 lg:gap-4 desktop:gap-5">
             {HouseModelProperty && HouseModelProperty.length > 0 ? (
               HouseModelProperty.map((property: any, index: any) => {
-                const supplierId = property?.Husdetaljer?.Leverandører;
-                const data = supplierData[supplierId] || null;
-
                 return (
                   <div
                     key={index}
                     className="border border-lightPurple rounded-[8px] p-3 md:p-5 cursor-pointer shadow-shadow4 hover:shadow-shadow1"
-                    // style={{
-                    //   boxShadow: "0px 24px 48px -12px #1018282E",
-                    // }}
                     onClick={() => {
                       router.push(
                         `${router.asPath}&husmodellId=${property?.id}`
@@ -83,10 +39,10 @@ const HusmodellProperty: React.FC<{
                           <span className="font-bold text-lg md:text-xl desktop:text-2xl desktop:leading-[30px]">
                             {property?.Husdetaljer?.husmodell_name}
                           </span>{" "}
-                          fra{" "}
+                          {/* fra{" "}
                           <span className="font-bold">
                             {data?.company_name}
-                          </span>
+                          </span> */}
                         </h4>
                       </div>
                       <Image

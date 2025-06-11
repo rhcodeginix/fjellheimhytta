@@ -672,21 +672,31 @@ const Tilbud: React.FC<{
             }}
           >
             <SideSpaceContainer>
-              <div className="flex justify-end gap-4 items-center">
-                <Button
-                  text="Tilbake"
-                  className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
-                  onClick={() => {
-                    handlePrevious();
-                  }}
-                />
-                <Button
-                  text="Send til Fjellheimhytta"
-                  className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                  onClick={() => {
-                    handleNext();
-                  }}
-                />
+              <div className="flex flex-col sm:flex-row justify-between gap-4 sm:items-center">
+                <p className="text-sm md:text-base font-light">
+                  En innsending er{" "}
+                  <span className="font-medium">uforpliktende</span> og du vil
+                  bli <br className="hidden md:block" />
+                  <span className="font-medium">
+                    kontaktet av en hyttekonsulent
+                  </span>
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+                  <Button
+                    text="Tilbake"
+                    className="border-2 border-primary text-primary hover:border-[#1E5F5C] hover:text-[#1E5F5C] focus:border-[#003A37] focus:text-[#003A37] sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-medium desktop:px-[46px] relative desktop:py-[16px]"
+                    onClick={() => {
+                      handlePrevious();
+                    }}
+                  />
+                  <Button
+                    text="Send til Fjellheimhytta"
+                    className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                    onClick={() => {
+                      handleNext();
+                    }}
+                  />
+                </div>
               </div>
             </SideSpaceContainer>
           </div>

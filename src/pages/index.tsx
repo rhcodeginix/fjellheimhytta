@@ -87,7 +87,7 @@ const index = () => {
               }
               await signInWithEmailAndPassword(auth, userEmail, userUid);
               localStorage.setItem("min_tomt_login", "true");
-              const userDocRef = doc(db, "users", userEmail);
+              const userDocRef = doc(db, "users", userUid);
 
               await updateDoc(userDocRef, {
                 updatedAt: new Date(),
@@ -106,7 +106,7 @@ const index = () => {
                 router.push("/");
               }
             } catch (error) {
-              console.error("Login error:", error);
+              console.warn("Login error:------", error);
               toast.error("Login failed.", {
                 position: "top-right",
               });

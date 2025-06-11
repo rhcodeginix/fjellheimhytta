@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Ic_wishlist_heart from "@/public/images/Ic_wishlist_heart.svg";
 import Button from "@/components/common/button";
-import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/config/firebaseConfig";
+// import { useEffect, useState } from "react";
+// import { doc, getDoc } from "firebase/firestore";
+// import { db } from "@/config/firebaseConfig";
 import { formatPrice } from "../belop/belopProperty";
 import { useRouter } from "next/router";
 
@@ -11,42 +11,42 @@ const HusmodellProperty: React.FC<{
   isLoading: any;
   HouseModelProperty: any;
 }> = ({ HouseModelProperty, isLoading }) => {
-  useEffect(() => {
-    const fetchSupplierDetails = async () => {
-      const supplierMap: { [key: string]: any } = {};
+  // useEffect(() => {
+  //   const fetchSupplierDetails = async () => {
+  //     const supplierMap: { [key: string]: any } = {};
 
-      await Promise.all(
-        HouseModelProperty.map(async (property: any) => {
-          const supplierId = property?.Husdetaljer?.Leverandører;
-          if (supplierId && !supplierMap[supplierId]) {
-            supplierMap[supplierId] = await getData(supplierId);
-          }
-        })
-      );
+  //     await Promise.all(
+  //       HouseModelProperty.map(async (property: any) => {
+  //         const supplierId = property?.Husdetaljer?.Leverandører;
+  //         if (supplierId && !supplierMap[supplierId]) {
+  //           supplierMap[supplierId] = await getData(supplierId);
+  //         }
+  //       })
+  //     );
 
-      setSupplierData(supplierMap);
-    };
+  //     setSupplierData(supplierMap);
+  //   };
 
-    fetchSupplierDetails();
-  }, [HouseModelProperty]);
+  //   fetchSupplierDetails();
+  // }, [HouseModelProperty]);
 
   const router = useRouter();
-  const [supplierData, setSupplierData] = useState<{ [key: string]: any }>({});
+  // const [supplierData, setSupplierData] = useState<{ [key: string]: any }>({});
 
-  const getData = async (supplierId: string) => {
-    try {
-      const supplierDocRef = doc(db, "suppliers", supplierId);
-      const docSnap: any = await getDoc(supplierDocRef);
+  // const getData = async (supplierId: string) => {
+  //   try {
+  //     const supplierDocRef = doc(db, "suppliers", supplierId);
+  //     const docSnap: any = await getDoc(supplierDocRef);
 
-      if (docSnap.exists()) {
-        return docSnap.data();
-      } else {
-        console.error("No document found for ID:", supplierId);
-      }
-    } catch (error) {
-      console.error("Error fetching supplier data:", error);
-    }
-  };
+  //     if (docSnap.exists()) {
+  //       return docSnap.data();
+  //     } else {
+  //       console.error("No document found for ID:", supplierId);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching supplier data:", error);
+  //   }
+  // };
   return (
     <>
       <div>
@@ -73,8 +73,8 @@ const HusmodellProperty: React.FC<{
           <div className="flex flex-col gap-4 lg:gap-4 desktop:gap-5">
             {HouseModelProperty && HouseModelProperty.length > 0 ? (
               HouseModelProperty.map((property: any, index: any) => {
-                const supplierId = property?.Husdetaljer?.Leverandører;
-                const data = supplierData[supplierId] || null;
+                // const supplierId = property?.Husdetaljer?.Leverandører;
+                // const data = supplierData[supplierId] || null;
 
                 return (
                   <div
@@ -98,10 +98,10 @@ const HusmodellProperty: React.FC<{
                           <span className="font-bold text-lg md:text-xl desktop:text-2xl desktop:leading-[30px]">
                             {property?.Husdetaljer?.husmodell_name}
                           </span>{" "}
-                          fra{" "}
+                          {/* fra{" "}
                           <span className="font-bold">
                             {data?.company_name}
-                          </span>
+                          </span> */}
                         </h4>
                       </div>
                       <Image
