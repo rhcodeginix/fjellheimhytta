@@ -23,10 +23,16 @@ const Plots: React.FC<{
   handlePrevious: any;
   // handleNext: any;
   HouseModelData: any;
+  setLamdaDataFromApi: any;
+  setCadastreDataFromApi: any;
+  setAdditionalData: any;
 }> = ({
   handlePrevious,
   //  handleNext,
   HouseModelData,
+  setLamdaDataFromApi,
+  setCadastreDataFromApi,
+  setAdditionalData,
 }) => {
   const router: any = useRouter();
   const [HouseModelProperty, setHouseModelProperty] = useState([]);
@@ -47,7 +53,11 @@ const Plots: React.FC<{
     Område: [] as string[],
     SubOmråde: [] as string[],
   });
-
+  useEffect(() => {
+    setLamdaDataFromApi(null);
+    setCadastreDataFromApi(null);
+    setAdditionalData(null);
+  }, []);
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
 
