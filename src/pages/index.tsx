@@ -165,6 +165,7 @@ const index = () => {
               if (error.code === "auth/email-already-in-use") {
                 const existingUserDoc: any = querySnapshot.docs[0];
                 const userData = existingUserDoc.data();
+                const userDocRef = existingUserDoc.ref;
 
                 if (
                   userData.loginType === "form" ||
@@ -193,7 +194,7 @@ const index = () => {
                   } else {
                     router.push("/");
                   }
-                  const userDocRef = doc(db, "users", userEmail);
+                  // const userDocRef = doc(db, "users", userEmail);
 
                   await updateDoc(userDocRef, {
                     updatedAt: new Date(),
