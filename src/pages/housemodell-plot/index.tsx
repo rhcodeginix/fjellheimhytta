@@ -111,7 +111,6 @@ const HusmodellPlot = () => {
         }
 
         // const plotDocSnap: any = await getDocs(collection(db, "cabin_plot"));
-        // console.log(plotDocSnap);
 
         // const foundProperty =
         //   plotDocSnap.docs
