@@ -9,6 +9,7 @@ import { formatCurrency } from "../RegulationHusmodell/Illustrasjoner";
 
 export function addDaysToDate(dateString: any, days: any) {
   let date = new Date(dateString);
+
   date.setDate(date.getDate() + days);
 
   let day = String(date.getDate()).padStart(2, "0");

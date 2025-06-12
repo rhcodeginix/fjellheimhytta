@@ -15,6 +15,7 @@ const PropertyHouseDetails: React.FC<{
   pris?: any;
   loading: any;
   CadastreDataFromApi?: any;
+  hidden?: any;
 }> = ({
   HouseModelData,
   lamdaDataFromApi,
@@ -22,6 +23,7 @@ const PropertyHouseDetails: React.FC<{
   pris,
   loading,
   CadastreDataFromApi,
+  hidden,
 }) => {
   const router = useRouter();
   const leadId = router.query["leadId"];
@@ -98,11 +100,11 @@ const PropertyHouseDetails: React.FC<{
           <div className="flex flex-col items-start">
             {loading ? (
               <div
-                className="w-full sm:w-[400px] h-[20px] rounded-md custom-shimmer mb-2"
+                className="w-full sm:w-[400px] h-[20px] rounded-md custom-shimmer"
                 style={{ borderRadius: "8px" }}
               ></div>
             ) : (
-              <h4 className="text-darkBlack font-medium text-base md:text-xl lg:text-2xl lg:leading-[30px] mb-2 one_line_elipse">
+              <h4 className="text-darkBlack font-medium text-base md:text-xl lg:text-2xl lg:leading-[30px] one_line_elipse">
                 <span className="font-bold">
                   {HouseModelData?.Husdetaljer?.husmodell_name}
                 </span>{" "}
@@ -121,14 +123,14 @@ const PropertyHouseDetails: React.FC<{
             lamdaDataFromApi &&
             (plotId || propertyId || kommunenummer) ? (
               <div
-                className="w-[200px] h-[100px] rounded-md custom-shimmer mb-2"
+                className="w-[200px] h-[100px] rounded-md custom-shimmer my-2"
                 style={{ borderRadius: "8px" }}
               ></div>
             ) : (
               <>
                 {lamdaDataFromApi &&
                   (plotId || propertyId || kommunenummer) && (
-                    <div className="flex items-center gap-4 mb-2">
+                    <div className="flex items-center gap-4 my-2">
                       {lamdaDataFromApi?.searchParameters?.gardsnummer && (
                         <div className="text-secondary text-xs md:text-sm lg:text-base">
                           Gnr:{" "}
@@ -192,41 +194,43 @@ const PropertyHouseDetails: React.FC<{
           </div>
         </div>
 
-        {loading ? (
-          <div
-            className="w-[250px] h-[100px] rounded-md custom-shimmer"
-            style={{ borderRadius: "8px" }}
-          ></div>
-        ) : (
-          <div className="flex gap-6 w-max">
-            <div>
-              <p className="text-secondary text-xs md:text-sm mb-2">
-                Dine tillegg
-              </p>
-              <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
-                {totalCustPris ? formatCurrency(totalCustPris) : "kr 0"}
-              </h4>
-            </div>
-            <div>
-              <p className="text-secondary text-xs md:text-sm mb-2">
-                Din pris med tilvalg
-              </p>
-              <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
-                {formatCurrency(totalPrice)}
-              </h4>
+        <div className={`${hidden ? "hidden md:block" : "block"}`}>
+          {loading ? (
+            <div
+              className="w-[250px] h-[100px] rounded-md custom-shimmer"
+              style={{ borderRadius: "8px" }}
+            ></div>
+          ) : (
+            <div className="flex gap-6 w-max">
+              <div>
+                <p className="text-secondary text-xs md:text-sm mb-2">
+                  Dine tillegg
+                </p>
+                <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
+                  {totalCustPris ? formatCurrency(totalCustPris) : "kr 0"}
+                </h4>
+              </div>
+              <div>
+                <p className="text-secondary text-xs md:text-sm mb-2">
+                  Din pris med tilvalg
+                </p>
+                <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
+                  {formatCurrency(totalPrice)}
+                </h4>
 
-              <p className="text-secondary text-xs md:text-sm">
-                Inkludert tomtepris (
-                {pris
-                  ? pris === 0
-                    ? "kr 0"
-                    : convertCurrencyFormat(pris)
-                  : "kr 0"}
-                )
-              </p>
+                <p className="text-secondary text-xs md:text-sm">
+                  Inkludert tomtepris (
+                  {pris
+                    ? pris === 0
+                      ? "kr 0"
+                      : convertCurrencyFormat(pris)
+                    : "kr 0"}
+                  )
+                </p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );
