@@ -538,7 +538,7 @@ const Tilbud: React.FC<{
                         updatedAt: new Date(),
                         Isopt: true,
                       });
-                      toast.success("Lead Updated successfully.", {
+                      toast.success("Lead sendt.", {
                         position: "top-right",
                       });
                     } else {

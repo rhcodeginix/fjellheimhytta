@@ -277,9 +277,9 @@ const Finansiering: React.FC<{
                               SpareBank 1 Hallingdal Valdres
                             </span>
                             , vår strategiske partner på byggelånsfinansiering.
-                            De kjenner BoligPartner og alle deres husmodeller –
-                            og gir deg rask og trygg hjelp med
-                            finansieringsprosessen.
+                            De kjenner {supplierData?.company_name} og alle
+                            deres husmodeller – og gir deg rask og trygg hjelp
+                            med finansieringsprosessen.
                           </p>
                           <div className="flex items-center gap-4">
                             <div
@@ -459,8 +459,8 @@ const Finansiering: React.FC<{
           </div>
           <span className="mb-4 md:mb-8 text-xs md:text-sm text-center">
             📄 Dette er et estimat basert på dagens priser og forutsetter
-            standard leveranse fra BoligPartner. Eventuelle avvik, tillegg eller
-            fratrekk kan påvirke totalsummen.
+            standard leveranse fra {supplierData?.company_name}. Eventuelle
+            avvik, tillegg eller fratrekk kan påvirke totalsummen.
           </span>
         </SideSpaceContainer>
       </div>

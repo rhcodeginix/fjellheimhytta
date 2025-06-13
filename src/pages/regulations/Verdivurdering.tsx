@@ -174,7 +174,7 @@ const Verdivurdering: React.FC<{
             />
           )}
 
-          <div className="pt-6 pb-8">
+          <div className="pt-6 pb-8 mb-12">
             <SideSpaceContainer>
               <div className="my-5 md:my-8">
                 <Formik
@@ -217,8 +217,9 @@ const Verdivurdering: React.FC<{
                                 <span className="font-bold">
                                   Eiendomsmegling
                                 </span>
-                                , som kjenner BoligPartner og deres husmodeller.
-                                Du får en rask og uforpliktende vurdering.
+                                , som kjenner {supplierData?.company_name} og
+                                deres husmodeller. Du får en rask og
+                                uforpliktende vurdering.
                               </p>
                               <div className="flex items-center gap-4">
                                 <div
@@ -296,7 +297,7 @@ const Verdivurdering: React.FC<{
           </div>
 
           <div
-            className="sticky bottom-0 bg-white py-4"
+            className="fixed w-full bottom-0 bg-white py-4"
             style={{
               boxShadow:
                 "0px -4px 6px -2px #10182808, 0px -12px 16px -4px #10182814",
