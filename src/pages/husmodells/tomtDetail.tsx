@@ -83,44 +83,20 @@ const TomtHouseDetails: React.FC<{
       // queryParams.delete("leadId");
 
       try {
-        let plotCollectionRef = collection(
-          db,
-          isEmptyPlot === "true" ? "cabin_plot" : "plot_building"
-        );
-
-        const allLeadsSnapshot = await getDocs(query(plotCollectionRef));
-        if (allLeadsSnapshot.empty) {
-          console.warn("No leads found in the collection.");
-          return;
-        }
-
-        let correctPlotId: string | null = null;
-        for (const doc of allLeadsSnapshot.docs) {
-          if (doc.id) {
-            correctPlotId = doc.id;
-            break;
-          }
-        }
-
-        if (!correctPlotId) {
-          console.error("No valid plotId found.");
-          return;
-        }
-
         const [plotDocSnap, husmodellDocSnap] = await Promise.all([
-          getDoc(doc(plotCollectionRef, correctPlotId)),
+          getDoc(doc(db, "cabin_plot", String(plotId))),
           getDoc(doc(db, "house_model", String(id))),
         ]);
 
         const finalData = {
-          plot: { id: correctPlotId, ...plotDocSnap.data() },
+          plot: { id: String(plotId), ...plotDocSnap.data() },
           husmodell: { id: String(id), ...husmodellDocSnap.data() },
         };
 
         const leadsQuerySnapshot: any = await getDocs(
           query(
             collection(db, "leads"),
-            where("finalData.plot.id", "==", correctPlotId),
+            where("finalData.plot.id", "==", String(plotId)),
             where("finalData.husmodell.id", "==", id),
             where("user.id", "==", user.id)
           )

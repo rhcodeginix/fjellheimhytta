@@ -31,6 +31,8 @@ const Tilbud: React.FC<{
   handlePrevious: any;
   supplierData: any;
   pris: any;
+  date: any;
+  setDate: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -41,6 +43,8 @@ const Tilbud: React.FC<{
   handlePrevious,
   supplierData,
   pris,
+  date,
+  setDate,
 }) => {
   const Huskonfigurator =
     HouseModelData?.Huskonfigurator?.hovedkategorinavn || [];
@@ -115,8 +119,16 @@ const Tilbud: React.FC<{
     }
   }, [Huskonfigurator, custHouse]);
   const router = useRouter();
+  const totalByggestartDays = [
+    Husdetaljer?.signConractConstructionDrawing +
+      Husdetaljer?.neighborNotification +
+      Husdetaljer?.appSubmitApprove +
+      Husdetaljer?.constuctionDayStart,
+  ].reduce((acc, curr) => acc + (curr || 0), 0);
+
   const leadId = router.query["leadId"];
 
+  const ByggestartDate = addDaysToDate(date, totalByggestartDays);
   if (loadingLamdaData) {
     <Loader />;
   }
@@ -280,10 +292,7 @@ const Tilbud: React.FC<{
                       Estimert byggestart
                     </p>
                     <h5 className="text-black text-sm font-semibold whitespace-nowrap">
-                      {addDaysToDate(
-                        HouseModelData?.createdAt,
-                        Husdetaljer?.appSubmitApprove
-                      )}
+                      {ByggestartDate}
                     </h5>
                   </div>
                   <div className="flex flex-col gap-1 w-max">
@@ -291,7 +300,7 @@ const Tilbud: React.FC<{
                       Estimert Innflytting
                     </p>
                     <h5 className="text-black text-sm font-semibold text-right whitespace-nowrap">
-                      {addDaysToDate(HouseModelData?.createdAt, totalDays)}
+                      {addDaysToDate(date, totalDays)}
                     </h5>
                   </div>
                 </div>
@@ -537,7 +546,11 @@ const Tilbud: React.FC<{
                         IsoptForBank: true,
                         updatedAt: new Date(),
                         Isopt: true,
+                        EstimertByggestart: ByggestartDate,
+                        EstimertInnflytting: addDaysToDate(date, totalDays),
                       });
+                      setDate(new Date());
+
                       toast.success("Lead sendt.", {
                         position: "top-right",
                       });

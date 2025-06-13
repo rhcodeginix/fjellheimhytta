@@ -874,6 +874,7 @@ const Regulations = () => {
           CadastreDataFromApi={CadastreDataFromApi}
           askData={askData}
           HouseModelData={HouseModelData}
+          user={user}
           supplierData={supplierData}
           handlePrevious={handlePrevious}
         />

@@ -46,19 +46,24 @@ const Verdivurdering: React.FC<{
   const { noPlot } = router.query;
 
   const validationSchema = Yup.object().shape({
-    IsEie: Yup.boolean().optional(),
+    IsEie: Yup.boolean().nullable().required("This field is required"),
   });
+  const [value, setValue] = useState<any>(null);
 
   const leadId = router.query["leadId"];
 
   const handleSubmit = async (values: any) => {
+    if (values.helpWithFinancing === null) {
+      return;
+    }
     try {
       if (leadId) {
         await updateDoc(doc(db, "leads", String(leadId)), {
-          IsEie: values.IsEie ?? false,
+          IsEie: values.IsEie,
           updatedAt: new Date(),
         });
         if (values.IsEie == true) {
+          handlePopup();
           toast.success("Lead sent successfully.", { position: "top-right" });
         }
       } else {
@@ -179,12 +184,17 @@ const Verdivurdering: React.FC<{
               <div className="my-5 md:my-8">
                 <Formik
                   initialValues={{
-                    IsEie: false,
+                    IsEie: null,
                   }}
                   validationSchema={validationSchema}
-                  onSubmit={handleSubmit}
+                  onSubmit={(values, { setTouched }) => {
+                    if (values.IsEie === null) {
+                      setTouched({ IsEie: true });
+                    }
+                    handleSubmit(values);
+                  }}
                 >
-                  {({ values, setFieldValue }) => {
+                  {({ values, setFieldValue, errors, touched }) => {
                     useEffect(() => {
                       (async () => {
                         try {
@@ -196,7 +206,7 @@ const Verdivurdering: React.FC<{
                             const data = docSnap.data();
 
                             if (data && data?.IsEie) {
-                              setFieldValue("IsEie", data?.IsEie || false);
+                              setFieldValue("IsEie", data?.IsEie);
                             }
                           }
                         } catch (error) {
@@ -223,7 +233,10 @@ const Verdivurdering: React.FC<{
                               </p>
                               <div className="flex items-center gap-4">
                                 <div
-                                  onClick={() => setFieldValue("IsEie", true)}
+                                  onClick={() => {
+                                    setFieldValue("IsEie", true);
+                                    setValue(true);
+                                  }}
                                   className={`cursor-pointer bg-white h-[40px] md:h-[48px] rounded-lg py-3 md:py-3.5 px-3 md:px-4 flex items-center justify-center w-1/2 text-xs md:text-sm text-black border-2 ${
                                     values.IsEie === true
                                       ? "border-primary font-semibold"
@@ -233,7 +246,10 @@ const Verdivurdering: React.FC<{
                                   Få hjelp med finansiering
                                 </div>
                                 <div
-                                  onClick={() => setFieldValue("IsEie", false)}
+                                  onClick={() => {
+                                    setFieldValue("IsEie", false);
+                                    setValue(false);
+                                  }}
                                   className={`cursor-pointer bg-white h-[40px] md:h-[48px] rounded-lg py-3 md:py-3.5 px-3 md:px-4 flex items-center justify-center w-1/2 text-xs md:text-sm text-black border-2 ${
                                     values.IsEie === false
                                       ? "border-primary font-semibold"
@@ -243,6 +259,11 @@ const Verdivurdering: React.FC<{
                                   Nei, jeg ordner det selv
                                 </div>
                               </div>
+                              {touched.IsEie && errors.IsEie && (
+                                <div className="text-red text-sm mt-2">
+                                  {errors.IsEie}
+                                </div>
+                              )}
                             </div>
                           </div>
                           <div className="w-full lg:w-[62%]">
@@ -323,13 +344,16 @@ const Verdivurdering: React.FC<{
                     }}
                   />
                   <Button
-                    text="Send til Eie Eiendomsmegling"
+                    text={
+                      value === false
+                        ? "Send til Eie Eiendomsmegling"
+                        : "Fullfør"
+                    }
                     className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
                     onClick={() => {
                       setTimeout(() => {
                         document.querySelector("form")?.requestSubmit();
                       }, 0);
-                      handlePopup();
                     }}
                   />
                 </div>
