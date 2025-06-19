@@ -4,7 +4,6 @@ import Ic_Search2 from "@/public/images/Ic_Search2.svg";
 import Ic_chevron_down from "@/public/images/Ic_chevron_down.svg";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
-import Loading from "@/components/Loading";
 import { useRouter } from "next/router";
 
 const HusmodellTab = () => {
@@ -150,14 +149,6 @@ const HusmodellTab = () => {
                 bygge:
               </div>
               <div className="relative flex items-center gap-2">
-                {/* <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onClick={toggleDropdown}
-                  placeholder="Søk opp kommune"
-                  className="w-full bg-white rounded-md text-sm md:text-base desktop:text-lg focus:outline-none"
-                /> */}
                 <input
                   type="text"
                   value={searchTerm}
@@ -203,22 +194,26 @@ const HusmodellTab = () => {
                   }}
                 >
                   {isLoading ? (
-                    <div className="relative h-[80px]">
-                      <Loading />
-                    </div>
+                    <>
+                      <div className="px-3 md:px-4 py-2 md:py-[14px]">
+                        <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
+                      </div>
+                      <div className="px-3 md:px-4 py-2 md:py-[14px]">
+                        <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
+                      </div>
+                      <div className="px-3 md:px-4 py-2 md:py-[14px]">
+                        <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
+                      </div>
+                      <div className="px-3 md:px-4 py-2 md:py-[14px]">
+                        <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
+                      </div>
+                      <div className="px-3 md:px-4 py-2 md:py-[14px]">
+                        <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
+                      </div>
+                    </>
                   ) : filteredCities.length > 0 ? (
                     filteredCities.map((city: any, index) => {
                       return (
-                        // <li
-                        //   key={index}
-                        //   onClick={() => handleSelect(`${city.name} Kommune`)}
-                        //   className={`text-xs md:text-sm text-darkBlack px-3 md:px-4 py-2 md:py-[14px] cursor-pointer
-                        //   ${
-                        //     formData?.Kommue === `${city.name} Kommune`
-                        //       ? "bg-lightPurple2 font-semibold"
-                        //       : "bg-white"
-                        //   }`}
-                        // >
                         <li
                           key={index}
                           onClick={() => handleSelect(`${city.name} Kommune`)}

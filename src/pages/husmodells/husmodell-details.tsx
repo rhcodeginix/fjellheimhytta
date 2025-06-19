@@ -145,7 +145,7 @@ const HusmodellDetail: React.FC<{
           </SideSpaceContainer>
         </div>
         <HouseDetailsection HouseModelData={HouseModelData} loading={loading} />
-        <SideSpaceContainer className="relative pt-[38px]">
+        <SideSpaceContainer className="relative pt-[38px] mb-[100px]">
           <HouseDetailPage />
         </SideSpaceContainer>
         <div

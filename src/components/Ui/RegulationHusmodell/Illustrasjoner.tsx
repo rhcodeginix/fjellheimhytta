@@ -144,15 +144,9 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
 
   return (
     <div className="relative">
-      {loading ? (
-        <div
-          className="w-full h-[400px] rounded-md custom-shimmer"
-          style={{ borderRadius: "8px" }}
-        ></div>
-      ) : (
-        <>
-          <div className="border border-[#DCDFEA] rounded-lg overflow-hidden">
-            {/* <button
+      <>
+        <div className="border border-[#DCDFEA] rounded-lg overflow-hidden">
+          {/* <button
               className={`bg-white flex justify-between items-center w-full p-2 sm:p-3 md:p-5 duration-1000 ${isOpen ? "active" : ""}`}
               onClick={toggleAccordion}
             >
@@ -178,6 +172,26 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
                 )}
               </div>
             </button> */}
+          {loading ? (
+            <div className="grid gap-3 md:gap-6 grid-cols-3 p-2 md:p-5">
+              <div
+                className="w-full h-[100px] rounded-lg custom-shimmer"
+                style={{ borderRadius: "8px" }}
+              ></div>
+              <div
+                className="w-full h-[100px] rounded-lg custom-shimmer"
+                style={{ borderRadius: "8px" }}
+              ></div>
+              <div
+                className="w-full h-[100px] rounded-lg custom-shimmer"
+                style={{ borderRadius: "8px" }}
+              ></div>
+              <div
+                className="w-full h-[100px] rounded-lg custom-shimmer"
+                style={{ borderRadius: "8px" }}
+              ></div>
+            </div>
+          ) : (
             <div
               className={`overflow-hidden max-h-0 p-2 md:p-5`}
               style={{
@@ -262,9 +276,9 @@ const Illustrasjoner: React.FC<{ loading: any }> = ({ loading }) => {
                   )}
               </div>
             </div>
-          </div>
-        </>
-      )}
+          )}
+        </div>
+      </>
       {isPopupOpen && (
         <Modal isOpen={true} onClose={() => setIsPopupOpen(false)}>
           <div

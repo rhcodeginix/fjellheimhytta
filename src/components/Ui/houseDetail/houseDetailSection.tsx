@@ -41,110 +41,128 @@ const HouseDetailsection: React.FC<{
                 </div>
               </div>
             )} */}
-            {loading ? (
-              <div
-                className="w-full sm:w-[31%] lg:w-[20%] h-[100px] rounded-md custom-shimmer"
-                style={{ borderRadius: "8px" }}
-              ></div>
-            ) : (
-              <div className="w-full sm:w-[31%] lg:w-[20%] flex items-start gap-2 sm:gap-3">
-                <Image
-                  fetchPriority="auto"
-                  src={Ic_check_green_icon}
-                  alt="check"
-                />
-                <div className="flex flex-col gap-1">
-                  <p className="text-secondary2 text-xs md:text-sm">
-                    <span className="font-bold">
-                      {HouseModelData?.Husdetaljer?.husmodell_name}
-                    </span>{" "}
-                    passer for
-                  </p>
-                  <p className="text-black text-sm md:text-base font-medium">
-                    {Array.isArray(HouseModelData?.Husdetaljer?.Tomtetype)
-                      ? HouseModelData?.Husdetaljer?.Tomtetype.join(", ")
-                      : HouseModelData?.Husdetaljer?.Tomtetype}
-                  </p>
-                </div>
+
+            <div className="w-full sm:w-[31%] lg:w-[20%] flex items-start gap-2 sm:gap-3">
+              <Image
+                fetchPriority="auto"
+                src={Ic_check_green_icon}
+                alt="check"
+              />
+              <div className="flex flex-col gap-1">
+                <p className="text-secondary2 text-xs md:text-sm">
+                  <span className="font-bold">
+                    {HouseModelData?.Husdetaljer?.husmodell_name}
+                  </span>{" "}
+                  passer for
+                </p>
+                <p className="text-black text-sm md:text-base font-medium">
+                  {Array.isArray(HouseModelData?.Husdetaljer?.Tomtetype)
+                    ? HouseModelData?.Husdetaljer?.Tomtetype.join(", ")
+                    : HouseModelData?.Husdetaljer?.Tomtetype}
+                </p>
               </div>
-            )}
-            {loading ? (
-              <div
-                className="w-full sm:w-[31%] lg:w-[20%] h-[100px] rounded-md custom-shimmer"
-                style={{ borderRadius: "8px" }}
-              ></div>
-            ) : (
-              <div className="w-full sm:w-[31%] lg:w-[20%] flex items-start gap-2 sm:gap-3">
-                <Image
-                  fetchPriority="auto"
-                  src={Ic_check_green_icon}
-                  alt="check"
-                />
-                <div className="flex flex-col gap-1">
+            </div>
+
+            <div className="w-full sm:w-[31%] lg:w-[20%] flex items-start gap-2 sm:gap-3">
+              <Image
+                fetchPriority="auto"
+                src={Ic_check_green_icon}
+                alt="check"
+              />
+              <div className="flex flex-col gap-1">
+                {loading ? (
+                  <div
+                    className="w-[180px] h-[20px] rounded-lg custom-shimmer"
+                    style={{ borderRadius: "8px" }}
+                  ></div>
+                ) : (
                   <p className="text-secondary2 text-xs md:text-sm">
                     <span className="font-bold">
                       {HouseModelData?.Husdetaljer?.husmodell_name}
                     </span>{" "}
                     har
                   </p>
+                )}
+                {loading ? (
+                  <div
+                    className="w-[180px] h-[20px] rounded-lg custom-shimmer"
+                    style={{ borderRadius: "8px" }}
+                  ></div>
+                ) : (
                   <p className="text-black text-sm md:text-base font-medium">
                     Mønehøyde på {HouseModelData?.Husdetaljer?.Mønehøyde} meter
                   </p>
-                </div>
+                )}
               </div>
-            )}
-            {loading ? (
-              <div
-                className="w-full sm:w-[31%] lg:w-[20%] h-[100px] rounded-md custom-shimmer"
-                style={{ borderRadius: "8px" }}
-              ></div>
-            ) : (
-              <div className="w-full sm:w-[31%] lg:w-[20%] flex items-start gap-2 sm:gap-3">
-                <Image
-                  fetchPriority="auto"
-                  src={Ic_check_green_icon}
-                  alt="check"
-                />
-                <div className="flex flex-col gap-1">
+            </div>
+
+            <div className="w-full sm:w-[31%] lg:w-[20%] flex items-start gap-2 sm:gap-3">
+              <Image
+                fetchPriority="auto"
+                src={Ic_check_green_icon}
+                alt="check"
+              />
+              <div className="flex flex-col gap-1">
+                {loading ? (
+                  <div
+                    className="w-[180px] h-[20px] rounded-lg custom-shimmer"
+                    style={{ borderRadius: "8px" }}
+                  ></div>
+                ) : (
                   <p className="text-secondary2 text-xs md:text-sm">
                     <span className="font-bold">
                       {HouseModelData?.Husdetaljer?.husmodell_name}
                     </span>{" "}
                     har
                   </p>
+                )}
+                {loading ? (
+                  <div
+                    className="w-[180px] h-[20px] rounded-lg custom-shimmer"
+                    style={{ borderRadius: "8px" }}
+                  ></div>
+                ) : (
                   <p className="text-black text-sm md:text-base font-medium">
                     Gesimshøyde på {HouseModelData?.Husdetaljer?.Gesimshøyde}{" "}
                     meter
                   </p>
-                </div>
+                )}
               </div>
-            )}
-            {loading ? (
-              <div
-                className="w-full sm:w-[31%] lg:w-[20%] h-[100px] rounded-md custom-shimmer"
-                style={{ borderRadius: "8px" }}
-              ></div>
-            ) : (
-              <div className="w-full sm:w-[31%] lg:w-[20%] flex items-start gap-2 sm:gap-3">
-                <Image
-                  fetchPriority="auto"
-                  src={Ic_check_green_icon}
-                  alt="check"
-                />
-                <div className="flex flex-col gap-1">
+            </div>
+
+            <div className="w-full sm:w-[31%] lg:w-[20%] flex items-start gap-2 sm:gap-3">
+              <Image
+                fetchPriority="auto"
+                src={Ic_check_green_icon}
+                alt="check"
+              />
+              <div className="flex flex-col gap-1">
+                {loading ? (
+                  <div
+                    className="w-[180px] h-[20px] rounded-lg custom-shimmer"
+                    style={{ borderRadius: "8px" }}
+                  ></div>
+                ) : (
                   <p className="text-secondary2 text-xs md:text-sm">
                     <span className="font-bold">
                       {HouseModelData?.Husdetaljer?.husmodell_name}
                     </span>{" "}
                     har en
                   </p>
+                )}
+                {loading ? (
+                  <div
+                    className="w-[180px] h-[20px] rounded-lg custom-shimmer"
+                    style={{ borderRadius: "8px" }}
+                  ></div>
+                ) : (
                   <p className="text-black text-sm md:text-base font-medium">
                     Grunnflate på {HouseModelData?.Husdetaljer?.BebygdAreal} m
                     <sup>2</sup>
                   </p>
-                </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </SideSpaceContainer>
       </div>

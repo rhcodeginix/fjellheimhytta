@@ -99,10 +99,7 @@ const PropertyHouseDetails: React.FC<{
           )}
           <div className="flex flex-col items-start">
             {loading ? (
-              <div
-                className="w-full sm:w-[400px] h-[20px] rounded-md custom-shimmer"
-                style={{ borderRadius: "8px" }}
-              ></div>
+              <div className="w-full sm:w-[200px] h-[20px] rounded-lg custom-shimmer mb-2"></div>
             ) : (
               <h4 className="text-darkBlack font-medium text-base md:text-xl lg:text-2xl lg:leading-[30px] one_line_elipse">
                 <span className="font-bold">
@@ -195,29 +192,41 @@ const PropertyHouseDetails: React.FC<{
         </div>
 
         <div className={`${hidden ? "hidden md:block" : "block"}`}>
-          {loading ? (
-            <div
-              className="w-[250px] h-[100px] rounded-md custom-shimmer"
-              style={{ borderRadius: "8px" }}
-            ></div>
-          ) : (
-            <div className="flex gap-6 w-max">
-              <div>
+          <div className="flex gap-6 w-max">
+            <div>
+              {loading ? (
+                <div className="w-[150px] h-[20px] rounded-lg custom-shimmer mb-2" />
+              ) : (
                 <p className="text-secondary text-xs md:text-sm mb-2">
                   Dine tillegg
                 </p>
+              )}
+              {loading ? (
+                <div className="w-[150px] h-[20px] rounded-lg custom-shimmer" />
+              ) : (
                 <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
                   {totalCustPris ? formatCurrency(totalCustPris) : "kr 0"}
                 </h4>
-              </div>
-              <div>
+              )}
+            </div>
+            <div>
+              {loading ? (
+                <div className="w-[150px] h-[20px] rounded-lg custom-shimmer mb-2" />
+              ) : (
                 <p className="text-secondary text-xs md:text-sm mb-2">
                   Din pris med tilvalg
                 </p>
+              )}
+              {loading ? (
+                <div className="w-[150px] h-[20px] rounded-lg custom-shimmer" />
+              ) : (
                 <h4 className="text-darkBlack font-semibold text-base md:text-lg lg:text-xl">
                   {formatCurrency(totalPrice)}
                 </h4>
-
+              )}
+              {loading ? (
+                <div className="w-[150px] h-[20px] rounded-lg custom-shimmermt-1" />
+              ) : (
                 <p className="text-secondary text-xs md:text-sm">
                   Inkludert tomtepris (
                   {pris
@@ -227,9 +236,9 @@ const PropertyHouseDetails: React.FC<{
                     : "kr 0"}
                   )
                 </p>
-              </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </>
