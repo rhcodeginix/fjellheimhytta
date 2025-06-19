@@ -18,7 +18,6 @@ import {
   where,
 } from "firebase/firestore";
 import Loader from "@/components/Loader";
-import { addDaysToDate } from "@/components/Ui/stepperUi/productDetailWithPrice";
 import Link from "next/link";
 import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
 // import GoogleMapComponent from "@/components/Ui/map";
@@ -27,6 +26,7 @@ import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDet
 import NorkartMap from "@/components/map";
 import { convertCurrencyFormat } from "@/components/Ui/Husmodell/plot/plotProperty";
 import { toast } from "react-hot-toast";
+import { addDaysToDate } from "@/components/Ui/husmodellPlot/Tilbudsdetaljer";
 
 const Tilbud: React.FC<{
   handleNext: any;

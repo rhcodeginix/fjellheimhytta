@@ -12,7 +12,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 // import GoogleMapComponent from "@/components/Ui/map";
-import { addDaysToDate } from "@/components/Ui/stepperUi/productDetailWithPrice";
 // import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
 import { useRouter } from "next/router";
 import NorkartMap from "@/components/map";
@@ -28,6 +27,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { toast } from "react-hot-toast";
+import { addDaysToDate } from "@/components/Ui/husmodellPlot/Tilbudsdetaljer";
 
 const Tilbud: React.FC<{
   handleNext: any;
