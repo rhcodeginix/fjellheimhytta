@@ -9,7 +9,6 @@ import Ic_close from "@/public/images/Ic_close.svg";
 import * as Yup from "yup";
 import Img_vipps_login from "@/public/images/Img_vipps_login.png";
 import { Formik, Form } from "formik";
-import Loader from "@/components/Loader";
 import LoginForm from "../login/loginForm";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -100,9 +99,6 @@ const Tomt: React.FC<{
 
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
 
-  if (loadingLamdaData) {
-    <Loader />;
-  }
   return (
     <div className="relative">
       <div className="bg-lightBlue py-2 md:py-4">
@@ -160,6 +156,7 @@ const Tomt: React.FC<{
         CadastreDataFromApi={CadastreDataFromApi}
         lamdaDataFromApi={lamdaDataFromApi}
         HouseModelData={HouseModelData}
+        loading={loadingLamdaData}
       />
       <SideSpaceContainer>
         <LeadsBox />

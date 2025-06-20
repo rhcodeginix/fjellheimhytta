@@ -3,7 +3,6 @@ import SideSpaceContainer from "@/components/common/sideSpace";
 import Image from "next/image";
 import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
 import Button from "@/components/common/button";
-import Loader from "@/components/Loader";
 import Link from "next/link";
 import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
 import "swiper/css";
@@ -33,7 +32,7 @@ const Finansiering: React.FC<{
   handleNext,
   lamdaDataFromApi,
   askData,
-  loadingLamdaData,
+  // loadingLamdaData,
   CadastreDataFromApi,
   HouseModelData,
   handlePrevious,
@@ -133,9 +132,7 @@ const Finansiering: React.FC<{
   //     setIsOpen(true);
   //   }
   // };
-  if (loadingLamdaData) {
-    <Loader />;
-  }
+
   return (
     <div className="relative">
       <div className="bg-lightBlue py-2 md:py-4">

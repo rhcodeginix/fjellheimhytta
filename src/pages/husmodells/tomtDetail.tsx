@@ -4,7 +4,6 @@ import Image from "next/image";
 import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
 import Ic_logo from "@/public/images/Ic_logo.svg";
 import Button from "@/components/common/button";
-import Loader from "@/components/Loader";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
@@ -159,9 +158,6 @@ const TomtHouseDetails: React.FC<{
     }
   }, [plotId, id, user]);
 
-  if (loadingLamdaData) {
-    <Loader />;
-  }
   return (
     <div className="relative">
       <div className="bg-lightBlue py-2 md:py-4">
@@ -242,6 +238,7 @@ const TomtHouseDetails: React.FC<{
         CadastreDataFromApi={CadastreDataFromApi}
         lamdaDataFromApi={lamdaDataFromApi}
         HouseModelData={HouseModelData}
+        loading={loadingLamdaData}
       />
       {/* <SideSpaceContainer>
         <LeadsBox />

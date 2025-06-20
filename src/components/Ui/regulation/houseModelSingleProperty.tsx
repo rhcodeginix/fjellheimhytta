@@ -4,7 +4,6 @@ import Image from "next/image";
 import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
 import Ic_logo from "@/public/images/Ic_logo.svg";
 import Button from "@/components/common/button";
-import Loader from "@/components/Loader";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
@@ -71,20 +70,32 @@ const HouseModelSingleProperty: React.FC<{
 
   const id = router.query["husmodellId"];
   const plotId = router.query["plotId"];
+  const [leadId, setLeadId] = useState();
+
+  useEffect(() => {
+    if (leadId) {
+      const queryParams = new URLSearchParams(window.location.search);
+      queryParams.set("leadId", leadId);
+      router.replace({
+        pathname: router.pathname,
+        query: Object.fromEntries(queryParams),
+      });
+    }
+  }, [leadId]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!user || !plotId || !id) return;
 
       const queryParams = new URLSearchParams(window.location.search);
-      const isEmptyPlot = queryParams.get("empty");
+      const empty = queryParams.get("empty");
       const currentLeadId = queryParams.get("leadId");
       queryParams.delete("leadId");
 
       try {
         let plotCollectionRef = collection(
           db,
-          isEmptyPlot === "true" ? "cabin_plot" : "plot_building"
+          empty === "true" ? "cabin_plot" : "plot_building"
         );
 
         const allLeadsSnapshot = await getDocs(query(plotCollectionRef));
@@ -133,17 +144,18 @@ const HouseModelSingleProperty: React.FC<{
               query: Object.fromEntries(queryParams),
             });
           }
+          setLeadId(existingLeadId);
           return;
         }
 
-        const newDocRef = await addDoc(collection(db, "leads"), {
+        const newDocRef: any = await addDoc(collection(db, "leads"), {
           finalData,
           user,
           Isopt: false,
           IsoptForBank: false,
           createdAt: new Date(),
           updatedAt: new Date(),
-          IsEmptyPlot: isEmptyPlot === "true",
+          IsEmptyPlot: empty === "true",
         });
 
         queryParams.set("leadId", newDocRef.id);
@@ -151,6 +163,7 @@ const HouseModelSingleProperty: React.FC<{
           pathname: router.pathname,
           query: Object.fromEntries(queryParams),
         });
+        setLeadId(newDocRef.id);
       } catch (error) {
         console.error("Firestore operation failed:", error);
       }
@@ -161,9 +174,6 @@ const HouseModelSingleProperty: React.FC<{
     }
   }, [plotId, id, user]);
 
-  if (loadingLamdaData) {
-    <Loader />;
-  }
   return (
     <div className="relative">
       <div className="bg-lightBlue py-2 md:py-4">

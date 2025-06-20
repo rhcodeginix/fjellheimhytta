@@ -2,13 +2,16 @@ import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 const getRandomColor = (index: number) => {
-  const baseHue = 24;
-  const saturation = 80 + ((index * 3) % 10);
-  const lightness = 45 + ((index * 5) % 10);
+  const baseHue = 176;
+  const saturation = 20 + ((index * 3) % 10);
+  const lightness = 30 + ((index * 5) % 10);
   return `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
 };
 
-const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
+const EierinformasjonChart: React.FC<{ chartData: any; loading: any }> = ({
+  chartData,
+  loading,
+}) => {
   const data = chartData?.map((item: any) => ({
     name: item.Navn,
     value: parseFloat(item.value),
@@ -28,9 +31,15 @@ const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
               fill="#8884d8"
               dataKey="value"
             >
-              {data?.map((_entry: any, index: any) => (
-                <Cell key={`cell-${index}`} fill={getRandomColor(index)} />
-              ))}
+              {loading ? (
+                <div className="w-[200px] h-[20px] rounded-lg custom-shimmer"></div>
+              ) : (
+                <>
+                  {data?.map((_entry: any, index: any) => (
+                    <Cell key={`cell-${index}`} fill={getRandomColor(index)} />
+                  ))}
+                </>
+              )}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
@@ -44,18 +53,30 @@ const EierinformasjonChart: React.FC<{ chartData: any }> = ({ chartData }) => {
           {data?.map((item: any, index: any) => (
             <div key={index} className="flex items-start gap-2">
               <div className="h-[26px] w-3 flex items-center">
-                <div
-                  className="w-full h-3 rounded-full"
-                  style={{ backgroundColor: getRandomColor(index) }}
-                ></div>
+                {loading ? (
+                  <div className="w-full h-3 rounded-lg custom-shimmer"></div>
+                ) : (
+                  <div
+                    className="w-full h-3 rounded-full"
+                    style={{ backgroundColor: getRandomColor(index) }}
+                  ></div>
+                )}
               </div>
               <div>
-                <div className="font-semibold text-lg md:text-[20px] h-[26px]">
-                  {item.value}%
-                </div>
-                <span className="text-sm font-medium text-darkBlack">
-                  {item.name}
-                </span>
+                {loading ? (
+                  <div className="w-[200px] h-[26px] rounded-lg custom-shimmer"></div>
+                ) : (
+                  <div className="font-semibold text-lg md:text-[20px] h-[26px]">
+                    {item.value}%
+                  </div>
+                )}
+                {loading ? (
+                  <div className="w-[200px] h-[26px] rounded-lg custom-shimmer"></div>
+                ) : (
+                  <span className="text-sm font-medium text-darkBlack">
+                    {item.name}
+                  </span>
+                )}
               </div>
             </div>
           ))}
