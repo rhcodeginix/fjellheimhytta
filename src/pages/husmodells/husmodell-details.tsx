@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SideSpaceContainer from "@/components/common/sideSpace";
 import Button from "@/components/common/button";
 import Ic_breadcrumb_arrow from "@/public/images/Ic_breadcrumb_arrow.svg";
@@ -40,7 +40,12 @@ const HusmodellDetail: React.FC<{
   const router = useRouter();
 
   const id = router.query["husmodellId"];
+  const [stored, setStored] = useState<any>();
 
+  useEffect(() => {
+    const store = localStorage.getItem("customizeHouse");
+    setStored(store);
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
@@ -101,6 +106,7 @@ const HusmodellDetail: React.FC<{
           IsoptForBank: false,
           createdAt: new Date(),
           updatedAt: new Date(),
+          stored,
         });
 
         queryParams.set("leadId", newDocRef.id);

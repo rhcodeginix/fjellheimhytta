@@ -130,7 +130,12 @@ const Tilbud: React.FC<{
   const leadId = router.query["leadId"];
 
   const [date, setDate] = useState(new Date());
+  const [stored, setStored] = useState<any>();
 
+  useEffect(() => {
+    const store = localStorage.getItem("customizeHouse");
+    setStored(store);
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       if (!user || !plotId || !husmodellId) return;
@@ -181,6 +186,7 @@ const Tilbud: React.FC<{
             createdAt: new Date(),
             updatedAt: new Date(),
             IsEmptyPlot: isEmptyPlot === "true",
+            stored,
           });
           leadIdToSet = docRef.id;
         }
@@ -623,6 +629,7 @@ const Tilbud: React.FC<{
                         Isopt: true,
                         EstimertByggestart: ByggestartDate,
                         EstimertInnflytting: addDaysToDate(date, totalDays),
+                        stored,
                       });
                       toast.success("Lead sendt.", {
                         position: "top-right",

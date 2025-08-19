@@ -67,7 +67,12 @@ const HouseModelSingleProperty: React.FC<{
   ];
 
   const [activeTab, setActiveTab] = useState<string>(tabs[1].id);
+  const [stored, setStored] = useState<any>();
 
+  useEffect(() => {
+    const store = localStorage.getItem("customizeHouse");
+    setStored(store);
+  }, []);
   const id = router.query["husmodellId"];
   const plotId = router.query["plotId"];
   const [leadId, setLeadId] = useState();
@@ -156,6 +161,7 @@ const HouseModelSingleProperty: React.FC<{
           createdAt: new Date(),
           updatedAt: new Date(),
           IsEmptyPlot: empty === "true",
+          stored,
         });
 
         queryParams.set("leadId", newDocRef.id);

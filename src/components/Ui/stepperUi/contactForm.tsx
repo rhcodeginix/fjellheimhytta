@@ -14,6 +14,12 @@ const ContactForm: React.FC<{ leadId?: any }> = ({ leadId }) => {
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
+  const [stored, setStored] = useState<any>();
+
+  useEffect(() => {
+    const store = localStorage.getItem("customizeHouse");
+    setStored(store);
+  }, []);
   const validationSchema = Yup.object().shape({
     checkbox: Yup.boolean().oneOf([true], "Påkrevd").required("Påkrevd"),
   });
@@ -39,6 +45,7 @@ const ContactForm: React.FC<{ leadId?: any }> = ({ leadId }) => {
         await updateDoc(doc(db, "leads", leadId), {
           Isopt: true,
           updatedAt: new Date(),
+          stored,
         });
         toast.success("Added successfully.", { position: "top-right" });
       } else {

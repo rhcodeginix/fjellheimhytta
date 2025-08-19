@@ -306,7 +306,12 @@ const HusmodellPlot = () => {
     }
   }, [additionalData]);
   const [date, setDate] = useState(new Date());
+  const [stored, setStored] = useState<any>();
 
+  useEffect(() => {
+    const store = localStorage.getItem("customizeHouse");
+    setStored(store);
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       if (!user || !propertyId || !husmodellId) {
@@ -372,6 +377,7 @@ const HusmodellPlot = () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           IsEmptyPlot: isEmptyPlot === "true",
+          stored,
         });
         setDate(new Date());
 

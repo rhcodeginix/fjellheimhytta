@@ -70,7 +70,12 @@ const Tilbud: React.FC<{
       setCusHouse(JSON.parse(customizeHouse));
     }
   }, []);
+  const [stored, setStored] = useState<any>();
 
+  useEffect(() => {
+    const store = localStorage.getItem("customizeHouse");
+    setStored(store);
+  }, []);
   const totalCustPris = custHouse
     ? custHouse?.reduce(
         (sum: any, item: any) =>
@@ -544,6 +549,7 @@ const Tilbud: React.FC<{
                         Isopt: true,
                         EstimertByggestart: ByggestartDate,
                         EstimertInnflytting: addDaysToDate(date, totalDays),
+                        stored,
                       });
                       setDate(new Date());
 
