@@ -29,7 +29,8 @@ const PropertyHouseDetails: React.FC<{
   const leadId = router.query["leadId"];
   const Husdetaljer = HouseModelData?.Husdetaljer;
 
-  const { plotId, kommunenummer, propertyId } = router.query;
+  const { plotId, kommunenummer, propertyId, gardsnummer, bruksnummer } =
+    router.query;
 
   // const [kommune, setKommune] = useState<any>(null);
   // useEffect(() => {
@@ -73,6 +74,27 @@ const PropertyHouseDetails: React.FC<{
     : 0;
 
   const totalPrice = totalCustPris + husPris + extraPris;
+
+  const [address, setAddress] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://ws.geonorge.no/adresser/v1/sok?gardsnummer=${gardsnummer}&kommunenummer=${kommunenummer}&bruksnummer=${bruksnummer}`
+        );
+        const result = await response.json();
+
+        setAddress(result?.adresser[0]);
+      } catch (error: any) {
+        console.error("API error:", error);
+      }
+    };
+
+    if (kommunenummer && gardsnummer && bruksnummer) {
+      fetchData();
+    }
+  }, [kommunenummer, gardsnummer, bruksnummer]);
 
   return (
     <>
@@ -148,14 +170,12 @@ const PropertyHouseDetails: React.FC<{
                         ?.item?.formatted && (
                         <div className="text-secondary text-xs md:text-sm lg:text-base">
                           <span className="text-black font-semibold">
-                            {
-                              CadastreDataFromApi.presentationAddressApi
-                                .response?.item?.formatted?.line1
-                            }{" "}
-                            {
-                              CadastreDataFromApi.presentationAddressApi
-                                .response?.item?.formatted?.line2
-                            }
+                            {CadastreDataFromApi.presentationAddressApi.response
+                              ?.item?.formatted?.line1 ??
+                              address?.adressetekst}{" "}
+                            {CadastreDataFromApi.presentationAddressApi.response
+                              ?.item?.formatted?.line2 ??
+                              `${address?.postnummer} ${address?.poststed}`}
                           </span>
                         </div>
                       )}
