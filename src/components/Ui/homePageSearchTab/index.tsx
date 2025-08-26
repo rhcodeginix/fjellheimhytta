@@ -192,6 +192,52 @@ const HomePageSearchTab: React.FC = () => {
     }
   }, [data.belopProperty]);
 
+  const [boxDataList, setBoxDataList] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!data?.houseModelProperty) return;
+
+    const fetchAll = async () => {
+      const results: any[] = [];
+
+      for (const property of data.houseModelProperty) {
+        const BBOXData =
+          property?.CadastreDataFromApi?.cadastreApi?.response?.item?.geojson
+            ?.bbox;
+
+        if (!BBOXData) {
+          results.push(null);
+          continue;
+        }
+
+        try {
+          const response = await fetch(
+            "https://d8t0z35n2l.execute-api.eu-north-1.amazonaws.com/prod/bya",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                url: `https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&QUERY_LAYERS=Planomrade_02,Arealformal_02&LAYERS=Planomrade_02,Arealformal_02&INFO_FORMAT=text/html&CRS=EPSG:25833&BBOX=${BBOXData[0]},${BBOXData[1]},${BBOXData[2]},${BBOXData[3]}&WIDTH=800&HEIGHT=600&I=400&J=300`,
+                plot_size_m2:
+                  property?.lamdaDataFromApi?.eiendomsInformasjon
+                    ?.basisInformasjon?.areal_beregnet ?? 0,
+              }),
+            }
+          );
+          const json = await response.json();
+          results.push(json);
+        } catch (e) {
+          console.error("Error fetching data:", e);
+          results.push(null);
+        }
+      }
+
+      setBoxDataList(results);
+    };
+
+    fetchAll();
+  }, [data?.houseModelProperty]);
+
   return (
     <>
       <div className="relative pb-[40px] md:pb-[52px] lg:pb-[60px]">
@@ -616,101 +662,111 @@ const HomePageSearchTab: React.FC = () => {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                 {data?.houseModelProperty.map(
-                  (property: any, index: number) => (
-                    <div
-                      key={index}
-                      className="border border-gray3 rounded-[8px] p-3 md:p-5 cursor-pointer"
-                      style={{
-                        boxShadow:
-                          "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
-                      }}
-                      onClick={() => {
-                        router.push(
-                          `/regulations?kommunenummer=${property?.lamdaDataFromApi?.searchParameters?.kommunenummer}&gardsnummer=${property?.lamdaDataFromApi?.searchParameters?.gardsnummer}&bruksnummer=${property?.lamdaDataFromApi?.searchParameters?.bruksnummer}`
-                        );
-                        const currIndex = 0;
-                        localStorage.setItem("currIndex", currIndex.toString());
-                      }}
-                    >
-                      <h4 className="text-darkBlack text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 font-bold">
-                        {
-                          property?.CadastreDataFromApi?.presentationAddressApi
-                            ?.response?.item?.formatted?.line1
-                        }
-                      </h4>
-                      <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
-                        {
-                          property?.CadastreDataFromApi?.presentationAddressApi
-                            ?.response?.item?.formatted?.line2
-                        }
-                      </p>
-                      <div className="relative mb-3 desktop:mb-4">
-                        <div className="w-full h-[200px] md:h-[234px] rounded-[8px] overflow-hidden">
-                          {/* <GoogleMapComponent
+                  (property: any, index: number) => {
+                    const BoxData = boxDataList[index];
+
+                    return (
+                      <div
+                        key={index}
+                        className="border border-gray3 rounded-[8px] p-3 md:p-5 cursor-pointer"
+                        style={{
+                          boxShadow:
+                            "0px 1px 2px 0px #1018280F, 0px 1px 3px 0px #1018281A",
+                        }}
+                        onClick={() => {
+                          router.push(
+                            `/regulations?kommunenummer=${property?.lamdaDataFromApi?.searchParameters?.kommunenummer}&gardsnummer=${property?.lamdaDataFromApi?.searchParameters?.gardsnummer}&bruksnummer=${property?.lamdaDataFromApi?.searchParameters?.bruksnummer}`
+                          );
+                          const currIndex = 0;
+                          localStorage.setItem(
+                            "currIndex",
+                            currIndex.toString()
+                          );
+                        }}
+                      >
+                        <h4 className="text-darkBlack text-sm md:text-base lg:text-lg lg:leading-[30px] mb-2 font-bold">
+                          {
+                            property?.CadastreDataFromApi
+                              ?.presentationAddressApi?.response?.item
+                              ?.formatted?.line1
+                          }
+                        </h4>
+                        <p className="text-grayText text-xs md:text-sm mb-2 md:mb-3 desktop:mb-4">
+                          {
+                            property?.CadastreDataFromApi
+                              ?.presentationAddressApi?.response?.item
+                              ?.formatted?.line2
+                          }
+                        </p>
+                        <div className="relative mb-3 desktop:mb-4">
+                          <div className="w-full h-[200px] md:h-[234px] rounded-[8px] overflow-hidden">
+                            {/* <GoogleMapComponent
                             coordinates={
                               property?.lamdaDataFromApi?.coordinates
                                 ?.convertedCoordinates
                             }
                           /> */}
-                          {property?.lamdaDataFromApi?.coordinates
-                            ?.convertedCoordinates && (
-                            <NorkartMap
-                              coordinates={
-                                property?.lamdaDataFromApi?.coordinates
-                                  ?.convertedCoordinates
-                              }
-                              MAX_ZOOM={20}
-                            />
-                          )}
+                            {property?.lamdaDataFromApi?.coordinates
+                              ?.convertedCoordinates && (
+                              <NorkartMap
+                                coordinates={
+                                  property?.lamdaDataFromApi?.coordinates
+                                    ?.convertedCoordinates
+                                }
+                                MAX_ZOOM={20}
+                              />
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex gap-3 items-center">
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
+                            {
+                              property?.lamdaDataFromApi?.eiendomsInformasjon
+                                ?.basisInformasjon?.areal_beregnet
+                            }{" "}
+                            <span className="text-[#4A5578] font-normal">
+                              m²
+                            </span>
+                          </div>
+                          <div className="border-l border-[#EAECF0] h-[12px]"></div>
+                          <div className="text-darkBlack text-xs md:text-sm font-semibold">
+                            {BoxData?.bya_percentage ??
+                              property?.additionalData?.answer?.bya_calculations
+                                ?.input?.bya_percentage}
+                            %{" "}
+                            <span className="text-[#4A5578] font-normal">
+                              BYA
+                            </span>
+                          </div>
+                        </div>
+                        <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
+                        <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
+                          <div>
+                            <p className="text-[#4A5578] text-xs md:text-sm mb-1">
+                              Tilbudpris
+                            </p>
+                            <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
+                              {property.pris ? formatPrice(property.pris) : 0}
+                            </h6>
+                          </div>
+                          <Button
+                            text="Utforsk"
+                            className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
+                            onClick={() => {
+                              router.push(
+                                `/regulations?kommunenummer=${property?.lamdaDataFromApi?.searchParameters?.kommunenummer}&gardsnummer=${property?.lamdaDataFromApi?.searchParameters?.gardsnummer}&bruksnummer=${property?.lamdaDataFromApi?.searchParameters?.bruksnummer}`
+                              );
+                              const currIndex = 0;
+                              localStorage.setItem(
+                                "currIndex",
+                                currIndex.toString()
+                              );
+                            }}
+                          />
                         </div>
                       </div>
-                      <div className="flex gap-3 items-center">
-                        <div className="text-darkBlack text-xs md:text-sm font-semibold">
-                          {
-                            property?.lamdaDataFromApi?.eiendomsInformasjon
-                              ?.basisInformasjon?.areal_beregnet
-                          }{" "}
-                          <span className="text-[#4A5578] font-normal">m²</span>
-                        </div>
-                        <div className="border-l border-[#EAECF0] h-[12px]"></div>
-                        <div className="text-darkBlack text-xs md:text-sm font-semibold">
-                          {
-                            property?.additionalData?.answer?.bya_calculations
-                              ?.input?.bya_percentage
-                          }
-                          %{" "}
-                          <span className="text-[#4A5578] font-normal">
-                            BYA
-                          </span>
-                        </div>
-                      </div>
-                      <div className="border-t border-[#EAECF0] w-full my-2 md:my-3 desktop:my-4"></div>
-                      <div className="gap-4 md:gap-5 lg:gap-6 flex items-center justify-between">
-                        <div>
-                          <p className="text-[#4A5578] text-xs md:text-sm mb-1">
-                            Tilbudpris
-                          </p>
-                          <h6 className="text-sm md:text-base font-semibold desktop:text-xl">
-                            {property.pris ? formatPrice(property.pris) : 0}
-                          </h6>
-                        </div>
-                        <Button
-                          text="Utforsk"
-                          className="border border-primary bg-primary hover:bg-[#1E5F5C] hover:border-[#1E5F5C] focus:bg-[#003A37] focus:border-[#003A37] text-white sm:text-base rounded-[40px] w-max h-[36px] md:h-[40px] lg:h-[48px] font-semibold relative desktop:px-[28px] desktop:py-[16px]"
-                          onClick={() => {
-                            router.push(
-                              `/regulations?kommunenummer=${property?.lamdaDataFromApi?.searchParameters?.kommunenummer}&gardsnummer=${property?.lamdaDataFromApi?.searchParameters?.gardsnummer}&bruksnummer=${property?.lamdaDataFromApi?.searchParameters?.bruksnummer}`
-                            );
-                            const currIndex = 0;
-                            localStorage.setItem(
-                              "currIndex",
-                              currIndex.toString()
-                            );
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )
+                    );
+                  }
                 )}
               </div>
             )}
