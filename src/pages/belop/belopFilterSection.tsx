@@ -89,6 +89,16 @@ const BelopFilterSection: React.FC<{
     { name: "Bolig", value: "Bolig" },
     { name: "Hytte", value: "Hytte" },
   ];
+  // const TypeHusmodellArray: any = [
+  //   { name: "Funkis", value: "Funkis" },
+  //   { name: "Moderne", value: "Moderne" },
+  //   { name: "Herskapelig", value: "Herskapelig" },
+  //   { name: "Tradisjonelt", value: "Tradisjonelt" },
+  //   { name: "Tomannsbolig", value: "Tomannsbolig" },
+  //   { name: "Med utleiedel", value: "Med utleiedel" },
+  //   { name: "Ett plan", value: "Ett plan" },
+  //   { name: "Med garasje", value: "Med garasje" },
+  // ];
   const TypeHusmodellArray: any = [
     { name: "Funkis", value: "Funkis" },
     { name: "Moderne", value: "Moderne" },
