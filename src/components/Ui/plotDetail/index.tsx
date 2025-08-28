@@ -17,7 +17,7 @@ import {
   Files,
 } from "lucide-react";
 import Ic_file from "@/public/images/Ic_file.svg";
-import Ic_download_primary from "@/public/images/Ic_download_primary.svg";
+import Ic_download_primary from "@/public/images/Ic_download.svg";
 // import dynamic from "next/dynamic";
 import NorkartMap from "@/components/map";
 // const GoogleMapComponent = dynamic(() => import("@/components/Ui/map"), {
@@ -281,7 +281,7 @@ const PlotDetailPage: React.FC<{
   }) => (
     <div className="border border-gray2 rounded-lg p-2 md:p-3 bg-[#F9FAFB] flex items-center justify-between relative w-full">
       <div className="flex items-center gap-2.5 md:gap-4 truncate w-[calc(100%-60px)] md:w-[calc(100%-65px)]">
-        <div className="border-[4px] border-lightGreen rounded-full flex items-center justify-center">
+        <div className="border-[4px] border-gray rounded-full flex items-center justify-center">
           <div className="bg-lightGreen w-7 h-7 rounded-full flex justify-center items-center">
             <Image src={Ic_file} alt="file" />
           </div>
