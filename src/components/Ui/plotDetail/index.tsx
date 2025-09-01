@@ -20,6 +20,8 @@ import Ic_file from "@/public/images/Ic_file.svg";
 import Ic_download_primary from "@/public/images/Ic_download.svg";
 // import dynamic from "next/dynamic";
 import NorkartMap from "@/components/map";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
 // const GoogleMapComponent = dynamic(() => import("@/components/Ui/map"), {
 //   ssr: false,
 // });
@@ -243,6 +245,24 @@ const PlotDetailPage: React.FC<{
 
           const data = await res.json();
           setDocuments(data);
+
+          if (data?.inputs?.internal_plan_id) {
+            const uniqueId = String(data?.inputs?.internal_plan_id);
+
+            if (!uniqueId) {
+              console.warn("No uniqueId found, skipping Firestore setDoc");
+              return;
+            }
+
+            const plansDocRef = doc(db, "mintomt_plans", uniqueId);
+
+            const existingDoc = await getDoc(plansDocRef);
+
+            if (existingDoc.exists()) {
+              setResult(existingDoc?.data()?.rule);
+              return;
+            }
+          }
           if (data && data?.rule_book) {
             const pdfResponse = await fetch(data?.rule_book?.link);
             const pdfBlob = await pdfResponse.blob();
@@ -264,6 +284,33 @@ const PlotDetailPage: React.FC<{
 
             const responseResult = await responseData.json();
             setResult(responseResult?.data);
+            if (responseResult?.data) {
+              const uniqueId = String(data?.inputs?.internal_plan_id);
+
+              if (!uniqueId) {
+                console.warn("No uniqueId found, skipping Firestore setDoc");
+                return;
+              }
+
+              const plansDocRef = doc(db, "mintomt_plans", uniqueId);
+
+              const formatDate = (date: Date) =>
+                date
+                  .toLocaleString("sv-SE", { timeZone: "UTC" })
+                  .replace(",", "");
+
+              const existingDoc = await getDoc(plansDocRef);
+
+              if (!existingDoc.exists()) {
+                await setDoc(plansDocRef, {
+                  id: uniqueId,
+                  updatedAt: formatDate(new Date()),
+                  createdAt: formatDate(new Date()),
+                  documents: { ...data },
+                  rule: { ...responseResult?.data },
+                });
+              }
+            }
           }
         }
       } catch (error) {

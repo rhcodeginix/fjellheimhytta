@@ -20,6 +20,8 @@ import PlotDetailPage from "@/components/Ui/plotDetail";
 import VippsButton from "@/components/vipps";
 import Img_vipps_login from "@/public/images/Img_vipps_login.png";
 import Ic_close from "@/public/images/Ic_close.svg";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/config/firebaseConfig";
 
 const buildOption: any = [
   {
@@ -164,6 +166,25 @@ const Tomt: React.FC<{
           if (!res.ok) throw new Error("Request failed");
 
           const data = await res.json();
+
+          if (data?.inputs?.internal_plan_id) {
+            const uniqueId = String(data?.inputs?.internal_plan_id);
+
+            if (!uniqueId) {
+              console.warn("No uniqueId found, skipping Firestore setDoc");
+              return;
+            }
+
+            const plansDocRef = doc(db, "mintomt_plans", uniqueId);
+
+            const existingDoc = await getDoc(plansDocRef);
+
+            if (existingDoc.exists()) {
+              setResult(existingDoc?.data()?.rule);
+              return;
+            }
+          }
+
           if (data && data?.rule_book) {
             const pdfResponse = await fetch(data?.rule_book?.link);
             const pdfBlob = await pdfResponse.blob();
