@@ -27,6 +27,9 @@ const Tomt: React.FC<{
   BoxData: any;
   results: any;
   Documents: any;
+  exemptions: any;
+  PlanDocuments: any;
+  documentLoading: any;
 }> = ({
   handleNext,
   handlePrevious,
@@ -46,6 +49,9 @@ const Tomt: React.FC<{
   BoxData,
   results,
   Documents,
+  exemptions,
+  PlanDocuments,
+  documentLoading,
 }) => {
   const router = useRouter();
   // const { kommunenummer } = router.query;
@@ -94,6 +100,9 @@ const Tomt: React.FC<{
           BoxData={BoxData}
           results={results}
           Documents={Documents}
+          PlanDocuments={PlanDocuments}
+          exemptions={exemptions}
+          documentLoading={documentLoading}
         />
       ) : (
         <>

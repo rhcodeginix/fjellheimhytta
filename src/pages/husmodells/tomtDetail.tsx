@@ -40,6 +40,9 @@ const TomtHouseDetails: React.FC<{
   BoxData: any;
   results: any;
   Documents: any;
+  exemptions: any;
+  PlanDocuments: any;
+  documentLoading: any;
 }> = ({
   handleNext,
   HouseModelData,
@@ -56,6 +59,9 @@ const TomtHouseDetails: React.FC<{
   BoxData,
   results,
   Documents,
+  exemptions,
+  PlanDocuments,
+  documentLoading,
 }) => {
   const router = useRouter();
   const { homePage } = router.query;
@@ -307,6 +313,9 @@ const TomtHouseDetails: React.FC<{
                 CadastreDataFromApi={CadastreDataFromApi}
                 Documents={Documents}
                 results={results}
+                PlanDocuments={PlanDocuments}
+                exemptions={exemptions}
+                documentLoading={documentLoading}
               />
             </div>
             <div className={`${activeTab === "house" ? "block" : "hidden"}`}>

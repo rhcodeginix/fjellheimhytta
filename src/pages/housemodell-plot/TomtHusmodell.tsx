@@ -33,6 +33,9 @@ const TomtHusmodell: React.FC<{
   BoxData: any;
   results: any;
   Documents: any;
+  exemptions: any;
+  PlanDocuments: any;
+  documentLoading: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -55,6 +58,9 @@ const TomtHusmodell: React.FC<{
   BoxData,
   results,
   Documents,
+  exemptions,
+  PlanDocuments,
+  documentLoading,
 }) => {
   const router = useRouter();
 
@@ -109,6 +115,9 @@ const TomtHusmodell: React.FC<{
           BoxData={BoxData}
           results={results}
           Documents={Documents}
+          PlanDocuments={PlanDocuments}
+          exemptions={exemptions}
+          documentLoading={documentLoading}
         />
       ) : (
         <Belop

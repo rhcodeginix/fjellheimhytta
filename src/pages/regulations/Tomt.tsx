@@ -59,6 +59,9 @@ const Tomt: React.FC<{
   BoxData: any;
   results: any;
   Documents: any;
+  exemptions: any;
+  PlanDocuments: any;
+  documentLoading: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -74,6 +77,9 @@ const Tomt: React.FC<{
   BoxData,
   results,
   Documents,
+  exemptions,
+  PlanDocuments,
+  documentLoading,
 }) => {
   const router = useRouter();
   const popup = useRef<HTMLDivElement>(null);
@@ -184,6 +190,9 @@ const Tomt: React.FC<{
               CadastreDataFromApi={CadastreDataFromApi}
               Documents={Documents}
               results={results}
+              PlanDocuments={PlanDocuments}
+              exemptions={exemptions}
+              documentLoading={documentLoading}
             />
           </div>
           {!loginUser && (

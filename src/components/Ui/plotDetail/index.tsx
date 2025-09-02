@@ -10,11 +10,13 @@ import Ic_chevron_right from "@/public/images/Ic_chevron_right.svg";
 import GoogleMapNearByComponent from "@/components/Ui/map/nearbyBuiildingMap";
 import Eierinformasjon from "@/components/Ui/regulationChart/Eierinformasjon";
 import {
+  BadgeX,
   Building,
   ClipboardList,
   FileText,
   FileUser,
   Files,
+  NotepadText,
 } from "lucide-react";
 import Ic_file from "@/public/images/Ic_file.svg";
 import Ic_download_primary from "@/public/images/Ic_download.svg";
@@ -32,6 +34,9 @@ const PlotDetailPage: React.FC<{
   askData: any;
   results: any;
   Documents: any;
+  exemptions: any;
+  PlanDocuments: any;
+  documentLoading: any;
 }> = ({
   lamdaDataFromApi,
   loadingAdditionalData,
@@ -40,6 +45,9 @@ const PlotDetailPage: React.FC<{
   CadastreDataFromApi,
   results,
   Documents,
+  exemptions,
+  PlanDocuments,
+  documentLoading,
 }) => {
   const [dropdownState, setDropdownState] = useState({
     Tomteopplysninger: false,
@@ -201,6 +209,16 @@ const PlotDetailPage: React.FC<{
     { id: "Bygninger", label: "Bygninger", icon: <Building /> },
     { id: "Plandokumenter", label: "Plandokumenter", icon: <ClipboardList /> },
     { id: "Dokumenter", label: "Dokumenter", icon: <Files /> },
+    {
+      id: "Planleggingsdokumenter",
+      label: "Planleggingsdokumenter",
+      icon: <NotepadText />,
+    },
+    {
+      id: "Unntak",
+      label: "Unntak",
+      icon: <BadgeX />,
+    },
   ];
   const [PlotActiveTab, setPlotActiveTab] = useState<string>(plotTabs[0].id);
 
@@ -252,7 +270,9 @@ const PlotDetailPage: React.FC<{
           </div>
         </div>
         <h5 className="text-darkBlack text-xs md:text-sm font-medium truncate">
-          {doc?.name || "Loading..."}
+          {doc?.name?.toLowerCase().includes("unknown")
+            ? doc?.link?.split("/").pop()?.split("?")[0]
+            : doc?.name || "Loading..."}
         </h5>
       </div>
       <div className="flex items-center gap-3 sm:gap-4 lg:gap-6 w-[52px] sm:w-[56px] md:w-auto">
@@ -1956,6 +1976,111 @@ const PlotDetailPage: React.FC<{
                 </div>
               ) : (
                 <div>Ingen dokumenter funnet!</div>
+              )}
+            </>
+          )}
+          {PlotActiveTab === "Dokumenter" && (
+            <>
+              {documentLoading ? (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {Array.from({ length: 6 }).map((_: any, index: number) => (
+                      <div
+                        key={index}
+                        className="border flex items-center gap-2 border-[#ECE9FE] bg-white rounded-[50px] text-xs md:text-sm cursor-pointer"
+                      >
+                        <div className="w-full h-[50px] rounded-lg custom-shimmer"></div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  {Documents ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {[
+                        Documents?.rule_book,
+                        ...(Documents?.planning_documents || []),
+                      ].map((doc, index) => (
+                        <DocumentCard
+                          key={index}
+                          doc={doc}
+                          handleDownload={handleDownload}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div>Ingen dokumenter funnet!</div>
+                  )}
+                </>
+              )}
+            </>
+          )}
+          {PlotActiveTab === "Planleggingsdokumenter" && (
+            <>
+              {documentLoading ? (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {Array.from({ length: 6 }).map((_: any, index: number) => (
+                      <div
+                        key={index}
+                        className="border flex items-center gap-2 border-[#ECE9FE] bg-white rounded-[50px] text-xs md:text-sm cursor-pointer"
+                      >
+                        <div className="w-full h-[50px] rounded-lg custom-shimmer"></div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  {PlanDocuments ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {PlanDocuments.map((doc: any, index: number) => (
+                        <DocumentCard
+                          key={index}
+                          doc={doc}
+                          handleDownload={handleDownload}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div>Ingen dokumenter funnet!</div>
+                  )}
+                </>
+              )}
+            </>
+          )}
+          {PlotActiveTab === "Unntak" && (
+            <>
+              {documentLoading ? (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {Array.from({ length: 6 }).map((_: any, index: number) => (
+                      <div
+                        key={index}
+                        className="border flex items-center gap-2 border-[#ECE9FE] bg-white rounded-[50px] text-xs md:text-sm cursor-pointer"
+                      >
+                        <div className="w-full h-[50px] rounded-lg custom-shimmer"></div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  {exemptions ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {exemptions.map((doc: any, index: number) => (
+                        <DocumentCard
+                          key={index}
+                          doc={doc}
+                          handleDownload={handleDownload}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div>Ingen dokumenter funnet!</div>
+                  )}
+                </>
               )}
             </>
           )}

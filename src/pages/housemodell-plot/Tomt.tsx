@@ -38,6 +38,9 @@ const Tomt: React.FC<{
   BoxData: any;
   results: any;
   Documents: any;
+  exemptions: any;
+  PlanDocuments: any;
+  documentLoading: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -56,6 +59,9 @@ const Tomt: React.FC<{
   BoxData,
   results,
   Documents,
+  exemptions,
+  PlanDocuments,
+  documentLoading,
 }) => {
   const router = useRouter();
   const { homePage } = router.query;
@@ -220,6 +226,9 @@ const Tomt: React.FC<{
                 CadastreDataFromApi={CadastreDataFromApi}
                 results={results}
                 Documents={Documents}
+                PlanDocuments={PlanDocuments}
+                exemptions={exemptions}
+                documentLoading={documentLoading}
               />
             </div>
             <div className={`${activeTab === "house" ? "block" : "hidden"}`}>

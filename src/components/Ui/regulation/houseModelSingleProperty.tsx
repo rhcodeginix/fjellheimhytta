@@ -39,6 +39,9 @@ const HouseModelSingleProperty: React.FC<{
   BoxData: any;
   results: any;
   Documents: any;
+  exemptions: any;
+  PlanDocuments: any;
+  documentLoading: any;
 }> = ({
   handleNext,
   HouseModelData,
@@ -55,6 +58,9 @@ const HouseModelSingleProperty: React.FC<{
   BoxData,
   results,
   Documents,
+  exemptions,
+  PlanDocuments,
+  documentLoading,
 }) => {
   const router = useRouter();
   const { homePage } = router.query;
@@ -307,6 +313,9 @@ const HouseModelSingleProperty: React.FC<{
                 CadastreDataFromApi={CadastreDataFromApi}
                 results={results}
                 Documents={Documents}
+                PlanDocuments={PlanDocuments}
+                exemptions={exemptions}
+                documentLoading={documentLoading}
               />
             </div>
             <div className={`${activeTab === "house" ? "block" : "hidden"}`}>
