@@ -36,6 +36,8 @@ const TomtHusmodell: React.FC<{
   exemptions: any;
   PlanDocuments: any;
   documentLoading: any;
+  KommunePlan: any;
+  KommuneLoading: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -61,6 +63,8 @@ const TomtHusmodell: React.FC<{
   exemptions,
   PlanDocuments,
   documentLoading,
+  KommunePlan,
+  KommuneLoading,
 }) => {
   const router = useRouter();
 
@@ -118,6 +122,8 @@ const TomtHusmodell: React.FC<{
           PlanDocuments={PlanDocuments}
           exemptions={exemptions}
           documentLoading={documentLoading}
+          KommunePlan={KommunePlan}
+          KommuneLoading={KommuneLoading}
         />
       ) : (
         <Belop

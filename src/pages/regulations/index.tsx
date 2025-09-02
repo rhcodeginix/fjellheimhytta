@@ -811,7 +811,9 @@ const Regulations = () => {
   const [Documents, setDocuments] = useState<any>(null);
   const [PlanDocuments, setPlanDocuments] = useState<any>(null);
   const [exemptions, setExemptions] = useState<any>(null);
+  const [KommunePlan, setKommunePlan] = useState<any>(null);
   const [documentLoading, setDocumentLoading] = useState(true);
+  const [KommuneLoading, setKommuneLoading] = useState(true);
 
   useEffect(() => {
     const fetchPlotData = async () => {
@@ -840,6 +842,32 @@ const Regulations = () => {
         }
 
         if (json && json?.plan_link) {
+          const KommuneData = await fetch(
+            "https://iplotnor-areaplanner.hf.space/kommuneplanens",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                coordinates_url: json?.plan_link,
+                knr: `${kommunenummer}`,
+                gnr: `${gardsnummer}`,
+                bnr: `${bruksnummer}`,
+                api_token: `${process.env.NEXT_PUBLIC_DOCUMENT_TOKEN}`,
+                debug_mode: true,
+              }),
+            }
+          );
+
+          if (!KommuneData.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const KommunePlanJson = await KommuneData.json();
+          setKommunePlan(KommunePlanJson);
+          setKommuneLoading(false);
+
           const [res, resPlan] = await Promise.all([
             fetch("https://iplotnor-areaplanner.hf.space/resolve", {
               method: "POST",
@@ -952,6 +980,8 @@ const Regulations = () => {
           PlanDocuments={PlanDocuments}
           exemptions={exemptions}
           documentLoading={documentLoading}
+          KommunePlan={KommunePlan}
+          KommuneLoading={KommuneLoading}
         />
       ),
     },
@@ -992,6 +1022,8 @@ const Regulations = () => {
           PlanDocuments={PlanDocuments}
           exemptions={exemptions}
           documentLoading={documentLoading}
+          KommunePlan={KommunePlan}
+          KommuneLoading={KommuneLoading}
         />
       ),
     },
