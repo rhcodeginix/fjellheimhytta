@@ -72,17 +72,22 @@ const PropertyDetails: React.FC<{
                   <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
                 ) : (
                   <p className="text-black text-sm lg:text-base font-semibold">
-                    Utnyttelsesgrad på{" "}
-                    {BoxData?.bya_percentage
-                      ? BoxData?.bya_percentage
-                      : results?.BYA?.rules?.[0]?.unit === "%"
-                        ? results?.BYA?.rules?.[0]?.value
-                        : (
-                            (results?.BYA?.rules?.[0]?.value ?? 0) /
-                              lamdaDataFromApi?.eiendomsInformasjon
-                                ?.basisInformasjon?.areal_beregnet ?? 0 * 100
-                          ).toFixed(2)}
-                    %
+                    {(() => {
+                      const value = BoxData?.bya_percentage
+                        ? BoxData?.bya_percentage
+                        : results?.BYA?.rules?.[0]?.unit === "%"
+                          ? results?.BYA?.rules?.[0]?.value
+                          : (
+                              ((results?.BYA?.rules?.[0]?.value ?? 0) /
+                                (lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.areal_beregnet ?? 0)) *
+                              100
+                            ).toFixed(2);
+
+                      return value && Number(value) !== 0
+                        ? `Utnyttelsesgrad på ${value}%`
+                        : "-";
+                    })()}
                   </p>
                 )}
               </div>
@@ -105,7 +110,6 @@ const PropertyDetails: React.FC<{
                   <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
                 ) : (
                   <p className="text-black text-sm lg:text-base font-semibold">
-                    Utnyttelsesgrad på{" "}
                     {(() => {
                       const data =
                         CadastreDataFromApi?.buildingsApi?.response?.items?.map(
@@ -116,7 +120,7 @@ const PropertyDetails: React.FC<{
                         lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
                           ?.areal_beregnet
                       ) {
-                        const totalData = data
+                        const totalData = data?.length
                           ? data.reduce(
                               (acc: number, currentValue: number) =>
                                 acc + currentValue,
@@ -129,11 +133,14 @@ const PropertyDetails: React.FC<{
                             lamdaDataFromApi?.eiendomsInformasjon
                               ?.basisInformasjon?.areal_beregnet) *
                           100;
-                        const formattedResult = result.toFixed(2);
 
-                        return `${formattedResult}  %`;
+                        const formattedResult = Number(result.toFixed(2));
+
+                        return formattedResult !== 0
+                          ? `Utnyttelsesgrad på ${formattedResult} %`
+                          : "-";
                       } else {
-                        return "0";
+                        return "-";
                       }
                     })()}
                   </p>
@@ -142,15 +149,18 @@ const PropertyDetails: React.FC<{
                   <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
                 ) : (
                   <p className="text-black text-xs lg:text-sm">
-                    Tilgjengelig BYA{" "}
                     {(() => {
                       const data =
                         CadastreDataFromApi?.buildingsApi?.response?.items?.map(
                           (item: any) => item?.builtUpArea
                         ) ?? [];
 
-                      if (BoxData) {
-                        const totalData = data
+                      if (
+                        BoxData &&
+                        lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                          ?.areal_beregnet
+                      ) {
+                        const totalData = data?.length
                           ? data.reduce(
                               (acc: number, currentValue: number) =>
                                 acc + currentValue,
@@ -163,22 +173,32 @@ const PropertyDetails: React.FC<{
                             lamdaDataFromApi?.eiendomsInformasjon
                               ?.basisInformasjon?.areal_beregnet) *
                           100;
-                        const formattedResult: any = result.toFixed(2);
 
-                        return `${(
-                          (BoxData?.bya_percentage
-                            ? BoxData?.bya_percentage
-                            : results?.BYA?.rules?.[0]?.unit === "%"
-                              ? results?.BYA?.rules?.[0]?.value
-                              : (
-                                  (results?.BYA?.rules?.[0]?.value ?? 0) /
-                                    lamdaDataFromApi?.eiendomsInformasjon
+                        const formattedResult = Number(result.toFixed(2));
+
+                        const byaValue = BoxData?.bya_percentage
+                          ? Number(BoxData?.bya_percentage)
+                          : results?.BYA?.rules?.[0]?.unit === "%"
+                            ? Number(results?.BYA?.rules?.[0]?.value)
+                            : Number(
+                                (
+                                  ((results?.BYA?.rules?.[0]?.value ?? 0) /
+                                    (lamdaDataFromApi?.eiendomsInformasjon
                                       ?.basisInformasjon?.areal_beregnet ??
-                                  0 * 100
-                                ).toFixed(2)) - formattedResult
-                        ).toFixed(2)} %`;
+                                      1)) *
+                                  100
+                                ).toFixed(2)
+                              );
+
+                        const available = Number(
+                          (byaValue - formattedResult).toFixed(2)
+                        );
+
+                        return available !== 0
+                          ? `Tilgjengelig BYA ${available} %`
+                          : "";
                       } else {
-                        return "0";
+                        return "";
                       }
                     })()}
                   </p>
@@ -203,66 +223,70 @@ const PropertyDetails: React.FC<{
                   <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
                 ) : (
                   <p className="text-black text-sm lg:text-base font-semibold">
-                    Grunnflate på{" "}
-                    {BoxData?.bya_area_m2
-                      ? BoxData?.bya_area_m2
-                      : results?.BYA?.rules?.[0]?.unit === "%"
-                        ? (
-                            ((lamdaDataFromApi?.eiendomsInformasjon
-                              ?.basisInformasjon?.areal_beregnet ?? 0) *
-                              (results?.BYA?.rules?.[0]?.value ?? 0)) /
-                            100
-                          ).toFixed(2)
-                        : results?.BYA?.rules?.[0]?.value}{" "}
-                    m<sup>2</sup>
+                    {(() => {
+                      const value = BoxData?.bya_area_m2
+                        ? Number(BoxData?.bya_area_m2)
+                        : results?.BYA?.rules?.[0]?.unit === "%"
+                          ? Number(
+                              (
+                                ((lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.areal_beregnet ?? 0) *
+                                  (results?.BYA?.rules?.[0]?.value ?? 0)) /
+                                100
+                              ).toFixed(2)
+                            )
+                          : Number(results?.BYA?.rules?.[0]?.value ?? 0);
+
+                      return value && value !== 0
+                        ? `Grunnflate på ${value} m²`
+                        : "-";
+                    })()}
                   </p>
                 )}
                 {resultsLoading ? (
                   <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
                 ) : (
                   <p className="text-black text-xs lg:text-sm">
-                    Tilgjengelig{" "}
                     {(() => {
                       const data =
                         CadastreDataFromApi?.buildingsApi?.response?.items?.map(
                           (item: any) => item?.builtUpArea
                         ) ?? [];
 
-                      if (
-                        BoxData?.bya_area_m2
-                          ? BoxData?.bya_area_m2
-                          : results?.BYA?.rules?.[0]
-                      ) {
-                        const totalData = data
-                          ? data.reduce(
-                              (acc: number, currentValue: number) =>
-                                acc + currentValue,
-                              0
-                            )
-                          : 0;
+                      const totalData = data?.length
+                        ? data.reduce(
+                            (acc: number, currentValue: number) =>
+                              acc + currentValue,
+                            0
+                          )
+                        : 0;
 
-                        return (
-                          <>
-                            {(
-                              (BoxData?.bya_area_m2
-                                ? BoxData?.bya_area_m2
-                                : results?.BYA?.rules?.[0]?.unit === "%"
-                                  ? (
-                                      ((lamdaDataFromApi?.eiendomsInformasjon
-                                        ?.basisInformasjon?.areal_beregnet ??
-                                        0) *
-                                        (results?.BYA?.rules?.[0]?.value ??
-                                          0)) /
-                                      100
-                                    ).toFixed(2)
-                                  : results?.BYA?.rules?.[0]?.value) - totalData
-                            ).toFixed(2)}
-                            m<sup>2</sup>
-                          </>
-                        );
-                      } else {
-                        return "0";
-                      }
+                      const byaArea = BoxData?.bya_area_m2
+                        ? Number(BoxData?.bya_area_m2)
+                        : results?.BYA?.rules?.[0]?.unit === "%"
+                          ? Number(
+                              (
+                                ((lamdaDataFromApi?.eiendomsInformasjon
+                                  ?.basisInformasjon?.areal_beregnet ?? 0) *
+                                  (results?.BYA?.rules?.[0]?.value ?? 0)) /
+                                100
+                              ).toFixed(2)
+                            )
+                          : Number(results?.BYA?.rules?.[0]?.value ?? 0);
+
+                      if (!byaArea) return "";
+
+                      const available = Number(
+                        (byaArea - totalData).toFixed(2)
+                      );
+
+                      return available !== 0 ? (
+                        <>
+                          Tilgjengelig {available} m<sup>2</sup>
+                        </>
+                      ) : (
+                        ""
+                      );
                     })()}
                   </p>
                 )}
