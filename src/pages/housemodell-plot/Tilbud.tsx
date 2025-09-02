@@ -32,6 +32,9 @@ const Tilbud: React.FC<{
   pris: any;
   date: any;
   setDate: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -44,6 +47,9 @@ const Tilbud: React.FC<{
   pris,
   date,
   setDate,
+  resultsLoading,
+  BoxData,
+  results,
 }) => {
   const Huskonfigurator =
     HouseModelData?.Huskonfigurator?.hovedkategorinavn || [];
@@ -209,6 +215,9 @@ const Tilbud: React.FC<{
           CadastreDataFromApi={CadastreDataFromApi}
           lamdaDataFromApi={lamdaDataFromApi}
           HouseModelData={HouseModelData}
+          resultsLoading={resultsLoading}
+          BoxData={BoxData}
+          results={results}
         />
       </div>
 

@@ -34,6 +34,9 @@ const Oppsummering: React.FC<{
   handlePrevious: any;
   pris: any;
   supplierData: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -44,6 +47,9 @@ const Oppsummering: React.FC<{
   handlePrevious,
   pris,
   supplierData,
+  resultsLoading,
+  BoxData,
+  results,
 }) => {
   const Husdetaljer = HouseModelData?.Husdetaljer;
 
@@ -205,6 +211,9 @@ const Oppsummering: React.FC<{
         CadastreDataFromApi={CadastreDataFromApi}
         lamdaDataFromApi={lamdaDataFromApi}
         HouseModelData={HouseModelData}
+        resultsLoading={resultsLoading}
+        BoxData={BoxData}
+        results={results}
       />
 
       <div className="pt-6 pb-8">

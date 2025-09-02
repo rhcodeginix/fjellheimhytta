@@ -36,6 +36,10 @@ const TomtHouseDetails: React.FC<{
   askData: any;
   lamdaDataFromApi: any;
   user: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
+  Documents: any;
 }> = ({
   handleNext,
   HouseModelData,
@@ -48,6 +52,10 @@ const TomtHouseDetails: React.FC<{
   askData,
   user,
   handlePrevious,
+  resultsLoading,
+  BoxData,
+  results,
+  Documents,
 }) => {
   const router = useRouter();
   const { homePage } = router.query;
@@ -245,6 +253,9 @@ const TomtHouseDetails: React.FC<{
         lamdaDataFromApi={lamdaDataFromApi}
         HouseModelData={HouseModelData}
         loading={loadingLamdaData}
+        resultsLoading={resultsLoading}
+        BoxData={BoxData}
+        results={results}
       />
       {/* <SideSpaceContainer>
         <LeadsBox />
@@ -294,6 +305,8 @@ const TomtHouseDetails: React.FC<{
                 askData={askData}
                 loadingLamdaData={loadingLamdaData}
                 CadastreDataFromApi={CadastreDataFromApi}
+                Documents={Documents}
+                results={results}
               />
             </div>
             <div className={`${activeTab === "house" ? "block" : "hidden"}`}>

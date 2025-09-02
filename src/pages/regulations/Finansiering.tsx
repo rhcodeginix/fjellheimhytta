@@ -28,6 +28,9 @@ const Finansiering: React.FC<{
   HouseModelData: any;
   handlePrevious: any;
   supplierData: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -37,6 +40,9 @@ const Finansiering: React.FC<{
   HouseModelData,
   handlePrevious,
   supplierData,
+  resultsLoading,
+  BoxData,
+  results,
 }) => {
   const router = useRouter();
   const { homePage } = router.query;
@@ -226,6 +232,9 @@ const Finansiering: React.FC<{
           CadastreDataFromApi={CadastreDataFromApi}
           lamdaDataFromApi={lamdaDataFromApi}
           HouseModelData={HouseModelData}
+          resultsLoading={resultsLoading}
+          BoxData={BoxData}
+          results={results}
         />
       )}
 

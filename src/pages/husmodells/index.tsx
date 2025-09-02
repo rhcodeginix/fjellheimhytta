@@ -390,6 +390,112 @@ const HusmodellDetail = () => {
     }
   }, [router]);
 
+  const BBOXData =
+    CadastreDataFromApi?.cadastreApi?.response?.item?.geojson?.bbox;
+
+  const [BoxData, setBoxData] = useState<any>(null);
+  const [results, setResult] = useState<any>(null);
+  const [resultsLoading, setResultLoading] = useState(true);
+  const [Documents, setDocuments] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchPlotData = async () => {
+      try {
+        const response = await fetch(
+          "https://d8t0z35n2l.execute-api.eu-north-1.amazonaws.com/prod/bya",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              url: `https://wms.geonorge.no/skwms1/wms.reguleringsplaner?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&QUERY_LAYERS=Planomrade_02,Arealformal_02&LAYERS=Planomrade_02,Arealformal_02&INFO_FORMAT=text/html&CRS=EPSG:25833&BBOX=${BBOXData[0]},${BBOXData[1]},${BBOXData[2]},${BBOXData[3]}&WIDTH=800&HEIGHT=600&I=400&J=300`,
+              plot_size_m2:
+                lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                  ?.areal_beregnet ?? 0,
+            }),
+          }
+        );
+
+        const json = await response.json();
+        setBoxData(json);
+
+        if (json?.bya_percentage) {
+          setResultLoading(false);
+        }
+
+        if (json && json?.plan_link) {
+          const res = await fetch(
+            "https://iplotnor-areaplanner.hf.space/resolve",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                step1_url: json?.plan_link,
+                api_token: "D7D7FFB4-1A4A-44EA-BD15-BCDB6CEF8CA5",
+              }),
+            }
+          );
+
+          if (!res.ok) throw new Error("Request failed");
+
+          const data = await res.json();
+          setDocuments(data);
+          if (data?.inputs?.internal_plan_id) {
+            const uniqueId = String(data?.inputs?.internal_plan_id);
+
+            if (!uniqueId) {
+              console.warn("No uniqueId found, skipping Firestore setDoc");
+              return;
+            }
+
+            const plansDocRef = doc(db, "mintomt_plans", uniqueId);
+
+            const existingDoc = await getDoc(plansDocRef);
+
+            if (existingDoc.exists()) {
+              setResult(existingDoc?.data()?.rule);
+              return;
+            }
+          }
+
+          if (data && data?.rule_book) {
+            const pdfResponse = await fetch(data?.rule_book?.link);
+            const pdfBlob = await pdfResponse.blob();
+
+            const formData = new FormData();
+            formData.append("file", pdfBlob, "rule_book.pdf");
+
+            const responseData = await fetch(
+              "https://iplotnor-norwaypropertyagent.hf.space/extract_file",
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            if (!responseData.ok) {
+              throw new Error("Network response was not ok");
+            }
+
+            const responseResult = await responseData.json();
+            setResult(responseResult?.data);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setResultLoading(false);
+      }
+    };
+
+    if (CadastreDataFromApi) {
+      fetchPlotData();
+    }
+  }, [CadastreDataFromApi]);
+
   const steps = [
     {
       name: "Hyttemodell",
@@ -446,6 +552,10 @@ const HusmodellDetail = () => {
           askData={askData}
           lamdaDataFromApi={lamdaDataFromApi}
           user={user}
+          resultsLoading={resultsLoading}
+          BoxData={BoxData}
+          results={results}
+          Documents={Documents}
         />
       ),
     },
@@ -461,6 +571,9 @@ const HusmodellDetail = () => {
           supplierData={supplierData}
           handlePrevious={handlePrevious}
           pris={pris}
+          resultsLoading={resultsLoading}
+          BoxData={BoxData}
+          results={results}
         />
       ),
     },
@@ -477,6 +590,9 @@ const HusmodellDetail = () => {
           handlePrevious={handlePrevious}
           pris={pris}
           supplierData={supplierData}
+          resultsLoading={resultsLoading}
+          BoxData={BoxData}
+          results={results}
         />
       ),
     },
@@ -493,6 +609,9 @@ const HusmodellDetail = () => {
           handlePrevious={handlePrevious}
           pris={pris}
           supplierData={supplierData}
+          resultsLoading={resultsLoading}
+          BoxData={BoxData}
+          results={results}
         />
       ),
     },

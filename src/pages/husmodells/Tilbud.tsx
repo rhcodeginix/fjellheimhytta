@@ -37,6 +37,9 @@ const Tilbud: React.FC<{
   handlePrevious: any;
   supplierData: any;
   pris: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -46,6 +49,9 @@ const Tilbud: React.FC<{
   handlePrevious,
   supplierData,
   pris,
+  resultsLoading,
+  BoxData,
+  results,
 }) => {
   const router = useRouter();
 
@@ -455,6 +461,9 @@ const Tilbud: React.FC<{
             CadastreDataFromApi={CadastreDataFromApi}
             lamdaDataFromApi={lamdaDataFromApi}
             HouseModelData={HouseModelData}
+            resultsLoading={resultsLoading}
+            BoxData={BoxData}
+            results={results}
           />
         </div>
       )}

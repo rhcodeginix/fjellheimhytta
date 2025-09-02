@@ -29,6 +29,10 @@ const TomtHusmodell: React.FC<{
   setAdditionalData: any;
   setLamdaDataFromApi: any;
   setCadastreDataFromApi: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
+  Documents: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -47,6 +51,10 @@ const TomtHusmodell: React.FC<{
   setAdditionalData,
   setLamdaDataFromApi,
   setCadastreDataFromApi,
+  resultsLoading,
+  BoxData,
+  results,
+  Documents,
 }) => {
   const router = useRouter();
 
@@ -97,6 +105,10 @@ const TomtHusmodell: React.FC<{
           HouseModelData={HouseModelData}
           supplierData={supplierData}
           pris={pris}
+          resultsLoading={resultsLoading}
+          BoxData={BoxData}
+          results={results}
+          Documents={Documents}
         />
       ) : (
         <Belop

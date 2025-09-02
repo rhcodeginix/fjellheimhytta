@@ -7,6 +7,9 @@ const Husmodell: React.FC<any> = ({
   CadastreDataFromApi,
   askData,
   handlePrevious,
+  resultsLoading,
+  BoxData,
+  results,
 }) => {
   return (
     <div className="relative">
@@ -16,6 +19,9 @@ const Husmodell: React.FC<any> = ({
         askData={askData}
         handleNext={handleNext}
         handlePrevious={handlePrevious}
+        resultsLoading={resultsLoading}
+        BoxData={BoxData}
+        results={results}
       />
     </div>
   );

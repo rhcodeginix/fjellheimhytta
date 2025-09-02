@@ -23,6 +23,10 @@ const Tomt: React.FC<{
   askData: any;
   lamdaDataFromApi: any;
   user: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
+  Documents: any;
 }> = ({
   handleNext,
   handlePrevious,
@@ -38,6 +42,10 @@ const Tomt: React.FC<{
   lamdaDataFromApi,
   user,
   CadastreDataFromApi,
+  resultsLoading,
+  BoxData,
+  results,
+  Documents,
 }) => {
   const router = useRouter();
   // const { kommunenummer } = router.query;
@@ -82,6 +90,10 @@ const Tomt: React.FC<{
           askData={askData}
           lamdaDataFromApi={lamdaDataFromApi}
           user={user}
+          resultsLoading={resultsLoading}
+          BoxData={BoxData}
+          results={results}
+          Documents={Documents}
         />
       ) : (
         <>

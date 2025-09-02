@@ -33,6 +33,9 @@ const Oppsummering: React.FC<{
   HouseModelData: any;
   handlePrevious: any;
   supplierData: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -42,6 +45,9 @@ const Oppsummering: React.FC<{
   HouseModelData,
   handlePrevious,
   supplierData,
+  resultsLoading,
+  BoxData,
+  results,
 }) => {
   const router = useRouter();
   const { homePage } = router.query;
@@ -227,6 +233,9 @@ const Oppsummering: React.FC<{
         CadastreDataFromApi={CadastreDataFromApi}
         lamdaDataFromApi={lamdaDataFromApi}
         HouseModelData={HouseModelData}
+        resultsLoading={resultsLoading}
+        BoxData={BoxData}
+        results={results}
       />
 
       <div className="pt-6 pb-8">

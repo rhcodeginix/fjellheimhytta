@@ -30,6 +30,9 @@ const Verdivurdering: React.FC<{
   pris: any;
   loading: any;
   supplierData: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
 }> = ({
   // handleNext,
   lamdaDataFromApi,
@@ -40,6 +43,9 @@ const Verdivurdering: React.FC<{
   pris,
   loading,
   supplierData,
+  resultsLoading,
+  BoxData,
+  results,
 }) => {
   const router = useRouter();
   // const Husdetaljer = HouseModelData?.Husdetaljer;
@@ -175,6 +181,9 @@ const Verdivurdering: React.FC<{
             CadastreDataFromApi={CadastreDataFromApi}
             lamdaDataFromApi={lamdaDataFromApi}
             HouseModelData={HouseModelData}
+            resultsLoading={resultsLoading}
+            BoxData={BoxData}
+            results={results}
           />
         )}
 

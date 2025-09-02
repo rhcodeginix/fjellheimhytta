@@ -35,6 +35,10 @@ const HouseModelSingleProperty: React.FC<{
   askData: any;
   lamdaDataFromApi: any;
   user: any;
+  resultsLoading: any;
+  BoxData: any;
+  results: any;
+  Documents: any;
 }> = ({
   handleNext,
   HouseModelData,
@@ -47,6 +51,10 @@ const HouseModelSingleProperty: React.FC<{
   askData,
   user,
   handlePrevious,
+  resultsLoading,
+  BoxData,
+  results,
+  Documents,
 }) => {
   const router = useRouter();
   const { homePage } = router.query;
@@ -245,6 +253,9 @@ const HouseModelSingleProperty: React.FC<{
         CadastreDataFromApi={CadastreDataFromApi}
         lamdaDataFromApi={lamdaDataFromApi}
         HouseModelData={HouseModelData}
+        resultsLoading={resultsLoading}
+        BoxData={BoxData}
+        results={results}
       />
       <SideSpaceContainer>
         <LeadsBox />
@@ -294,6 +305,8 @@ const HouseModelSingleProperty: React.FC<{
                 askData={askData}
                 loadingLamdaData={loadingLamdaData}
                 CadastreDataFromApi={CadastreDataFromApi}
+                results={results}
+                Documents={Documents}
               />
             </div>
             <div className={`${activeTab === "house" ? "block" : "hidden"}`}>
