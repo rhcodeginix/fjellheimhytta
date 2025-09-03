@@ -1969,28 +1969,47 @@ const PlotDetailPage: React.FC<{
           )}
           {PlotActiveTab === "Dokumenter" && (
             <>
-              {(() => {
-                const allDocs = [
-                  Documents?.rule_book,
-                  ...(Documents?.planning_documents || []),
-                ];
-
-                const filteredDocs = allDocs.filter((doc) => doc && doc.link);
-
-                return filteredDocs.length > 0 ? (
+              {!Documents ? (
+                <>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredDocs.map((doc, index) => (
-                      <DocumentCard
+                    {Array.from({ length: 6 }).map((_: any, index: number) => (
+                      <div
                         key={index}
-                        doc={doc}
-                        handleDownload={handleDownload}
-                      />
+                        className="border flex items-center gap-2 border-[#ECE9FE] bg-white rounded-[50px] text-xs md:text-sm cursor-pointer"
+                      >
+                        <div className="w-full h-[50px] rounded-lg custom-shimmer"></div>
+                      </div>
                     ))}
                   </div>
-                ) : (
-                  <div>Ingen dokumenter funnet!</div>
-                );
-              })()}
+                </>
+              ) : (
+                <>
+                  {(() => {
+                    const allDocs = [
+                      Documents?.rule_book,
+                      ...(Documents?.planning_documents || []),
+                    ];
+
+                    const filteredDocs = allDocs.filter(
+                      (doc) => doc && doc.link
+                    );
+
+                    return filteredDocs.length > 0 ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {filteredDocs.map((doc, index) => (
+                          <DocumentCard
+                            key={index}
+                            doc={doc}
+                            handleDownload={handleDownload}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div>Ingen dokumenter funnet!</div>
+                    );
+                  })()}
+                </>
+              )}
             </>
           )}
           {PlotActiveTab === "Planleggingsdokumenter" && (
