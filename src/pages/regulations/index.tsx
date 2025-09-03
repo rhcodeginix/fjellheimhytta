@@ -874,7 +874,6 @@ const Regulations = () => {
                 case "other-documents":
                   setPlanDocuments(data?.planning_treatments);
                   setExemptions(data?.exemptions);
-                  if (data) setDocumentLoading(false);
                   break;
               }
 
@@ -1002,10 +1001,6 @@ const Regulations = () => {
           ];
 
           apiCalls.map((apiCall) => makeApiCall(apiCall));
-
-          if (successfulResponses.length === 0) {
-            setDocumentLoading(false);
-          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -1018,6 +1013,12 @@ const Regulations = () => {
       fetchPlotData();
     }
   }, [CadastreDataFromApi]);
+
+  useEffect(() => {
+    if (PlanDocuments) {
+      setDocumentLoading(false);
+    }
+  }, [PlanDocuments]);
 
   const steps = [
     {
