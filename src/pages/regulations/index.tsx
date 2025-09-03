@@ -844,13 +844,19 @@ const Regulations = () => {
         if (json && json?.plan_link) {
           const successfulResponses: any = [];
 
-          const makeApiCall = async (apiCall: any) => {
+          const makeApiCall = async (apiCall: any, timeout = 150000) => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+
             try {
               const response = await fetch(apiCall.url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(apiCall.body),
+                signal: controller.signal,
               });
+
+              clearTimeout(timeoutId);
 
               if (!response.ok) {
                 throw new Error(
@@ -891,8 +897,19 @@ const Regulations = () => {
                 error: null,
               };
             } catch (error: any) {
-              console.error(`${apiCall.name} API failed:`, error);
-              return;
+              if (error.name === "AbortError") {
+                console.error(
+                  `${apiCall.name} API timed out after ${timeout}ms`
+                );
+              } else {
+                console.error(`${apiCall.name} API failed:`, error);
+              }
+              return {
+                name: apiCall.name,
+                success: false,
+                data: null,
+                error: error.message || error,
+              };
             }
           };
 
