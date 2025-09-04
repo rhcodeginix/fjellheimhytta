@@ -484,6 +484,12 @@ const HusmodellPlot = () => {
         const resolveResult = await makeApiCall(resolveApiCall);
         if (!resolveResult.success) {
           setResultLoading(false);
+          setDocuments({});
+          setKommunePlan({});
+          setPlanDocuments([]);
+          setExemptions([]);
+          setResult({});
+          setKommuneLoading(false);
           return;
         }
         setDocuments(resolveResult.data);
