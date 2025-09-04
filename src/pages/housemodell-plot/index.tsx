@@ -503,7 +503,7 @@ const HusmodellPlot = () => {
           setKommunePlan(data.kommuneplanens ?? {});
           setPlanDocuments(data["other-documents"]?.planning_treatments ?? []);
           setExemptions(data["other-documents"]?.exemptions ?? []);
-          setResult(data.rule ?? {});
+          setResult(data?.extract_json_direct_gpt?.data ?? {});
           setResultLoading(false);
           setKommuneLoading(false);
           return;
@@ -512,24 +512,17 @@ const HusmodellPlot = () => {
           resolveResult.data?.rule_book &&
           resolveResult.data?.rule_book?.link
         ) {
-          const extractResult = await makeApiCall({
-            name: "extract_json_direct_gpt",
-            url: "https://iplotnor-norwaypropertyagent.hf.space/extract_json_direct_gpt",
-            body: {
-              pdf_url: resolveResult.data?.rule_book?.link,
-              plot_size_m2:
-                lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
-                  ?.areal_beregnet ?? 0,
-            },
-          });
-
-          if (!extractResult.success) {
-            throw new Error("PDF extraction failed");
-          }
-
-          setResult(extractResult.data?.data);
-
           const apiCalls = [
+            {
+              name: "extract_json_direct_gpt",
+              url: "https://iplotnor-norwaypropertyagent.hf.space/extract_json_direct_gpt",
+              body: {
+                pdf_url: resolveResult.data?.rule_book?.link,
+                plot_size_m2:
+                  lamdaDataFromApi?.eiendomsInformasjon?.basisInformasjon
+                    ?.areal_beregnet ?? 0,
+              },
+            },
             {
               name: "kommuneplanens",
               url: "https://iplotnor-areaplanner.hf.space/kommuneplanens",
@@ -565,6 +558,9 @@ const HusmodellPlot = () => {
 
           otherResults.forEach((r) => {
             if (r.success) {
+              if (r.name === "extract_json_direct_gpt") {
+                setResult(r?.data?.data);
+              }
               if (r.name === "kommuneplanens") {
                 setKommunePlan(r.data);
                 setKommuneLoading(false);
@@ -604,7 +600,6 @@ const HusmodellPlot = () => {
               createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),
               documents: { ...resolveResult.data },
-              rule: { ...extractResult.data?.data },
               ...firebaseData,
             });
           }
