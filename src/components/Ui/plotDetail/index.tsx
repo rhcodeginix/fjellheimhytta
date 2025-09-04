@@ -22,7 +22,8 @@ import {
 import Ic_file from "@/public/images/Ic_file.svg";
 import Ic_download_primary from "@/public/images/Ic_download.svg";
 // import dynamic from "next/dynamic";
-import NorkartMap from "@/components/map";
+// import NorkartMap from "@/components/map";
+import GoogleMapComponent from "../map";
 // const GoogleMapComponent = dynamic(() => import("@/components/Ui/map"), {
 //   ssr: false,
 // });
@@ -1435,22 +1436,22 @@ const PlotDetailPage: React.FC<{
               </div>
             </div>
             <div className="rounded-lg sm:rounded-[12px] overflow-hidden w-full h-[300px] desktop:h-auto desktop:w-[407px]">
-              {/* <GoogleMapComponent
-                coordinates={
-                  lamdaDataFromApi?.coordinates?.convertedCoordinates
-                }
-              /> */}
               {loadingLamdaData ? (
                 <div className="w-full h-full rounded-lg custom-shimmer"></div>
               ) : (
                 <>
                   {lamdaDataFromApi?.coordinates?.convertedCoordinates && (
-                    <NorkartMap
+                    <GoogleMapComponent
                       coordinates={
                         lamdaDataFromApi?.coordinates?.convertedCoordinates
                       }
-                      MAX_ZOOM={18}
                     />
+                    // <NorkartMap
+                    //   coordinates={
+                    //     lamdaDataFromApi?.coordinates?.convertedCoordinates
+                    //   }
+                    //   MAX_ZOOM={18}
+                    // />
                   )}
                 </>
               )}

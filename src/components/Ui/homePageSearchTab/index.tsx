@@ -19,8 +19,9 @@ import { formatPrice } from "@/pages/belop/belopProperty";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 import { FileUser } from "lucide-react";
-import NorkartMap from "@/components/map";
+// import NorkartMap from "@/components/map";
 import { convertCurrencyFormat } from "../Husmodell/plot/plotProperty";
+import GoogleMapComponent from "../map";
 
 // const GoogleMapComponent = dynamic(() => import("../map"), {
 //   ssr: false,
@@ -479,21 +480,21 @@ const HomePageSearchTab: React.FC = () => {
                           />
                         </div>
                         <div className="w-[37%] rounded-[8px] overflow-hidden h-full">
-                          {/* <GoogleMapComponent
-                            coordinates={
-                              property?.plot?.lamdaDataFromApi?.coordinates
-                                ?.convertedCoordinates
-                            }
-                          /> */}
                           {property?.plot?.lamdaDataFromApi?.coordinates
                             ?.convertedCoordinates && (
-                            <NorkartMap
+                            <GoogleMapComponent
                               coordinates={
                                 property?.plot?.lamdaDataFromApi?.coordinates
                                   ?.convertedCoordinates
                               }
-                              MAX_ZOOM={20}
                             />
+                            //   <NorkartMap
+                            //   coordinates={
+                            //     property?.plot?.lamdaDataFromApi?.coordinates
+                            //       ?.convertedCoordinates
+                            //   }
+                            //   MAX_ZOOM={20}
+                            // />
                           )}
                         </div>
                       </div>
@@ -700,21 +701,21 @@ const HomePageSearchTab: React.FC = () => {
                         </p>
                         <div className="relative mb-3 desktop:mb-4">
                           <div className="w-full h-[200px] md:h-[234px] rounded-[8px] overflow-hidden">
-                            {/* <GoogleMapComponent
-                            coordinates={
-                              property?.lamdaDataFromApi?.coordinates
-                                ?.convertedCoordinates
-                            }
-                          /> */}
                             {property?.lamdaDataFromApi?.coordinates
                               ?.convertedCoordinates && (
-                              <NorkartMap
+                              <GoogleMapComponent
                                 coordinates={
                                   property?.lamdaDataFromApi?.coordinates
                                     ?.convertedCoordinates
                                 }
-                                MAX_ZOOM={20}
                               />
+                              //   <NorkartMap
+                              //   coordinates={
+                              //     property?.lamdaDataFromApi?.coordinates
+                              //       ?.convertedCoordinates
+                              //   }
+                              //   MAX_ZOOM={20}
+                              // />
                             )}
                           </div>
                         </div>

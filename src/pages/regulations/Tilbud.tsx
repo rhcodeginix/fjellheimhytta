@@ -10,10 +10,10 @@ import { formatCurrency } from "@/components/Ui/RegulationHusmodell/Illustrasjon
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-// import GoogleMapComponent from "@/components/Ui/map";
+import GoogleMapComponent from "@/components/Ui/map";
 // import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
 import { useRouter } from "next/router";
-import NorkartMap from "@/components/map";
+// import NorkartMap from "@/components/map";
 import {
   addDoc,
   collection,
@@ -371,18 +371,18 @@ const Tilbud: React.FC<{
                     />
                   </div>
                   <div className="w-[37%] rounded-[8px] overflow-hidden h-full">
-                    {/* <GoogleMapComponent
-                      coordinates={
-                        lamdaDataFromApi?.coordinates?.convertedCoordinates
-                      }
-                    /> */}
                     {lamdaDataFromApi?.coordinates?.convertedCoordinates && (
-                      <NorkartMap
+                      <GoogleMapComponent
                         coordinates={
                           lamdaDataFromApi?.coordinates?.convertedCoordinates
                         }
-                        MAX_ZOOM={20}
                       />
+                      // <NorkartMap
+                      //   coordinates={
+                      //     lamdaDataFromApi?.coordinates?.convertedCoordinates
+                      //   }
+                      //   MAX_ZOOM={20}
+                      // />
                     )}
                   </div>
                 </div>

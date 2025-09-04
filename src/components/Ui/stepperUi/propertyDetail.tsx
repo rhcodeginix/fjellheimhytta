@@ -3,8 +3,9 @@ import { useAddress } from "@/context/addressContext";
 import Ic_Step_icon from "@/public/images/Ic_Step_icon.svg";
 // import GoogleMapComponent from "../map";
 import Image from "next/image";
-import NorkartMap from "@/components/map";
+// import NorkartMap from "@/components/map";
 import { useRouter } from "next/router";
+import GoogleMapComponent from "../map";
 
 const PropertyDetail: React.FC<any> = ({
   CadastreDataFromApi,
@@ -43,20 +44,22 @@ const PropertyDetail: React.FC<any> = ({
       <div className="bg-lightPurple flex flex-col laptop:flex-row laptop:items-center gap-4 laptop:justify-between">
         <div className="flex flex-col sm:flex-row gap-3 md:gap-5 sm:items-center">
           <div className="rounded-[12px] overflow-hidden w-full sm:w-[132px] h-[200px] sm:h-[100px]">
-            {/* <GoogleMapComponent
-              coordinates={lamdaDataFromApi?.coordinates?.convertedCoordinates}
-            /> */}
             {loading ? (
               <div className="w-full h-full rounded-lg custom-shimmer"></div>
             ) : (
               <>
                 {lamdaDataFromApi?.coordinates?.convertedCoordinates && (
-                  <NorkartMap
+                  <GoogleMapComponent
                     coordinates={
                       lamdaDataFromApi?.coordinates?.convertedCoordinates
                     }
-                    MAX_ZOOM={18}
                   />
+                  // <NorkartMap
+                  //   coordinates={
+                  //     lamdaDataFromApi?.coordinates?.convertedCoordinates
+                  //   }
+                  //   MAX_ZOOM={18}
+                  // />
                 )}
               </>
             )}

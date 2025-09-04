@@ -1,7 +1,6 @@
 "use client";
+import GoogleMapComponent from "@/components/Ui/map";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import NorkartMap from "@/components/map";
-// import GoogleMapComponent from "@/components/Ui/map";
 import { auth, db } from "@/config/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
@@ -71,12 +70,12 @@ const index = () => {
                 >
                   <div className="flex flex-col gap-3 cursor-pointer relative z-40">
                     <div className="h-[300px] md:h-[350px] cursor-pointer">
-                      {/* <GoogleMapComponent coordinates={property?.map_image} /> */}
                       {property?.map_image && (
-                        <NorkartMap
-                          coordinates={property?.map_image}
-                          MAX_ZOOM={20}
-                        />
+                        <GoogleMapComponent coordinates={property?.map_image} />
+                        // <NorkartMap
+                        //   coordinates={property?.map_image}
+                        //   MAX_ZOOM={20}
+                        // />
                       )}
                     </div>
                     <h4 className="text-black font-medium text-base lg:text-lg">

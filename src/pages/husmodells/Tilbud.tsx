@@ -20,10 +20,10 @@ import {
 // import Loader from "@/components/Loader";
 import Link from "next/link";
 import PropertyDetails from "@/components/Ui/husmodellPlot/properyDetails";
-// import GoogleMapComponent from "@/components/Ui/map";
+import GoogleMapComponent from "@/components/Ui/map";
 // import LeadsBox from "@/components/Ui/husmodellPlot/leadsBox";
 import PropertyHouseDetails from "@/components/Ui/husmodellPlot/PropertyHouseDetails";
-import NorkartMap from "@/components/map";
+// import NorkartMap from "@/components/map";
 // import { convertCurrencyFormat } from "@/components/Ui/Husmodell/plot/plotProperty";
 import { toast } from "react-hot-toast";
 import { addDaysToDate } from "@/components/Ui/husmodellPlot/Tilbudsdetaljer";
@@ -537,20 +537,21 @@ const Tilbud: React.FC<{
                         <div className="w-[37%] h-full rounded-lg custom-shimmer"></div>
                       ) : (
                         <div className="w-[37%] rounded-[8px] overflow-hidden h-full">
-                          {/* <GoogleMapComponent
-                          coordinates={
-                            lamdaDataFromApi?.coordinates?.convertedCoordinates
-                          }
-                        /> */}
                           {lamdaDataFromApi?.coordinates
                             ?.convertedCoordinates && (
-                            <NorkartMap
+                            <GoogleMapComponent
                               coordinates={
                                 lamdaDataFromApi?.coordinates
                                   ?.convertedCoordinates
                               }
-                              MAX_ZOOM={20}
                             />
+                            // <NorkartMap
+                            //   coordinates={
+                            //     lamdaDataFromApi?.coordinates
+                            //       ?.convertedCoordinates
+                            //   }
+                            //   MAX_ZOOM={20}
+                            // />
                           )}
                         </div>
                       )}

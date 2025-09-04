@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import { formatPrice } from "@/pages/belop/belopProperty";
-import NorkartMap from "@/components/map";
+// import NorkartMap from "@/components/map";
+import GoogleMapComponent from "../../map";
 
 // export function convertCurrencyFormat(input: any) {
 //   const numberPart = String(input).replace(/\s+/g, "").replace("kr", "");
@@ -240,21 +241,21 @@ const PlotProperty: React.FC<{
                           />
                         </div>
                         <div className="w-[37%] rounded-[8px] overflow-hidden">
-                          {/* <GoogleMapComponent
-                            coordinates={
-                              property?.plot?.lamdaDataFromApi?.coordinates
-                                ?.convertedCoordinates
-                            }
-                          /> */}
                           {property?.plot?.lamdaDataFromApi?.coordinates
                             ?.convertedCoordinates && (
-                            <NorkartMap
+                            <GoogleMapComponent
                               coordinates={
                                 property?.plot?.lamdaDataFromApi?.coordinates
                                   ?.convertedCoordinates
                               }
-                              MAX_ZOOM={20}
                             />
+                            // <NorkartMap
+                            //   coordinates={
+                            //     property?.plot?.lamdaDataFromApi?.coordinates
+                            //       ?.convertedCoordinates
+                            //   }
+                            //   MAX_ZOOM={20}
+                            // />
                           )}
                         </div>
                       </div>

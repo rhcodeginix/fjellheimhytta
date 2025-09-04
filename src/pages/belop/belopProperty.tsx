@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 // import dynamic from "next/dynamic";
-import NorkartMap from "@/components/map";
+// import NorkartMap from "@/components/map";
 import { convertCurrencyFormat } from "@/components/Ui/Husmodell/plot/plotProperty";
+import GoogleMapComponent from "@/components/Ui/map";
 
 // const GoogleMapComponent = dynamic(() => import("../../components/Ui/map"), {
 //   ssr: false,
@@ -205,21 +206,21 @@ const BelopProperty: React.FC<{
                           />
                         </div>
                         <div className="w-[37%] rounded-[8px] overflow-hidden">
-                          {/* <GoogleMapComponent
-                            coordinates={
-                              property?.plot?.lamdaDataFromApi?.coordinates
-                                ?.convertedCoordinates
-                            }
-                          /> */}
                           {property?.plot?.lamdaDataFromApi?.coordinates
                             ?.convertedCoordinates && (
-                            <NorkartMap
+                            <GoogleMapComponent
                               coordinates={
                                 property?.plot?.lamdaDataFromApi?.coordinates
                                   ?.convertedCoordinates
                               }
-                              MAX_ZOOM={20}
                             />
+                            // <NorkartMap
+                            //   coordinates={
+                            //     property?.plot?.lamdaDataFromApi?.coordinates
+                            //       ?.convertedCoordinates
+                            //   }
+                            //   MAX_ZOOM={20}
+                            // />
                           )}
                         </div>
                       </div>

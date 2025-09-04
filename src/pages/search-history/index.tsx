@@ -1,7 +1,7 @@
 "use client";
 import SideSpaceContainer from "@/components/common/sideSpace";
-import NorkartMap from "@/components/map";
-// import GoogleMapComponent from "@/components/Ui/map";
+// import NorkartMap from "@/components/map";
+import GoogleMapComponent from "@/components/Ui/map";
 import { auth, db } from "@/config/firebaseConfig";
 import { useAddress } from "@/context/addressContext";
 import { onAuthStateChanged } from "firebase/auth";
@@ -81,21 +81,21 @@ const index = () => {
                 >
                   <div className="flex flex-col gap-3 cursor-pointer relative z-40">
                     <div className="h-[300px] md:h-[350px] cursor-pointer">
-                      {/* <GoogleMapComponent
-                        coordinates={
-                          property?.lamdaDataFromApi?.coordinates
-                            ?.convertedCoordinates
-                        }
-                      /> */}
                       {property?.lamdaDataFromApi?.coordinates
                         ?.convertedCoordinates && (
-                        <NorkartMap
+                        <GoogleMapComponent
                           coordinates={
                             property?.lamdaDataFromApi?.coordinates
                               ?.convertedCoordinates
                           }
-                          MAX_ZOOM={20}
                         />
+                        // <NorkartMap
+                        //   coordinates={
+                        //     property?.lamdaDataFromApi?.coordinates
+                        //       ?.convertedCoordinates
+                        //   }
+                        //   MAX_ZOOM={20}
+                        // />
                       )}
                     </div>
                     <h4 className="text-black font-medium text-base lg:text-lg">
