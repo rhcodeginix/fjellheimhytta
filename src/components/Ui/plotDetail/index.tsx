@@ -1870,7 +1870,7 @@ const PlotDetailPage: React.FC<{
                                       />
                                     </div>
                                     {openIndex === index && (
-                                      <div className="top-3 z-100 bg-white shadow-shadow1 p-3 bg-gray-100 rounded-lg text-sm text-secondary absolute right-0 w-auto max-w-64">
+                                      <div className="top-3 z-100 bg-white shadow-shadow1 p-3 rounded-lg text-sm text-secondary absolute right-0 w-auto max-w-64">
                                         {item.description}
                                       </div>
                                     )}
