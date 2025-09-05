@@ -2,13 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  touch-action: pan-x pan-y;
+  height: 100%;
+}
+
 * {
   font-family: "Inter", sans-serif;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-text-size-adjust: none;
 }
 
 body {
+  touch-action: pan-x pan-y;
   font-family: "Inter", sans-serif;
   background-color: #fff;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

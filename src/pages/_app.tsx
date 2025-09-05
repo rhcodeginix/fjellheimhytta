@@ -7,11 +7,13 @@ import { useEffect } from "react";
 import { CustomizeHouseProvider } from "@/context/selectHouseContext";
 import { analytics } from "@/config/firebaseConfig";
 import { logEvent } from "firebase/analytics";
+import { usePreventZoom } from "@/components/Layout/noZoom";
 
 const publicRoutes = ["/login", "/register"];
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  usePreventZoom();
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
