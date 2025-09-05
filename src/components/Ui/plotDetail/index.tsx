@@ -225,8 +225,8 @@ const PlotDetailPage: React.FC<{
       icon: <NotepadText />,
     },
     {
-      id: "Unntak",
-      label: "Unntak",
+      id: "Dispensasjoner",
+      label: "Dispensasjoner",
       icon: <BadgeX />,
     },
     {
@@ -289,6 +289,8 @@ const PlotDetailPage: React.FC<{
           ? filePath?.link?.split("/").pop()?.split("?")[0] || "download.pdf"
           : filePath?.name || "download.pdf"
       );
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
 
       document.body.appendChild(link);
       link.click();
@@ -2141,7 +2143,7 @@ const PlotDetailPage: React.FC<{
               )}
             </>
           )}
-          {PlotActiveTab === "Unntak" && (
+          {PlotActiveTab === "Dispensasjoner" && (
             <>
               {documentLoading ? (
                 <>
