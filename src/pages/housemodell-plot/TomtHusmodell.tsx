@@ -38,6 +38,8 @@ const TomtHusmodell: React.FC<{
   documentLoading: any;
   KommunePlan: any;
   KommuneLoading: any;
+  KommuneRule: any;
+  KommuneRuleLoading: any;
 }> = ({
   handleNext,
   lamdaDataFromApi,
@@ -65,6 +67,8 @@ const TomtHusmodell: React.FC<{
   documentLoading,
   KommunePlan,
   KommuneLoading,
+  KommuneRule,
+  KommuneRuleLoading,
 }) => {
   const router = useRouter();
 
@@ -124,6 +128,8 @@ const TomtHusmodell: React.FC<{
           documentLoading={documentLoading}
           KommunePlan={KommunePlan}
           KommuneLoading={KommuneLoading}
+          KommuneRule={KommuneRule}
+          KommuneRuleLoading={KommuneRuleLoading}
         />
       ) : (
         <Belop

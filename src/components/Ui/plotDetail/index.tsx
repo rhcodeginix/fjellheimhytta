@@ -41,6 +41,8 @@ const PlotDetailPage: React.FC<{
   documentLoading: any;
   KommunePlan: any;
   KommuneLoading: any;
+  KommuneRule: any;
+  KommuneRuleLoading: any;
 }> = ({
   lamdaDataFromApi,
   loadingAdditionalData,
@@ -54,6 +56,8 @@ const PlotDetailPage: React.FC<{
   documentLoading,
   KommunePlan,
   KommuneLoading,
+  KommuneRule,
+  KommuneRuleLoading,
 }) => {
   const [dropdownState, setDropdownState] = useState({
     Tomteopplysninger: false,
@@ -1481,130 +1485,135 @@ const PlotDetailPage: React.FC<{
         </div>
         <div>
           {PlotActiveTab === "Regulering" && (
-            <div className="relative">
-              {/* <div className="flex flex-col md:flex-row gap-5 lg:gap-9 desktop:gap-[60px]"> */}
-              <div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-9">
-                  {results ? (
-                    <>
-                      {Object.keys(results).length > 0 ? (
-                        <>
-                          {Object.entries(results)
-                            .filter(
-                              ([_, value]: any) =>
-                                value?.rules && value.rules.length > 0
-                            )
-                            .map((item: any, index: number) => {
-                              return (
-                                <div key={index}>
-                                  <div className="flex gap-2 items-center mb-4 lg:mb-6">
-                                    <Image
-                                      fetchPriority="auto"
-                                      src={Ic_generelt}
-                                      alt="image"
-                                    />
-                                    <h2 className="text-black text-base md:text-lg lg:text-xl desktop:text-2xl font-semibold">
-                                      {item[0]}
-                                    </h2>
-                                  </div>
-
-                                  <div className="flex flex-col gap-2 md:gap-3">
-                                    {item?.[1]?.rules?.map(
-                                      (rule: any, idx: number) => (
-                                        <div
-                                          className="flex items-start gap-2 md:gap-3 text-secondary text-sm lg:text-base"
-                                          key={idx}
-                                        >
-                                          <Image
-                                            fetchPriority="auto"
-                                            src={Ic_check_true}
-                                            alt="image"
-                                          />
-                                          <span>
-                                            {rule?.norwegian_text
-                                              ? rule.norwegian_text
-                                              : rule.rule_name}{" "}
-                                            (Regulation plan)
-                                          </span>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                        </>
-                      ) : (
-                        <div>Ingen regel funnet!</div>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {Array.from({ length: 4 }).map(
-                        (_: any, index: number) => (
-                          <div key={index}>
-                            <div className="flex gap-2 items-center mb-4 lg:mb-6">
-                              <div className="w-[100px] h-[20px] rounded-lg custom-shimmer"></div>
-                              <div className="w-[100px] h-[20px] rounded-lg custom-shimmer"></div>
-                            </div>
-
-                            <div className="flex flex-col gap-2 md:gap-3">
-                              <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
-                              <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
-                              <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
-                            </div>
-                          </div>
-                        )
-                      )}
-                    </>
-                  )}
-                </div>
+            <>
+              <div className="flex flex-col md:flex-row gap-5 lg:gap-9 desktop:gap-[60px]">
+                {/* <div> */}
                 <div className="relative w-full md:w-1/2">
-                  <div>
-                    {/* <div className="flex justify-between items-center mb-4 lg:mb-6">
-                      {loadingLamdaData ? (
-                        <div className="w-[100px] h-[20px] rounded-lg custom-shimmer"></div>
-                      ) : (
-                        <h2 className="text-black text-base md:text-lg lg:text-xl desktop:text-2xl font-semibold">
-                          Reguleringsplan
-                        </h2>
-                      )}
-                      <Image
-                        fetchPriority="auto"
-                        src={Ic_generelt}
-                        alt="image"
-                      />
-                    </div> */}
-                    <div className="flex flex-col gap-2 md:gap-3">
+                  <div className="flex flex-col gap-5 lg:gap-9">
+                    <h2 className="text-black text-lg md:text-xl lg:text-2xl desktop:text-[28px] font-semibold">
+                      Reguleringsplan
+                    </h2>
+                    {results ? (
                       <>
-                        {loadingAdditionalData ? (
+                        {Object.keys(results).length > 0 ? (
                           <>
-                            <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
-                            <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
-                            <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                            {Object.entries(results)
+                              .filter(
+                                ([_, value]: any) =>
+                                  value?.rules && value.rules.length > 0
+                              )
+                              .map((item: any, index: number) => {
+                                return (
+                                  <div key={index}>
+                                    <div className="flex gap-2 items-center mb-4 lg:mb-6">
+                                      <Image
+                                        fetchPriority="auto"
+                                        src={Ic_generelt}
+                                        alt="image"
+                                      />
+                                      <h2 className="text-black text-base md:text-lg lg:text-xl desktop:text-2xl font-semibold">
+                                        {item[0]}
+                                      </h2>
+                                    </div>
+
+                                    <div className="flex flex-col gap-2 md:gap-3">
+                                      {item?.[1]?.rules?.map(
+                                        (rule: any, idx: number) => (
+                                          <div
+                                            className="flex items-start gap-2 md:gap-3 text-secondary text-sm lg:text-base"
+                                            key={idx}
+                                          >
+                                            <Image
+                                              fetchPriority="auto"
+                                              src={Ic_check_true}
+                                              alt="image"
+                                            />
+                                            <span>
+                                              {rule?.norwegian_text
+                                                ? rule.norwegian_text
+                                                : rule.rule_name}{" "}
+                                              (Regulation plan)
+                                            </span>
+                                          </div>
+                                        )
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
                           </>
                         ) : (
-                          <>
-                            {(askData && askData?.conclusion)?.map(
-                              (a: any, index: number) => (
-                                <div
-                                  className="flex items-start gap-2 md:gap-3 text-secondary text-sm lg:text-base"
-                                  key={index}
-                                >
-                                  <Image
-                                    fetchPriority="auto"
-                                    src={Ic_check_true}
-                                    alt="image"
-                                  />
-                                  <span>{a?.quote ? a?.quote : a}</span>
-                                </div>
-                              )
-                            )}
-                          </>
+                          <div>Ingen regel funnet!</div>
                         )}
                       </>
-                    </div>
+                    ) : (
+                      <>
+                        {Array.from({ length: 4 }).map(
+                          (_: any, index: number) => (
+                            <div key={index}>
+                              <div className="flex gap-2 items-center mb-4 lg:mb-6">
+                                <div className="w-[100px] h-[20px] rounded-lg custom-shimmer"></div>
+                                <div className="w-[100px] h-[20px] rounded-lg custom-shimmer"></div>
+                              </div>
+
+                              <div className="flex flex-col gap-2 md:gap-3">
+                                <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                                <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                                <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </>
+                    )}
                   </div>
+                  {/* <div>
+                  <div className="flex justify-between items-center mb-4 lg:mb-6">
+                    {loadingLamdaData ? (
+                      <div className="w-[100px] h-[20px] rounded-lg custom-shimmer"></div>
+                    ) : (
+                      <h2 className="text-black text-base md:text-lg lg:text-xl desktop:text-2xl font-semibold">
+                        Reguleringsplan
+                      </h2>
+                    )}
+                    <Image
+                      fetchPriority="auto"
+                      src={Ic_generelt}
+                      alt="image"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2 md:gap-3">
+                    <>
+                      {loadingAdditionalData ? (
+                        <>
+                          <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                          <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                          <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                        </>
+                      ) : (
+                        <>
+                          {(askData && askData?.conclusion)
+                            ?.map((a: any, index: number) => (
+                              <div
+                                className="flex items-start gap-2 md:gap-3 text-secondary text-sm lg:text-base"
+                                key={index}
+                              >
+                                <Image
+                                  fetchPriority="auto"
+                                  src={Ic_check_true}
+                                  alt="image"
+                                />
+                                <span>
+                                  {a?.norwegian_text ? a?.norwegian_text : a}
+                                </span>
+                              </div>
+                            ))}
+                        </>
+                      )}
+                    </>
+                  </div>
+                </div> */}
+
                   {loadingAdditionalData ? (
                     <div className="w-full h-[400px] lg:h-[590px] rounded-lg custom-shimmer mt-[36px] md:mt-[46px] lg:mt-[55px]"></div>
                   ) : (
@@ -1660,7 +1669,7 @@ const PlotDetailPage: React.FC<{
                         <div
                           className={`absolute bottom-0 right-[4px] flex items-center justify-center h-full`}
                           style={{
-                            zIndex: 99999,
+                            zIndex: 999,
                           }}
                         >
                           <div
@@ -1803,58 +1812,60 @@ const PlotDetailPage: React.FC<{
                     </div>
                   )}
                 </div>
-                {/* <div className="relative w-full md:w-1/2">
-                  <div className="flex justify-between items-center mb-4 lg:mb-6">
-                    {loadingLamdaData ? (
-                      <div className="w-[100px] h-[20px] rounded-lg custom-shimmer"></div>
-                    ) : (
-                      <h2 className="text-black text-base md:text-lg lg:text-xl desktop:text-2xl font-semibold">
-                        Kommuneplan for{" "}
-                        {
-                          CadastreDataFromApi?.presentationAddressApi?.response
-                            ?.item?.municipality?.municipalityName
-                        }
-                      </h2>
-                    )}
-                    <Image fetchPriority="auto" src={Ic_generelt} alt="image" />
-                  </div>
-                  <div className="flex flex-col gap-2 md:gap-3">
-                    {loadingAdditionalData ? (
+                <div className="relative w-full md:w-1/2">
+                  <div className="flex flex-col gap-5 lg:gap-9">
+                    <h2 className="text-black text-lg md:text-xl lg:text-2xl desktop:text-[28px] font-semibold">
+                      Kommuneplan
+                    </h2>
+                    {KommuneRule && !KommuneRuleLoading ? (
                       <>
-                        <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
-                        <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
-                        <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
-                        <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                        {KommuneRule?.rules?.length > 0 ? (
+                          <div className="flex flex-col gap-3">
+                            {KommuneRule?.rules.map(
+                              (item: any, index: number) => {
+                                return (
+                                  <div key={index}>
+                                    <div className="flex items-start gap-2 md:gap-3 text-secondary text-sm lg:text-base">
+                                      <Image
+                                        fetchPriority="auto"
+                                        src={Ic_check_true}
+                                        alt="image"
+                                      />
+                                      <span>{item?.rule}</span>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+                        ) : (
+                          <div>Ingen regel funnet!</div>
+                        )}
                       </>
                     ) : (
                       <>
-                        {askData &&
-                          askData?.applicable_rules?.map(
-                            (a: any, index: number) => (
-                              <div
-                                className="flex items-start gap-2 md:gap-3 text-secondary text-sm lg:text-base"
-                                key={index}
-                              >
-                                <Image
-                                  fetchPriority="auto"
-                                  src={Ic_check_true}
-                                  alt="image"
-                                />
-                                <div>
-                                  {a.rule}{" "}
-                                  <span className="text-primary font-bold">
-                                    {a.section}
-                                  </span>
-                                </div>
+                        {Array.from({ length: 4 }).map(
+                          (_: any, index: number) => (
+                            <div key={index}>
+                              <div className="flex gap-2 items-center mb-4 lg:mb-6">
+                                <div className="w-[100px] h-[20px] rounded-lg custom-shimmer"></div>
+                                <div className="w-[100px] h-[20px] rounded-lg custom-shimmer"></div>
                               </div>
-                            )
-                          )}
+
+                              <div className="flex flex-col gap-2 md:gap-3">
+                                <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                                <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                                <div className="w-full h-[25px] rounded-lg custom-shimmer"></div>
+                              </div>
+                            </div>
+                          )
+                        )}
                       </>
                     )}
                   </div>
-                </div> */}
+                </div>
               </div>
-            </div>
+            </>
           )}
           {PlotActiveTab === "Eierinformasjon" && (
             <Eierinformasjon
