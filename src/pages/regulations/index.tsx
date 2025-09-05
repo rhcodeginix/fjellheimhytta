@@ -842,6 +842,12 @@ const Regulations = () => {
 
         if (!json?.plan_link) {
           setResultLoading(false);
+          setDocuments({});
+          setKommunePlan({});
+          setPlanDocuments([]);
+          setExemptions([]);
+          setResult({});
+          setKommuneLoading(false);
           return;
         }
 
