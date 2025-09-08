@@ -3,7 +3,7 @@ import mapboxgl from "mapbox-gl";
 // import "mapbox-gl/dist/mapbox-gl.css";
 import Modal from "@/components/common/modal";
 import Image from "next/image";
-import Ic_close_darkgreen from "@/public/images/Ic_close_darkgreen.svg";
+import Ic_close from "@/public/images/Ic_close.svg";
 import Map3D from "./map3d";
 import Ic_logo_green from "@/public/images/Ic_logo_green.svg";
 
@@ -122,7 +122,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ coordinates }) => {
                 className="absolute top-2 md:top-3 right-2 md:right-3"
                 onClick={() => setModalOpen(false)}
               >
-                <Image src={Ic_close_darkgreen} alt="close" />
+                <Image src={Ic_close} alt="close" />
               </button>
             </div>
             <div className="h-[70vh] w-full">
