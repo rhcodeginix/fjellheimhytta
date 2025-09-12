@@ -168,7 +168,7 @@ const Tilbud: React.FC<{
             collection(db, "leads"),
             where("finalData.husmodell.id", "==", husmodellId),
             where("finalData.plot.id", "==", String(plotId)),
-            where("user.id", "==", user.id)
+            where("user.id", "==", user.uid)
           )
         );
 
@@ -236,7 +236,7 @@ const Tilbud: React.FC<{
             collection(db, "leads"),
             where("finalData.plot", "==", null),
             where("finalData.husmodell.id", "==", String(husmodellId)),
-            where("user.id", "==", user.id)
+            where("user.id", "==", user.uid)
           )
         );
 
@@ -503,11 +503,18 @@ const Tilbud: React.FC<{
                   <div className="w-[200px] h-[20px] rounded-lg custom-shimmer mb-1"></div>
                 ) : (
                   <p className="text-secondary2 text-xs md:text-sm">
-                    {CadastreDataFromApi?.presentationAddressApi?.response?.item
-                      ?.formatted?.line2 ??
-                      `${address?.postnummer} ${address?.poststed}`}
+                    {[
+                      CadastreDataFromApi?.presentationAddressApi?.response
+                        ?.item?.formatted?.line2,
+                      address?.postnummer && address?.poststed
+                        ? `${address.postnummer} ${address.poststed}`
+                        : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
                   </p>
                 )}
+
                 <div
                   className={`flex gap-2 ${plotId && "h-[150px] sm:h-[189px]"} mb-2 md:mb-4`}
                 >
@@ -672,7 +679,13 @@ const Tilbud: React.FC<{
                       {formatCurrency(
                         totalCustPris +
                           Number(Husdetaljer?.pris?.replace(/\s/g, "")) +
-                          Number(pris || 0)
+                          Number(
+                            (pris || "0")
+                              .toString()
+                              .replace(/\s| /g, "")
+                              .replace(/kr/i, "")
+                              .trim()
+                          )
                       )}
                     </h4>
                   )}
@@ -680,16 +693,14 @@ const Tilbud: React.FC<{
                     {loading ? (
                       <div className="w-[180px] h-[20px] rounded-lg custom-shimmer"></div>
                     ) : (
-                      <>Tilbudet gjelder til</>
-                    )}{" "}
+                      <>Tilbudet gjelder til&nbsp;</>
+                    )}
                     {loading ? (
                       <div className="w-[200px] h-[20px] rounded-lg custom-shimmer"></div>
                     ) : (
                       <span className="text-[#101828] font-semibold">
                         {new Date(
-                          new Date().getFullYear(),
-                          11,
-                          31
+                          new Date().setDate(new Date().getDate() + 20)
                         ).toLocaleDateString("no-NO", {
                           day: "2-digit",
                           month: "2-digit",
@@ -844,7 +855,13 @@ const Tilbud: React.FC<{
                         {formatCurrency(
                           totalCustPris +
                             Number(Husdetaljer?.pris?.replace(/\s/g, "")) +
-                            Number(pris || 0)
+                            Number(
+                              (pris || "0")
+                                .toString()
+                                .replace(/\s| /g, "")
+                                .replace(/kr/i, "")
+                                .trim()
+                            )
                         )}
                       </div>
                     )}

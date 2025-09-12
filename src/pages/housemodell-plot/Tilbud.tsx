@@ -245,9 +245,15 @@ const Tilbud: React.FC<{
                   </span>
                 </h4>
                 <p className="text-secondary2 text-xs md:text-sm">
-                  {CadastreDataFromApi?.presentationAddressApi?.response?.item
-                    ?.formatted?.line2 ??
-                    `${address?.postnummer} ${address?.poststed}`}
+                  {[
+                    CadastreDataFromApi?.presentationAddressApi?.response?.item
+                      ?.formatted?.line2,
+                    address?.postnummer && address?.poststed
+                      ? `${address.postnummer} ${address.poststed}`
+                      : null,
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                 </p>
                 <div className="flex gap-2 h-[150px] sm:h-[189px] mb-2 md:mb-4">
                   <div className="w-[63%] h-full relative">
@@ -353,11 +359,20 @@ const Tilbud: React.FC<{
                   </h4>
                   <div className="text-secondary text-sm md:text-base text-center">
                     Tilbudet gjelder til{" "}
-                    <span className="text-[#101828] font-semibold">
+                    {/* <span className="text-[#101828] font-semibold">
                       {new Date(
                         new Date().getFullYear(),
                         11,
                         31
+                      ).toLocaleDateString("no-NO", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}
+                    </span> */}
+                    <span className="text-[#101828] font-semibold">
+                      {new Date(
+                        new Date().setDate(new Date().getDate() + 20)
                       ).toLocaleDateString("no-NO", {
                         day: "2-digit",
                         month: "2-digit",
